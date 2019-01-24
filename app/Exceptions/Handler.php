@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Auth;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -48,6 +49,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+            $retVal = (Auth::check()) ? redirect('/forbidden') : redirect('/') ;
+            return $retVal;
+        }
+
         return parent::render($request, $exception);
     }
 }

@@ -1,69 +1,82 @@
 @extends('layouts.app')
+@section('login')
+{{--
+    username,
+    password,
+    remember,
+    <a class="btn btn-link" href="{{ route('password.request') }}">Forgot Your Password?</a>
+--}}
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <div class="row justify-content-center align-items-center">
+                        <img src="{{asset('img/sfclogo.png')}}" class="w-25 h-25">
+                        <h5 class="card-title text-center">
+                            Planning Procurement and Assets Management System
+                        </h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate>
+                    {{ csrf_field() }}
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
+                            <div class="input-group">
+                              <div class="input-group-append">
+                                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                              </div>
+                              <input type="text" placeholder="Username" name="username"
+                              class="form-control {{ $errors->has('username') ? 'is-invalid' : '' }}"
+                              value="{{old('username')}}" required autofocus>
+                              <div class="invalid-feedback">  
+                                @if ($errors->has('username'))
+                                    {{$errors->first('username')}}
+                                @else
+                                    Username is required.
+                                @endif  
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-append">
+                                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+                              </div>
+                              <input type="password" placeholder="Password" name="password" 
+                              class="form-control input_pass {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                               required autofocus>
+                               <div class="invalid-feedback">  
+                                  @if ($errors->has('password'))
+                                    {{$errors->first('password')}}
+                                  @else
+                                    Password is required.
+                                  @endif  
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
+                            <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" type="checkbox" id="customControlInline" name="remember"
+                              {{ old('remember') ? 'checked' : '' }}>
+                              <label class="custom-control-label" for="customControlInline">Remember me</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3">
+                            <button type="submit" name="button" class="btn btn-primary login_btn w-100">Login</button>
+                        </div>
+                        <div class="mt-4">
+                            <div class="d-flex justify-content-center links">
+                                <a href="#">Forgot your password?</a>
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+
