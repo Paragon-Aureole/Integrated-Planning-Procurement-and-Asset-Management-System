@@ -49,7 +49,7 @@
 			        <div class="form-group col-md-12">
 			          <label for="" class="small">Name:</label>
 			          <input class="form-control form-control-sm {{ $errors->has('signatory_name') ? 'is-invalid' : '' }}"
-			          value="{{ old('signatory_name') }}" type="text" name="signatory_name">
+			          value="{{ old('signatory_name') }}" type="text" name="signatory_name" required autofocus>
 			          <div class="invalid-feedback"> 
 			          @if ($errors->has('signatory_name'))
 			            {{$errors->first('signatory_name')}}
@@ -61,7 +61,7 @@
 			        <div class="form-group col-md-12">
 			          <label for="" class="small">Position:</label>
 			          <input class="form-control form-control-sm {{ $errors->has('signatory_position') ? 'is-invalid' : '' }}"
-			          value="{{ old('signatory_position') }}" type="text" name="signatory_position">
+			          value="{{ old('signatory_position') }}" type="text" name="signatory_position" required autofocus>
 			          <div class="invalid-feedback"> 
 			          @if ($errors->has('signatory_position'))
 			            {{$errors->first('signatory_position')}}
@@ -72,10 +72,10 @@
 			        </div>
 			        <div class="col-md-12 form-group">
 				  	  <label for="officeInput" class="small">Office:</label>
-		    	  	  <select id="officeInput" class="custom-select custom-select-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" name="office" required>
+		    	  	  <select id="officeInput" class="custom-select custom-select-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" name="office" required autofocus>
 		    	  	  	<option value = "">-Select One-</option>
 		    			@foreach($offices as $department)
-			    	  		<option value = "{{$department->id}}">{{$department->office_name}}</option>
+			    	  		<option value = "{{$department->id}}" title="{{$department->office_code}}">{{$department->office_name}}</option>
 			    	  	@endforeach
 		    	  	  </select>
 		    	  	  <div class="invalid-feedback">

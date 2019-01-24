@@ -48,6 +48,7 @@
 		  	  <select class="custom-select custom-select-sm {{ $errors->has('category') ? 'is-invalid' : '' }}" name="category">
 		  	  	<option value='1' @if($office_data->category == 1) selected @endif>Department</option>
 		  	  	<option value='2' @if($office_data->category == 2) selected @endif>Section</option>
+            <option value='3' @if($office_data->category == 3) selected @endif>Group/Committee</option>
 		  	  </select>
           <div class="invalid-feedback">  
             @if ($errors->has('category'))

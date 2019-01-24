@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Signatory;
 use App\Office;
-use Illuminate\Http\Request;
+use App\Http\Requests\SignatoryRequest;
 
 class SignatoryController extends Controller
 {
@@ -33,18 +33,25 @@ class SignatoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\SignatoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SignatoryRequest $request)
     {
         $input = $request->all();
+        $aignatory = Signatory::create([
+            "signatory_name" => $input['signatory_name'],
+            "signatory_position" => $input['signatory_position'],
+            "office_id" => $input['office'],
+            "category" => $input['category'],
+        ]);
+        return redirect()->back()->with('success', 'A signatory has been added.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Signatory  $signatory
+     * @param  App\Http\Requests\SignatoryRequest  $signatory
      * @return \Illuminate\Http\Response
      */
     public function show(Signatory $signatory)
@@ -55,10 +62,10 @@ class SignatoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Signatory  $signatory
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Signatory $signatory)
+    public function edit($id)
     {
         //
     }
@@ -66,11 +73,11 @@ class SignatoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Signatory  $signatory
+     * @param  App\Http\Requests\SignatoryRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Signatory $signatory)
+    public function update(SignatoryRequest $request, $id)
     {
         //
     }
@@ -78,11 +85,12 @@ class SignatoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Signatory  $signatory
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Signatory $signatory)
+    public function destroy($id)
     {
-        //
+        Signatory::destroy($id);
+        return redirect()->back()->with('info', 'A signatory has been deleted.');
     }
 }
