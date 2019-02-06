@@ -1,6 +1,6 @@
 <!-- A grey horizontal navbar that becomes vertical on small screens -->
 <nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand" href="{{route('home')}}">
   	<img src="{{asset('img/sfclogo.png')}}" width="30" height="30" class="d-inline-block align-top" alt="">
 	<span class="mb-0 h5">PPAMS</span>
   </a>
@@ -12,7 +12,7 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#">PPMP</a>
+        <a class="nav-link" href="{{route('view.ppmp')}}">PPMP</a>
       </li>
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="prDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

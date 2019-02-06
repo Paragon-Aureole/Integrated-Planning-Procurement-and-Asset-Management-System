@@ -65,8 +65,15 @@ Route::put('/distributor/update/{id}', 'DistributorController@update')->name('up
 Route::get('/distributor/delete/{id}', 'DistributorController@destroy')->name('delete.dist');
 
 //add ppmp
-Route::get('/distributor', 'DistributorController@index')->name('view.dist');
-Route::post('/distributor/new', 'DistributorController@store')->name('add.dist');
-// Route::get('/distributor/edit/{id}', 'DistributorController@edit')->name('edit.dist');
-// Route::put('/distributor/update/{id}', 'DistributorController@update')->name('update.dist');
-Route::get('/distributor/delete/{id}', 'DistributorController@destroy')->name('delete.dist');
+Route::get('/ppmp', 'PpmpController@index')->name('view.ppmp');
+Route::post('/ppmp/new', 'PpmpController@store')->name('add.ppmp');
+// Route::get('/distributor/edit/{id}', 'PpmpController@edit')->name('edit.ppmp');
+// Route::put('/distributor/update/{id}', 'PpmpController@update')->name('update.ppmp');
+Route::get('/ppmp/delete/{id}', 'PpmpController@destroy')->name('delete.ppmp');
+
+//add ppmp items
+Route::get('/ppmp/item', 'PpmpItemController@index')->name('view.ppmpitm');
+Route::post('/ppmp/item/add', 'PpmpItemController@store')->name('add.ppmpitm');
+Route::get('/ppmp/item/edit/{id}', 'PpmpItemController@edit')->name('edit.ppmpitm');
+Route::put('/ppmp/item/update/{id}', 'PpmpItemController@update')->name('update.ppmpitm');
+Route::get('/ppmp/item/delete/{id}', 'PpmpItemController@destroy')->name('delete.ppmpitm');

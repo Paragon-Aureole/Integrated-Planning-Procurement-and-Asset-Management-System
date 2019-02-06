@@ -10,7 +10,7 @@
 @section('content')
 <div class="container-fluid">
 	<div class="card">
-	 <div class="card-header pt-2 pb-2">Signatories</div>
+	 <div class="card-header pt-2 pb-2"><i class="fas fa-file-signature"></i> Signatories</div>
 	 <div class="card-body">
 	  <ul class="nav nav-tabs" role="tablist">
 	    <li class="nav-item">

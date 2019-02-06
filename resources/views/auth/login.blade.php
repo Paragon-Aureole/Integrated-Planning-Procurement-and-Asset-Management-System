@@ -56,6 +56,7 @@
                                 </div>
                             </div>
                         </div>
+                        {{--
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                               <input class="custom-control-input" type="checkbox" id="customControlInline" name="remember"
@@ -63,14 +64,17 @@
                               <label class="custom-control-label" for="customControlInline">Remember me</label>
                             </div>
                         </div>
+                        --}}
                         <div class="d-flex justify-content-center mt-3">
                             <button type="submit" name="button" class="btn btn-primary login_btn w-100">Login</button>
                         </div>
+                        {{--
                         <div class="mt-4">
                             <div class="d-flex justify-content-center links">
                                 <a href="#">Forgot your password?</a>
                             </div>
                         </div>
+                        --}}
                     </form>
                 </div> 
             </div>
