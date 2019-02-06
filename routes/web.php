@@ -56,3 +56,17 @@ Route::post('/signatory/new', 'SignatoryController@store')->name('add.signatorie
 Route::get('/signatory/edit/{id}', 'SignatoryController@edit')->name('edit.signatories');
 Route::put('/signatory/update/{id}', 'SignatoryController@update')->name('update.signatories');
 Route::get('/signatory/delete/{id}', 'SignatoryController@destroy')->name('delete.signatories');
+
+//add distributors
+Route::get('/distributor', 'DistributorController@index')->name('view.dist');
+Route::post('/distributor/new', 'DistributorController@store')->name('add.dist');
+Route::get('/distributor/edit/{id}', 'DistributorController@edit')->name('edit.dist');
+Route::put('/distributor/update/{id}', 'DistributorController@update')->name('update.dist');
+Route::get('/distributor/delete/{id}', 'DistributorController@destroy')->name('delete.dist');
+
+//add ppmp
+Route::get('/distributor', 'DistributorController@index')->name('view.dist');
+Route::post('/distributor/new', 'DistributorController@store')->name('add.dist');
+// Route::get('/distributor/edit/{id}', 'DistributorController@edit')->name('edit.dist');
+// Route::put('/distributor/update/{id}', 'DistributorController@update')->name('update.dist');
+Route::get('/distributor/delete/{id}', 'DistributorController@destroy')->name('delete.dist');

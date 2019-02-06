@@ -82,7 +82,7 @@
           <li><a class="dropdown-item" href="{{route('view.signatories')}}">Signatories</a></li>
           <li><a class="dropdown-item" href="{{route('view.modes')}}">Modes of Procurement</a></li>
           <li><a class="dropdown-item" href="{{route('view.units')}}">Units of Measurement</a></li>
-          <li><a class="dropdown-item" href="#">Distributors</a></li>
+          <li><a class="dropdown-item" href="{{route('view.dist')}}">Distributors</a></li>
         </ul>
       </li>
       @endcan

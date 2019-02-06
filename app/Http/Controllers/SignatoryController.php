@@ -45,7 +45,7 @@ class SignatoryController extends Controller
             "office_id" => $input['office'],
             "category" => $input['category'],
         ]);
-        return redirect()->back()->with('success', 'A signatory has been added.');
+        return redirect()->back()->with('success', 'A Signatory has been added.');
     }
 
     /**
@@ -67,7 +67,11 @@ class SignatoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $signatories = Signatory::all();
+        $offices = Office::all();
+        $edit_signatory = Signatory::findorFail($id);
+        return view('signatories.updatesignatory', compact('signatories', 'offices', 'edit_signatory'));
+
     }
 
     /**
@@ -79,7 +83,16 @@ class SignatoryController extends Controller
      */
     public function update(SignatoryRequest $request, $id)
     {
-        //
+        $input = $request->all();
+        $signatory = Signatory::findorFail($id);
+        $signatory->update([
+            "signatory_name" => $input['signatory_name'],
+            "signatory_position" => $input['signatory_position'],
+            "office_id" => $input['office'],
+            "category" => $input['category'],
+        ]);
+
+        return redirect()->route('view.signatories')->with('success', 'The Signatory has been updated.');
     }
 
     /**
