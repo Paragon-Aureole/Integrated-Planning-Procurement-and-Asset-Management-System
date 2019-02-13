@@ -56,6 +56,8 @@ Route::post('/signatory/new', 'SignatoryController@store')->name('add.signatorie
 Route::get('/signatory/edit/{id}', 'SignatoryController@edit')->name('edit.signatories');
 Route::put('/signatory/update/{id}', 'SignatoryController@update')->name('update.signatories');
 Route::get('/signatory/delete/{id}', 'SignatoryController@destroy')->name('delete.signatories');
+Route::get('/signatory/activate/{id}', 'SignatoryController@activateSignatory')->name('activate.signatories');
+Route::get('/signatory/deactivate/{id}', 'SignatoryController@deactivateSignatory')->name('deactivate.signatories');
 
 //add distributors
 Route::get('/distributor', 'DistributorController@index')->name('view.dist');

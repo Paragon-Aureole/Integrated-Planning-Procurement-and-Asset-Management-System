@@ -23,11 +23,11 @@
           <i class="fas fa-minus"></i>
         </a>
       @if($signatory->is_activated == 1)
-        <a href="#" title="Deactivate Signatory" class="btn btn-sm btn-success">
+        <a href="{{route('deactivate.signatories', $signatory->id)}}" title="Deactivate Signatory" class="btn btn-sm btn-success">
           <i class="fas fa-check-circle"></i>
         </a>
       @else
-        <a href="#" title="Activate Signatory" class="btn btn-sm btn-secondary">
+        <a href="{{route('activate.signatories', $signatory->id)}}" title="Activate Signatory" class="btn btn-sm btn-secondary">
           <i class="far fa-check-circle"></i>
         </a>
       @endif

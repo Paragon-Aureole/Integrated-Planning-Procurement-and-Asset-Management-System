@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->belongsTo(Office::class);
     }
 
+    public function ppmp()
+    {
+        return $this->hasMany(Ppmp::class);
+    }
+
     /** LOCAL SCOPES
     public function scopeAdmins($query)
     {

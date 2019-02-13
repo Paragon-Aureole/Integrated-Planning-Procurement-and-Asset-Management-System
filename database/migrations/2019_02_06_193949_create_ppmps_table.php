@@ -15,8 +15,14 @@ class CreatePpmpsTable extends Migration
     {
         Schema::create('ppmps', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned()->index()->nullable();
+            $table->integer('office_id')->unsigned()->index()->nullable();
+            $table->integer('ppmp_budget_id')->unsigned()->index()->nullable();
+            $table->year('ppmp_year');
+            $table->boolean('is_active')->default(0);
             $table->timestamps();
         });
+
     }
 
     /**

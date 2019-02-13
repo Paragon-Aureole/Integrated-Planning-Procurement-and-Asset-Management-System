@@ -259,8 +259,12 @@ class OfficesTableSeeder extends Seeder
             [
                 'office_code' => "PACU",
                 'office_name' => "Public Assistance and Complaints Unit",
-                'category' => '1',
-                 
+                'category' => '1',    
+            ],
+                        [
+                'office_code' => "TWG",
+                'office_name' => "Technical Working Group",
+                'category' => '3',    
             ],
         ];
 

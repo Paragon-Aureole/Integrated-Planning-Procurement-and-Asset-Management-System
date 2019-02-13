@@ -14,7 +14,7 @@
 	 <div class="card-body">
 	  <ul class="nav nav-tabs" role="tablist">
 	    <li class="nav-item">
-	      <a class="nav-link active" data-toggle="tab" id="sig1" href="">Department Heads</a>
+	      <a class="nav-link active" data-toggle="tab" id="sig1" href="">Requestor by Department</a>
 	    </li>
 	    <li class="nav-item">
 	      <a class="nav-link" data-toggle="tab" id="sig2" href="">Appropriations</a>
@@ -59,8 +59,8 @@
 			          </div>
 			        </div>
 			        <div class="form-group col-md-12">
-			          <label for="" class="small">Position:</label>
-			          <input class="form-control form-control-sm {{ $errors->has('signatory_position') ? 'is-invalid' : '' }}"
+			          <label for="signatoryPosition" class="small">Position:</label>
+			          <input id="signatoryPosition" class="form-control form-control-sm {{ $errors->has('signatory_position') ? 'is-invalid' : '' }}"
 			          value="{{ old('signatory_position') }}" type="text" name="signatory_position" required autofocus>
 			          <div class="invalid-feedback"> 
 			          @if ($errors->has('signatory_position'))

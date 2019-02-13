@@ -46,6 +46,7 @@ $(function () {
 	else{
 		$( "#sig1" ).click(function() {
 		   $("input[name=category]").val('1');
+		   $('#officeInput option').show();
 		   var filteredData = table
 		    table
 	            .column(3).visible( false )
