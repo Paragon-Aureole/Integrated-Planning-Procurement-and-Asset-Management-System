@@ -32,12 +32,34 @@
             </div>
           </div>
 
+          @role('Admin')
+          <div class="col-md-12 form-group">
+              <label for="ppmpOffice" class="small">Office:</label>
+                <select id="ppmpOffice" class="custom-select custom-select-sm {{ $errors->has('office_id') ? 'is-invalid' : '' }}" name="office_id" required>
+                  <option value = "">-Select One-</option>
+                @foreach($offices as $department)
+                  <option value = "{{$department->id}}">{{$department->office_name}}</option>
+                @endforeach
+                </select>
+                <div class="invalid-feedback">
+                @if ($errors->has('office_id'))
+                      {{$errors->first('office_id')}}
+                    @else
+                      Select a valid office.
+                    @endif
+                </div>
+          </div>
+          @else
+          <input type="hidden" name="office_id" value="{{Auth::user()->office_id}}">
+          @endrole
+
           <div class="form-group col">
             <button type="submit" class="btn btn-primary btn-sm">Submit</button>
           </div>
         </div>
       </form>
       
+      @if($ppmp_DT->count() > 0)
       <h6 class="card-title">
       Add PPMP Item Code
       </h6>
@@ -77,7 +99,8 @@
           </div>
         </div>
       </form>
-	  
+	   @endif
+
    	</div>
 
    	<!-- table -->

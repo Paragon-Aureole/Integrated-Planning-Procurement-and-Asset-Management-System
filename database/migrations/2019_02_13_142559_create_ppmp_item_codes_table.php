@@ -22,24 +22,24 @@ class CreatePpmpItemCodesTable extends Migration
         });
 
         Schema::table('ppmp_item_codes', function($table) {
-            $table->foreign('ppmp_id')->references('id')->on('ppmps');
+            $table->foreign('ppmp_id')->references('id')->on('ppmps')->onDelete('cascade');
         });
 
         Schema::table('ppmp_budgets', function($table) {
-            $table->foreign('ppmp_id')->references('id')->on('ppmps');
+            $table->foreign('ppmp_id')->references('id')->on('ppmps')->onDelete('cascade');
         });
 
         Schema::table('ppmps', function($table) {
-            $table->foreign('ppmp_budget_id')->references('id')->on('ppmp_budgets');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('office_id')->references('id')->on('offices');
         });
 
         Schema::table('ppmp_items', function($table) {
-            $table->foreign('ppmp_id')->references('id')->on('ppmps');
+            $table->foreign('ppmp_id')->references('id')->on('ppmps')->onDelete('cascade');
             $table->foreign('measurement_unit_id')->references('id')->on('procurement_modes');
             $table->foreign('procurement_mode_id')->references('id')->on('measurement_units');
-            $table->foreign('ppmp_item_code_id')->references('id')->on('ppmp_item_codes');
+            $table->foreign('ppmp_item_code_id')->references('id')->on('ppmp_item_codes')->onDelete('cascade');
         });
     }
 
