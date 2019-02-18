@@ -20,6 +20,11 @@ class Office extends Model
         return $this->hasOne(User::class);
     }
 
+    public function ppmp()
+    {
+        return $this->hasMany(Ppmp::class);
+    }
+
     public function signatory()
     {
         return $this->hasOne(Signatory::class);
