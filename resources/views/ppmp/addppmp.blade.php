@@ -59,7 +59,7 @@
         </div>
       </form>
       
-      @if($ppmp_DT->count() > 0)
+      @if($ppmp_DT->where('is_active', '=', '1')->count() > 0)
       <h6 class="card-title">
       Add PPMP Item Code
       </h6>
@@ -67,6 +67,22 @@
       <form action="#" method="post" id="needs-validation" novalidate>
         {{csrf_field()}}
         <div class="row">
+          <div class="col-md-12 form-group">
+              <label for="ppmpSelect" class="small">Select PPMP:</label>
+                <select id="ppmpSelect" class="custom-select custom-select-sm {{ $errors->has('ppmp_select') ? 'is-invalid' : '' }}" name="ppmp_select" required>
+                  <option value = "">-Select One-</option>
+                @foreach($ppmp_DT->where('is_active', '=', '1') as $ppmp_list)
+                  <option value = "{{$ppmp_list->id}}">{{$ppmp_list->ppmp_year}}  {{$ppmp_list->office->office_name}}</option>
+                @endforeach
+                </select>
+                <div class="invalid-feedback">
+                @if ($errors->has('ppmp_select'))
+                      {{$errors->first('ppmp_select')}}
+                    @else
+                      Select a valid PPMP.
+                    @endif
+                </div>
+          </div>
           <div class="form-group col-md-12">
             <label for="codeDescription" class="small">Code Description:</label>
             <input class="form-control form-control-sm {{ $errors->has('code_descripiton') ? 'is-invalid' : '' }}" type="text" name="code_descripiton" value="{{ old('code_descripiton') }}" required>
@@ -83,7 +99,7 @@
             <select class="custom-select custom-select-sm {{ $errors->has('code_type') ? 'is-invalid' : '' }}" name="code_type" required>
               <option value='1'>Department & Office Supplies</option>
               <option value='2'>Departmental Projects</option>
-              <option value='3'>Projects Chargeable to Others</option>
+              <option value='3'>Projects Chargeable to Other Offices</option>
             </select>
             <div class="invalid-feedback">  
               @if ($errors->has('code_type'))
@@ -96,6 +112,7 @@
 
           <div class="form-group col">
             <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            <a href="" class="btn btn-warning btn-sm">View All/Edit</a>
           </div>
         </div>
       </form>

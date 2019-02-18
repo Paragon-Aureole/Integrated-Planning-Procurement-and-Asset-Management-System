@@ -25,12 +25,12 @@
    	  	  	  	<a href="#" class="btn btn-sm btn-info" title="Add PPMP Items"><i class="fas fa-th-list"></i></a>
             @endif
 
-            @if($ppmp->is_activated == 1)
-              <a href="#" title="Deactivate Signatory" class="btn btn-sm btn-success">
+            @if($ppmp->is_active == 1)
+              <a href="{{route('deactivate.ppmp', $ppmp->id)}}" title="Deactivate Signatory" class="btn btn-sm btn-success">
                 <i class="fas fa-check-circle"></i>
               </a>
             @else
-              <a href="#" title="Activate Signatory" class="btn btn-sm btn-secondary">
+              <a href="{{route('activate.ppmp', $ppmp->id)}}" title="Activate Signatory" class="btn btn-sm btn-secondary">
                 <i class="far fa-check-circle"></i>
               </a>
             @endif
