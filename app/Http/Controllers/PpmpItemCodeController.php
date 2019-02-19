@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ppmp;
-use App\Office;
+use App\PpmpItemCode;
 use Auth;
 use App\Http\Requests\PpmpItemCodeRequest;
 
@@ -21,13 +21,13 @@ class PpmpItemCodeController extends Controller
         
     	$input = $request->all();
 
-    	$user = Auth::user();
+    	$ppmp = Ppmp::findorFail($input['ppmp_select']);
+        $add_code = $ppmp->ppmpItemCode()->create([
+            "code_description" => $input['code_description'],
+            "code_type" => $input['code_type'],
+        ]);
 
-		$add_ppmp = $user->ppmp()->create([
-		    "ppmp_year" => $input['ppmp_year'],
-            "office_id" => $input['office_id'],
-		]);
+        return redirect()->back()->with('success', 'PPMP Item Code successfully added');
 
-       return redirect()->route('add.ppmp.budget', $add_ppmp->id);
     }
 }

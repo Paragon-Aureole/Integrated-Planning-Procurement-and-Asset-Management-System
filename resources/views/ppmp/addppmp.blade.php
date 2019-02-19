@@ -64,7 +64,7 @@
       Add PPMP Item Code
       </h6>
 
-      <form action="#" method="post" id="needs-validation" novalidate>
+      <form action="{{route('add.ppmpitemcode')}}" method="POST" novalidate>
         {{csrf_field()}}
         <div class="row">
           <div class="col-md-12 form-group">
@@ -84,11 +84,11 @@
                 </div>
           </div>
           <div class="form-group col-md-12">
-            <label for="codeDescription" class="small">Code Description:</label>
-            <input class="form-control form-control-sm {{ $errors->has('code_descripiton') ? 'is-invalid' : '' }}" type="text" name="code_descripiton" value="{{ old('code_descripiton') }}" required>
+            <label class="small">Code Description:</label>
+            <input class="form-control form-control-sm {{ $errors->has('code_description') ? 'is-invalid' : '' }}" name="code_description" value="{{ old('code_description') }}" required>
             <div class="invalid-feedback">  
-              @if ($errors->has('code_descripiton'))
-                {{$errors->first('code_descripiton')}}
+              @if ($errors->has('code_description'))
+                {{$errors->first('code_description')}}
               @else
                 Code description is required.
               @endif  
@@ -112,13 +112,64 @@
 
           <div class="form-group col">
             <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-            <a href="" class="btn btn-warning btn-sm">View All/Edit</a>
+            <button type="button" id="editBtn" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#ppmpCodeModal">
+              View/Edit
+            </button>
           </div>
         </div>
       </form>
 	   @endif
-
    	</div>
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="ppmpCodeModal">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+        
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h5 class="modal-title">Edit PPMP Code</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-8">
+                <select class="custom-select custom-select-sm" id="selectPpmp">
+                  @foreach($ppmp_DT->where('is_active', '=', '1') as $ppmp_list)
+                    <option value = "{{$ppmp_list->id}}">{{$ppmp_list->ppmp_year}}  {{$ppmp_list->office->office_name}}</option>
+                  @endforeach
+                </select>
+              </div><br><br>
+              <div class="col-12">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover table-sm w-100">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 
    	<!-- table -->
    	<div class="col-md-8">
@@ -135,4 +186,12 @@
 	
 @endsection
 
-
+@section('script')
+<script type="text/javascript">
+  $("").click(function(){
+  $.get("#", function(data, status){
+      
+    });
+  });
+</script>
+@endsection

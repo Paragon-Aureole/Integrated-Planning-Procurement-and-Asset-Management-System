@@ -37,8 +37,8 @@
 
   <!--Scripts-->
   <script src="{{asset('js/datatables.js')}}"></script>
-  <script src="{{asset('js/bootstrap4.min.js')}}"></script>
   <script src="{{asset('js/popper.js')}}"></script>
+  <script src="{{asset('js/bootstrap4.min.js')}}"></script>
   <script src="{{asset('js/validation-form.js')}}"></script>
   <script src="{{asset('js/custom.js')}}"></script>
   @yield('script')

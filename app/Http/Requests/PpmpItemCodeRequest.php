@@ -24,7 +24,9 @@ class PpmpItemCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'ppmp_select' => 'required',
+            'code_description' => 'required',
+            'code_type' => 'required',
         ];
     }
 }

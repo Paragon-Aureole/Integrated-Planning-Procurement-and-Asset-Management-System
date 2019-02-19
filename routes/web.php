@@ -75,7 +75,7 @@ Route::get('/ppmp/activate/{id}', 'PpmpController@activatePpmp')->name('activate
 Route::get('/ppmp/deactivate/{id}', 'PpmpController@deactivatePpmp')->name('deactivate.ppmp');
 
 //ppmp code
-
+Route::post('/ppmp/code/new', 'PpmpItemCodeController@store')->name('add.ppmpitemcode');
 
 //PPMP Budget
 Route::get('/ppmp/budget/add/{id}', 'PpmpController@addPpmpBudget')->name('add.ppmp.budget');
