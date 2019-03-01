@@ -40,8 +40,14 @@
   <script src="{{asset('js/popper.js')}}"></script>
   <script src="{{asset('js/bootstrap4.min.js')}}"></script>
   <script src="{{asset('js/validation-form.js')}}"></script>
-  <script src="{{asset('js/custom.js')}}"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#datatable').DataTable({
+            responsive: true,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+        });
+    } );
+  </script>
   @yield('script')
-
 </body>
 </html>

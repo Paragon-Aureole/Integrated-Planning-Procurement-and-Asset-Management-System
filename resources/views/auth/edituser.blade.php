@@ -137,3 +137,6 @@
 
 @endsection
 
+@section('script')
+<script src="{{asset('js/registration-script.js')}}"></script>
+@endseciton

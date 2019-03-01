@@ -108,3 +108,7 @@
 	</div>
 </div>
 @endsection
+
+@section('script')
+<script src="{{asset('js/signatory-script.js')}}"></script>
+@endsection

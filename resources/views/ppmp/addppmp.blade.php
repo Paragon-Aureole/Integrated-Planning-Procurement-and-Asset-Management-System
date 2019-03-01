@@ -64,7 +64,7 @@
       Add PPMP Item Code
       </h6>
 
-      <form action="{{route('add.ppmpitemcode')}}" method="POST" novalidate>
+      <form action="{{route('add.ppmpitemcode')}}" method="POST" id="needs-validation2" novalidate>
         {{csrf_field()}}
         <div class="row">
           <div class="col-md-12 form-group">
@@ -121,56 +121,6 @@
 	   @endif
    	</div>
 
-
-    <!-- The Modal -->
-    <div class="modal fade" id="ppmpCodeModal">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-        
-          <!-- Modal Header -->
-          <div class="modal-header">
-            <h5 class="modal-title">Edit PPMP Code</h5>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          
-          <!-- Modal body -->
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-8">
-                <select class="custom-select custom-select-sm" id="selectPpmp">
-                  @foreach($ppmp_DT->where('is_active', '=', '1') as $ppmp_list)
-                    <option value = "{{$ppmp_list->id}}">{{$ppmp_list->ppmp_year}}  {{$ppmp_list->office->office_name}}</option>
-                  @endforeach
-                </select>
-              </div><br><br>
-              <div class="col-12">
-                <div class="table-responsive">
-                  <table class="table table-bordered table-hover table-sm w-100">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th>ID</th>
-                        <th>Description</th>
-                        <th>Type</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Modal footer -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-
    	<!-- table -->
    	<div class="col-md-8">
    	  <h6 class="card-title">Registered PPMP</h6>
@@ -184,14 +134,4 @@
 
 </div>
 	
-@endsection
-
-@section('script')
-<script type="text/javascript">
-  $("").click(function(){
-  $.get("#", function(data, status){
-      
-    });
-  });
-</script>
 @endsection
