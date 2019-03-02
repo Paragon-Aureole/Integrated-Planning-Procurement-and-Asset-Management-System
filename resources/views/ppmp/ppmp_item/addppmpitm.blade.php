@@ -114,6 +114,7 @@
         </div>
         <div class="form-group col-md-12 text-right">
           <button class="btn btn-sm btn-primary">Submit</button>
+          <a class="btn btn-sm btn-success"><i class="fas fa-print"></i> Print</a>
         </div>
       </div> 
     </div>
@@ -159,10 +160,12 @@
 <script type="text/javascript">
 $(document).ready(function() {
     var table = $('#ppmpDatatable').DataTable( {
+        responsive: true,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         fixedHeader: {
             header: true,
             footer: true
-        }
+        },
     } );
 } );
 </script>

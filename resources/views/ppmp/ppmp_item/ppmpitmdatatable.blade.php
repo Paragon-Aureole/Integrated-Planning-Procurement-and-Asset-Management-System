@@ -27,9 +27,11 @@
     </tr>
   @endforeach   
   </tbody>
-  <tfoot>
+  <tfoot class="thead-dark">
     <tr>
-      <th colspan="7">Total Estimated</th>
+      <th colspan="5">Total Estimated Budget</th>
+      <th>&#8369; {{number_format($ppmp_itemDT->sum('item_budget'), 2)}}</th>
+      <td colspan="3"></td>
     </tr>
   </tfoot>
 </table>
