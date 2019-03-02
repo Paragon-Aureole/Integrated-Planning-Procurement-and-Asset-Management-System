@@ -4,6 +4,10 @@
 <ol class="breadcrumb p-2">
 	<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
 	<li class="breadcrumb-item active"><a href="{{route('view.ppmp')}}">PPMP</a></li>
+  @if(app('router')->getRoutes()->match(app('request')->create(str_replace(url('/'), '', url()->previous())))->getName() == 'view.ppmpitm')
+  <li class="breadcrumb-item active"><a href="{{route('view.ppmpitm',$ppmp->id)}}">Add PPMP Items</a></li>
+  @endif
+  
   <li class="breadcrumb-item active" aria-current="page">View PPMP Codes</li>
 </ol>
 @endsection
