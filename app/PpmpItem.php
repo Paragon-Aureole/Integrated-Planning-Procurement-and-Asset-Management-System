@@ -15,13 +15,28 @@ class PpmpItem extends Model
         'item_description',
         'item_quantity',
         'item_budget',
+        'item_cost',
         'item_schedule',
-        'item_remaining_quantity',
-        'item_remaining_budget',
+        'item_stock',
+        'item_rem_budget',
     ];
 
     public function ppmp()
     {
         return $this->belongsTo(Ppmp::class);
+    }
+
+    public function procurementMode()
+    {
+        return $this->belongsTo(ProcurementMode::class);
+    }
+
+    public function measurementUnit()
+    {
+        return $this->belongsTo(MeasurementUnit::class);
+    }
+    public function ppmpItemCode()
+    {
+        return $this->belongsTo(PpmpItemCode::class);
     }
 }

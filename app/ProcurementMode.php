@@ -14,4 +14,9 @@ class ProcurementMode extends Model
     protected $fillable = [
         'method_name', 'method_code',
     ];
+
+    public function ppmpItem()
+    {
+        return $this->hasMany(PpmpItem::class);
+    }
 }

@@ -14,4 +14,9 @@ class MeasurementUnit extends Model
     protected $fillable = [
         'unit_code', 'unit_description',
     ];
+
+    public function ppmpItem()
+    {
+        return $this->hasMany(PpmpItem::class);
+    }
 }

@@ -8,6 +8,10 @@ use App\Http\Requests\SignatoryRequest;
 
 class SignatoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth','role:Admin','permission:full control']);
+    }
     /**
      * Display a listing of the resource.
      *

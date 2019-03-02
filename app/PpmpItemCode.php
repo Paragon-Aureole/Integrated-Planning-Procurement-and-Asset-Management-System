@@ -20,4 +20,8 @@ class PpmpItemCode extends Model
     {
         return $this->belongsTo(Ppmp::class);
     }
+    public function ppmpItem()
+    {
+        return $this->hasMany(PpmpItem::class);
+    }
 }

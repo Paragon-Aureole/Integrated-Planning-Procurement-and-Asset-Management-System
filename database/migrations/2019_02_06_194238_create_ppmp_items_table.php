@@ -21,10 +21,11 @@ class CreatePpmpItemsTable extends Migration
             $table->integer('ppmp_item_code_id')->unsigned()->index()->nullable();
             $table->string('item_description');
             $table->integer('item_quantity');
+            $table->decimal('item_cost', 15, 2);
             $table->decimal('item_budget', 15, 2);
             $table->string('item_schedule');
-            $table->integer('item_remaining_quantity');
-            $table->decimal('item_remaining_budget', 15, 2);
+            $table->integer('item_stock');
+            $table->decimal('item_rem_budget', 15, 2);
             $table->timestamps();
         });
     }

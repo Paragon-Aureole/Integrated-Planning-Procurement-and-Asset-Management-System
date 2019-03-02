@@ -17,8 +17,8 @@
         <td>{{$ppmp->office->office_code}}</td>
       @endrole
    	  	<td>{{$ppmp->ppmp_year}}</td>
-        <td>{{$ppmp->ppmpBudget->ppmp_est_budget}}</td>
-        <td>{{$ppmp->ppmpBudget->ppmp_rem_budget}}</td>
+        <td>&#8369; {{number_format($ppmp->ppmpBudget->ppmp_est_budget, 2)}}</td>
+        <td>&#8369; {{number_format($ppmp->ppmpBudget->ppmp_rem_budget, 2)}}</td>
    	  	<td>
                
         @if($ppmp->ppmpItemCode->count() > 0)
