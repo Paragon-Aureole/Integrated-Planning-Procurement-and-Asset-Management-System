@@ -74,6 +74,8 @@ Route::get('/ppmp/delete/{id}', 'PpmpController@destroy')->name('delete.ppmp');
 Route::get('/ppmp/activate/{id}', 'PpmpController@activatePpmp')->name('activate.ppmp');
 Route::get('/ppmp/deactivate/{id}', 'PpmpController@deactivatePpmp')->name('deactivate.ppmp');
 
+Route::get('ppmp/print/{id}', 'PpmpController@printPpmp')->name('print.ppmp');
+
 //ppmp code
 Route::get('/ppmp/{id}/code/view/' , 'PpmpItemCodeController@index')->name('view.ppmpitemcode');
 Route::post('/ppmp/{id}/code/new', 'PpmpItemCodeController@store')->name('add.ppmpitemcode');
@@ -89,5 +91,13 @@ Route::get('/ppmp/budget/add/{id}', 'PpmpController@addPpmpBudget')->name('add.p
 Route::get('/ppmp/{id}/item', 'PpmpItemController@index')->name('view.ppmpitm');
 Route::post('/ppmp/{id}/item/add', 'PpmpItemController@store')->name('add.ppmpitm');
 Route::get('/ppmp/{ppmp_id}/item/edit/{item_id}', 'PpmpItemController@edit')->name('edit.ppmpitm');
-Route::put('/ppmp/item/update/{id}', 'PpmpItemController@update')->name('update.ppmpitm');
-Route::get('/ppmp/item/delete/{id}', 'PpmpItemController@destroy')->name('delete.ppmpitm');
+Route::put('/ppmp/{ppmp_id}/item/update/{id}', 'PpmpItemController@update')->name('update.ppmpitm');
+Route::get('/ppmp/{ppmp_id}/item/delete/{id}', 'PpmpItemController@destroy')->name('delete.ppmpitm');
+
+
+//add purchase reuest
+Route::get('/pr', 'PurchaseRequestController@index')->name('view.pr');
+Route::post('/pr/new', 'PurchaseRequestController@store')->name('add.pr');
+Route::get('/pr/edit/{id}', 'PurchaseRequestController@edit')->name('edit.pr');
+Route::put('/pr/update/{id}', 'PurchaseRequestController@update')->name('update.pr');
+Route::get('/pr/delete/{id}', 'PurchaseRequestController@destroy')->name('delete.pr');

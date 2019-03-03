@@ -19,7 +19,7 @@ class CreatePpmpItemsTable extends Migration
             $table->integer('measurement_unit_id')->unsigned()->index()->nullable();
             $table->integer('procurement_mode_id')->unsigned()->index()->nullable();
             $table->integer('ppmp_item_code_id')->unsigned()->index()->nullable();
-            $table->string('item_description');
+            $table->longText('item_description');
             $table->integer('item_quantity');
             $table->decimal('item_cost', 15, 2);
             $table->decimal('item_budget', 15, 2);

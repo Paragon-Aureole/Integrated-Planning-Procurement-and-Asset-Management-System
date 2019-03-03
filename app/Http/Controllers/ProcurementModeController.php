@@ -51,17 +51,6 @@ class ProcurementModeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\ProcurementMode  $procurementMode
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ProcurementMode $procurementMode)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int $id

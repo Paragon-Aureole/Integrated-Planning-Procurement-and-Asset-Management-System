@@ -25,7 +25,7 @@ class PpmpItemRequest extends FormRequest
     {
         $rules = [
             'item_code' => 'required',
-            'item_description' => 'required|string|max:185',
+            'item_description' => 'required|string|max:395',
             'item_mode' => 'required',
             'item_quantity' => 'required|numeric',
             'item_unit' => 'required',

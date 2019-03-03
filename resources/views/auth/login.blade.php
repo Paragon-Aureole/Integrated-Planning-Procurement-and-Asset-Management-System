@@ -14,7 +14,7 @@
                     <div class="row justify-content-center align-items-center">
                         <img src="{{asset('img/sfclogo.png')}}" class="w-25 h-25">
                         <h5 class="card-title text-center">
-                            Planning Procurement and Assets Management System
+                            Integrated Procurement and Assets Management System
                         </h5>
                     </div>
                 </div>

@@ -69,7 +69,7 @@ class ProcurementModesSeeder extends Seeder
         	 	 
         	],
         	[
-        		'method_code' => 'Section 53.8', 
+        		'method_code' => 'Section 53.9', 
         	 	'method_name' => 'small value procurement',
         	 	 
         	],

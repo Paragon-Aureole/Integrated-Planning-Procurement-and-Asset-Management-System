@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProcurementMethodRequest extends FormRequest
 {
@@ -24,8 +25,19 @@ class ProcurementMethodRequest extends FormRequest
     public function rules()
     {
         return [
-            'method_name' => 'required|string|max:180|unique:procurement_modes,method_name,'. $this->id,
-            'method_code' => 'required|string|max:180|unique:procurement_modes,method_code,'. $this->id,
+
+            'method_name' => [
+                'required',
+                'string',
+                'max:180',
+                Rule::unique('procurement_modes')->ignore($this->id),
+            ],
+            'method_code' => [
+                'required',
+                'string',
+                'max:180',
+                Rule::unique('procurement_modes')->ignore($this->id),
+            ],
         ];
     }
 }

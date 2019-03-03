@@ -11,7 +11,7 @@
 @section('content')
 <div class="container-fluid">
 <div class="card">
- <div class="card-header pt-2 pb-2"><b>Add Items</b></div>
+ <div class="card-header pt-2 pb- 2"><b>Add Items</b></div>
  <div class="card-body">
   <form action="{{route('add.ppmpitm', $ppmp->id)}}" method="post" id="needs-validation" novalidate>
     {{csrf_field()}}
@@ -23,7 +23,7 @@
           <div class="input-group mb-3">
             <select class="custom-select custom-select-sm {{ $errors->has('item_code') ? 'is-invalid' : '' }}" name="item_code" required="required">
               @foreach($ppmp->ppmpItemCode as $codes) 
-                <option value="{{$codes->id}}">{{$codes->code_description}}</option>
+                <option value="{{$codes->id}}" >{{$codes->code_description}}</option>
               @endforeach 
             </select>
             <div class="input-group-append">
@@ -40,7 +40,7 @@
         </div>
         <div class="form-group col-md-12">
           <label class="small">General Description:</label>
-          <textarea class="form-control form-control-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" required="required"></textarea>
+          <textarea class="form-control form-control-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" rows="3" required="required"></textarea>
           <div class="invalid-feedback">  
               @if ($errors->has('item_description'))
                 {{$errors->first('item_description')}}
@@ -113,8 +113,7 @@
           </div>
         </div>
         <div class="form-group col-md-12 text-right">
-          <button class="btn btn-sm btn-primary">Submit</button>
-          <a class="btn btn-sm btn-success"><i class="fas fa-print"></i> Print</a>
+          <button type="submit" class="btn btn-sm btn-primary">Submit</button>
         </div>
       </div> 
     </div>
@@ -157,17 +156,5 @@
 @endsection
 
 @section('script')
-<script type="text/javascript">
-$(document).ready(function() {
-    var table = $('#ppmpDatatable').DataTable( {
-        responsive: true,
-        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
-        fixedHeader: {
-            header: true,
-            footer: true
-        },
-    } );
-} );
-</script>
 <script src="{{asset('js/function-script.js')}}"></script>
 @endsection

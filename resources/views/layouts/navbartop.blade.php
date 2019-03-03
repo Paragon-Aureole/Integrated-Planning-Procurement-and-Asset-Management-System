@@ -21,7 +21,7 @@
           <ul class="dropdown-menu" aria-labelledby="prDropdownMenuLink">
             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-plus"></i> New</a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Purchase Request</a></li>
+                <li><a class="dropdown-item" href="{{route('view.pr')}}">Purchase Request</a></li>
                 <li><a class="dropdown-item" href="#">Supplemental Purchase Request</a></li>
               </ul>
             </li>

@@ -8,6 +8,8 @@ use App\PpmpItemCode;
 use App\Office;
 use Auth;
 use App\Http\Requests\PpmpRequest;
+use PDF;
+
 
 class PpmpController extends Controller
 {
@@ -104,6 +106,23 @@ class PpmpController extends Controller
         $signatory = Ppmp::findorFail($id);
         $signatory->update(['is_active' => 0]);
         return redirect()->back()->with('info','PPMP Form Deactivated');
+    }
+
+     /**
+     * Print the PPMP Form.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function printPpmp($id)
+    {
+        $data = Ppmp::findorFail($id);
+        $pdf = PDF::loadView('ppmp.printppmp')
+        ->setOptions([
+            'defaultFont' => 'Arial',
+         ])
+        ->setPaper(array(0,0,612.00,936.00), 'landscape');
+        return $pdf->stream('ppmp'.$data->ppmp_year.'.pdf');
     }
 
     

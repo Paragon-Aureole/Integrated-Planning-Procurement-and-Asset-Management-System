@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MeasurementUnitRequest extends FormRequest
 {
@@ -24,9 +25,21 @@ class MeasurementUnitRequest extends FormRequest
     public function rules()
     {
         return [
+
+
+            'unit_code' => [
+                'required',
+                'string',
+                'max:10',
+                Rule::unique('measurement_units')->ignore($this->id),
+            ],
+            'unit_description' => [
+                'required',
+                'string',
+                'max:180',
+                Rule::unique('measurement_units')->ignore($this->id),
+            ],
             
-            'unit_code' => 'required|string|max:10|unique:measurement_units,unit_code,' . $this->id,
-            'unit_description' => 'required|string|max:180|unique:measurement_units,unit_description,' . $this->id,
         ];
     }
 }
