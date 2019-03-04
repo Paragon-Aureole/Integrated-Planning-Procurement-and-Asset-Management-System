@@ -9,7 +9,7 @@ use App\Office;
 use Auth;
 use App\Http\Requests\PpmpRequest;
 use PDF;
-
+use App;
 
 class PpmpController extends Controller
 {
@@ -116,13 +116,21 @@ class PpmpController extends Controller
      */
     public function printPpmp($id)
     {
-        $data = Ppmp::findorFail($id);
-        $pdf = PDF::loadView('ppmp.printppmp')
-        ->setOptions([
-            'defaultFont' => 'Arial',
-         ])
-        ->setPaper(array(0,0,612.00,936.00), 'landscape');
-        return $pdf->stream('ppmp'.$data->ppmp_year.'.pdf');
+        $ppmp = Ppmp::findorFail($id);
+        
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('ppmp.printppmp', compact('ppmp'))->setPaper('Folio', 'landscape');
+
+        foreach ($options as $margin => $value) {
+            $pdf->setOption($margin, $value);
+        }
+        return $pdf->stream('PPMP.pdf');
     }
 
     

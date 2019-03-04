@@ -167,7 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
-        // Barryvdh\Snappy\ServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
@@ -228,10 +228,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        // 'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
-        // 'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
 
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'DOM' => Barryvdh\DomPDF\Facade::class,
 
 
 
