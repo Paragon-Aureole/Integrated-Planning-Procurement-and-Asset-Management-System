@@ -133,5 +133,18 @@ class PpmpController extends Controller
         return $pdf->stream('PPMP'.$ppmp->ppmp_year.'.pdf');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $ppmp = Ppmp::findorFail($id);
+        $ppmp->delete();
+        return redirect()->back()->with('info', 'PPMP deleted');
+    }
+
     
 }

@@ -75,6 +75,10 @@ class MeasurementUnitSeeder extends Seeder
             ['unit_code'=>'ST', 'unit_description'=>'Sheet' ],
             ['unit_code'=>'VI', 'unit_description'=>'Vial' ],
             ['unit_code'=>'UN', 'unit_description'=>'Unit'],
+            //PPMP Unit Codess
+            ['unit_code'=>'PLAN', 'unit_description'=>'Plan'],
+            ['unit_code'=>'InfoSys', 'unit_description'=>'Information Systems'],
+            //['unit_code'=>'', 'unit_description'=>'Information Systems'],
             
       ];
 

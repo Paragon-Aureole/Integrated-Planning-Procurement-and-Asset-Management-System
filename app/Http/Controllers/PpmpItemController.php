@@ -61,7 +61,6 @@ class PpmpItemController extends Controller
             'item_quantity' => $input['item_quantity'],
             'item_budget' => $input['item_budget'],
             'item_schedule' => $schedule,
-
             'item_cost' => $input['item_cost'],
             'item_stock' => $input['item_quantity'],
             'item_rem_budget' => $input['item_budget'],

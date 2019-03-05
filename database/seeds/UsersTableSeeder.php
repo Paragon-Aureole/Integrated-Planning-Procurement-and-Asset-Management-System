@@ -15,8 +15,8 @@ class UsersTableSeeder extends Seeder
         Schema::disableForeignKeyConstraints(); 
         $users = [
             [
-                'username' => "systemadmin",
-                'password' => bcrypt('systemadmin98'),
+                'username' => "admin1",
+                'password' => bcrypt('admin1'),
                 'office_id' => '1' ,
                 'wholename' => "System Administrator",
                 'contact_number' => "139",
