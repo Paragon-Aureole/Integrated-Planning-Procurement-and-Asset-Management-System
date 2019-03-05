@@ -130,7 +130,7 @@ class PpmpController extends Controller
         foreach ($options as $margin => $value) {
             $pdf->setOption($margin, $value);
         }
-        return $pdf->stream('PPMP.pdf');
+        return $pdf->stream('PPMP'.$ppmp->ppmp_year.'.pdf');
     }
 
     

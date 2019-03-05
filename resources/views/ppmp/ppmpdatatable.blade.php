@@ -38,7 +38,7 @@
         @endif
         
         @if($ppmp->ppmpItem()->count() > 0)
-          <a class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
+          <a href="{{route('print.ppmp', $ppmp->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
         @endif
    	  	  <a href="{{route('delete.ppmp', $ppmp->id)}}" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
    	  	</td>

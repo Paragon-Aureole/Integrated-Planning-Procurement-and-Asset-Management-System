@@ -87,7 +87,6 @@ $(document).ready(function() {
 		$( "#sig7" ).click(function() {
 		   $("input[name=category]").val('7');
 		   $('#officeInput option').show();
-		   $('#officeInput option[title!="CBO"]').hide();
 		   var filteredData = table
 		    table
 	            .column(3).visible( false )

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\PurchaseRequest;
 use App\Ppmp;
 use Illuminate\Http\Request;
+use Auth;
+use PDF;
 
 class PurchaseRequestController extends Controller
 {
@@ -24,8 +26,14 @@ class PurchaseRequestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $ppmp = Ppmp::where('is_active', '=', 1)->get();
+    {   
+        $user = Auth::user();
+        if ($user->hasRole('admin')) {
+            $ppmp = Ppmp::where('is_active', '=', 1)->get();
+        }else{
+            $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
+        }
+        
         return view('pr.addpr',compact('ppmp'));
     }
 
