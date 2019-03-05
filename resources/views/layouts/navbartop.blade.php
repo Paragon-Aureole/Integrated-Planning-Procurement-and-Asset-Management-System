@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
   <a class="navbar-brand" href="{{route('home')}}">
   	<img src="{{asset('img/sfclogo.png')}}" width="30" height="30" class="d-inline-block align-top" alt="">
-	<span class="mb-0 h5">PPAMS</span>
+	<span class="mb-0 h5">IPPAMS</span>
   </a>
   <!-- Toggler/collapsibe Button -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
