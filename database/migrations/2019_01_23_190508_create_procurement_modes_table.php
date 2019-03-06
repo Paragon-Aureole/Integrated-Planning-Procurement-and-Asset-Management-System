@@ -19,6 +19,10 @@ class CreateProcurementModesTable extends Migration
             $table->string('method_code');
             $table->timestamps();
         });
+
+        Schema::table('procurement_modes', function($table) {
+            $table->softDeletes();
+        });
     }
 
     /**

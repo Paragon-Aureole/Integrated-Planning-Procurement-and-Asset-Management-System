@@ -50,6 +50,11 @@ class Ppmp extends Model
         return $this->hasMany(PpmpItemCode::class);
     }
 
+    public function purchaseRequest()
+    {
+        return $this->hasMany(PurchaseRequest::class);
+    }
+
 
 
 }

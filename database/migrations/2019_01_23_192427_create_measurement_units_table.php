@@ -19,6 +19,10 @@ class CreateMeasurementUnitsTable extends Migration
             $table->string('unit_code');
             $table->string('unit_description');
         });
+
+        Schema::table('measurement_units', function($table) {
+            $table->softDeletes();
+        });
     }
 
     /**

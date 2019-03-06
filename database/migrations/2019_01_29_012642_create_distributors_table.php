@@ -20,6 +20,10 @@ class CreateDistributorsTable extends Migration
             $table->string('distributor_address');
             $table->string('distributor_certificate');
         });
+
+        Schema::table('distributors', function($table) {
+            $table->softDeletes();
+        });
     }
 
     /**

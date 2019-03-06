@@ -31,7 +31,7 @@ class PpmpController extends Controller
     {	
     	$user = Auth::user();
 
-    	if ($user->hasRole('admin')) {
+    	if ($user->hasRole('Admin')) {
     		$ppmp_DT = Ppmp::all();
     	}else{
     		$ppmp_DT = Ppmp::get()->where('office_id', '=', $user->office_id);

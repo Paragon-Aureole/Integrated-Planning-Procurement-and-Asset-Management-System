@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\PurchaseRequest;
 use App\Ppmp;
-use Illuminate\Http\Request;
+use App\Distributor;
+use App\Signatory;
+use App\Http\Requests\PurchaseRequestRequest;
 use Auth;
 use PDF;
 
@@ -18,6 +20,7 @@ class PurchaseRequestController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
     }
 
     /**
@@ -27,55 +30,86 @@ class PurchaseRequestController extends Controller
      */
     public function index()
     {   
+
         $user = Auth::user();
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole('Admin')) {
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
             $ppmp = Ppmp::where('is_active', '=', 1)->get();
         }else{
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
             $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
         }
         
-        return view('pr.addpr',compact('ppmp'));
+        return view('pr.addpr',compact('ppmp', 'prDT'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a specific resource.
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function getPpmpData($id)
+    {   
+        $ppmp = Ppmp::find($id);
+        $budget = $ppmp->ppmpBudget->ppmp_rem_budget;
+        $requestor = Signatory::where('is_activated', 1)->where('office_id', $ppmp->office_id)->first();
+        if ($ppmp->office->office_code == 'ICT') {
+            $department = 'ADM';
+            $section = 'ICT';
+        }else{
+            $department = $ppmp->office->office_code;
+            $section = "";
+        }
+        return json_encode([$department, $section, $budget, $requestor ]);
+    }
+
+    /**
+     * Display a specific resource.
+     * 
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getDistributorData()
+    {   
+        $distributor = Distributor::all();
+        return json_encode($distributor);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\PurchaseRequestRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PurchaseRequestRequest $request)
     {
-        //
-    }
+        $input = $request->all();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\PurchaseRequest  $purchaseRequest
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PurchaseRequest $purchaseRequest)
-    {
-        //
+        $ppmp = Ppmp::findorFail($input['pr_code']);
+        $code = "PR-".$ppmp->office->office_code.'-'.$ppmp->ppmp_year.'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $ppmp->purchaseRequest->count());
+
+        $add_pr = $ppmp->purchaseRequest()->create([
+            'signatory_id' => $input['pr_requestor'],
+            'user_id' => Auth::id(),
+            'office_id' => $ppmp->office_id,
+            'pr_code' => $code,
+            'pr_purpose' => $input['pr_purpose'],
+            'supplier_type' => $input['supplier_type'],
+            'agency_name' => $input['agency_name'],
+            'supplier_id' => $input['supplier_id'],
+        ]);
+
+       return redirect()->back()->with('success', 'PR Form succesfully generated, please add items for printing.');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\PurchaseRequest  $purchaseRequest
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseRequest $purchaseRequest)
+    public function edit($id)
     {
         //
     }
@@ -83,11 +117,11 @@ class PurchaseRequestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PurchaseRequest  $purchaseRequest
+     * @param  App\Http\Requests\PurchaseRequestRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PurchaseRequest $purchaseRequest)
+    public function update(PurchaseRequestRequest $request, $id)
     {
         //
     }
@@ -95,10 +129,10 @@ class PurchaseRequestController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\PurchaseRequest  $purchaseRequest
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseRequest $purchaseRequest)
+    public function destroy($id)
     {
         //
     }

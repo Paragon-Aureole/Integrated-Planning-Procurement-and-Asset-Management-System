@@ -97,7 +97,13 @@ Route::get('/ppmp/{ppmp_id}/item/delete/{id}', 'PpmpItemController@destroy')->na
 
 //add purchase reuest
 Route::get('/pr', 'PurchaseRequestController@index')->name('view.pr');
-Route::post('/pr/new', 'PurchaseRequestController@store')->name('add.pr');
+Route::post('/pr/new/add', 'PurchaseRequestController@store')->name('add.pr');
 Route::get('/pr/edit/{id}', 'PurchaseRequestController@edit')->name('edit.pr');
 Route::put('/pr/update/{id}', 'PurchaseRequestController@update')->name('update.pr');
 Route::get('/pr/delete/{id}', 'PurchaseRequestController@destroy')->name('delete.pr');
+
+
+//AJAX Data Routes
+Route::get('/pr/ppmp/get/{id}', 'PurchaseRequestController@getPpmpData')->name('get.ppmp');
+Route::get('/pr/dist/get', 'PurchaseRequestController@getDistributorData')->name('get.dist');
+

@@ -25,6 +25,9 @@ class CreateOfficesTable extends Migration
             $table->softDeletes();
             $table->foreign('office_id')->references('id')->on('offices');
         });
+        Schema::table('offices', function($table) {
+            $table->softDeletes();
+        });
     }
 
     /**

@@ -20,10 +20,12 @@ class CreatePurchaseRequestsTable extends Migration
             $table->integer('user_id')->unsigned()->index()->nullable();
             $table->integer('office_id')->unsigned()->index()->nullable();
             $table->string('pr_code');
-            $table->decimal('pr_budget');
+            $table->string('pr_purpose');
+            // $table->decimal('pr_budget', 15, 2);
             $table->integer('supplier_type');
-            $table->integer('supplier_id')->nullable();
-            $table->boolean('pr_status')->default(0);
+            $table->string('agency_name')->nullable();
+            $table->integer('supplier_id')->unsigned()->index()->nullable();
+            $table->integer('pr_status')->default(0);
             $table->boolean('created_supplemental')->default(0);
             $table->boolean('created_rfq')->default(0);
             $table->boolean('created_abstract')->default(0);
@@ -33,10 +35,12 @@ class CreatePurchaseRequestsTable extends Migration
         });
 
         Schema::table('purchase_requests', function($table) {
+            $table->softDeletes();
             $table->foreign('ppmp_id')->references('id')->on('ppmps')->onDelete('cascade');
-            $table->foreign('signatory_id')->references('id')->on('signatories');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('office_id')->references('id')->on('offices');
+            $table->foreign('signatory_id')->references('id')->on('signatories')->onDelete('cascade');
+            $table->foreign('office_id')->references('id')->on('Offices')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('distributors')->onDelete('cascade');
         });
     }
 

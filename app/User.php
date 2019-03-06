@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->hasMany(Ppmp::class);
     }
 
+    public function purchaseRequest()
+    {
+        return $this->hasMany(PurchaseRequest::class);
+    }
+
     /** LOCAL SCOPES
     public function scopeAdmins($query)
     {

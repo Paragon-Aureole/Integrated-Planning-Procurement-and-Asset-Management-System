@@ -3,7 +3,7 @@
 @section('breadcrumb')
 <ol class="breadcrumb p-2">
 	<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-	<li class="breadcrumb-item active" aria-current="page">Offices</li>
+	<li class="breadcrumb-item active" aria-current="page">Purchase Request</li>
 </ol>
 @endsection
 
@@ -17,14 +17,19 @@
    	  <h6 class="card-title">
   		Add Purchase Request
   	  </h6>
-	  <form action="#" method="post" id="needs-validation" novalidate>
+
+	  <form action="{{route('add.pr')}}" method="post" id="needs-validation" novalidate>
 	  	{{csrf_field()}}
 	  	<div class="row">
         <div class="form-group col-md-12">
           <label for="prCode" class="small">PR Code:</label>
           <select class="custom-select custom-select-sm {{ $errors->has('pr_code') ? 'is-invalid' : '' }}" name="pr_code" required="required" @role('Department') readonly="readonly" @endrole>
+            <option value="">Select PR Number</option>
             @foreach($ppmp as $plans)
-            <option value="{{$plans->id}}">PR-{{$plans->office->office_code}}-{{$plans->ppmp_year}}-{{sprintf('%02d', $plans->user_id)}}-{{sprintf('%04d', $plans->count())}}</option>
+              @php
+                $prcode = "PR-".$plans->office->office_code.'-'.$plans->ppmp_year.'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $plans->purchaseRequest->count());
+              @endphp
+            <option value="{{$plans->id}}">{{$prcode}}</option>
             @endforeach
           </select>
           <div class="invalid-feedback">  
@@ -36,65 +41,81 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="prCode" class="small">Department:</label>
-          <input class="form-control form-control-sm " type="text"
-            @if(Auth::user()->office->office_code == "ICT")
-              value="ADM"
-            @else
-              value="{{$ppmp->office->office_code}}"
-            @endif 
-          disabled>
+          <label for="deptId" class="small">Department:</label>
+          <input id="deptId" class="form-control form-control-sm " type="text" value="" disabled>
         </div>
         <div class="form-group col-md-6">
-          <label for="prCode" class="small">Section:</label>
-          <input class="form-control form-control-sm " type="text"
-            @if(Auth::user()->office->office_code == "ICT")
-              value="ICT"
-            @endif
-          disabled>
+          <label for="sectionId" class="small">Section:</label>
+          <input id="sectionId" class="form-control form-control-sm " type="text" value="" disabled>
+        </div>
+        <div class="form-group col-md-12">
+          <label for="prPurpose" class="small">Purpose:</label>
+          <textarea id="prPurpose" name="pr_purpose" class="form-control form-control-sm {{ $errors->has('pr_purpose') ? 'is-invalid' : '' }}" rows="3" required>{{old('pr_purpose')}}</textarea>
+          <div class="invalid-feedback">  
+            @if ($errors->has('pr_purpose'))
+              {{$errors->first('pr_purpose')}}
+            @else
+              Purpose is required.
+            @endif  
+          </div>
         </div> 
         <div class="form-group col-md-6">
-          <label for="disttype" class="small">Supplier Type</label>
-          <select id="disttype" class="custom-select custom-select-sm {{ $errors->has('supplier_type') ? 'is-invalid' : '' }}" name="supplier_type" required>
-              <option value="1">Canvass</option>
-              <option value="2">Government Agency</option>
-              <option value="3">Sole Distributor</option>
+          <label for="supplierType" class="small">Supplier Type</label>
+          <select id="suppplierType" class="custom-select custom-select-sm {{ $errors->has('supplier_type') ? 'is-invalid' : '' }}" name="supplier_type" required>
+              <option value="1" {{ old('supplier_type') == 1 ? 'selected' : '' }}>Canvass</option>
+              <option value="2" {{ old('supplier_type') == 2 ? 'selected' : '' }}>Government Agency</option>
+              <option value="3" {{ old('supplier_type') == 3 ? 'selected' : '' }}>Sole Distributor</option>
           </select>
           <div class="invalid-feedback">  
             @if ($errors->has('supplier_type'))
               {{$errors->first('supplier_type')}}
             @else
-              PR Code is required.
+              Supplier Type is required.
             @endif  
           </div>
         </div>
-        <div class="form-group col-md-6">
-          <label for="supplierId" class="small">Supplier</label>
-          <select class="custom-select custom-select-sm" {{ $errors->has('supplier_id') ? 'is-invalid' : '' }} id="supplierId" name="supplier_id">
-            <option value="">Select Distributor</option>
-            @php $suppliers = App\Distributor::all(); @endphp
-            @foreach($suppliers as $supplier)
-            <option value="{{$supplier->id}}">{{$supplier->distributor_name}}</option>
-            @endforeach
+        <div class="form-group col-md-6" id="supplierId">
+          <label class="small">Supplier</label>
+          <select class="custom-select custom-select-sm {{ $errors->has('supplier_id') ? 'is-invalid' : '' }}" name="supplier_id">
+            <option value="">Select Supplier</option>
           </select>
           <div class="invalid-feedback">  
             @if ($errors->has('supplier_id'))
               {{$errors->first('supplier_id')}}
             @else
-              PR Code is required.
+              Supplier is required.
+            @endif  
+          </div>
+        </div>
+        <div class="form-group col-md-6" id="agencyName">
+          <label class="small">Agency Name</label>
+          <input class="form-control form-control-sm {{ $errors->has('agency_name') ? 'is-invalid' : '' }}" name="agency_name" value="{{old('agency_name')}}">
+          <div class="invalid-feedback">  
+            @if ($errors->has('agency_name'))
+              {{$errors->first('agency_name')}}
+            @else
+              Agency Name is required.
             @endif  
           </div>
         </div>
         <div class="form-group col-md-12">
-          <label for="prCode" class="small">Requestor:</label>
-          <input class="form-control form-control-sm " type="text"  value="" disabled>
+          <label for="prRequestor" class="small">Requestor:</label>
+          <input class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" type="text"  id="prRequestor" disabled>
+          <input type="hidden" name="pr_requestor" value="{{old('pr_requestor')}}">
+          <div class="invalid-feedback">  
+            @if ($errors->has('pr_requestor'))
+              {{$errors->first('pr_requestor')}}
+            @else
+              Requestor is required.
+            @endif  
+          </div>
         </div> 
         <div class="form-group col-md-12">
           <label for="prCode" class="small">Budget:</label>
-          <input class="form-control form-control-sm " type="text"  value="" disabled>
+          <input class="form-control form-control-sm " type="text" value="" readonly>
         </div> 
         <div class="form-group col">
-          <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+          <button type="submit" id="prBtn" class="btn btn-primary btn-sm" @hasRole('Admin')disabled@endrole>Submit</button>
         </div>
       </div>
 	  </form>
@@ -113,6 +134,11 @@
 
 </div>
 	
+@endsection
+
+@section('script')
+<script src="{{asset('js/function-script.js')}}"></script>
+<script src="{{asset('js/pr-script.js')}}"></script>
 @endsection
 
 

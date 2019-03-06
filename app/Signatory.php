@@ -29,4 +29,9 @@ class Signatory extends Model
     {
         return $this->belongsTo(Office::class);
     }
+
+    public function purchaseRequest()
+    {
+        return $this->belongsTo(PurchaseRequest::class);
+    }
 }
