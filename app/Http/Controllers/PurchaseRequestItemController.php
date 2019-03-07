@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\PurchaseRequestItem;
 use App\PurchaseRequest;
+use App\PpmpItem;
 use Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\PurchaseRequestItemRequest;
 
 class PurchaseRequestItemController extends Controller
 {
@@ -33,17 +35,9 @@ class PurchaseRequestItemController extends Controller
      */
     public function getItemData($id)
     {
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $ppmp_item = PpmpItem::findorFail($id);
+        $unit = $ppmp_item->measurementUnit->unit_code;
+        return json_encode([$ppmp_item, $unit]);
     }
 
     /**
@@ -52,9 +46,40 @@ class PurchaseRequestItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PurchaseRequestItemRequest $request, $id)
     {
-        //
+        $input = $request->all();
+        
+        $pr = PurchaseRequest::findorFail($id);
+        $pr_Itm = $pr->prItem()->create([
+            'ppmp_item_id' => $input['item_description'],
+            'item_quantity' => $input['item_quantity'],
+            'item_cost' => $input['item_cpu'],
+            'item_budget' => $input['item_cpi'],
+        ]);
+       if ($pr_Itm == true) {
+            $query1 = $pr_Itm->ppmpItem->first();
+            $stock = $query1->item_stock;
+            $update_stock = $query1->update(['item_stock' => $stock - $pr_Itm->item_quantity]);
+
+            if ($update_stock == true) {
+                $query2 = $pr->ppmp->ppmpBudget->first();
+                $current_budget = $query2->ppmp_rem_budget;
+                $pr_total = $input['item_cpi'];
+                $rem_budget = $current_budget - $pr_total;
+
+                $update_budget = $query2->update([
+                    'ppmp_rem_budget' => $rem_budget
+                ]);
+
+                return redirect()->back()->with('success', 'Added PR Item');
+            }
+            
+            return redirect()->back()->with('danger', 'Failed to Add PR Item');  
+        }
+        return redirect()->back()->with('danger', 'Failed to Add PR Item');
+
+
     }
 
     /**
@@ -63,7 +88,7 @@ class PurchaseRequestItemController extends Controller
      * @param  \App\PurchaseRequestItem  $purchaseRequestItem
      * @return \Illuminate\Http\Response
      */
-    public function show(PurchaseRequestItem $purchaseRequestItem)
+    public function show($id)
     {
         //
     }
@@ -74,7 +99,7 @@ class PurchaseRequestItemController extends Controller
      * @param  \App\PurchaseRequestItem  $purchaseRequestItem
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseRequestItem $purchaseRequestItem)
+    public function edit($id)
     {
         //
     }
@@ -86,7 +111,7 @@ class PurchaseRequestItemController extends Controller
      * @param  \App\PurchaseRequestItem  $purchaseRequestItem
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PurchaseRequestItem $purchaseRequestItem)
+    public function update(PurchaseRequestItemRequest $request, $id)
     {
         //
     }
@@ -97,7 +122,7 @@ class PurchaseRequestItemController extends Controller
      * @param  \App\PurchaseRequestItem  $purchaseRequestItem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseRequestItem $purchaseRequestItem)
+    public function destroy(PurchaseRequestItem $id)
     {
         //
     }

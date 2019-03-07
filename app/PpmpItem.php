@@ -39,4 +39,9 @@ class PpmpItem extends Model
     {
         return $this->belongsTo(PpmpItemCode::class);
     }
+
+    public function prItem()
+    {
+        return $this->hasMany(PurchaseRequestItem::class);
+    }
 }

@@ -49,7 +49,7 @@
 			  	<div class="row">
 				  	<div class="form-group col-md-6">
 			          <label class="small">Item:</label>
-			          <select class="custom-select custom-select-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" required="required">
+			          <select class="custom-select custom-select-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" id="itemDesc" name="item_description" required="required">
 			          	<option value="">Select Item</option>
 						@foreach($ppmp_item as $item)
 							<option value="{{$item->id}}">{{$item->item_description}}</option>
@@ -59,7 +59,7 @@
 			              @if ($errors->has('item_description'))
 			                {{$errors->first('item_description')}}
 			              @else
-			                Procurement Mode is required.
+			                Item Descripiton is required.
 			              @endif  
 			          </div>
 			        </div>
@@ -72,30 +72,30 @@
 			              @if ($errors->has('item_quantity'))
 			                {{$errors->first('item_quantity')}}
 			              @else
-			                Procurement Mode is required.
+			                Quantity is required.
 			              @endif  
 			          </div>
 			        </div>
 			        <div class="form-group col-md-3">
 			          <label class="small">Unit:</label>
-			          <input class="form-control form-control-sm {{ $errors->has('item_unit') ? 'is-invalid' : '' }}" required="required" disabled>
+			          <input class="form-control form-control-sm {{ $errors->has('item_unit') ? 'is-invalid' : '' }}" required="required" id="itemUnit" disabled>
 			          <input type="hidden" name="item_unit" value="{{old('item_unit')}}">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_unit'))
 			                {{$errors->first('item_unit')}}
 			              @else
-			                Procurement Mode is required.
+			                Unit is required.
 			              @endif  
 			          </div>
 			        </div>
 			        <div class="form-group col-md-6">
 			          <label class="small">Cost per Unit:</label>
-			          <input onchange="multiply();" id="itemCost" type="text" class="form-control form-control-sm" name="item_cpu" required="">
+			          <input oninput="multiply();" id="itemCost" type="text" class="form-control form-control-sm" name="item_cpu" required="">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_cpu'))
 			                {{$errors->first('item_cpu')}}
 			              @else
-			                Procurement Mode is required.
+			                Cost per unit is required.
 			              @endif  
 			          </div>
 			        </div>
@@ -106,7 +106,7 @@
 			              @if ($errors->has('item_cpi'))
 			                {{$errors->first('item_cpi')}}
 			              @else
-			                Procurement Mode is required.
+			                Cost per item is required.
 			              @endif  
 			          </div>
 			        </div>
@@ -135,7 +135,18 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				  	
+				  	@foreach($pr->prItem()->get() as $items)
+				  		<td>{{$items->id}}</td>
+				  		<td>{{$items->ppmpItem->item_description}}</td>
+				  		<td>{{$items->item_quantity}}</td>
+				  		<td>{{$items->ppmpItem->measurementUnit->unit_code}}</td>
+				  		<td>{{number_format($items->item_cost,2)}}</td>
+				  		<td>{{number_format($items->item_budget,2)}}</td>
+				  		<td>
+				          <a href="#"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+				          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
+				        </td>
+				  	@endforeach
 				  </tbody>
 				</table>
 		      </div>  
@@ -151,24 +162,30 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 
-		 $('select[name="item_description"]').on('change', function(){
+		 $('#itemDesc').on('change', function(){
             var itemId = $(this).val();
             if(itemId) {
                 $.ajax({
-                    url: '/pr/item/get/'+ppmpId,
+                    url: '/pr/item/get/'+itemId,
                     type:"GET",
                     dataType:"json",
                    
 
                     success:function(data) {
-                       $.each(data, function(key, value){
-                        $('select[name="item_quantity"]').append('<option value="'+ value['id'] +'">' + value['distributor_name'] + '</option>');
-                      });
+                    	for (var i = 1; i <= data[0]['item_quantity']; i++) {
+                    		$('select[name="item_quantity"]').append('<option value="'+ i +'">' + i + '</option>');
+                    	}
+                    	$('#itemUnit').val(data[1]);
+                    	$('input[name="item_unit"]').val(data[0]['measurement_unit_id']);
+                    	$('input[name="item_cpu"]').val(data[0]['item_cost']);
+                    	var budget = $('input[name="item_cpu"]').val() * $('select[name="item_quantity"]').val();
+                    	$('input[name="item_cpi"]').val(budget);
                     },
                    
                 });
             } else {
-                
+                $('select[name="item_quantity"]').empty();
+                $('#itemUnit').val("");
             }
 
         });
