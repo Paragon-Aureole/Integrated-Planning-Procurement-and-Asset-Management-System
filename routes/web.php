@@ -106,6 +106,7 @@ Route::get('/pr/delete/{id}', 'PurchaseRequestController@destroy')->name('delete
 //AJAX Data Routes
 Route::get('/pr/ppmp/get/{id}', 'PurchaseRequestController@getPpmpData')->name('get.ppmp');
 Route::get('/pr/dist/get', 'PurchaseRequestController@getDistributorData')->name('get.dist');
+Route::get('/pr/item/get/{id}', 'PurchaseRequestItemController@getItemData')->name('get.itmdata');
 
 //add purchase request items
 Route::get('/pr/{id}/item', 'PurchaseRequestItemController@index')->name('view.pritm');

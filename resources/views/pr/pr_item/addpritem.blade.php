@@ -44,12 +44,16 @@
 	  			</div>
 	  		</div>
 	  		<div class="col-md-7">
-			  <form action="" method="">
+			  <form action="{{route('add.pritm', $pr->id)}}" method="POST">
+			  	{{csrf_field()}}
 			  	<div class="row">
 				  	<div class="form-group col-md-6">
 			          <label class="small">Item:</label>
 			          <select class="custom-select custom-select-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" required="required">
-							
+			          	<option value="">Select Item</option>
+						@foreach($ppmp_item as $item)
+							<option value="{{$item->id}}">{{$item->item_description}}</option>
+						@endforeach
 			          </select>
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_description'))
@@ -61,7 +65,7 @@
 			        </div>
 			        <div class="form-group col-md-3">
 			          <label class="small">Quantity:</label>
-			          <select class="custom-select custom-select-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" name="item_quantity" required="required">
+			          <select oninput="multiply();" id="itemQty" class="custom-select custom-select-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" name="item_quantity" required="required">
 							
 			          </select>
 			          <div class="invalid-feedback">  
@@ -74,9 +78,8 @@
 			        </div>
 			        <div class="form-group col-md-3">
 			          <label class="small">Unit:</label>
-			          <select class="custom-select custom-select-sm {{ $errors->has('item_unit') ? 'is-invalid' : '' }}" name="item_unit" required="required" disabled>
-							
-			          </select>
+			          <input class="form-control form-control-sm {{ $errors->has('item_unit') ? 'is-invalid' : '' }}" required="required" disabled>
+			          <input type="hidden" name="item_unit" value="{{old('item_unit')}}">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_unit'))
 			                {{$errors->first('item_unit')}}
@@ -87,7 +90,7 @@
 			        </div>
 			        <div class="form-group col-md-6">
 			          <label class="small">Cost per Unit:</label>
-			          <input type="text" class="form-control form-control-sm" name="item_cpu" required="">
+			          <input onchange="multiply();" id="itemCost" type="text" class="form-control form-control-sm" name="item_cpu" required="">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_cpu'))
 			                {{$errors->first('item_cpu')}}
@@ -98,7 +101,7 @@
 			        </div>
 			        <div class="form-group col-md-6">
 			          <label class="small">Cost per Item:</label>
-			          <input type="text" class="form-control form-control-sm" name="item_cpi" required="" readonly="">
+			          <input id="itemBudget" type="text" class="form-control form-control-sm" name="item_cpi" required="required" readonly="required">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_cpi'))
 			                {{$errors->first('item_cpi')}}
@@ -145,4 +148,30 @@
 
 	@section('script')
 	<script src="{{asset('js/function-script.js')}}"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+
+		 $('select[name="item_description"]').on('change', function(){
+            var itemId = $(this).val();
+            if(itemId) {
+                $.ajax({
+                    url: '/pr/item/get/'+ppmpId,
+                    type:"GET",
+                    dataType:"json",
+                   
+
+                    success:function(data) {
+                       $.each(data, function(key, value){
+                        $('select[name="item_quantity"]').append('<option value="'+ value['id'] +'">' + value['distributor_name'] + '</option>');
+                      });
+                    },
+                   
+                });
+            } else {
+                
+            }
+
+        });
+    });
+	</script>
 	@endsection

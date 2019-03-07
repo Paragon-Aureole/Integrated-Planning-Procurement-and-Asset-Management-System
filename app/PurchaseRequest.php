@@ -63,4 +63,9 @@ class PurchaseRequest extends Model
     {
         return $this->hasOne(Distributor::class);
     }
+
+    public function prItem()
+    {
+        return $this->hasMany(PurchaseRequestItem::class);
+    }
 }

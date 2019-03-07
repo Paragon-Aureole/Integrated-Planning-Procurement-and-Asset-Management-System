@@ -18,7 +18,22 @@ class PurchaseRequestItemController extends Controller
     public function index($id)
     {
         $pr = PurchaseRequest::find($id);
-        return view('pr.pr_item.addpritem', compact('pr'));
+        $ppmp_item = $pr->ppmp->ppmpItem()->whereHas('ppmpItemCode', function ($query){
+                $query->where('code_type', '=' ,  1 );
+            })->get();
+        // dd($ppmp_item);
+        return view('pr.pr_item.addpritem', compact('pr', 'ppmp_item'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getItemData($id)
+    {
+        
     }
 
     /**
