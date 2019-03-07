@@ -112,7 +112,7 @@
 			        </div>
 			        <div class="form-group text-right col-md-12">
 			          <button class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add Item</button>
-			          <a href="" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Print</a>
+			          <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Print</a>
 			        </div>
 		        </div>
 			  </form>
@@ -122,33 +122,7 @@
 	  		</div>
 	  		<div class="col-md-12">
 		      <div class="table-responsive">
-		        <table  id= "datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-				  <thead class="thead-dark">
-				    <tr>
-				      <th data-priority="1">Item No.</th>
-				      <th data-priority="2">Description</th>
-				      <th data-priority="3">Qty</th>
-				      <th data-priority="3">Unit</th>
-				      <th data-priority="3">Cost/Unit</th>
-				      <th data-priority="3">Cost/Item</th>
-				      <th data-priority="1" style="width: 100px;">Action</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				  	@foreach($pr->prItem()->get() as $items)
-				  		<td>{{$items->id}}</td>
-				  		<td>{{$items->ppmpItem->item_description}}</td>
-				  		<td>{{$items->item_quantity}}</td>
-				  		<td>{{$items->ppmpItem->measurementUnit->unit_code}}</td>
-				  		<td>{{number_format($items->item_cost,2)}}</td>
-				  		<td>{{number_format($items->item_budget,2)}}</td>
-				  		<td>
-				          <a href="#"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-				          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
-				        </td>
-				  	@endforeach
-				  </tbody>
-				</table>
+		        @include('pr.pr_item.pritmdatatable')
 		      </div>  
 		    </div>
 	  	</div>
@@ -159,36 +133,5 @@
 
 	@section('script')
 	<script src="{{asset('js/function-script.js')}}"></script>
-	<script type="text/javascript">
-	$(document).ready(function() {
-
-		 $('#itemDesc').on('change', function(){
-            var itemId = $(this).val();
-            if(itemId) {
-                $.ajax({
-                    url: '/pr/item/get/'+itemId,
-                    type:"GET",
-                    dataType:"json",
-                   
-
-                    success:function(data) {
-                    	for (var i = 1; i <= data[0]['item_quantity']; i++) {
-                    		$('select[name="item_quantity"]').append('<option value="'+ i +'">' + i + '</option>');
-                    	}
-                    	$('#itemUnit').val(data[1]);
-                    	$('input[name="item_unit"]').val(data[0]['measurement_unit_id']);
-                    	$('input[name="item_cpu"]').val(data[0]['item_cost']);
-                    	var budget = $('input[name="item_cpu"]').val() * $('select[name="item_quantity"]').val();
-                    	$('input[name="item_cpi"]').val(budget);
-                    },
-                   
-                });
-            } else {
-                $('select[name="item_quantity"]').empty();
-                $('#itemUnit').val("");
-            }
-
-        });
-    });
-	</script>
+	<script src="{{asset('js/pr-item-script.js')}}"></script>
 	@endsection

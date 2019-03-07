@@ -26,7 +26,6 @@ class PurchaseRequestItemRequest extends FormRequest
         return [
             "item_description" => 'required|numeric',
             "item_quantity" => 'required|numeric',
-            "item_unit" => 'required|numeric',
             "item_cpu" => 'required|string',
             "item_cpi" => 'required|numeric'
         ];

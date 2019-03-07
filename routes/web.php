@@ -101,6 +101,7 @@ Route::post('/pr/new/add', 'PurchaseRequestController@store')->name('add.pr');
 Route::get('/pr/edit/{id}', 'PurchaseRequestController@edit')->name('edit.pr');
 Route::put('/pr/update/{id}', 'PurchaseRequestController@update')->name('update.pr');
 Route::get('/pr/delete/{id}', 'PurchaseRequestController@destroy')->name('delete.pr');
+Route::get('/pr/print/{id}', 'PurchaseRequestController@printPurchaseRequest')->name('print.pr');
 
 
 //AJAX Data Routes

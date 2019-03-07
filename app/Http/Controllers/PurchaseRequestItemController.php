@@ -19,7 +19,7 @@ class PurchaseRequestItemController extends Controller
      */
     public function index($id)
     {
-        $pr = PurchaseRequest::find($id);
+        $pr = PurchaseRequest::findorFail($id);
         $ppmp_item = $pr->ppmp->ppmpItem()->whereHas('ppmpItemCode', function ($query){
                 $query->where('code_type', '=' ,  1 );
             })->get();
@@ -48,6 +48,7 @@ class PurchaseRequestItemController extends Controller
      */
     public function store(PurchaseRequestItemRequest $request, $id)
     {
+        $route_fail = redirect()->back()->with('danger', 'Failed to Add PR Item');
         $input = $request->all();
         
         $pr = PurchaseRequest::findorFail($id);
@@ -58,12 +59,12 @@ class PurchaseRequestItemController extends Controller
             'item_budget' => $input['item_cpi'],
         ]);
        if ($pr_Itm == true) {
-            $query1 = $pr_Itm->ppmpItem->first();
+            $query1 = $pr_Itm->ppmpItem->firstorFail();
             $stock = $query1->item_stock;
             $update_stock = $query1->update(['item_stock' => $stock - $pr_Itm->item_quantity]);
 
             if ($update_stock == true) {
-                $query2 = $pr->ppmp->ppmpBudget->first();
+                $query2 = $pr->ppmp->ppmpBudget->firstorFail();
                 $current_budget = $query2->ppmp_rem_budget;
                 $pr_total = $input['item_cpi'];
                 $rem_budget = $current_budget - $pr_total;
@@ -74,46 +75,76 @@ class PurchaseRequestItemController extends Controller
 
                 return redirect()->back()->with('success', 'Added PR Item');
             }
-            
-            return redirect()->back()->with('danger', 'Failed to Add PR Item');  
+
+            return $route_fail; 
         }
-        return redirect()->back()->with('danger', 'Failed to Add PR Item');
+        return $route_fail;
 
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\PurchaseRequestItem  $purchaseRequestItem
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\PurchaseRequestItem  $purchaseRequestItem
+     * @param  int $pr_id
+     * @param  int $item_id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($pr_id, $item_id)
+    {   
+
+        $pr = PurchaseRequest::findorFail($pr_id);
+        $pr_item = PurchaseRequestItem::findorFail($item_id);
+        $ppmp_item = $pr->ppmp->ppmpItem()->whereHas('ppmpItemCode', function ($query){
+                $query->where('code_type', '=' ,  1 );
+            })->get();
+        // dd($ppmp_item);
+        return view('pr.pr_item.edititem', compact('pr', 'ppmp_item', 'pr_item'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PurchaseRequestItem  $purchaseRequestItem
+     * @param  int $pr_id
+     * @param  int $item_id
      * @return \Illuminate\Http\Response
      */
-    public function update(PurchaseRequestItemRequest $request, $id)
+    public function update(PurchaseRequestItemRequest $request, $pr_id, $item_id)
     {
-        //
+        $route_fail = redirect()->back()->with('danger', 'Item failed to update');
+        $input = $request->all();
+        // dd($input);
+        $pr_item = PurchaseRequestItem::findorFail($item_id); 
+        $ppmpitm = $pr_item->ppmpItem->firstorFail();
+            $stock = $pr_item->item_quantity + $ppmpitm->item_stock;
+            $balance = $pr_item->item_budget + $ppmpitm->ppmp->ppmpBudget->ppmp_rem_budget;
+
+        $revert_ppmp = $ppmpitm->update(['item_stock' => $stock]);
+        $revert_budget = $ppmpitm->ppmp->ppmpBudget()->update(['ppmp_rem_budget' => $balance]);
+
+        if ($revert_ppmp == true && $revert_budget == true) {
+           $update_item = $pr_item->update([
+                'item_quantity' => $input['item_quantity'],
+                'item_cost' =>$input['item_cpu'],
+                'item_budget' => $input['item_cpi'],
+           ]);
+           if ($update_item == true) {
+               $update_ppmpitem = $ppmpitm->update(['item_stock' => $ppmpitm->item_stock - $input['item_quantity']]);
+               if ($update_ppmpitem = true) {
+                   $new_bal = $balance - $input['item_cpi'];
+                   $update_budget = $ppmpitm->ppmp->ppmpBudget()->update([
+                    'ppmp_rem_budget' => $new_bal
+                ]);
+                   
+                return redirect()->back()->with('success', 'Item Updated');
+               }
+            return $route_fail;
+           }
+           return $route_fail;
+         }
+         return $route_fail; 
+        
     }
 
     /**
@@ -122,8 +153,18 @@ class PurchaseRequestItemController extends Controller
      * @param  \App\PurchaseRequestItem  $purchaseRequestItem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseRequestItem $id)
+    public function destroy($pr_id, $item_id)
     {
-        //
+        $pr_item = PurchaseRequestItem::findorFail($item_id); 
+        $ppmpitm = $pr_item->ppmpItem->firstorFail();
+            $stock = $pr_item->item_quantity + $ppmpitm->item_stock;
+            $balance = $pr_item->item_budget + $ppmpitm->ppmp->ppmpBudget->ppmp_rem_budget;
+        $revert_ppmp = $ppmpitm->update(['item_stock' => $stock]);
+        $revert_budget = $ppmpitm->ppmp->ppmpBudget()->update(['ppmp_rem_budget' => $balance]);
+        if ($revert_ppmp == true && $revert_budget == true) {
+            $pr_item->delete();
+            return redirect()->back()->with('info','Item Deleted');
+        }return redirect()->route('view.pritm', $pr_id)->with('danger', 'failed to delete Item');
+         
     }
 }
