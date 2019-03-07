@@ -22,7 +22,7 @@
       </td>
       <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
       <td>
-        <a href="#" class="btn btn-sm btn-info" title="Add PR Items"><i class="fas fa-th-list"></i></a>
+        <a href="{{route('view.pritm', $pr->id)}}" class="btn btn-sm btn-info" title="Add PR Items"><i class="fas fa-th-list"></i></a>
         <a href="{{route('edit.pr', $pr->id)}}" class="btn btn-sm btn-warning">
           <i class="fas fa-edit"></i>
         </a>

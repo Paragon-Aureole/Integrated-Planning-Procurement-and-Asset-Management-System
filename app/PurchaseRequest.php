@@ -28,7 +28,7 @@ class PurchaseRequest extends Model
         'office_id',
         'pr_code',
 		'pr_purpose',
-		// 'pr_budget',
+		'pr_budget',
 		'supplier_type',
         'agency_name',
 		'supplier_id',
@@ -57,7 +57,7 @@ class PurchaseRequest extends Model
 
     public function signatory()
     {
-        return $this->hasOne(Signatory::class);
+        return $this->belongsTo(Signatory::class);
     }
     public function distributor()
     {

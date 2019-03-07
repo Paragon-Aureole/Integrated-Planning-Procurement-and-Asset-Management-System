@@ -95,6 +95,7 @@ class PurchaseRequestController extends Controller
             'office_id' => $ppmp->office_id,
             'pr_code' => $code,
             'pr_purpose' => $input['pr_purpose'],
+            'pr_budget' => str_replace(',', '', $input['pr_budget']),
             'supplier_type' => $input['supplier_type'],
             'agency_name' => $input['agency_name'],
             'supplier_id' => $input['supplier_id'],
@@ -111,7 +112,16 @@ class PurchaseRequestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        if ($user->hasRole('Admin')) {
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
+           
+        }else{
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
+        }
+        $pr = PurchaseRequest::findorFail($id);
+        
+        return view('pr.editpr',compact('pr', 'prDT'));
     }
 
     /**
@@ -123,7 +133,21 @@ class PurchaseRequestController extends Controller
      */
     public function update(PurchaseRequestRequest $request, $id)
     {
-        //
+        $input = $request->all();
+        // dd($input);
+        $pr = PurchaseRequest::findorFail($id);
+        $update_pr = $pr->update([
+            'signatory_id' => $input['pr_requestor'],
+            'user_id' => Auth::id(),
+            'pr_code' =>  $input['pr_code'],
+            'pr_purpose' => $input['pr_purpose'],
+            'pr_budget' => str_replace(',', '', $input['pr_budget']),
+            'supplier_type' => $input['supplier_type'],
+            'agency_name' => $input['agency_name'],
+            'supplier_id' => $input['supplier_id'],
+        ]);
+
+       return redirect()->route('view.pr')->with('success', 'PR Form succesfully updated!');
     }
 
     /**
@@ -134,6 +158,8 @@ class PurchaseRequestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pr = PurchaseRequest::findorFail($id);
+        $pr->delete();
+        return redirect()->route('view.pr')->with('info', 'PR Cancelled');
     }
 }

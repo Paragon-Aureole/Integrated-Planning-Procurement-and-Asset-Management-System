@@ -21,7 +21,7 @@ class CreatePurchaseRequestsTable extends Migration
             $table->integer('office_id')->unsigned()->index()->nullable();
             $table->string('pr_code');
             $table->string('pr_purpose');
-            // $table->decimal('pr_budget', 15, 2);
+            $table->decimal('pr_budget', 15, 2);
             $table->integer('supplier_type');
             $table->string('agency_name')->nullable();
             $table->integer('supplier_id')->unsigned()->index()->nullable();

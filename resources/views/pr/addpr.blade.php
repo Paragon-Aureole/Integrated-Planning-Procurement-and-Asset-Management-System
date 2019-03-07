@@ -111,8 +111,8 @@
           </div>
         </div> 
         <div class="form-group col-md-12">
-          <label for="prCode" class="small">Budget:</label>
-          <input class="form-control form-control-sm " type="text" value="" readonly>
+          <label for="" class="small">Budget:</label>
+          <input class="form-control form-control-sm " type="text" name="pr_budget" value="" readonly>
         </div> 
         <div class="form-group col">
           <button type="submit" id="prBtn" class="btn btn-primary btn-sm" @hasRole('Admin')disabled@endrole>Submit</button>

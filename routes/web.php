@@ -107,3 +107,9 @@ Route::get('/pr/delete/{id}', 'PurchaseRequestController@destroy')->name('delete
 Route::get('/pr/ppmp/get/{id}', 'PurchaseRequestController@getPpmpData')->name('get.ppmp');
 Route::get('/pr/dist/get', 'PurchaseRequestController@getDistributorData')->name('get.dist');
 
+//add purchase request items
+Route::get('/pr/{id}/item', 'PurchaseRequestItemController@index')->name('view.pritm');
+Route::post('/pr/{id}/item/add', 'PurchaseRequestItemController@store')->name('add.pritm');
+Route::get('/pr/{pr_id}/item/edit/{item_id}', 'PurchaseRequestItemController@edit')->name('edit.pritm');
+Route::put('/pr/{pr_id}/item/update/{id}', 'PurchaseRequestItemController@update')->name('update.pritm');
+Route::get('/pr/{pr_id}/item/delete/{id}', 'PurchaseRequestItemController@destroy')->name('delete.pritm');

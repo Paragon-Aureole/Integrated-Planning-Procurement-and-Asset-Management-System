@@ -32,6 +32,6 @@ class Signatory extends Model
 
     public function purchaseRequest()
     {
-        return $this->belongsTo(PurchaseRequest::class);
+        return $this->hasOne(PurchaseRequest::class);
     }
 }
