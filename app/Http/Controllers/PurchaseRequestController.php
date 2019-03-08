@@ -9,6 +9,7 @@ use App\Signatory;
 use App\Http\Requests\PurchaseRequestRequest;
 use Auth;
 use PDF;
+use Carbon\Carbon;
 
 class PurchaseRequestController extends Controller
 {
@@ -161,5 +162,37 @@ class PurchaseRequestController extends Controller
         $pr = PurchaseRequest::findorFail($id);
         $pr->delete();
         return redirect()->route('view.pr')->with('info', 'PR Cancelled');
+    }
+    /**
+     * Print the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function printPurchaseRequest($id)
+    {
+
+        $pr = PurchaseRequest::findorFail($id);
+        $date   = Carbon::parse($pr->created_at);
+        $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$pr->pr_code;
+        
+        $options = [
+            "footer-right" => "Page [page] of [topage]",
+            "footer-font-size" => 6,
+            'margin-top'    => 5,
+            'margin-right'  => 10,
+            'margin-bottom' => 6,
+            'margin-left'   => 10,
+            'page-size' => 'A4',
+            'orientation' => 'landscape',
+            "footer-left" => $created_code
+        ];
+
+        $pdf = PDF::loadView('pr.printpr', compact('pr','date'));
+
+        foreach ($options as $margin => $value) {
+            $pdf->setOption($margin, $value);
+        }
+        return $pdf->stream($pr->pr_code.'.pdf');
     }
 }
