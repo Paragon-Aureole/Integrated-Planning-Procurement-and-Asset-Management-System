@@ -195,4 +195,37 @@ class PurchaseRequestController extends Controller
         }
         return $pdf->stream($pr->pr_code.'.pdf');
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function viewAll()
+    {   
+
+        $user = Auth::user();
+        if ($user->hasRole(['Admin', 'Secretariat'])) {
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
+            $ppmp = Ppmp::where('is_active', '=', 1)->get();
+        }else{
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
+            $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
+        }
+        
+        return view('pr.addpr',compact('ppmp', 'prDT'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function closePurchaseRequest($id)
+    {
+       $pr = PurchaseRequest::findorFail($id);
+       $pr->update(['pr_status' => 1]);
+    }
+
 }
