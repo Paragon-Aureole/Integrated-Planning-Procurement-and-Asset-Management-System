@@ -9,6 +9,7 @@ use App\Signatory;
 use App\Http\Requests\PurchaseRequestRequest;
 use Auth;
 use PDF;
+use Carbon\Carbon;
 
 class PurchaseRequestController extends Controller
 {
@@ -162,4 +163,69 @@ class PurchaseRequestController extends Controller
         $pr->delete();
         return redirect()->route('view.pr')->with('info', 'PR Cancelled');
     }
+    /**
+     * Print the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function printPurchaseRequest($id)
+    {
+
+        $pr = PurchaseRequest::findorFail($id);
+        $date   = Carbon::parse($pr->created_at);
+        $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$pr->pr_code;
+        
+        $options = [
+            "footer-right" => "Page [page] of [topage]",
+            "footer-font-size" => 6,
+            'margin-top'    => 5,
+            'margin-right'  => 10,
+            'margin-bottom' => 6,
+            'margin-left'   => 10,
+            'page-size' => 'A4',
+            'orientation' => 'landscape',
+            "footer-left" => $created_code
+        ];
+
+        $pdf = PDF::loadView('pr.printpr', compact('pr','date'));
+
+        foreach ($options as $margin => $value) {
+            $pdf->setOption($margin, $value);
+        }
+        return $pdf->stream($pr->pr_code.'.pdf');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function viewAll()
+    {   
+
+        $user = Auth::user();
+        if ($user->hasRole(['Admin', 'Secretariat'])) {
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
+            $ppmp = Ppmp::where('is_active', '=', 1)->get();
+        }else{
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
+            $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
+        }
+        
+        return view('pr.addpr',compact('ppmp', 'prDT'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function closePurchaseRequest($id)
+    {
+       $pr = PurchaseRequest::findorFail($id);
+       $pr->update(['pr_status' => 1]);
+    }
+
 }

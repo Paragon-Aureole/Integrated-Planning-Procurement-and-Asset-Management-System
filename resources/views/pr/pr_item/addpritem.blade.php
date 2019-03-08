@@ -49,7 +49,7 @@
 			  	<div class="row">
 				  	<div class="form-group col-md-6">
 			          <label class="small">Item:</label>
-			          <select class="custom-select custom-select-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" required="required">
+			          <select class="custom-select custom-select-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" id="itemDesc" name="item_description" required="required">
 			          	<option value="">Select Item</option>
 						@foreach($ppmp_item as $item)
 							<option value="{{$item->id}}">{{$item->item_description}}</option>
@@ -59,7 +59,7 @@
 			              @if ($errors->has('item_description'))
 			                {{$errors->first('item_description')}}
 			              @else
-			                Procurement Mode is required.
+			                Item Descripiton is required.
 			              @endif  
 			          </div>
 			        </div>
@@ -72,30 +72,30 @@
 			              @if ($errors->has('item_quantity'))
 			                {{$errors->first('item_quantity')}}
 			              @else
-			                Procurement Mode is required.
+			                Quantity is required.
 			              @endif  
 			          </div>
 			        </div>
 			        <div class="form-group col-md-3">
 			          <label class="small">Unit:</label>
-			          <input class="form-control form-control-sm {{ $errors->has('item_unit') ? 'is-invalid' : '' }}" required="required" disabled>
+			          <input class="form-control form-control-sm {{ $errors->has('item_unit') ? 'is-invalid' : '' }}" required="required" id="itemUnit" disabled>
 			          <input type="hidden" name="item_unit" value="{{old('item_unit')}}">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_unit'))
 			                {{$errors->first('item_unit')}}
 			              @else
-			                Procurement Mode is required.
+			                Unit is required.
 			              @endif  
 			          </div>
 			        </div>
 			        <div class="form-group col-md-6">
 			          <label class="small">Cost per Unit:</label>
-			          <input onchange="multiply();" id="itemCost" type="text" class="form-control form-control-sm" name="item_cpu" required="">
+			          <input oninput="multiply();" id="itemCost" type="text" class="form-control form-control-sm" name="item_cpu" required="">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_cpu'))
 			                {{$errors->first('item_cpu')}}
 			              @else
-			                Procurement Mode is required.
+			                Cost per unit is required.
 			              @endif  
 			          </div>
 			        </div>
@@ -106,13 +106,13 @@
 			              @if ($errors->has('item_cpi'))
 			                {{$errors->first('item_cpi')}}
 			              @else
-			                Procurement Mode is required.
+			                Cost per item is required.
 			              @endif  
 			          </div>
 			        </div>
 			        <div class="form-group text-right col-md-12">
 			          <button class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add Item</button>
-			          <a href="" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Print</a>
+			          <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Print</a>
 			        </div>
 		        </div>
 			  </form>
@@ -122,22 +122,7 @@
 	  		</div>
 	  		<div class="col-md-12">
 		      <div class="table-responsive">
-		        <table  id= "datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-				  <thead class="thead-dark">
-				    <tr>
-				      <th data-priority="1">Item No.</th>
-				      <th data-priority="2">Description</th>
-				      <th data-priority="3">Qty</th>
-				      <th data-priority="3">Unit</th>
-				      <th data-priority="3">Cost/Unit</th>
-				      <th data-priority="3">Cost/Item</th>
-				      <th data-priority="1" style="width: 100px;">Action</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				  	
-				  </tbody>
-				</table>
+		        @include('pr.pr_item.pritmdatatable')
 		      </div>  
 		    </div>
 	  	</div>
@@ -148,30 +133,5 @@
 
 	@section('script')
 	<script src="{{asset('js/function-script.js')}}"></script>
-	<script type="text/javascript">
-	$(document).ready(function() {
-
-		 $('select[name="item_description"]').on('change', function(){
-            var itemId = $(this).val();
-            if(itemId) {
-                $.ajax({
-                    url: '/pr/item/get/'+ppmpId,
-                    type:"GET",
-                    dataType:"json",
-                   
-
-                    success:function(data) {
-                       $.each(data, function(key, value){
-                        $('select[name="item_quantity"]').append('<option value="'+ value['id'] +'">' + value['distributor_name'] + '</option>');
-                      });
-                    },
-                   
-                });
-            } else {
-                
-            }
-
-        });
-    });
-	</script>
+	<script src="{{asset('js/pr-item-script.js')}}"></script>
 	@endsection
