@@ -122,6 +122,10 @@ Route::get('/pr/{pr_id}/item/delete/{id}', 'PurchaseRequestItemController@destro
 //rfq
 Route::resource('rfq', 'RequestForQuotationController');
 
+// abstract
+Route::resource('abstract', 'OutlineOfQuotationController');
+
+
 //assets
 Route::resource('assets', 'assetController');
 Route::get('/showDetails', 'assetController@showDetails');
