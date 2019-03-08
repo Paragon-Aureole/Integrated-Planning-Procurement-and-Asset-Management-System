@@ -125,6 +125,12 @@ Route::resource('rfq', 'RequestForQuotationController');
 // abstract
 Route::resource('abstract', 'OutlineOfQuotationController');
 
+// PurchaseOrder
+Route::resource('po', 'PurchaseOrderController');
+
+// InspectionReport
+Route::resource('ir', 'InspectionReportController');
+
 
 //assets
 Route::resource('assets', 'assetController');

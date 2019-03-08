@@ -3,19 +3,19 @@
 @section('breadcrumb')
 <ol class="breadcrumb p-2">
 	<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-	<li class="breadcrumb-item active" aria-current="page">Abstract</li>
+	<li class="breadcrumb-item active" aria-current="page">Inspection Report</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="container-fluid">
 <div class="card">
- <div class="card-header pt-2 pb-2">Abstract of Quotation</div>
+ <div class="card-header pt-2 pb-2">Inspection Report</div>
  <div class="card-body">
    <div class="row">
    	<div class="col-md-5">
    	  <h6 class="card-title">
-  		Available Abstract
+  		Available Inspection Reports
   	  </h6>
       <div class="table-responsive">
         <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
@@ -35,7 +35,7 @@
 
    	<!-- table -->
    	<div class="col-md-7">
-   	  <h6 class="card-title">Registered Abstract of Quotation</h6>
+   	  <h6 class="card-title">Registered Inpection Reports</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">

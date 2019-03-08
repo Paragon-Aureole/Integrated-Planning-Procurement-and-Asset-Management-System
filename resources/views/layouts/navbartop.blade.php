@@ -45,7 +45,7 @@
           Abstract
         </a>
         <ul class="dropdown-menu" aria-labelledby="abstractDropdownMenuLink">
-          <li><a class="dropdown-item" href="#">New Abstract of Quotation</a></li>
+          <li><a class="dropdown-item" href="/abstract">New Abstract of Quotation</a></li>
           <li><a class="dropdown-item" href="#">Previous Abstracts of Quotation</a></li>
         </ul>
       </li>
@@ -54,7 +54,7 @@
           Purchase Order
         </a>
         <ul class="dropdown-menu" aria-labelledby="poDropdownMenuLink">
-          <li><a class="dropdown-item" href="#">New Purchase Order</a></li>
+          <li><a class="dropdown-item" href="/po">New Purchase Order</a></li>
           <li><a class="dropdown-item" href="#">Previous Purchase Orders</a></li>
         </ul>
       </li>
@@ -63,7 +63,7 @@
           Inspection Report
         </a>
         <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
-          <li><a class="dropdown-item" href="#">New Inspection Report</a></li>
+          <li><a class="dropdown-item" href="/ir">New Inspection Report</a></li>
           <li><a class="dropdown-item" href="#">Previous Inspection Reports</a></li>
         </ul>
       </li>

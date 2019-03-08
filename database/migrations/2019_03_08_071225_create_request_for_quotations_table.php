@@ -20,7 +20,7 @@ class CreateRequestForQuotationsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('purchase_requests', function($table) {
+        Schema::table('request_for_quotations', function($table) {
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('purchase_request_id')->references('id')->on('users')->onDelete('cascade');
