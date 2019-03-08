@@ -3,14 +3,14 @@
 @section('breadcrumb')
 <ol class="breadcrumb p-2">
 	<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-	<li class="breadcrumb-item active" aria-current="page">Close Purchase Request</li>
+	<li class="breadcrumb-item active" aria-current="page">Previous Purchase Request</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="container-fluid">
 <div class="card">
- <div class="card-header pt-2 pb-2">Close Purchase Request</div>
+ <div class="card-header pt-2 pb-2">Purchase Request</div>
  <div class="card-body">
    <div class="row">
    	<!-- table -->
@@ -24,7 +24,7 @@
               <th data-priority="3">Purpose</th>
               <th data-priority="1">Status</th>
               <th data-priority="2">Date</th>
-              <th data-priority="1" style="width: 100px;">Action</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -41,17 +41,8 @@
               </td>
               <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
               <td>
-                {{-- <a href="{{route('view.pritm', $pr->id)}}" class="btn btn-sm btn-info" title="Add PR Items"><i class="fas fa-th-list"></i></a> --}}
-                <a href="{{route('edit.pr', $pr->id)}}" class="btn btn-sm btn-warning">
-                  <i class="fas fa-edit"></i>
-                </a>
-                <a href="{{route('close.pr', $pr->id)}}" class="btn btn-sm btn-success">
-                  <i class="fas fa-check"></i>
-                </a>
-                <a href="{{route('delete.pr', $pr->id)}}" class="btn btn-sm btn-danger">
-                  <i class="fas fa-minus"></i>
-                </a>
-              </td>
+              <a href="{{route('print.pr', $pr->id)}}" class="btn btn-sm btn-secondary" target="_blank" =title="Print PR"><i class="fas fa-print"></i></a>
+            </td>
             </tr>
           @endforeach
           </tbody>

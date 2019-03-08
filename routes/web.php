@@ -97,10 +97,14 @@ Route::get('/ppmp/{ppmp_id}/item/delete/{id}', 'PpmpItemController@destroy')->na
 
 //add purchase reuest
 Route::get('/pr', 'PurchaseRequestController@index')->name('view.pr');
+Route::get('/pr/view', 'PurchaseRequestController@viewAll')->name('viewall.pr');
+Route::get('/pr/archive', 'PurchaseRequestController@archive')->name('archive.pr');
 Route::post('/pr/new/add', 'PurchaseRequestController@store')->name('add.pr');
 Route::get('/pr/edit/{id}', 'PurchaseRequestController@edit')->name('edit.pr');
 Route::put('/pr/update/{id}', 'PurchaseRequestController@update')->name('update.pr');
 Route::get('/pr/delete/{id}', 'PurchaseRequestController@destroy')->name('delete.pr');
+Route::get('/pr/print/{id}', 'PurchaseRequestController@printPurchaseRequest')->name('print.pr');
+Route::get('/pr/close/{id}', 'PurchaseRequestController@closePurchaseRequest')->name('close.pr');
 
 
 //AJAX Data Routes
@@ -115,5 +119,9 @@ Route::get('/pr/{pr_id}/item/edit/{item_id}', 'PurchaseRequestItemController@edi
 Route::put('/pr/{pr_id}/item/update/{id}', 'PurchaseRequestItemController@update')->name('update.pritm');
 Route::get('/pr/{pr_id}/item/delete/{id}', 'PurchaseRequestItemController@destroy')->name('delete.pritm');
 
+//rfq
+Route::resource('rfq', 'RequestForQuotationController');
+
+//assets
 Route::resource('assets', 'assetController');
 Route::get('/showDetails', 'assetController@showDetails');

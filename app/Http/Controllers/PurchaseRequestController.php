@@ -205,15 +205,27 @@ class PurchaseRequestController extends Controller
     {   
 
         $user = Auth::user();
-        if ($user->hasRole(['Admin', 'Secretariat'])) {
-            $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
-            $ppmp = Ppmp::where('is_active', '=', 1)->get();
+        $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
+        return view('pr.closepr',compact('prDT'));
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function archive()
+    {   
+
+        $user = Auth::user();
+        if ($user->hasRole('Admin')) {
+            $prDT = PurchaseRequest::where('pr_status', '=', 1)->get();
+            // $ppmp = Ppmp::where('is_active', '=', 1)->get();
         }else{
-            $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
-            $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
+            $prDT = PurchaseRequest::where('pr_status', '=', 1)->where('office_id' , $user->office_id)->get();
+            // $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
         }
         
-        return view('pr.addpr',compact('ppmp', 'prDT'));
+        return view('pr.archivepr',compact('prDT'));
     }
 
     /**
@@ -226,6 +238,7 @@ class PurchaseRequestController extends Controller
     {
        $pr = PurchaseRequest::findorFail($id);
        $pr->update(['pr_status' => 1]);
+       return redirect()->back()->with('success', 'PR Approved');
     }
 
 }

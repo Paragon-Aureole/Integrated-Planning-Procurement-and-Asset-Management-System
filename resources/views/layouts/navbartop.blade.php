@@ -25,8 +25,10 @@
                 <li><a class="dropdown-item" href="#">Supplemental Purchase Request</a></li>
               </ul>
             </li>
-            <li><a class="dropdown-item" href="#">Close Purchase Request</a></li>
-            <li><a class="dropdown-item" href="#">Previous Purchase Requests</a></li>
+            @hasanyrole('Admin|Secretariat')
+            <li><a class="dropdown-item" href="{{route('viewall.pr')}}">Close Purchase Request</a></li>
+            @endrole
+            <li><a class="dropdown-item" href="{{route('archive.pr')}}">Previous Purchase Requests</a></li>
           </ul>
        </li>
       <li class="nav-item dropdown">
@@ -34,7 +36,7 @@
           RFQ
         </a>
         <ul class="dropdown-menu" aria-labelledby="rfqDropdownMenuLink">
-          <li><a class="dropdown-item" href="#">New Request for Quotation</a></li>
+          <li><a class="dropdown-item" href="{{route('rfq.index')}}">New Request for Quotation</a></li>
           <li><a class="dropdown-item" href="#">Previous Requests for Quotation</a></li>
         </ul>
       </li>
