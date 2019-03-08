@@ -114,3 +114,6 @@ Route::post('/pr/{id}/item/add', 'PurchaseRequestItemController@store')->name('a
 Route::get('/pr/{pr_id}/item/edit/{item_id}', 'PurchaseRequestItemController@edit')->name('edit.pritm');
 Route::put('/pr/{pr_id}/item/update/{id}', 'PurchaseRequestItemController@update')->name('update.pritm');
 Route::get('/pr/{pr_id}/item/delete/{id}', 'PurchaseRequestItemController@destroy')->name('delete.pritm');
+
+Route::resource('assets', 'assetController');
+Route::get('/showDetails', 'assetController@showDetails');

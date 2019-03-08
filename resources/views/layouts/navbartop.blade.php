@@ -65,6 +65,15 @@
           <li><a class="dropdown-item" href="#">Previous Inspection Reports</a></li>
         </ul>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="irDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Assets
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
+          <li><a class="dropdown-item" href="#">Migrate Current Assets</a></li>
+          <li><a class="dropdown-item" href="/assets">Procured Assets</a></li>
+        </ul>
+      </li>
       @can('full control')
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="settingsDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
