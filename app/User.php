@@ -57,8 +57,7 @@ class User extends Authenticatable
     /** LOCAL SCOPES
     public function scopeAdmins($query)
     {
-        return $query->where('type', 'admin');    
+        return $query->where('type', 'admin');
     }
     */
 }
-

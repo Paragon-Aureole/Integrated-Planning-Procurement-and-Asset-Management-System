@@ -13,10 +13,10 @@ class PurchaseRequestItem extends Model
      */
     protected $fillable = [
         'purchase_request_id',
-		'ppmp_item_id',
-		'item_quantity',
-		'item_cost',
-		'item_budget'
+        'ppmp_item_id',
+        'item_quantity',
+        'item_cost',
+        'item_budget'
     ];
 
     public function purchaseRequest()
@@ -28,6 +28,4 @@ class PurchaseRequestItem extends Model
     {
         return $this->belongsTo(PpmpItem::class);
     }
-
-
 }

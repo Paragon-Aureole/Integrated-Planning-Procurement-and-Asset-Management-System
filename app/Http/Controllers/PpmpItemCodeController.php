@@ -19,7 +19,7 @@ class PpmpItemCodeController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -41,13 +41,15 @@ class PpmpItemCodeController extends Controller
      * @return \Illuminate\Http\Response
     */
     public function store(PpmpItemCodeRequest $request, $id)
-    {   
+    {
         $input = $request->all();
         $ppmp = Ppmp::findorFail($id);
+
         $add_code = $ppmp->ppmpItemCode()->create([
-            "code_description" => $input['code_description'],
-            "code_type" => $input['code_type'],
+          "code_description" => $input['code_description'],
+          "code_type" => $input['code_type'],
         ]);
+        // dd($add_code);
         return redirect()->back()->with('success', 'PPMP Item Code successfully added');
 
     }
@@ -101,5 +103,5 @@ class PpmpItemCodeController extends Controller
         return redirect()->back()->with('info', 'PPMP Item Code deleted');
     }
 
-    
+
 }

@@ -22,7 +22,7 @@ class PpmpItemController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -33,10 +33,11 @@ class PpmpItemController extends Controller
     {
     	$ppmp = Ppmp::findorFail($id);
     	$ppmp_itemDT = $ppmp->ppmpItem()->get()->groupBy('ppmp_item_code_id');
-        $total = $ppmp->ppmpBudget;
-        $units = MeasurementUnit::all();
-        $modes = ProcurementMode::all();
-    	return view('ppmp.ppmp_item.addppmpitm', compact('ppmp_itemDT','ppmp', 'units', 'modes','total'));  
+      $total = $ppmp->ppmpBudget;
+      $units = MeasurementUnit::all();
+      $modes = ProcurementMode::all();
+      // dd($ppmp->ppmpItemCode);
+    	return view('ppmp.ppmp_item.addppmpitm', compact('ppmp_itemDT','ppmp', 'units', 'modes','total'));
     }
 
     /**
@@ -47,9 +48,9 @@ class PpmpItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PpmpItemRequest $request, $id)
-    {   
-            
-               
+    {
+
+
         $input = $request->all();
         $ppmp = Ppmp::findorFail($id);
         $schedule = implode(",", $input['item_schedule']);
@@ -78,7 +79,7 @@ class PpmpItemController extends Controller
                 'ppmp_est_budget' => $total_budget,
                 'ppmp_rem_budget' => $remaining_budget
             ]);
-            return redirect()->route('view.ppmpitm', $id)->with('success', 'A new item has been added.'); 
+            return redirect()->route('view.ppmpitm', $id)->with('success', 'A new item has been added.');
         }
         return redirect()->back()->with('danger', 'PPMP Item Failed to add');
     }
@@ -100,7 +101,7 @@ class PpmpItemController extends Controller
 
         $ppmp_item = PpmpItem::findorFail($item_id);
 
-       return view('ppmp.ppmp_item.editppmpitm', compact('ppmp_itemDT','ppmp', 'units', 'modes','total', 'ppmp_item'));  
+       return view('ppmp.ppmp_item.editppmpitm', compact('ppmp_itemDT','ppmp', 'units', 'modes','total', 'ppmp_item'));
 
     }
 
@@ -137,14 +138,14 @@ class PpmpItemController extends Controller
             $query_items = $ppmp->ppmpItem()->whereHas('ppmpItemCode', function ($query){
                 $query->where('code_type', '!=' ,  3 );
             })->get();
-            
+
             $total_budget = $query_items->sum('item_budget');
             $remaining_budget = $query_items->sum('item_rem_budget');
             $ppmp_budget = $ppmp->ppmpBudget()->update([
                 'ppmp_est_budget' => $total_budget,
                 'ppmp_rem_budget' => $remaining_budget
             ]);
-            return redirect()->route('view.ppmpitm', $ppmp_id)->with('success', 'PPMP Item updated.'); 
+            return redirect()->route('view.ppmpitm', $ppmp_id)->with('success', 'PPMP Item updated.');
         }
         return redirect()->back()->with('danger', 'PPMP Item Failed to update.');
     }
@@ -173,7 +174,7 @@ class PpmpItemController extends Controller
                 'ppmp_est_budget' => $total_budget,
                 'ppmp_rem_budget' => $remaining_budget
             ]);
-            return redirect()->route('view.ppmpitm', $ppmp_id)->with('info', 'PPMP Item deleted.'); 
+            return redirect()->route('view.ppmpitm', $ppmp_id)->with('info', 'PPMP Item deleted.');
         }
         return redirect()->back()->with('danger', 'PPMP Item Failed to update.');
     }

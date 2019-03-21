@@ -22,31 +22,31 @@
           <label class="small">Code:</label>
           <div class="input-group mb-3">
             <select class="custom-select custom-select-sm {{ $errors->has('item_code') ? 'is-invalid' : '' }}" name="item_code" required="required">
-              @foreach($ppmp->ppmpItemCode as $codes) 
-                <option value="{{$codes->id}}" >{{$codes->code_description}}</option>
-              @endforeach 
+              @foreach($ppmp->ppmpItemCode as $codes)
+                <option value="{{$codes->id}}" name="{{$codes->code_type}}">{{$codes->code_description}}</option>
+              @endforeach
             </select>
             <div class="input-group-append">
-              <a href="{{route('view.ppmpitemcode', $ppmp->id)}}" class="btn btn-outline-secondary btn-sm">Add Item Code</a> 
+              <a href="{{route('view.ppmpitemcode', $ppmp->id)}}" class="btn btn-outline-secondary btn-sm">Add Item Code</a>
             </div>
-            <div class="invalid-feedback">  
+            <div class="invalid-feedback">
               @if ($errors->has('item_code'))
                 {{$errors->first('item_code')}}
               @else
                 Item Code is required.
-              @endif  
+              @endif
             </div>
           </div>
         </div>
         <div class="form-group col-md-12">
           <label class="small">General Description:</label>
           <textarea class="form-control form-control-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" rows="3" required="required"></textarea>
-          <div class="invalid-feedback">  
+          <div class="invalid-feedback">
               @if ($errors->has('item_description'))
                 {{$errors->first('item_description')}}
               @else
                 Item description is required.
-              @endif  
+              @endif
           </div>
         </div>
         <div class="form-group col-md-12">
@@ -56,23 +56,23 @@
             <option value="{{$mode->id}}" {{ old('item_unit') == $mode->id ? 'selected' : '' }}>{{$mode->method_name}}</option>
             @endforeach
           </select>
-          <div class="invalid-feedback">  
+          <div class="invalid-feedback">
               @if ($errors->has('item_mode'))
                 {{$errors->first('item_mode')}}
               @else
                 Procurement Mode is required.
-              @endif  
+              @endif
           </div>
         </div>
         <div class="form-group col-md-6">
           <label class="small">Quantity:</label>
-          <input oninput="multiply();" id="itemQty" class="form-control form-control-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" value="{{ old('item_quantity') }}" value="{{ old('item_quantity') }}" name="item_quantity" required="required">
-          <div class="invalid-feedback">  
+          <input type="number" min=0 oninput="multiply();" id="itemQty" class="form-control form-control-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" value="{{ old('item_quantity') }}" value="{{ old('item_quantity') }}" name="item_quantity" required="required">
+          <div class="invalid-feedback">
               @if ($errors->has('item_quantity'))
                 {{$errors->first('item_quantity')}}
               @else
                 Item Quantity is required.
-              @endif  
+              @endif
           </div>
         </div>
         <div class="form-group col-md-6">
@@ -82,40 +82,40 @@
             <option value="{{$unit->id}}" {{ old('item_unit') == $unit->id ? 'selected' : '' }}>{{$unit->unit_description}}</option>
             @endforeach
           </select>
-          <div class="invalid-feedback">  
+          <div class="invalid-feedback">
               @if ($errors->has('item_unit'))
                 {{$errors->first('item_unit')}}
               @else
                 Code description is required.
-              @endif  
+              @endif
           </div>
         </div>
         <div class="form-group col-md-6">
           <label class="small">Estimated Cost per Unit:</label>
           <input oninput="multiply();" id="itemCost" class="form-control form-control-sm {{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost') }}" name="item_cost" required="required">
-          <div class="invalid-feedback">  
+          <div class="invalid-feedback">
               @if ($errors->has('item_cost'))
                 {{$errors->first('item_cost')}}
               @else
                 Code description is required.
-              @endif  
+              @endif
           </div>
-        </div>        
+        </div>
         <div class="form-group col-md-6">
           <label class="small">Estimated Budget per Item:</label>
           <input id="itemBudget" class="form-control form-control-sm {{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', number_format(0,2)) }}" name="item_budget" readonly="readonly" required="required">
-          <div class="invalid-feedback">  
+          <div class="invalid-feedback">
               @if ($errors->has('item_budget'))
                 {{$errors->first('item_budget')}}
               @else
                 Code description is required.
-              @endif  
+              @endif
           </div>
         </div>
         <div class="form-group col-md-12 text-right">
-          <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+          <button type="submit" id="btn_submit" class="btn btn-sm btn-primary">Submit</button>
         </div>
-      </div> 
+      </div>
     </div>
     <div class="col-md-6">
       <h6>Schedule/Milestones of Activities</h6>
@@ -125,13 +125,14 @@
         @php $month_num = $s-1; @endphp
          <div class="form-group col-md-4">
           <label class="small">{{strtoupper(date('M', mktime(0, 0, 0, $s, 1)))}}</label>
-          <input class="form-control form-control-sm {{ $errors->has('item_schedule.'.$month_num) ? 'is-invalid' : '' }}" name="item_schedule[{{$month_num}}]" value="{{ old('item_schedule.'.$month_num, '0' ) }}">
-          <div class="invalid-feedback">  
+          <input class="form-control form-control-sm {{ $errors->has('item_schedule.'.$month_num) ? 'is-invalid' : '' }}" name="item_schedule[{{$month_num}}]" value="{{ old('item_schedule.'.$month_num ) }}" placeholder="0">
+          <!-- <input class="form-control form-control-sm {{ $errors->has('item_schedule.'.$month_num) ? 'is-invalid' : '' }}" name="item_schedule[{{$month_num}}]" value="{{ old('item_schedule.'.$month_num, '0' ) }}"> -->
+          <div class="invalid-feedback">
               @if ($errors->has('item_schedule.'.$month_num))
                 {{$errors->first('item_schedule.'.$month_num)}}
               @else
                 Schedule required.
-              @endif  
+              @endif
           </div>
         </div>
         @endfor
@@ -143,18 +144,19 @@
     <div class="col-md-12">
       <div class="table-responsive">
         @include('ppmp.ppmp_item.ppmpitmdatatable')
-      </div>  
+      </div>
     </div>
   </div>
 </div>
-  
+
  </div>
 </div>
 
 </div>
-	
+
 @endsection
 
 @section('script')
 <script src="{{asset('js/function-script.js')}}"></script>
+<script src="{{asset('js/ppmp_field_validation.js')}}"></script>
 @endsection
