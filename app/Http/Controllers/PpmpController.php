@@ -28,7 +28,7 @@ class PpmpController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {	
+    {
     	$user = Auth::user();
 
     	if ($user->hasRole('Admin')) {
@@ -54,8 +54,8 @@ class PpmpController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PpmpRequest $request)
-    {   
-        
+    {
+
     	$input = $request->all();
 
     	$user = Auth::user();
@@ -75,15 +75,15 @@ class PpmpController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function addPpmpBudget($id)
-    {   
-        
+    {
+
     	$ppmp = Ppmp::findorFail($id);
 		$add_ppmp_budget = $ppmp->ppmpBudget()->create([
 		    'ppmp_est_budget' => 0,
 		    'ppmp_rem_budget' => 0,
 		]);
-		
-        return redirect()->route('view.ppmp')->with('success', 'A new PPMP has been added.'); 
+
+        return redirect()->route('view.ppmp')->with('success', 'A new PPMP has been added.');
 
     }
 
@@ -124,7 +124,7 @@ class PpmpController extends Controller
     public function printPpmp($id)
     {
         $ppmp = Ppmp::findorFail($id);
-        
+
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,
@@ -153,5 +153,5 @@ class PpmpController extends Controller
         return redirect()->back()->with('info', 'PPMP deleted');
     }
 
-    
+
 }

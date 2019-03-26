@@ -9,7 +9,7 @@ class PurchaseRequest extends Model
 {
     use SoftDeletes;
 
-	/**
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
@@ -23,21 +23,21 @@ class PurchaseRequest extends Model
      */
     protected $fillable = [
         'ppmp_id',
-		'signatory_id',
-		'user_id',
+        'signatory_id',
+        'user_id',
         'office_id',
         'pr_code',
-		'pr_purpose',
-		'pr_budget',
-		'supplier_type',
+        'pr_purpose',
+        'pr_budget',
+        'supplier_type',
         'agency_name',
-		'supplier_id',
-		'pr_status',
-		'created_supplemental',
-		'created_rfq',
-		'created_abstract',
-		'created_po',
-		'created_inspection',
+        'supplier_id',
+        'pr_status',
+        'created_supplemental',
+        'created_rfq',
+        'created_abstract',
+        'created_po',
+        'created_inspection',
     ];
 
     public function ppmp()

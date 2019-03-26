@@ -19,5 +19,4 @@ class PpmpBudget extends Model
     {
         return $this->belongsTo(Ppmp::class);
     }
-
 }
