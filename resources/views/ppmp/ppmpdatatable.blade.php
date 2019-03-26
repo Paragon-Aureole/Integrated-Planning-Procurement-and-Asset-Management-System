@@ -21,11 +21,11 @@
         <td>&#8369; {{number_format($ppmp->ppmpBudget->ppmp_rem_budget, 2)}}</td>
    	  	<td>
                
-        @if($ppmp->ppmpItemCode->count() > 0)
+        {{-- @if($ppmp->ppmpItemCode->count() > 0) --}}
    	  	  <a href="{{route('view.ppmpitm', $ppmp->id)}}" class="btn btn-sm btn-info" title="Add PPMP Items"><i class="fas fa-th-list"></i></a>
-        @else
+        {{-- @else
           <a href="{{route('view.ppmpitemcode', $ppmp->id)}}" class="btn btn-sm btn-warning" title="Add PPMP Item Codes"><i class="fas fa-plus-square"></i></a>
-        @endif
+        @endif --}}
 
         @if($ppmp->is_active == 1)
           <a href="{{route('deactivate.ppmp', $ppmp->id)}}" title="Deactivate Signatory" class="btn btn-sm btn-success">

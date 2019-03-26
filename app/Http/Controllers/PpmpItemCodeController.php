@@ -68,6 +68,7 @@ class PpmpItemCodeController extends Controller
 
         return view('ppmp.ppmp_item_codes.editppmpcodes', compact('ppmp_codeDT','ppmp', 'ppmp_key'));
 
+
     }
 
     /**
@@ -86,6 +87,21 @@ class PpmpItemCodeController extends Controller
             "code_type" => $input['code_type'],
         ]);
         return redirect()->back()->with('success', 'PPMP Item Code successfully updated');
+    }
+
+    public function updateData(Request $request) 
+    {
+        $code_description = $request->input('code_description');
+        $optionValue = $request->input('optionValue');
+        $codeId = $request->input('codeId');
+
+        // $data = array("code_description"=>$code_description,"code_type"=>$optionValue);
+
+        // $updateData = PpmpItemCode::updateData($codeId, $data);
+        $updateData = PpmpItemCode::where('id', $codeId)->update(['code_description' => $code_description, 'code_type' => $optionValue]);
+
+        return response()->json(['UpdateData'=>$updateData]);
+
     }
 
     /**

@@ -83,6 +83,11 @@ Route::get('/ppmp/{ppmp_id}/code/edit/{ppmpcode_id}', 'PpmpItemCodeController@ed
 Route::put('/ppmp/code/update/{id}', 'PpmpItemCodeController@update')->name('update.ppmpitemcode');
 Route::get('/ppmp/code/delete/{id}', 'PpmpItemCodeController@destroy')->name('delete.ppmpitemcode');
 
+// dataTable
+Route::get('dataTable', 'PpmpItemController@dataTable');
+Route::get('ppmpData', 'PpmpController@ppmpData');
+Route::put('updateData', 'PpmpItemCodeController@updateData');
+
 
 //PPMP Budget
 Route::get('/ppmp/budget/add/{id}', 'PpmpController@addPpmpBudget')->name('add.ppmp.budget');

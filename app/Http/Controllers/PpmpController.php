@@ -40,6 +40,13 @@ class PpmpController extends Controller
         return view('ppmp.addppmp', compact('ppmp_DT','offices'));
     }
 
+    public function ppmpData()
+    {
+        $user = Ppmp::all();
+
+        return response()->json(['ppmpData'=>$user]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

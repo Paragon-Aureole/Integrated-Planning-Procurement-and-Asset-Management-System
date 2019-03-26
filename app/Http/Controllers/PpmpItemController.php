@@ -32,13 +32,21 @@ class PpmpItemController extends Controller
     public function index($id)
     {
     	$ppmp = Ppmp::findorFail($id);
-    	$ppmp_itemDT = $ppmp->ppmpItem()->get()->groupBy('ppmp_item_code_id');
+        $ppmp_itemDT = $ppmp->ppmpItem()->get()->groupBy('ppmp_item_code_id');
+        $ppmp_codeDT = $ppmp->ppmpItemCode()->get();
         $total = $ppmp->ppmpBudget;
         $units = MeasurementUnit::all();
         $modes = ProcurementMode::all();
-    	return view('ppmp.ppmp_item.addppmpitm', compact('ppmp_itemDT','ppmp', 'units', 'modes','total'));  
+    	return view('ppmp.ppmp_item.addppmpitm', compact('ppmp_itemDT','ppmp', 'units', 'modes','total','ppmp_codeDT'));  
     }
+    
+    public function dataTable()
+    {
+        $ppmp = PpmpItemCode::all();
+        // $ppmp_codeDT = $ppmp->get();
 
+        return response()->json(['tableContent'=>$ppmp]);
+    }
     /**
      * Store a newly created resource in storage.
      *
