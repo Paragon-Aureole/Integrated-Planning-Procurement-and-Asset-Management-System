@@ -25,6 +25,7 @@ $(document).ready(function () {
     // console.log(schedule_total + "is the schedule_total " + i);
     }
     if ($("[name=item_code] option:selected").attr('name') == 1) {
+<<<<<<< HEAD
       if (itemqtyCount != itemqtyGoal) {
         console.log($("[name=item_code] option:selected").attr('name'));
         console.log("incomplete entries, please distribute scheduled items properly.");
@@ -33,12 +34,24 @@ $(document).ready(function () {
         console.log('blyat');
         $("#needs-validation").submit();
         // return true;
+=======
+      if (itemqtyCount < itemqtyGoal) {
+        console.log($("[name=item_code] option:selected").attr('name'));
+        console.log("incomplete entries, please distribute scheduled items properly.");
+        return false
+      }else {
+        return true
+>>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
       }
     } else {
       console.log($("[name=item_code] option:selected").attr('name'));
       console.log(itemqtyCount + " total");
+<<<<<<< HEAD
       $("#needs-validation").submit();
       // return true;
+=======
+      return true
+>>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
     }
   }
 
