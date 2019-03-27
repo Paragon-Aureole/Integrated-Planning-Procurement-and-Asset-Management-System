@@ -48,7 +48,7 @@ class Office extends Model
     /** LOCAL SCOPES (samples)
     public function scopeAdmins($query)
     {
-        return $query->where('type', 'admin');    
+        return $query->where('type', 'admin');
     }
     */
 }

@@ -19,7 +19,7 @@ class PpmpItemCodeController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -41,13 +41,15 @@ class PpmpItemCodeController extends Controller
      * @return \Illuminate\Http\Response
     */
     public function store(PpmpItemCodeRequest $request, $id)
-    {   
+    {
         $input = $request->all();
         $ppmp = Ppmp::findorFail($id);
+
         $add_code = $ppmp->ppmpItemCode()->create([
-            "code_description" => $input['code_description'],
-            "code_type" => $input['code_type'],
+          "code_description" => $input['code_description'],
+          "code_type" => $input['code_type'],
         ]);
+        // dd($add_code);
         return redirect()->back()->with('success', 'PPMP Item Code successfully added');
 
     }
@@ -67,6 +69,7 @@ class PpmpItemCodeController extends Controller
         $ppmp_key = PpmpItemCode::findorFail($ppmpcode_id);
 
         return view('ppmp.ppmp_item_codes.editppmpcodes', compact('ppmp_codeDT','ppmp', 'ppmp_key'));
+
 
     }
 
@@ -88,6 +91,21 @@ class PpmpItemCodeController extends Controller
         return redirect()->back()->with('success', 'PPMP Item Code successfully updated');
     }
 
+    public function updateData(Request $request) 
+    {
+        $code_description = $request->input('code_description');
+        $optionValue = $request->input('optionValue');
+        $codeId = $request->input('codeId');
+
+        // $data = array("code_description"=>$code_description,"code_type"=>$optionValue);
+
+        // $updateData = PpmpItemCode::updateData($codeId, $data);
+        $updateData = PpmpItemCode::where('id', $codeId)->update(['code_description' => $code_description, 'code_type' => $optionValue]);
+
+        return response()->json(['UpdateData'=>$updateData]);
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -101,5 +119,5 @@ class PpmpItemCodeController extends Controller
         return redirect()->back()->with('info', 'PPMP Item Code deleted');
     }
 
-    
+
 }
