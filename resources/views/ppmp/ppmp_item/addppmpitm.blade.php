@@ -27,11 +27,7 @@
               @endforeach
             </select>
             <div class="input-group-append">
-<<<<<<< HEAD
               <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#itemCodeModal">Add Item Code</button>
-=======
-              <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#itemCodeModal">Add Item Code</button> 
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
             </div>
             <div class="invalid-feedback">
               @if ($errors->has('item_code'))
@@ -184,21 +180,11 @@
  <div class="modal" id="itemCodeModal">
   <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
       <!-- Modal Header -->
       <div class="modal-header">
         <h1 class="modal-title">Item Codes</h1>
         <button type="button" class="close" data-dismiss="modal">×</button>
       </div>
-<<<<<<< HEAD
-
-=======
-      
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
       <!-- Modal body -->
       <div class="modal-body">
           <div class="container-fluid">
@@ -210,11 +196,6 @@
                           <h6 class="card-title">
                     Add PPMP Item Code
                     </h6>
-<<<<<<< HEAD
-
-=======
-              
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
                     <form action="{{route('add.ppmpitemcode', $ppmp->id)}}" method="POST" id="needs-validation2" novalidate>
                       {{csrf_field()}}
                       <div class="row">
@@ -222,20 +203,12 @@
                           <input type="text" id="codeId" hidden>
                           <label class="small">Code Description:</label>
                           <input id="descriptionValue" class="form-control form-control-sm {{ $errors->has('code_description') ? 'is-invalid' : '' }}" name="code_description" value="{{ old('code_description') }}" required>
-<<<<<<< HEAD
                           <div class="invalid-feedback">
-=======
-                          <div class="invalid-feedback">  
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
                             @if ($errors->has('code_description'))
                               {{$errors->first('code_description')}}
                             @else
                               Code description is required.
-<<<<<<< HEAD
                             @endif
-=======
-                            @endif  
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
                           </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -245,20 +218,12 @@
                             <option value='2'>Departmental Projects</option>
                             <option value='3'>Projects Chargeable to Other Offices</option> --}}
                           </select>
-<<<<<<< HEAD
                           <div class="invalid-feedback">
-=======
-                          <div class="invalid-feedback">  
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
                             @if ($errors->has('code_type'))
                               {{$errors->first('code_type')}}
                             @else
                               Category is required.
-<<<<<<< HEAD
                             @endif
-=======
-                            @endif  
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
                           </div>
                         </div>
                         <div class="form-group col">
@@ -270,70 +235,38 @@
                     </form>
                     <div class="form-group col">
                       {{-- <button class="btn btn-primary btn-sm" id="submitContent">Submit</button> --}}
-<<<<<<< HEAD
 
                     </div>
 
                   </div>
 
-=======
-                      
-                    </div>
-              
-                  </div>
-              
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
                   <!-- table -->
                   <div class="col-md-8">
                     <h6 class="card-title">Registered PPMP Codes</h6>
                     <div class="table-responsive">
                       @include('ppmp.ppmp_item_codes.ppmpcodesdatatable')
                       {{-- asdasdasd --}}
-<<<<<<< HEAD
                     </div>
-=======
-                    </div>  
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
                   </div>
                  </div>
                </div>
               </div>
-<<<<<<< HEAD
 
               </div>
       </div>
 
-=======
-              
-              </div>
-      </div>
-      
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
       <!-- Modal footer -->
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
       </div>
-<<<<<<< HEAD
-
-=======
-      
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
     </div>
   </div>
 </div>
 
-<<<<<<< HEAD
-
-=======
-	
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
 @endsection
 
 @section('script')
 <script src="{{asset('js/function-script.js')}}"></script>
-<<<<<<< HEAD
 <script src="{{asset('js/ppmp_field_validation.js')}}"></script>
-=======
->>>>>>> 1fe20fc8521c20e038dcea78271ff4dc8f910dd1
 <script src="{{asset('js/editPpmpItem-script.js')}}"></script>
 @endsection

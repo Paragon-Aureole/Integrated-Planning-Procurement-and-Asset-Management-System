@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOutlineOfQuotationsTable extends Migration
+class CreateOutlineItemPricesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateOutlineOfQuotationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('outline_of_quotations', function (Blueprint $table) {
+        Schema::create('outline_item_prices', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->index()->nullable();
-            $table->integer('purchase_request_id')->unsigned()->index()->nullable();
-            $table->string('outline_detail');
-            $table->string('outline_comment');
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreateOutlineOfQuotationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outline_of_quotations');
+        Schema::dropIfExists('outline_item_prices');
     }
 }
