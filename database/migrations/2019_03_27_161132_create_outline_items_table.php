@@ -15,7 +15,14 @@ class CreateOutlineItemsTable extends Migration
     {
         Schema::create('outline_items', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('outline_id')->unsigned()->nullable()->index();
+            $table->integer('pr_item_id')->unsigned()->nullable()->index();
             $table->timestamps();
+        });
+
+        Schema::table('outline_items', function (Blueprint $table) {
+            $table->foreign('outline_id')->references('id')->on('outline_of_quotations')->onDelete('cascade');
+            $table->foreign('pr_item_id')->references('id')->on('purchase_request_items')->onDelete('cascade');
         });
     }
 

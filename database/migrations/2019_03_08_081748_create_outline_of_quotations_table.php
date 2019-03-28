@@ -21,6 +21,13 @@ class CreateOutlineOfQuotationsTable extends Migration
             $table->string('outline_comment');
             $table->timestamps();
         });
+        
+        Schema::table('outline_of_quotations', function($table) {
+            $table->softDeletes();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('purchase_request_id')->references('id')->on('purchase_requests')->onDelete('cascade');
+            
+        });
     }
 
     /**
