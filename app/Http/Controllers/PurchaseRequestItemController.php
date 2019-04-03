@@ -24,7 +24,8 @@ class PurchaseRequestItemController extends Controller
                 $query->where('code_type', '=' ,  1 );
             })->get();
         // dd($ppmp_item);
-        return view('pr.pr_item.addpritem', compact('pr', 'ppmp_item'));
+        // return view('pr.pr_item.addpritem', compact('pr', 'ppmp_item'));
+        return response()->json(['prItemContent'=>$ppmp_item]);
     }
 
     /**
@@ -163,8 +164,10 @@ class PurchaseRequestItemController extends Controller
         $revert_budget = $ppmpitm->ppmp->ppmpBudget()->update(['ppmp_rem_budget' => $balance]);
         if ($revert_ppmp == true && $revert_budget == true) {
             $pr_item->delete();
-            return redirect()->back()->with('info','Item Deleted');
-        }return redirect()->route('view.pritm', $pr_id)->with('danger', 'failed to delete Item');
-         
+            // return redirect()->back()->with('info','Item Deleted');
+            return response()->json(['prItemContent'=>'Item Deleted']);
+        }
+        // return redirect()->route('view.pritm', $pr_id)->with('danger', 'failed to delete Item');
+        return response()->json(['prItemContent'=>'Item not deleted']);
     }
 }

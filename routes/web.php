@@ -111,6 +111,8 @@ Route::get('/pr/delete/{id}', 'PurchaseRequestController@destroy')->name('delete
 Route::get('/pr/print/{id}', 'PurchaseRequestController@printPurchaseRequest')->name('print.pr');
 Route::get('/pr/close/{id}', 'PurchaseRequestController@closePurchaseRequest')->name('close.pr');
 
+// pr Custom routes
+Route::get('/prData', 'PurchaseRequestController@prData');
 
 //AJAX Data Routes
 Route::get('/pr/ppmp/get/{id}', 'PurchaseRequestController@getPpmpData')->name('get.ppmp');
