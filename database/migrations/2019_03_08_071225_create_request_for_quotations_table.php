@@ -23,7 +23,7 @@ class CreateRequestForQuotationsTable extends Migration
         Schema::table('request_for_quotations', function($table) {
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('purchase_request_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('purchase_request_id')->references('id')->on('purchase_requests')->onDelete('cascade');
             
         });
     }

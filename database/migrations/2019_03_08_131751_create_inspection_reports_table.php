@@ -15,7 +15,17 @@ class CreateInspectionReportsTable extends Migration
     {
         Schema::create('inspection_reports', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('purchase_request_id')->unsigned()->nullable()->index();
+            $table->integer('user_id')->unsigned()->nullable()->index();
+            $table->string('invoice_number', 100)->nullable()->default('-');
+            $table->string('property_officer', 100)->nullable()->default('-');
+            $table->string('inspection_officer', 100)->nullable()->default('-');
             $table->timestamps();
+        });
+
+        Schema::table('inspection_reports', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('purchase_request_id')->references('id')->on('purchase_requests')->onDelete('cascade');
         });
     }
 
