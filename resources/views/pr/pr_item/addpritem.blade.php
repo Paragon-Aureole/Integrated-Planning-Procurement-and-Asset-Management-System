@@ -3,7 +3,7 @@
 	@section('breadcrumb')
 	<ol class="breadcrumb p-2">
 		<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-	  <li class="breadcrumb-item active"><a href="{{route('view.pr')}}">Purchase Request</a></li>
+	  <li class="breadcrumb-item active"><a href="{{route('pr.index')}}">Purchase Request</a></li>
 		<li class="breadcrumb-item active" aria-current="page">Add PR Items</li>
 	</ol>
 	@endsection

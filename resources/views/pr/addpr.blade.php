@@ -18,20 +18,15 @@
   		Add Purchase Request
   	  </h6>
 
-	  <form action="{{route('add.pr')}}" method="post" id="needs-validation" novalidate>
+	  <form action="{{route('pr.store')}}" method="post" id="needs-validation" novalidate>
 	  	{{csrf_field()}}
 	  	<div class="row">
         <div class="form-group col-md-12">
           <label for="prCode" class="small">PR Code:</label>
-          <select class="custom-select custom-select-sm {{ $errors->has('pr_code') ? 'is-invalid' : '' }}" name="pr_code" required="required" @role('Department') readonly="readonly" @endrole>
-            <option value="">Select PR Number</option>
-            @foreach($ppmp as $plans)
-              @php
-                $prcode = "PR-".$plans->office->office_code.'-'.$plans->ppmp_year.'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $plans->purchaseRequest->count());
-              @endphp
-            <option value="{{$plans->id}}">{{$prcode}}</option>
-            @endforeach
-          </select>
+          @php
+            $prcode = "PR-".Auth::user()->office->office_code.'-'.date('Y').'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $prDT->count());
+          @endphp
+          <input value="{{$prcode}}" name="pr_code" class="form-control form-control-sm" readonly>
           <div class="invalid-feedback">  
             @if ($errors->has('pr_code'))
               {{$errors->first('pr_code')}}
@@ -40,13 +35,10 @@
             @endif  
           </div>
         </div>
-        <div class="form-group col-md-6">
-          <label for="deptId" class="small">Department:</label>
-          <input id="deptId" class="form-control form-control-sm " type="text" value="" disabled>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="sectionId" class="small">Section:</label>
-          <input id="sectionId" class="form-control form-control-sm " type="text" value="" disabled>
+        <div class="form-group col-md-12">
+          <label for="deptId" class="small">Office:</label>
+          <input id="deptId" class="form-control form-control-sm " type="text" value="{{Auth::user()->office->office_name}}" disabled>
+          <input type="hidden" name="pr_office" value="{{Auth::user()->office->id}}">
         </div>
         <div class="form-group col-md-12">
           <label for="prPurpose" class="small">Purpose:</label>
@@ -100,8 +92,14 @@
         </div>
         <div class="form-group col-md-12">
           <label for="prRequestor" class="small">Requestor:</label>
-          <input class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" type="text"  id="prRequestor" disabled>
-          <input type="hidden" name="pr_requestor" value="{{old('pr_requestor')}}">
+          @php
+              $requestor = App\Signatory::where('office_id', Auth::user()->office->id)
+                          ->where('category', '=', '1')
+                          ->where('is_activated', '=', '1')
+                          ->first();
+          @endphp
+          <input class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" type="text"  value="{{$requestor->signatory_name}}" disabled>
+          <input type="hidden" name="pr_requestor" value="{{$requestor->id}}">
           <div class="invalid-feedback">  
             @if ($errors->has('pr_requestor'))
               {{$errors->first('pr_requestor')}}
@@ -109,10 +107,6 @@
               Requestor is required.
             @endif  
           </div>
-        </div> 
-        <div class="form-group col-md-12">
-          <label for="" class="small">Budget:</label>
-          <input class="form-control form-control-sm " type="text" name="pr_budget" value="" readonly>
         </div> 
         <div class="form-group col">
           <button type="submit" id="prBtn" class="btn btn-primary btn-sm" @hasRole('Admin')disabled@endrole>Submit</button>

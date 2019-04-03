@@ -44,7 +44,6 @@ class ProcurementModeController extends Controller
         $input = $request->all();
         $pm_add = ProcurementMode::create([
             'method_name' => strtolower($input['method_name']),
-            'method_code' => strtolower($input['method_code']),
         ]);
 
         return redirect()->back()->with('success', 'A new procurement method has been added.');

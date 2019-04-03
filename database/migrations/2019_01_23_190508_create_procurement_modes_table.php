@@ -16,7 +16,6 @@ class CreateProcurementModesTable extends Migration
         Schema::create('procurement_modes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('method_name');
-            $table->string('method_code');
             $table->timestamps();
         });
 

@@ -3,7 +3,7 @@
 @section('breadcrumb')
 <ol class="breadcrumb p-2">
 	<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-  <li class="breadcrumb-item active"><a href="{{route('view.pr')}}">Purchase Request</a></li>
+  <li class="breadcrumb-item active"><a href="{{route('pr.index')}}">Purchase Request</a></li>
 	<li class="breadcrumb-item active" aria-current="page">Edit Purchase Request</li>
 </ol>
 @endsection
@@ -18,111 +18,100 @@
    	  <h6 class="card-title">
   		Edit Purchase Request
   	  </h6>
-
-	  <form action="{{route('update.pr', $pr->id)}}" method="post" id="needs-validation" novalidate>
-	  	{{csrf_field()}}
-      {{ method_field('put') }}
-	  	<div class="row">
-        <div class="form-group col-md-12">
-          <label for="prCode" class="small">PR Code:</label>
-          <input type="text" class="form-control form-control-sm"  value="{{old('pr_code', $pr->pr_code)}}" name="pr_code" readonly>
-          <div class="invalid-feedback">  
-            @if ($errors->has('pr_code'))
-              {{$errors->first('pr_code')}}
-            @else
-              PR Code is required.
-            @endif  
+      
+      <form action="{{route('pr.update', $pr->id)}}" method="post" id="needs-validation" novalidate>
+          {{csrf_field()}}
+          {{ method_field('put') }}
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="prCode" class="small">PR Code:</label>
+              <input value="{{old('pr_code', $pr->pr_code)}}" name="pr_code" class="form-control form-control-sm" readonly>
+              <div class="invalid-feedback">  
+                @if ($errors->has('pr_code'))
+                  {{$errors->first('pr_code')}}
+                @else
+                  PR Code is required.
+                @endif  
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <label for="deptId" class="small">Office:</label>
+              <input id="deptId" class="form-control form-control-sm " type="text" value="{{$pr->office->office_name}}" disabled>
+              <input type="hidden" name="pr_office" value="{{old('pr_office', $pr->office_id)}}">
+            </div>
+            <div class="form-group col-md-12">
+              <label for="prPurpose" class="small">Purpose:</label>
+              <textarea id="prPurpose" name="pr_purpose" class="form-control form-control-sm {{ $errors->has('pr_purpose') ? 'is-invalid' : '' }}" rows="3" required>{{old('pr_purpose', $pr->pr_purpose)}}</textarea>
+              <div class="invalid-feedback">  
+                @if ($errors->has('pr_purpose'))
+                  {{$errors->first('pr_purpose')}}
+                @else
+                  Purpose is required.
+                @endif  
+              </div>
+            </div> 
+            <div class="form-group col-md-6">
+              <label for="supplierType" class="small">Supplier Type</label>
+              <select id="suppplierType" class="custom-select custom-select-sm {{ $errors->has('supplier_type') ? 'is-invalid' : '' }}" name="supplier_type" required>
+                  <option value="1" {{ old('supplier_type') == 1 ? 'selected' : '' }}>Canvass</option>
+                  <option value="2" {{ old('supplier_type') == 2 ? 'selected' : '' }}>Government Agency</option>
+                  <option value="3" {{ old('supplier_type') == 3 ? 'selected' : '' }}>Sole Distributor</option>
+              </select>
+              <div class="invalid-feedback">  
+                @if ($errors->has('supplier_type'))
+                  {{$errors->first('supplier_type')}}
+                @else
+                  Supplier Type is required.
+                @endif  
+              </div>
+            </div>
+            <div class="form-group col-md-6" id="supplierId">
+              <label class="small">Supplier</label>
+              <select class="custom-select custom-select-sm {{ $errors->has('supplier_id') ? 'is-invalid' : '' }}" name="supplier_id">
+                <option value="">Select Supplier</option>
+              </select>
+              <div class="invalid-feedback">  
+                @if ($errors->has('supplier_id'))
+                  {{$errors->first('supplier_id')}}
+                @else
+                  Supplier is required.
+                @endif  
+              </div>
+            </div>
+            <div class="form-group col-md-6" id="agencyName">
+              <label class="small">Agency Name</label>
+              <input class="form-control form-control-sm {{ $errors->has('agency_name') ? 'is-invalid' : '' }}" name="agency_name" value="{{old('agency_name')}}">
+              <div class="invalid-feedback">  
+                @if ($errors->has('agency_name'))
+                  {{$errors->first('agency_name')}}
+                @else
+                  Agency Name is required.
+                @endif  
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <label for="prRequestor" class="small">Requestor:</label>
+              @php
+                  $requestor = App\Signatory::where('office_id', Auth::user()->office->id)
+                              ->where('category', '=', '1')
+                              ->where('is_activated', '=', '1')
+                              ->first();
+              @endphp
+              <input class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" type="text"  value="{{$requestor->signatory_name}}" disabled>
+              <input type="hidden" name="pr_requestor" value="{{$requestor->id}}">
+              <div class="invalid-feedback">  
+                @if ($errors->has('pr_requestor'))
+                  {{$errors->first('pr_requestor')}}
+                @else
+                  Requestor is required.
+                @endif  
+              </div>
+            </div> 
+            <div class="form-group col">
+              <button type="submit" id="prBtn" class="btn btn-primary btn-sm" @hasRole('Admin')disabled@endrole>Submit</button>
+            </div>
           </div>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="deptId" class="small">Department:</label>
-          <input id="deptId" class="form-control form-control-sm " type="text"
-          @if($pr->office->office_code == "ICT")
-           value="ADM"
-          @else
-           value="{{$pr->office->office_code}}" 
-          @endif
-          disabled>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="sectionId" class="small">Section:</label>
-          <input id="sectionId" class="form-control form-control-sm " type="text"
-          @if($pr->office->office_code == "ICT")
-           value="ICT"
-          @endif
-          disabled>
-        </div>
-        <div class="form-group col-md-12">
-          <label for="prPurpose" class="small">Purpose:</label>
-          <textarea id="prPurpose" name="pr_purpose" class="form-control form-control-sm {{ $errors->has('pr_purpose') ? 'is-invalid' : '' }}" rows="3" required>{{old('pr_purpose', $pr->pr_purpose)}}</textarea>
-          <div class="invalid-feedback">  
-            @if ($errors->has('pr_purpose'))
-              {{$errors->first('pr_purpose')}}
-            @else
-              Purpose is required.
-            @endif  
-          </div>
-        </div> 
-        <div class="form-group col-md-6">
-          <label for="supplierType" class="small">Supplier Type</label>
-          <select id="suppplierType" class="custom-select custom-select-sm {{ $errors->has('supplier_type') ? 'is-invalid' : '' }}" name="supplier_type" required>
-              <option value="1" {{ old('supplier_type', $pr->supplier_type) == 1 ? 'selected' : '' }}>Canvass</option>
-              <option value="2" {{ old('supplier_type', $pr->supplier_type) == 2 ? 'selected' : '' }}>Government Agency</option>
-              <option value="3" {{ old('supplier_type', $pr->supplier_type) == 3 ? 'selected' : '' }}>Sole Distributor</option>
-          </select>
-          <div class="invalid-feedback">  
-            @if ($errors->has('supplier_type'))
-              {{$errors->first('supplier_type')}}
-            @else
-              Supplier Type is required.
-            @endif  
-          </div>
-        </div>
-        <div class="form-group col-md-6" id="supplierId">
-          <label class="small">Supplier</label>
-          <select class="custom-select custom-select-sm {{ $errors->has('supplier_id') ? 'is-invalid' : '' }}" name="supplier_id">
-            <option value="">Select Supplier</option>
-          </select>
-          <div class="invalid-feedback">  
-            @if ($errors->has('supplier_id'))
-              {{$errors->first('supplier_id')}}
-            @else
-              Supplier is required.
-            @endif  
-          </div>
-        </div>
-        <div class="form-group col-md-6" id="agencyName">
-          <label class="small">Agency Name</label>
-          <input class="form-control form-control-sm {{ $errors->has('agency_name') ? 'is-invalid' : '' }}" name="agency_name" value="{{old('agency_name')}}">
-          <div class="invalid-feedback">  
-            @if ($errors->has('agency_name'))
-              {{$errors->first('agency_name')}}
-            @else
-              Agency Name is required.
-            @endif  
-          </div>
-        </div>
-        <div class="form-group col-md-12">
-          <label for="prRequestor" class="small">Requestor:</label>
-          <input class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" type="text"  id="prRequestor" value="{{$pr->signatory->signatory_name}}"  disabled>
-          <input type="hidden" name="pr_requestor" value="{{old('pr_requestor', $pr->signatory_id)}}">
-          <div class="invalid-feedback">  
-            @if ($errors->has('pr_requestor'))
-              {{$errors->first('pr_requestor')}}
-            @else
-              Requestor is required.
-            @endif  
-          </div>
-        </div> 
-        <div class="form-group col-md-12">
-          <label for="prCode" class="small">Budget:</label>
-          <input class="form-control form-control-sm " type="text" name="pr_budget" value="{{old('pr_budget', number_format($pr->pr_budget, 2))}}" readonly>
-        </div> 
-        <div class="form-group col">
-          <button type="submit" id="prBtn" class="btn btn-warning btn-sm" >Update</button>
-        </div>
-      </div>
-	  </form>
+        </form>
    	</div>
 
    	<!-- table -->

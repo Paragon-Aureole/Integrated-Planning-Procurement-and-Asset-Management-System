@@ -15,7 +15,6 @@ class CreatePurchaseRequestsTable extends Migration
     {
         Schema::create('purchase_requests', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('ppmp_id')->unsigned()->index()->nullable();
             $table->integer('signatory_id')->unsigned()->index()->nullable();
             $table->integer('user_id')->unsigned()->index()->nullable();
             $table->integer('office_id')->unsigned()->index()->nullable();
@@ -36,7 +35,6 @@ class CreatePurchaseRequestsTable extends Migration
 
         Schema::table('purchase_requests', function($table) {
             $table->softDeletes();
-            $table->foreign('ppmp_id')->references('id')->on('ppmps')->onDelete('cascade');
             $table->foreign('signatory_id')->references('id')->on('signatories')->onDelete('cascade');
             $table->foreign('office_id')->references('id')->on('Offices')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

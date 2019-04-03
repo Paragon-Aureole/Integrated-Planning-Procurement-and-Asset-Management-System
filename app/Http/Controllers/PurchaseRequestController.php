@@ -33,37 +33,13 @@ class PurchaseRequestController extends Controller
     {   
 
         $user = Auth::user();
-        if ($user->hasRole('Admin')) {
-            $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
-            $ppmp = Ppmp::where('is_active', '=', 1)->get();
-        }else{
-            $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
-            $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
-        }
+        $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
+        // $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
         
-        return view('pr.addpr',compact('ppmp', 'prDT'));
+        return view('pr.addpr',compact('prDT','user'));
     }
 
-    /**
-     * Display a specific resource.
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getPpmpData($id)
-    {   
-        $ppmp = Ppmp::find($id);
-        $budget = $ppmp->ppmpBudget->ppmp_rem_budget;
-        $requestor = Signatory::where('is_activated', 1)->where('office_id', $ppmp->office_id)->first();
-        if ($ppmp->office->office_code == 'ICT') {
-            $department = 'ADM';
-            $section = 'ICT';
-        }else{
-            $department = $ppmp->office->office_code;
-            $section = "";
-        }
-        return json_encode([$department, $section, $budget, $requestor ]);
-    }
+   
 
     /**
      * Display a specific resource.
@@ -86,17 +62,13 @@ class PurchaseRequestController extends Controller
     public function store(PurchaseRequestRequest $request)
     {
         $input = $request->all();
-
-        $ppmp = Ppmp::findorFail($input['pr_code']);
-        $code = "PR-".$ppmp->office->office_code.'-'.$ppmp->ppmp_year.'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $ppmp->purchaseRequest->count());
-
-        $add_pr = $ppmp->purchaseRequest()->create([
+        $add_pr = PurchaseRequest::create([
             'signatory_id' => $input['pr_requestor'],
             'user_id' => Auth::id(),
-            'office_id' => $ppmp->office_id,
-            'pr_code' => $code,
+            'office_id' => $input['pr_office'],
+            'pr_code' => $input['pr_code'],
             'pr_purpose' => $input['pr_purpose'],
-            'pr_budget' => str_replace(',', '', $input['pr_budget']),
+            'pr_budget' => 0.00,
             'supplier_type' => $input['supplier_type'],
             'agency_name' => $input['agency_name'],
             'supplier_id' => $input['supplier_id'],
@@ -114,15 +86,9 @@ class PurchaseRequestController extends Controller
     public function edit($id)
     {
         $user = Auth::user();
-        if ($user->hasRole('Admin')) {
-            $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
-           
-        }else{
-            $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
-        }
+        $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
         $pr = PurchaseRequest::findorFail($id);
-        
-        return view('pr.editpr',compact('pr', 'prDT'));
+        return view('pr.editpr',compact('pr', 'prDT', 'user'));
     }
 
     /**
@@ -135,20 +101,20 @@ class PurchaseRequestController extends Controller
     public function update(PurchaseRequestRequest $request, $id)
     {
         $input = $request->all();
-        // dd($input);
         $pr = PurchaseRequest::findorFail($id);
         $update_pr = $pr->update([
             'signatory_id' => $input['pr_requestor'],
             'user_id' => Auth::id(),
-            'pr_code' =>  $input['pr_code'],
+            'office_id' => $input['pr_office'],
+            'pr_code' => $input['pr_code'],
             'pr_purpose' => $input['pr_purpose'],
-            'pr_budget' => str_replace(',', '', $input['pr_budget']),
+            'pr_budget' => 0.00,
             'supplier_type' => $input['supplier_type'],
             'agency_name' => $input['agency_name'],
             'supplier_id' => $input['supplier_id'],
         ]);
 
-       return redirect()->route('view.pr')->with('success', 'PR Form succesfully updated!');
+       return redirect()->route('pr.index')->with('success', 'PR Form succesfully updated!');
     }
 
     /**
@@ -208,8 +174,9 @@ class PurchaseRequestController extends Controller
         $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
         return view('pr.closepr',compact('prDT'));
     }
+
     /**
-     * Display a listing of the resource.
+     * Display archives.
      *
      * @return \Illuminate\Http\Response
      */

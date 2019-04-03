@@ -22,7 +22,6 @@ class PurchaseRequest extends Model
      * @var array
      */
     protected $fillable = [
-        'ppmp_id',
         'signatory_id',
         'user_id',
         'office_id',
@@ -40,10 +39,7 @@ class PurchaseRequest extends Model
         'created_inspection',
     ];
 
-    public function ppmp()
-    {
-        return $this->belongsTo(Ppmp::class);
-    }
+
 
     public function user()
     {
