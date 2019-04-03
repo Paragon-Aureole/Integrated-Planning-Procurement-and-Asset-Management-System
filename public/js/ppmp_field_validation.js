@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
   $('#btn_submit').on('click', function (e) {
     e.preventDefault();
@@ -11,18 +10,18 @@ $(document).ready(function () {
   //   console.log("Hello, this thing is running." + bekkel + "is item quantity");
   // });
 
-  function displayBekkel (e) {
-  var itemqtyCount = 0;
-  var itemqtyGoal = $("#itemQty").val();
-  for (var i = 0; i < 12; i++) {
-    var schedule_total = parseInt($("[name='item_schedule[" + i + "]']").val());
-    if (isNaN(schedule_total)) {
-      schedule_total = 0;
-      itemqtyCount += schedule_total;
-    } else {
-      itemqtyCount += schedule_total;
-    }
-    // console.log(schedule_total + "is the schedule_total " + i);
+  function displayBekkel(e) {
+    var itemqtyCount = 0;
+    var itemqtyGoal = $("#itemQty").val();
+    for (var i = 0; i < 12; i++) {
+      var schedule_total = parseInt($("[name='item_schedule[" + i + "]']").val());
+      if (isNaN(schedule_total)) {
+        schedule_total = 0;
+        itemqtyCount += schedule_total;
+      } else {
+        itemqtyCount += schedule_total;
+      }
+      // console.log(schedule_total + "is the schedule_total " + i);
     }
     if ($("[name=item_code] option:selected").attr('name') == 1) {
       if (itemqtyCount != itemqtyGoal) {
