@@ -108,8 +108,6 @@ Route::get('/pr/close/{id}', 'PurchaseRequestController@closePurchaseRequest')->
 Route::get('/pr/dist/get', 'PurchaseRequestController@getDistributorData')->name('get.dist');
 Route::resource('pr', 'PurchaseRequestController');
 
-// pr Custom routes
-Route::get('/prData', 'PurchaseRequestController@prData');
 
 
 //add purchase request items

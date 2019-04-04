@@ -24,7 +24,7 @@
         <div class="form-group col-md-12">
           <label for="prCode" class="small">PR Code:</label>
           @php
-            $prcode = "PR-".Auth::user()->office->office_code.'-'.date('Y').'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $prDT->count());
+            $prcode = "PR-".Auth::user()->office->office_code.'-'.date('Y').'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', App\PurchaseRequest::all()->count());
           @endphp
           <input value="{{$prcode}}" name="pr_code" class="form-control form-control-sm" readonly>
           <div class="invalid-feedback">  
@@ -125,14 +125,14 @@
    </div>
  </div>
 </div>
-</div>
 
+</div>
+	
 @endsection
 
 @section('script')
 <script src="{{asset('js/function-script.js')}}"></script>
 <script src="{{asset('js/pr-script.js')}}"></script>
-<script src="{{asset('js/prFunction-script.js')}}"></script>
 @endsection
 
 
