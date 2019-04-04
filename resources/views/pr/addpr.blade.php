@@ -125,14 +125,14 @@
    </div>
  </div>
 </div>
-
 </div>
-	
+
 @endsection
 
 @section('script')
 <script src="{{asset('js/function-script.js')}}"></script>
 <script src="{{asset('js/pr-script.js')}}"></script>
+<script src="{{asset('js/prFunction-script.js')}}"></script>
 @endsection
 
 

@@ -36,7 +36,27 @@ class PurchaseRequestController extends Controller
         $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
         // $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
         
+<<<<<<< HEAD
         return view('pr.addpr',compact('prDT','user'));
+=======
+        return view('pr.addpr',compact('ppmp', 'prDT'));
+        // return response()->json(['tableContent'=>'sucess']);
+    }
+    
+    public function prData()
+    {
+        $user = Auth::user();
+        if ($user->hasRole('Admin')) {
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
+            $ppmp = Ppmp::where('is_active', '=', 1)->get();
+        }else{
+            $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
+            $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
+        }
+        
+        // return view('pr.addpr',compact('ppmp', 'prDT'));
+        return response()->json(['tableContent'=>$prDT, 'signatoryValue'=>$ppmp]);
+>>>>>>> 9a6d3bb836127d4bb2f6f69a3e3a2f1386a7c892
     }
 
 

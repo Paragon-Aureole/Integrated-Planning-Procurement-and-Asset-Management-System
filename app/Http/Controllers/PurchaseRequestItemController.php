@@ -21,11 +21,20 @@ class PurchaseRequestItemController extends Controller
     public function index($id)
     {
         $pr = PurchaseRequest::findorFail($id);
+<<<<<<< HEAD
         $pr_code = explode("-", $pr->pr_code);
         
         $ppmp= Ppmp::where('office_id', $pr->office_id)->where('ppmp_year', $pr_code[2])->first();
         $ppmp_item = $ppmp->ppmpItem->all();
         return view('pr.pr_item.addpritem', compact('pr', 'ppmp_item'));
+=======
+        $ppmp_item = $pr->ppmp->ppmpItem()->whereHas('ppmpItemCode', function ($query){
+                $query->where('code_type', '=' ,  1 );
+            })->get();
+        // dd($ppmp_item);
+        // return view('pr.pr_item.addpritem', compact('pr', 'ppmp_item'));
+        return response()->json(['prItemContent'=>$ppmp_item]);
+>>>>>>> 9a6d3bb836127d4bb2f6f69a3e3a2f1386a7c892
     }
 
     /**
@@ -132,7 +141,23 @@ class PurchaseRequestItemController extends Controller
      */
     public function destroy($pr_id, $item_id)
     {
+<<<<<<< HEAD
        
          
+=======
+        $pr_item = PurchaseRequestItem::findorFail($item_id); 
+        $ppmpitm = $pr_item->ppmpItem->firstorFail();
+            $stock = $pr_item->item_quantity + $ppmpitm->item_stock;
+            $balance = $pr_item->item_budget + $ppmpitm->ppmp->ppmpBudget->ppmp_rem_budget;
+        $revert_ppmp = $ppmpitm->update(['item_stock' => $stock]);
+        $revert_budget = $ppmpitm->ppmp->ppmpBudget()->update(['ppmp_rem_budget' => $balance]);
+        if ($revert_ppmp == true && $revert_budget == true) {
+            $pr_item->delete();
+            // return redirect()->back()->with('info','Item Deleted');
+            return response()->json(['prItemContent'=>'Item Deleted']);
+        }
+        // return redirect()->route('view.pritm', $pr_id)->with('danger', 'failed to delete Item');
+        return response()->json(['prItemContent'=>'Item not deleted']);
+>>>>>>> 9a6d3bb836127d4bb2f6f69a3e3a2f1386a7c892
     }
 }
