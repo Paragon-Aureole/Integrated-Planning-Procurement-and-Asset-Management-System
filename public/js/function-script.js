@@ -3,6 +3,11 @@ function multiply(){
     $("#itemBudget").val(totalBudget);
 }
 
+function divide(){
+    var bpercost=parseFloat($('#itemBudget').val())/parseFloat($('#itemQty').val());
+    $("#itemCost").val(bpercost);
+}
+
 function addCommas(nStr){
           nStr += '';
           x = nStr.split('.');

@@ -25,9 +25,7 @@
                 <li><a class="dropdown-item" href="#">Supplemental Purchase Request</a></li>
               </ul>
             </li>
-            @hasanyrole('Admin|Secretariat')
-            <li><a class="dropdown-item" href="{{route('viewall.pr')}}">Close Purchase Request</a></li>
-            @endrole
+            <li><a class="dropdown-item" href="{{ url('/pr/view') }}">Close Purchase Request</a></li>
             <li><a class="dropdown-item" href="{{route('archive.pr')}}">Previous Purchase Requests</a></li>
           </ul>
        </li>

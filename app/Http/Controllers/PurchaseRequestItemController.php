@@ -57,7 +57,7 @@ class PurchaseRequestItemController extends Controller
         $ppmp_item = PpmpItem::findorFail($input['item_description']);
         $ppmp_item->item_stock = $ppmp_item->item_stock - $input['item_quantity'];
         $ppmp_item->save();
-
+        
         $pr_item = PurchaseRequestItem::create([
             'ppmp_item_id' => $input['item_description'],
             'item_quantity' => $input['item_quantity'],
@@ -81,12 +81,12 @@ class PurchaseRequestItemController extends Controller
     {   
 
         $pr = PurchaseRequest::findorFail($pr_id);
-        $pr_item = PurchaseRequest::findorFail($item_id);
+        $pr_item = PurchaseRequestItem::findorFail($item_id);
         $pr_code = explode("-", $pr->pr_code);
         $ppmp= Ppmp::where('office_id', $pr->office_id)->where('ppmp_year', $pr_code[2])->first();
         $ppmp_item = $ppmp->ppmpItem->all();
-        dd($ppmp_item);
-        // return view('pr.pr_item.editpritem', compact('pr', 'ppmp_item', 'pr_item'));
+     
+        return view('pr.pr_item.editpritem', compact('pr', 'ppmp_item', 'pr_item'));
     }
 
     /**
@@ -101,9 +101,27 @@ class PurchaseRequestItemController extends Controller
     {
       
         $input = $request->all();
-        // dd($input);
+        $pr_item = PurchaseRequestItem::findorFail($item_id);
        
-        
+        $pr = PurchaseRequest::findorFail($pr_id);
+        $pr->pr_budget = ($pr->pr_budget - $pr_item->item_budget) + $input['item_cpi'];
+        $pr->save();
+
+        $ppmp_item = PpmpItem::findorFail($input['item_description']);
+        $ppmp_item->item_stock = ($ppmp_item->item_stock + $pr_item->item_quantity) - $input['item_quantity'];
+        $ppmp_item->save();
+
+        $pr_item->update([
+            'ppmp_item_id' => $input['item_description'],
+            'item_quantity' => $input['item_quantity'],
+            'item_cost' => $input['item_cpu'],
+            'item_budget' => $input['item_cpi']
+        ]);
+
+        $pr->prItem()->save($pr_item);
+
+        return redirect()->back()->with('success', 'I have successfully shit this');
+
     }
 
     /**

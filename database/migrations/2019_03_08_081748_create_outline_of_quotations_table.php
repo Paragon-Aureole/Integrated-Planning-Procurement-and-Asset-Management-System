@@ -18,7 +18,7 @@ class CreateOutlineOfQuotationsTable extends Migration
             $table->integer('user_id')->unsigned()->index()->nullable();
             $table->integer('purchase_request_id')->unsigned()->index()->nullable();
             $table->string('outline_detail');
-            $table->string('outline_comment');
+            $table->string('outline_comment')->nullable()->default('None');
             $table->timestamps();
         });
         

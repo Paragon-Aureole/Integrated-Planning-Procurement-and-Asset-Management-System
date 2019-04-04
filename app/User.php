@@ -54,10 +54,5 @@ class User extends Authenticatable
         return $this->hasMany(PurchaseRequest::class);
     }
 
-    /** LOCAL SCOPES
-    public function scopeAdmins($query)
-    {
-        return $query->where('type', 'admin');
-    }
-    */
+
 }

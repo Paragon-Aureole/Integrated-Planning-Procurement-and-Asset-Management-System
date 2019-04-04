@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\OutlineOfQuotation;
+use App\PurchaseRequest;
+use Auth;
 use Illuminate\Http\Request;
 
 class OutlineOfQuotationController extends Controller
@@ -14,17 +16,19 @@ class OutlineOfQuotationController extends Controller
      */
     public function index()
     {
-        return view('abstract.addAbstract');
-    }
+        $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
+        ->where('pr_status', 1)
+        ->where('created_rfq', 1)
+        ->where('created_abstract', 0)
+        ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $aoq = OutlineOfQuotation::whereHas('purchaseRequest', function ($query){
+            $query->where('office_id',  Auth::user()->office_id );
+        })->get(); 
+
+        // dd($pr);
+
+        return view('abstract.addAbstract', compact('pr', 'aoq'));
     }
 
     /**
@@ -35,7 +39,19 @@ class OutlineOfQuotationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $pr = PurchaseRequest::findorFail($input['pr_id']);
+        $pr->created_abstract = 1;
+        $pr->save();
+
+        $abstract = OutlineOfQuotation::create([
+            'user_id' => Auth::user()->id,
+            'outline_detail' => $input['outline_detail'],
+        ]);
+
+        $pr->outlineQuotation()->save($abstract);
+        
+        return redirect()->back()->with('success', 'Abstract of Quotation Created, add suppliers');
     }
 
     /**

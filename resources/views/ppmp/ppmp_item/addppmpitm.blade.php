@@ -103,7 +103,7 @@
         </div>
         <div class="form-group col-md-6">
           <label class="small">Estimated Budget per Item:</label>
-          <input id="itemBudget" class="form-control form-control-sm {{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', number_format(0,2)) }}" name="item_budget" readonly="readonly" required="required">
+          <input oninput="divide();" id="itemBudget" class="form-control form-control-sm {{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', number_format(0,2)) }}" name="item_budget" required="required">
           <div class="invalid-feedback">
               @if ($errors->has('item_budget'))
                 {{$errors->first('item_budget')}}

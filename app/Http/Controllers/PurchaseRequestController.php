@@ -39,6 +39,7 @@ class PurchaseRequestController extends Controller
         return view('pr.addpr',compact('prDT','user'));
     }
 
+
    
 
     /**
@@ -162,17 +163,11 @@ class PurchaseRequestController extends Controller
         return $pdf->stream($pr->pr_code.'.pdf');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function viewAll()
-    {   
 
-        $user = Auth::user();
-        $prDT = PurchaseRequest::where('pr_status', '=', 0)->get();
-        return view('pr.closepr',compact('prDT'));
+    public function prView()
+    {   
+        $prDT = PurchaseRequest::where('pr_status', 0)->get();
+        return view('pr.closepr', compact('prDT'));
     }
 
     /**
@@ -196,7 +191,7 @@ class PurchaseRequestController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Close Purchae Request.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\OutlineSupplier;
+use App\OutlineOfQuotation;
 use Illuminate\Http\Request;
 
 class OutlineSupplierController extends Controller
@@ -41,12 +42,14 @@ class OutlineSupplierController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\OutlineSupplier  $outlineSupplier
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(OutlineSupplier $outlineSupplier)
+    public function show($id)
     {
-        //
+        $abstract = OutlineofQuotation::findorFail($id);
+        // dd($abstract);
+        return view('abstract.addSupplier', compact('abstract'));
     }
 
     /**

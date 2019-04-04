@@ -28,4 +28,9 @@ class PurchaseRequestItem extends Model
     {
         return $this->belongsTo(PpmpItem::class);
     }
+
+    public function outlinePrice()
+    {
+        return $this->hasOne(OutlineItemPrice::class);
+    }
 }

@@ -12,6 +12,7 @@
           </thead>
           <tbody>
             @foreach($pr->prItem()->get() as $items)
+            <tr>
               <td>{{$items->id}}</td>
               <td>{{$items->ppmpItem->item_description}}</td>
               <td>{{$items->item_quantity}}</td>
@@ -21,7 +22,8 @@
               <td>
                   <a href="{{route('edit.pritm',[$pr->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                   <a href="{{route('delete.pritm',[$pr->id, $items->id])}}" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
-                </td>
+              </td>
+            </tr>
             @endforeach
           </tbody>
         </table>

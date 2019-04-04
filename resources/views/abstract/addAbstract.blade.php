@@ -27,7 +27,17 @@
             </tr>
           </thead>
           <tbody>
-
+          @foreach ($pr as $pr)
+              <tr>
+                <td>{{$pr->pr_code}}</td>
+                <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
+              <td>
+              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal">
+                    <i class="fas fa-plus"></i>
+                </button>
+              </td>
+              </tr>
+          @endforeach
           </tbody>
         </table>
       </div>
@@ -47,11 +57,61 @@
             </tr>
           </thead>
           <tbody>
-
+          @foreach ($aoq as $aoq)
+              <tr>
+                <td>{{$aoq->id}}</td>
+                <td>{{$aoq->purchaseRequest->pr_code}}</td>
+                <td>{{Carbon\Carbon::parse($aoq->created_at)->format('m-d-y')}}</td>
+              <td>
+              <a href="{{route('supplier.show', $aoq->id)}}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-th-list"></i>
+              </a>
+              <a href="#" class="btn btn-sm btn-warning">
+                    <i class="fas fa-edit"></i>
+              </a>
+              <a href="#" class="btn btn-sm btn-danger">
+                    <i class="fas fa-minus"></i>
+              </a>
+              </td>
+              </tr>
+          @endforeach
           </tbody>
         </table>
    	  </div>
-   	</div>
+     </div>
+     
+     <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h5>Add Abstract of Quotation</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+            <form action="{{route('abstract.store')}}" method="POST">
+                {{ csrf_field() }}
+                <div class="form-group">
+                  <input type ="hidden" name="pr_id" value="">
+                  <label>Procurement Of:</label>
+                  <input name="outline_detail" class="form-control" type="text" required>
+                <div><br/>
+                <div class="form-group">
+                  <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+              </form>
+            </div>
+      
+            
+      
+          </div>
+        </div>
+    </div>
+
    </div>
  </div>
 </div>
@@ -63,10 +123,14 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function() {
-        $('#prDatatable').DataTable({
-            responsive: true,
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
-        });
-    } );
+      var table =  $('#prDatatable').DataTable({
+              responsive: true,
+              "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+      });
+
+      $('#prDatatable tbody').on('click', 'tr', function(){
+        $('[name=pr_id]').val(table.row(this).index()+1);
+      });
+  });
 </script>
 @endsection

@@ -101,12 +101,13 @@ Route::get('/ppmp/{ppmp_id}/item/delete/{id}', 'PpmpItemController@destroy')->na
 
 
 //add purchase reuest
-Route::resource('pr', 'PurchaseRequestController');
-Route::get('/pr/viewall', 'PurchaseRequestController@viewAll')->name('viewall.pr');
+Route::get('/pr/view', 'PurchaseRequestController@prView');
 Route::get('/pr/archive', 'PurchaseRequestController@archive')->name('archive.pr');
 Route::get('/pr/print/{id}', 'PurchaseRequestController@printPurchaseRequest')->name('print.pr');
 Route::get('/pr/close/{id}', 'PurchaseRequestController@closePurchaseRequest')->name('close.pr');
 Route::get('/pr/dist/get', 'PurchaseRequestController@getDistributorData')->name('get.dist');
+Route::resource('pr', 'PurchaseRequestController');
+
 
 
 //add purchase request items
@@ -118,10 +119,13 @@ Route::put('/pr/{pr_id}/item/update/{id}', 'PurchaseRequestItemController@update
 Route::get('/pr/{pr_id}/item/delete/{id}', 'PurchaseRequestItemController@destroy')->name('delete.pritm');
 
 //rfq
+Route::get('rfq/{id}', 'RequestForQuotationController@createRFQ')->name('rfq.createone');
 Route::resource('rfq', 'RequestForQuotationController');
 
 // abstract
 Route::resource('abstract', 'OutlineOfQuotationController');
+//abstractsupplier
+Route::resource('supplier', 'OutlineSupplierController');
 
 // PurchaseOrder
 Route::resource('po', 'PurchaseOrderController');

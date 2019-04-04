@@ -60,6 +60,15 @@ class PurchaseRequest extends Model
         return $this->hasOne(Distributor::class);
     }
 
+    public function rfq()
+    {
+        return $this->hasOne(RequestForQuotation::class);
+    }
+    public function outlineQuotation()
+    {
+        return $this->hasOne(OutlineOfQuotation::class);
+    }
+
     public function prItem()
     {
         return $this->hasMany(PurchaseRequestItem::class);
