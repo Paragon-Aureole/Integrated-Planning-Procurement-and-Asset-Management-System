@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\OutlineSupplier;
-use App\OutlineOfQuotation;
+use App\OutlineItems;
 use Illuminate\Http\Request;
 
-class OutlineSupplierController extends Controller
+class OutlineItemsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,31 +35,27 @@ class OutlineSupplierController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        dd($input);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\OutlineItems  $outlineItems
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(OutlineItems $outlineItems)
     {
-        $abstract = OutlineofQuotation::findorFail($id);
-        $pr_items = $abstract->purchaseRequest->prItem->all();
-        // dd($pr_items);
-        return view('abstract.addSupplier', compact('abstract','pr_items'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\OutlineSupplier  $outlineSupplier
+     * @param  \App\OutlineItems  $outlineItems
      * @return \Illuminate\Http\Response
      */
-    public function edit(OutlineSupplier $outlineSupplier)
+    public function edit(OutlineItems $outlineItems)
     {
         //
     }
@@ -69,10 +64,10 @@ class OutlineSupplierController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\OutlineSupplier  $outlineSupplier
+     * @param  \App\OutlineItems  $outlineItems
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OutlineSupplier $outlineSupplier)
+    public function update(Request $request, OutlineItems $outlineItems)
     {
         //
     }
@@ -80,10 +75,10 @@ class OutlineSupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\OutlineSupplier  $outlineSupplier
+     * @param  \App\OutlineItems  $outlineItems
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OutlineSupplier $outlineSupplier)
+    public function destroy(OutlineItems $outlineItems)
     {
         //
     }
