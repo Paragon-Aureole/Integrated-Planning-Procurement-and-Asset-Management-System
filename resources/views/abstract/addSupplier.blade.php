@@ -122,8 +122,8 @@
                                 @php
                                     $price = $supplierId->outlinePrice()->where('pr_item_id', $pr->id)->first(); 
                                 @endphp
-                                <td>{{$price->final_cpi}}</td>
                                 <td>{{$price->final_cpu}}</td>
+                                <td>{{$price->final_cpi}}</td>
                             @endforeach
                             
                             @for ($i = $countSupplier; $i <= 2; $i++)
