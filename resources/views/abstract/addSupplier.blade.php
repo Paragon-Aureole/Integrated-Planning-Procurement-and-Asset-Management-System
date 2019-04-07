@@ -8,77 +8,107 @@
 @endsection
 
 @section('content')
+@php
+    $allSuppliers = $abstract->outlineSupplier()->get();
+    $querySupplier = $abstract->outlineSupplier()->paginate(3);
+    $countSupplier = $querySupplier->count();
+@endphp
 <div class="container-fluid">
     <div class="card">
         <div class="card-header pt-2 pb- 2"><b>Add Suppliers</b></div>
         <div class="card-body">
-            <form action="#">
+            <form action="{{route('abstract.update', $abstract->id)}}" method="POST">
+                {{ csrf_field() }}
+                {{ method_field('PATCH') }}
                 <div>
                     <label>Purchase Request #</label>
-                    <input value="">
-                </div>
-                <div>
-                    <label>Procurement Of:</label>
-                    <input value="">
-                </div>
-                <div>
-                    <label>Requestor Name:</label>
-                    <input value="">
+                    <input value="{{$abstract->purchaseRequest->pr_code}}" readonly>
                 </div>
                 <div>
                     <label>Requesting Office:</label>
-                    <input value="">
+                    <input value="{{$abstract->purchaseRequest->office->office_name}}">
                 </div>
                 <div>
                     <label>Selected Bidder:</label>
-                    <select>
-                        <option>Selected Bidder</option>
+                    <select name="bid_winner">
+                        @forelse ($allSuppliers as $supp)
+                        <option value="{{$supp->id}}">{{$supp->supplier_name}}</option>
+                        @empty
+                        <option>Add Supplier</option>    
+                        @endforelse
                     </select>
                 </div>
                 <div>
                     <label>Reason:</label>
-                    <select>
-                        <option>Selected Reason</option>
+                    <select name="status_reason">
+                        <option value="0">Lowest Price</option>
+                        <option value="1">Most Responsive</option>
                     </select>
                 </div>
                 <div>
                     <label>Comments:</label>
-                    <textarea></textarea>
-                </div>   
+                    <textarea name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
+                </div>
+                <button type="submit" class="btn btn-sm btn-success">
+                    <i class="fas fa-print"></i>
+                </button>
+            @if ($countSupplier >= 3)
+                <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
+                    <i class="fas fa-plus"></i>
+                </button>
+            @endif
             </form>
-
-            <div>
-                @php
-                    $countSupplier = $abstract->outlineSupplier()->count();
-                @endphp
-                <table class="table-bordered">
+            
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered">
                     <thead>
                         <tr class="text-center">
-                            <th rowspan="4">Particulars</th>
-                            <th rowspan="4">Qty</th>
-                            <th rowspan="4">Unit</th>
-                            @for ($i = $countSupplier; $i <= 2; $i++)
+                            <th rowspan="4" class="w-75">Particulars</th>
+                            <th rowspan="4" class="w-25">Qty</th>
+                            <th rowspan="4" class="w-50">Unit</th>
+                            @foreach ($querySupplier as $action)
                             <th colspan="2">
+                                <button class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </th>
+                            @endforeach
+                            @for ($i = $countSupplier; $i <= 2; $i++)
+                            <th colspan="2" >
                                 <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </th>
-                            @endfor  
-                        </tr>
-                        <tr class="text-center">
-                            @for ($i = $countSupplier; $i <= 2; $i++)
-                        <th colspan="2">Supplier {{$i+1}}</th>
-                            @endfor
-                        </tr>
-                        <tr class="text-center">
-                            @for ($i = $countSupplier; $i <= 2; $i++)
-                            <td colspan="2">Supplier Name</td>
                             @endfor 
                         </tr>
                         <tr class="text-center">
+                  
+                            @foreach ($querySupplier as $indexkey1 => $supplierNo)
+                                <th colspan="2" >Supplier {{$indexkey1+1}}</th> 
+                            @endforeach
                             @for ($i = $countSupplier; $i <= 2; $i++)
-                            <th>Price/Unit</th>
-                            <th>Price/Item</th>
+                                <th colspan="2">Supplier {{$i+1}}</th>
+                            @endfor
+                        </tr>
+                        <tr class="text-center">
+                            @foreach ($querySupplier as $supplierName)
+                                <td colspan="2">{{$supplierName->supplier_name}}</td> 
+                            @endforeach
+                            @for ($i = $countSupplier; $i <= 2; $i++)
+                                <td colspan="2">Supplier Name</td>
+                            @endfor 
+                        </tr>
+                        <tr class="text-center">
+                            @foreach ($querySupplier as $priceHeader)
+                                <th>Price/Unit</th>
+                                <th>Price/Item</th>
+                            @endforeach
+                            @for ($i = $countSupplier; $i <= 2; $i++)
+                                <th class="col-2">Price/Unit</th>
+                                <th class="col-2">Price/Item</th>
                             @endfor  
                         </tr> 
                     </thead>
@@ -88,14 +118,24 @@
                             <td>{{$pr->ppmpItem->item_description}}</td>
                             <td>{{$pr->item_quantity}}</td>
                             <td>{{$pr->ppmpItem->measurementUnit->unit_code}}</td>
+                            @foreach ($querySupplier as $supplierId)
+                                @php
+                                    $price = $supplierId->outlinePrice()->where('pr_item_id', $pr->id)->first(); 
+                                @endphp
+                                <td>{{$price->final_cpi}}</td>
+                                <td>{{$price->final_cpu}}</td>
+                            @endforeach
+                            
                             @for ($i = $countSupplier; $i <= 2; $i++)
-                            <td></td>
-                            <td></td>
-                            @endfor 
+                                <td></td>
+                                <td></td>
+                            @endfor
+                           
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                {{$querySupplier->links()}}
             </div>
         </div>
     </div>
@@ -114,28 +154,32 @@
       
             <!-- Modal body -->
             <div class="modal-body">
-            <form action="{{route('supplier.store')}}" method="POST">
+            <form action="{{route('supplier.store')}}" method="POST" class="needs-validation">
                     {{ csrf_field() }}
+                    <input type="hidden" name="abstract_id" value="{{$abstract->id}}">
                     <div class="form-row">
                         <div class="col">
                             <label class="small">Supplier Name</label>
-                            <input type="text" name="supplier_name" class="form-control form-control-sm">
+                            <input type="text" name="supplier_name" class="form-control form-control-sm" required>
                         </div>
                         <div class="col">
                             <label class="small">Supplier Address</label>
-                            <input type="text" name="supplier_address" class="form-control form-control-sm">
+                            <input type="text" name="supplier_address" class="form-control form-control-sm" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col">
                             <label class="small">Canvasser Name</label>
-                            <input type="text" name="canvasser_name" class="form-control form-control-sm">
+                            <input type="text" name="canvasser_name" class="form-control form-control-sm" required>
                         </div>
                         <div class="col">
                             <label class="small">Canvasser Department</label>
-                            <select class="custom-select custom-select-sm" name="canvasser_dept">
-                                <option>{{$abstract->purchaseRequest->office->office_code}}</option>
-                                <option>GSO</option>
+                            @php
+                                $gso = App\Office::where('office_code', 'GSO')->firstorFail();
+                            @endphp
+                            <select class="custom-select custom-select-sm" name="canvasser_dept" required>
+                                <option value="{{$abstract->purchaseRequest->office_id}}">{{$abstract->purchaseRequest->office->office_name}}</option>
+                                <option value="{{$gso->id}}">{{$gso->office_name}}</option>
                             </select>
                         </div>
                     </div>
@@ -153,21 +197,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($pr_items as $pr)
+                        @foreach ($pr_items as $indexKey => $pr)
                             <tr>
                                 <td>
                                     {{$pr->ppmpItem->item_description}}
-                                    <input type="hidden" name="pr_item_id[]" value="{{$pr->id}}">
+                                    <input type="hidden" name="pr_item_id[]" value="{{$pr->id}}" required>
                                 </td>
                                 <td>
-                                    <input id="itemQty" value="{{$pr->item_quantity}}" class="form-control form-control-sm" disabled>
+                                <input id="itemQty{{$indexKey}}" value="{{$pr->item_quantity}}" class="form-control form-control-sm" disabled>
                                 </td>
                                 <td>{{$pr->ppmpItem->measurementUnit->unit_code}}</td>
                                 <td>
-                                    <input name="unit_price[]" value="" class="form-control form-control-sm">
+                                <input oninput="multiply2({{$indexKey}});" id="itemCost{{$indexKey}}" name="unit_price[]" value="" class="form-control form-control-sm" required>
                                 </td>
                                 <td>
-                                    <input name="item_price[]" value="" class="form-control form-control-sm" readonly>
+                                <input id="itemBudget{{$indexKey}}" name="item_price[]" value="" class="form-control form-control-sm" readonly>
                                 </td>
                             </tr>
                         @endforeach
@@ -180,4 +224,10 @@
           </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+
+<script src="{{asset('js/function-script.js')}}"></script>
+    
 @endsection

@@ -45,10 +45,9 @@ class Office extends Model
         return $this->hasMany(PurchaseRequest::class);
     }
 
-    /** LOCAL SCOPES (samples)
-    public function scopeAdmins($query)
+    public function outlineSupplier()
     {
-        return $query->where('type', 'admin');
+        return $this->hasMany(OutlineSupplier::class, 'canvasser_office', 'id');
     }
-    */
+
 }
