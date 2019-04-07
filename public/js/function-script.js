@@ -1,12 +1,29 @@
 function multiply(){
     var totalBudget=parseFloat($('#itemQty').val())*parseFloat($('#itemCost').val());
-    $("#itemBudget").val(totalBudget);
+    if (isNaN(totalBudget) ) {
+      $("#itemBudget").val('0.00');
+    }else{
+      $("#itemBudget").val(totalBudget.toFixed(2));
+    }
+    
+}
+
+multiply2 = function(id) {
+  var totalPrice=parseFloat($('#itemQty'+ id).val())*parseFloat($('#itemCost' + id).val());
+  if (isNaN(totalPrice) ) {
+    $("#itemBudget" + id).val('0.00');
+  }else{
+    $("#itemBudget" + id).val(totalPrice.toFixed(2));
+  }
+  
 }
 
 function divide(){
     var bpercost=parseFloat($('#itemBudget').val())/parseFloat($('#itemQty').val());
-    $("#itemCost").val(bpercost);
+    $("#itemCost").val(bpercost.toFixed(2));
 }
+
+
 
 function addCommas(nStr){
           nStr += '';

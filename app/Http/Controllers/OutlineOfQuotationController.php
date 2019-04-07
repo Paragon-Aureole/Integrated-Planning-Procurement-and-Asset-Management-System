@@ -80,12 +80,13 @@ class OutlineOfQuotationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\OutlineOfQuotation  $outlineOfQuotation
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OutlineOfQuotation $outlineOfQuotation)
+    public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        dd($input);
     }
 
     /**
