@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\OutlineOfQuotation;
+use App\OutlineSupplier;
 use App\PurchaseRequest;
 use Auth;
 use Illuminate\Http\Request;
@@ -86,7 +87,24 @@ class OutlineOfQuotationController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        dd($input);
+        // dd($input);
+        
+        $outlineOfQuotation = OutlineOfQuotation::findorFail($id);
+        $update = $outlineOfQuotation->update([
+            "outline_comment" => $input['supplier_comments'],
+        //     "code_type" => $input['code_type'],
+        ]);  
+
+        $outlineSupplierId = OutlineSupplier::Where('outline_of_quotation_id', $id)->update(['supplier_status' => '0', 'status_reason' => '0']);
+
+        $outlineSuppliers = OutlineSupplier::findorFail($input['bid_winner']);
+        $updateSupplierWinner = $outlineSuppliers->update([
+            "supplier_status" => '1',
+            "status_reason" => $input['status_reason'],
+        ]);
+
+        // return "SUCCESS";
+        return redirect()->back()->with('success', 'PPMP Item Code successfully updated');
     }
 
     /**

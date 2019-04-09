@@ -129,9 +129,11 @@ Route::resource('supplier', 'OutlineSupplierController');
 
 // PurchaseOrder
 Route::resource('po', 'PurchaseOrderController');
+Route::post('po/store', 'PurchaseOrderController@store')->name('po.store');
 
 // InspectionReport
 Route::resource('ir', 'InspectionReportController');
+Route::post('ir/store', 'InspectionReportController@store')->name('ir.store');
 
 
 //assets

@@ -52,6 +52,8 @@
                 <button type="submit" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i>
                 </button>
+                
+                <button type="submit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
             @if ($countSupplier >= 3)
                 <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
                     <i class="fas fa-plus"></i>
