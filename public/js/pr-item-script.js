@@ -10,7 +10,7 @@ $(document).ready(function() {
                    
 
                     success:function(data) {
-                    	for (var i = 1; i <= data[0]['item_quantity']; i++) {
+                    	for (var i = 1; i <= data[0]['item_stock']; i++) {
                     		$('select[name="item_quantity"]').append('<option value="'+ i +'">' + i + '</option>');
                     	}
                     	$('#itemUnit').val(data[1]);

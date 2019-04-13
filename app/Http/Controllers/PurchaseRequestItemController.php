@@ -54,18 +54,29 @@ class PurchaseRequestItemController extends Controller
         $pr->pr_budget = $pr->pr_budget + $input['item_cpi'];
         $pr->save();
 
-        $ppmp_item = PpmpItem::findorFail($input['item_description']);
-        $ppmp_item->item_stock = $ppmp_item->item_stock - $input['item_quantity'];
-        $ppmp_item->save();
+        // $ppmp_item = PpmpItem::findorFail($input['item_description']);
+        $ppmp_item = PpmpItem::where('id', $input['item_description'])->get();
+
+        foreach ($ppmp_item as $piKey => $piValue) {
+            $answer = $piValue->item_stock - $input['item_quantity'];
+        }
+
+        $stockUpdate = PpmpItem::where('id', $input['item_description'])->update([
+            'item_stock' => $answer
+        ]);
+        
+        // $ppmp_item->item_stock = $ppmp_item->item_stock - $input['item_quantity'];
+        // $ppmp_item->save();
         
         $pr_item = PurchaseRequestItem::create([
+            'purchase_request_id' => $id,
             'ppmp_item_id' => $input['item_description'],
             'item_quantity' => $input['item_quantity'],
             'item_cost' => $input['item_cpu'],
             'item_budget' => $input['item_cpi']
         ]);
 
-        $pr->prItem()->save($pr_item);
+        // $pr->prItem()->save($pr_item);
 
         return redirect()->back()->with('success', 'PR Item Added');
     }

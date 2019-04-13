@@ -21,6 +21,7 @@
         <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
+              <th>ID</th>
               <th>PR Code</th>
               <th>Date Cerated</th>
               <th>Action</th>
@@ -29,10 +30,11 @@
           <tbody>
           @foreach ($pr as $pr)
               <tr>
+                <td style="display: none;">{{$pr->id}}</td>
                 <td>{{$pr->pr_code}}</td>
                 <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
               <td>
-              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal">
+              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal" name="abstractContent" id="abstractContent">
                     <i class="fas fa-plus"></i>
                 </button>
               </td>
@@ -96,7 +98,7 @@
             <form action="{{route('abstract.store')}}" method="POST">
                 {{ csrf_field() }}
                 <div class="form-group">
-                  <input type ="hidden" name="pr_id" value="">
+                  <input type="text" name="pr_id" value="">
                   <label>Procurement Of:</label>
                   <input name="outline_detail" class="form-control" type="text" required>
                 <div><br/>
@@ -125,9 +127,12 @@
               "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
       });
 
-      $('#prDatatable tbody').on('click', 'tr', function(){
-        $('[name=pr_id]').val(table.row(this).index()+1);
-      });
+      table.on('click', 'button#abstractContent', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        $('[name=pr_id]').val(data[0]);
+        console.log(data[0]);
+        
+      })
   });
 </script>
 @endsection

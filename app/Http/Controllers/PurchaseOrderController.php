@@ -45,6 +45,21 @@ class PurchaseOrderController extends Controller
         return view('purchase_order.addPo', compact('pr','oq','os','po','prMode'));
     }
 
+    public function getModalData(Request $request) 
+    {
+        $pr_id = $request->input('pr_id');
+        $oq = OutlineOfQuotation::where('purchase_request_id', $pr_id)->get();
+
+        foreach ($oq as $oqKey => $oqValue) {
+            $os = OutlineSupplier::where('outline_of_quotation_id', $oqValue->id)->get();   
+        }
+
+        $prMode = ProcurementMode::all();
+
+
+        return response()->json(['prId'=>$pr_id, 'oq'=>$oq, 'os'=>$os]);
+    }
+
     public function createRFQ($id)
     {
         $pr = PurchaseRequest::findorFail($id);

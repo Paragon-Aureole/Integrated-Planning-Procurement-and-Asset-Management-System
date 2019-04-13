@@ -40,11 +40,12 @@ class PpmpItemController extends Controller
     	return view('ppmp.ppmp_item.addppmpitm', compact('ppmp_itemDT','ppmp', 'units', 'modes','total','ppmp_codeDT'));  
     }
     
-    public function dataTable()
+    public function dataTable(Request $request)
     {
-        $ppmp = PpmpItemCode::all();
-        // $ppmp_codeDT = $ppmp->get();
-
+        $ppmp_id = $request->input('ppmp_id');
+        // $ppmp = PpmpItemCode::where('ppmp_id', $ppmp_id);
+        $ppmp = PpmpItemCode::where('ppmp_id', $ppmp_id)->get();
+        
         return response()->json(['tableContent'=>$ppmp]);
     }
     /**

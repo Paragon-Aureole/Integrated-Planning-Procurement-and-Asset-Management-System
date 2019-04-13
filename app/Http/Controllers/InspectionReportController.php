@@ -40,6 +40,23 @@ class InspectionReportController extends Controller
         return view('inspection_report.addIr', compact('pr','os','office','po','signatory','ir'));
     }
 
+    public function getModalPoData(Request $request)
+    {
+        $pr_id = $request->input('pr_id');
+        $po = purchaseOrder::where('purchase_request_id', $pr_id)->get();
+        $pr = PurchaseRequest::where('id', $pr_id)->get();
+
+        foreach ($po as $poKey => $poValue) {
+            $os = OutlineSupplier::where('id', $poValue->outline_supplier_id)->get();
+        };
+
+        foreach ($pr as $prKey => $prValue) {
+            $office = Office::where('id', $prValue->office_id)->get();
+        };
+
+        return response()->json(['prId'=>$pr_id, 'po'=>$po, 'os'=>$os, 'office'=>$office]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

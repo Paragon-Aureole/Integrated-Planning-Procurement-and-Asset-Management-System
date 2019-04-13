@@ -21,13 +21,14 @@
         <div class="form-group col-md-12">
           <label class="small">Code:</label>
           <div class="input-group mb-3">
+            <input type="text" id="ppmp_id" value="{{$ppmp->id}}" hidden>
             <select class="custom-select custom-select-sm {{ $errors->has('item_code') ? 'is-invalid' : '' }}" name="item_code" required="required">
               @foreach($ppmp->ppmpItemCode as $codes)
                 <option value="{{$codes->id}}" name="{{$codes->code_type}}" >{{$codes->code_description}}</option>
               @endforeach
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#itemCodeModal">Add Item Code</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#itemCodeModal" name="addItemCode">Add Item Code</button>
             </div>
             <div class="invalid-feedback">
               @if ($errors->has('item_code'))

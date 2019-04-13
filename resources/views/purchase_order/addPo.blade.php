@@ -18,9 +18,10 @@
   		Available Purchase Order
   	  </h6>
       <div class="table-responsive">
-        <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+        <table id="poDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
+              <th>ID</th>
               <th>PR Code</th>
               <th>Date Created</th>
               <th>Action</th>
@@ -30,15 +31,17 @@
             @foreach ($pr as $pr)
               @if ($pr->created_po == '0')
                 <tr>
+                  <td>{{$pr->id}}</td>
                   <td>{{$pr->pr_code}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                   <td>
-                  <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal">
+                  <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal" id="poContent">
                         <i class="fas fa-plus"></i>
                   </button>
                   </td>
                 </tr>
               @else
+              
               @endif
             @endforeach
           </tbody>
@@ -63,7 +66,7 @@
             @foreach ($po as $po)
                 <tr>
                   <td>{{$po->id}}</td>
-                  <td>{{$pr->pr_code}}</td>
+                  <td>{{$po->purchaseRequest->pr_code}}</td>
                   <td>{{Carbon\Carbon::parse($po->created_at)->format('m-d-y')}}</td>
                   <td>
                       <a href="#" class="btn btn-sm btn-secondary">
@@ -100,87 +103,85 @@
               {{ csrf_field() }}
               <div class="row">
                 <div class="col-md-6">
-                  
+
                   @foreach ($oq as $oq)
-                      {{$oq->purchase_request_id}}
-                  @endforeach
-                  
-                  @foreach ($os as $os)
-                      @if ($oq->id == $os->outline_of_quotation_id)
-                          @if ($os->supplier_status == '1')
-                          {{$os->supplier_name}}
+                      @foreach ($os as $os)
+                          @if ($pr->id == $oq->purchase_request_id && $oq->id == $os->outline_of_quotation_id)
+                          
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">Supplier</span>
+                            </div>
+                            
+                                {{-- <input type="text" name="pr_id" value="{{$pr->id}}"> --}}
+                                {{-- <input type="text" name="user_id" value="{{$pr->user_id}}"> --}}
+                                {{-- <input type="text" name="outline_supplier_id" value="{{$os->id}}"> --}}
+                                <input type="text" name="pr_id" value="" hidden>
+                                <input type="text" name="user_id" value="" hidden>
+                                <input type="text" name="outline_supplier_id" value="" hidden>
+
+                                <input type="text" value="" name="supplierName" class="form-control" disabled>
+
+                            </div>
+                            <br>  
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Supplier Address</span>
+                                </div>
+                                <input type="text" name="supplierAddress" value="" class="form-control" disabled>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">TIN Number</span>
+                                </div>
+                                <input type="text" name="tinNumber" class="form-control">
+                            </div>
+                            <br>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <label class="input-group-text">Procurement Mode</label>
+                                </div>
+                                <select class="custom-select" name="modeOfProcurement">
+                                  @foreach ($prMode as $prMode)
+                                    <option value="{{$prMode->id}}">{{$prMode->method_name}}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">Place of Delivery</span>
+                                  </div>
+                                  <input type="text" name="placeOfDelivery" class="form-control">
+                              </div>
+                              <br>  
+                              <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">Date of Delivery</span>
+                                  </div>
+                                  <input type="date" name="dateOfDelivery" class="form-control">
+                              </div>
+                              <br>
+                              <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">Delivery Term</span>
+                                  </div>
+                                  <input type="text" name="deliveryTerm" class="form-control">
+                              </div>
+                              <br>
+                              <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">Payment Term</span>
+                                  </div>
+                                  <input type="text" name="paymentTerm" class="form-control">
+                              </div>
+                          </div>
+                        </div>
                           @endif
-                      @endif
+                      @endforeach
                   @endforeach
-
-                  <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Supplier</span>
-                      </div>
-                      
-                          <input type="text" name="pr_id" value="{{$pr->id}}" hidden>
-                          <input type="text" name="user_id" value="{{$pr->user_id}}" hidden>
-                          <input type="text" name="outline_supplier_id" value="{{$os->id}}" hidden>
-
-                          <input type="text" value="{{$os->supplier_name}}" name="supplierName" class="form-control" disabled>
-
-                  </div>
-                  <br>  
-                  <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Supplier Address</span>
-                      </div>
-                      <input type="text" name="supplierAddress" value="{{$os->supplier_address}}" class="form-control" disabled>
-                  </div>
-                  <br>
-                  <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">TIN Number</span>
-                      </div>
-                      <input type="text" name="tinNumber" class="form-control">
-                  </div>
-                  <br>
-                  <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text">Procurement Mode</label>
-                      </div>
-                      <select class="custom-select" name="modeOfProcurement">
-                        @foreach ($prMode as $prMode)
-                          <option value="{{$prMode->id}}">{{$prMode->method_name}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Place of Delivery</span>
-                        </div>
-                        <input type="text" name="placeOfDelivery" class="form-control">
-                    </div>
-                    <br>  
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Date of Delivery</span>
-                        </div>
-                        <input type="date" name="dateOfDelivery" class="form-control">
-                    </div>
-                    <br>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Delivery Term</span>
-                        </div>
-                        <input type="text" name="deliveryTerm" class="form-control">
-                    </div>
-                    <br>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Payment Term</span>
-                        </div>
-                        <input type="text" name="paymentTerm" class="form-control">
-                    </div>
-                </div>
-              </div>
 
               <input type="submit" value="Submit">
             </form>
@@ -189,16 +190,65 @@
     </div>
   </div>
 </div>
+      
+      
+
 
 @endsection
 
 @section('script')
 <script type="text/javascript">
   $(document).ready(function() {
-        $('#prDatatable').DataTable({
+       var table = $('#poDatatable').DataTable({
             responsive: true,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });
-    } );
+
+        table.on('click', 'button#poContent', function () {
+          var data = table.row( $(this).parents('tr') ).data();
+          // $('[name=pr_id]').val(data[0]);
+          
+
+          getModalContent(data);
+        
+        });
+
+        function getModalContent(data) {
+          var values = {
+            pr_id : data[0]
+          }
+          
+          $.ajax({
+                url: '/getModalData',
+                method: 'get',
+                data: values,
+                success: function ( response ) {
+                    // var updateData = response.updateContent;
+                    console.log(response.prId);
+                    console.log(response.oq[0]);
+                    console.log(response.os[0]);
+
+                    $('[name=pr_id]').empty();
+                    $('[name=user_id]').empty();
+                    $('[name=outline_supplier_id]').empty();
+                    $('[name=supplierName]').empty();
+                    $('[name=supplierAddress]').empty();
+                    
+                    $('[name=pr_id]').val(response.prId);
+                    $('[name=user_id]').val(response.oq[0].user_id);
+                    $('[name=user_id]').val(response.oq[0].user_id);
+                    $('[name=outline_supplier_id]').val(response.os[0].id);
+                    $('[name=supplierName]').val(response.os[0].supplier_name);
+                    $('[name=supplierAddress]').val(response.os[0].supplier_address);
+
+                                   
+                },
+                error: function ( response ){
+                    console.log( response );
+                }
+            }) 
+          
+        }
+    });
 </script>
 @endsection

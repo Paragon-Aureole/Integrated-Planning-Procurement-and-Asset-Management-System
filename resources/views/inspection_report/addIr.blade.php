@@ -21,6 +21,7 @@
         <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
+              <th>ID</th>
               <th>PR Code</th>
               <th>Date Cerated</th>
               <th>Action</th>
@@ -30,10 +31,11 @@
             @foreach ($pr as $pr)
                 @if ($pr->created_inspection == 0)
                 <tr>
+                    <td>{{$pr->id}}</td>
                     <td>{{$pr->pr_code}}</td>
                     <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                     <td>
-                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal">
+                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal" id="poModal">
                           <i class="fas fa-plus"></i>
                     </button>
                     </td>
@@ -101,102 +103,142 @@
           <div class="modal-body">
               <form action="{{route('ir.store')}}" method="POST">
                 {{ csrf_field() }}
-                <div class="row">
-                  <div class="col-md-6">
+                
+                @foreach ($po as $poItem)
+                    @foreach ($os as $osItem)
+                       @if ($pr->id == $poItem->purchase_request_id && $poItem->outline_supplier_id == $osItem->id)
 
-                    @foreach ($po as $po)
-                        @if ($pr->id == $po->purchase_request_id)
-                            @foreach ($os as $os)
-                                @if ($po->outline_supplier_id == $os->id)
-                                    
-                                @endif
-                            @endforeach
-                            {{-- {{$po->purchase_request_id}} --}}
+                       <div class="row">
+                          <div class="col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Supplier</span>
+                                </div>
+                                <input type="text" name="purchase_request_id" value="" hidden>
+                                <input type="text" name="user_id" value="" hidden>
+                                <input type="text" value="" name="supplierName" class="form-control" disabled>
+                            </div>
+                            <br>  
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">PO No.</span>
+                                </div>
+                                <input type="text" value="" name="poNumber" class="form-control" disabled>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Requisioning Office/Dpt</span>
+                                </div>
+                                    <input type="text" value="" name="tinNumber" class="form-control" disabled>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Invoice No.</span>
+                                </div>
+                                <input type="text" name="invoiceNo" class="form-control" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Property Officer</span>
+                                </div>
+                                  <select class="custom-select" name="property_officer">
+                                    @foreach ($signatory as $signatory)
+                                      @if ($signatory->category == 6 || $signatory->category == 7)
+                                        @if ($signatory->is_activated == 1)
+
+                                           <option value="{{$signatory->id}}">{{$signatory->signatory_name}}</option>
+                                           
+                                        @endif  
+                                      @endif
+                                    @endforeach
+                                  </select>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Inspection Officer</span>
+                                </div>
+                                <input type="text" name="inspection_officer" class="form-control" required>
+                            </div>
+                          </div>
+                        </div>
+                                
                         @endif
-                        
-                    @endforeach 
-
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Supplier</span>
-                        </div>
-                        <input type="text" name="purchase_request_id" value="{{$pr->id}}" hidden>
-                        <input type="text" name="user_id" value="{{$pr->user_id}}" hidden>
-                            <input type="text" value="{{$os->supplier_name}}" name="supplierName" class="form-control" disabled>
-                    </div>
-                    <br>  
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">PO No.</span>
-                        </div>
-                        <input type="text" value="{{$po->id}}" name="poNumber" class="form-control" disabled>
-                    </div>
-                    <br>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Requisioning Office/Dpt</span>
-                        </div>
-
-                        @foreach ($office as $office)
-                        @if ($pr->office_id == $office->id)
-                        <input type="text" value="{{$office->office_code}}" name="tinNumber" class="form-control" disabled>
-                            
-                        @endif
-                            
-                        @endforeach
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Invoice No.</span>
-                        </div>
-                        <input type="text" name="invoiceNo" class="form-control" required>
-                    </div>
-                    <br>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Property Officer</span>
-                        </div>
-                          <select class="custom-select" name="property_officer">
-                            @foreach ($signatory as $signatory)
-                              @if ($signatory->category == 6 || $signatory->category == 7)
-                                @if ($signatory->is_activated == 1)
-                                <option value="{{$signatory->id}}">{{$signatory->signatory_name}}</option>
-                                @endif
-                                  
-                              @endif
-                            @endforeach
-                          </select>
-                    </div>
-                    <br>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Inspection Officer</span>
-                        </div>
-                        <input type="text" name="inspection_officer" class="form-control" required>
-                    </div>
-                  </div>
-                </div>
+                    @endforeach                     
+                @endforeach
+                
                 <br>
                 <input type="submit" value="Submit">
               </form>
           </div>
-  
-      </div>
+
     </div>
   </div>
+</div>
 
 @endsection
 
 @section('script')
 <script type="text/javascript">
   $(document).ready(function() {
-        $('#prDatatable').DataTable({
+        var table = $('#prDatatable').DataTable({
             responsive: true,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });
+
+        table.on('click', 'button#poModal', function () {
+          var data = table.row( $(this).parents('tr') ).data();
+          // $('[name=pr_id]').val(data[0]);
+          
+          // console.log(data[0])
+
+          getModalPoContent(data);
+        
+        });
+
+        function getModalPoContent(data){
+          var values = {
+            pr_id : data[0]
+          }
+
+          // console.log(data[0])
+
+          $.ajax({
+                url: '/getModalPoData',
+                method: 'get',
+                data: values,
+                success: function ( response ) {
+                    console.log(response);
+                    console.log(response.po[0]);
+                    console.log(response.os[0]);
+                    console.log(response.office[0]);
+
+                    $('[name=purchase_request_id]').empty();
+                    $('[name=user_id]').empty();
+                    $('[name=poNumber]').empty();
+                    $('[name=supplierName]').empty();
+                    $('[name=tinNumber]').empty();
+                    
+                    $('[name=purchase_request_id]').val(response.prId);
+                    $('[name=user_id]').val(response.po[0].user_id);
+                    $('[name=poNumber]').val(response.po[0].id);
+                    $('[name=supplierName]').val(response.os[0].supplier_name);
+                    $('[name=tinNumber]').val(response.office[0].office_code);
+                    // $('[name=supplierAddress]').val(response.os[0].supplier_address);
+
+                                   
+                },
+                error: function ( response ){
+                    console.log( response );
+                }
+            }) 
+        }
+
+
     } );
 </script>
 @endsection

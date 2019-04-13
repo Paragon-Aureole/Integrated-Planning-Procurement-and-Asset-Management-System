@@ -123,6 +123,7 @@ class PpmpController extends Controller
      */
     public function printPpmp($id)
     {
+        dd('WE FUCKING NEED YOU MASTER LARA');
         $ppmp = Ppmp::findorFail($id);
 
         $options = [

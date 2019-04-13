@@ -10,13 +10,19 @@ $( document ).ready( function () {
     
     var table;
     getTableData();
-    getPpmpData();
+    // getPpmpData();
 
     // get the data from the database
     function getTableData () {
+        var values = {
+            ppmp_id : $('#ppmp_id').val()
+        }
+        console.log(values.ppmp_id);
+        
         $.ajax({
             url: '/dataTable',
             method: 'get',
+            data: values,
             success: function ( response ) {
                 var tableContent = response.tableContent;
                 console.log(tableContent);
@@ -27,21 +33,21 @@ $( document ).ready( function () {
     }
 
     // get the ppmp data
-    function getPpmpData () {
-        $.ajax({
-            url: '/ppmpData',
-            method: 'get',
-            success: function ( response ) {
-                // console.log(response.ppmpData);
-                var users = response.ppmpData;
-                $(users).each(function (userIndex, userValue) {
-                    console.log(userValue.user_id);
+    // function getPpmpData () {
+    //     $.ajax({
+    //         url: '/ppmpData',
+    //         method: 'get',
+    //         success: function ( response ) {
+    //             // console.log(response.ppmpData);
+    //             var users = response.ppmpData;
+    //             $(users).each(function (userIndex, userValue) {
+    //                 console.log(userValue.user_id);
                     
-                })
+    //             })
                                 
-            }
-        })
-    }
+    //         }
+    //     })
+    // }
 
     // populate Dropdown
     function populateDropdown (tableContent) {

@@ -8,6 +8,6 @@
 
 @section('content')
 <div class="container">
-    HELLO
+    WELCOME {{$auth->wholename}}
 </div>
 @endsection
