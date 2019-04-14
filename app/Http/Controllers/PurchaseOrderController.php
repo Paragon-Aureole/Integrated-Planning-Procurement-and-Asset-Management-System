@@ -28,12 +28,12 @@ class PurchaseOrderController extends Controller
         // foreach ($pr as $prKey => $prValue) {
             // $oq = OutlineOfQuotation::where('purchase_request_id', $prValue->id)->get();
         // }
-            $oq = OutlineOfQuotation::all();
+            // $oq = OutlineOfQuotation::all();
         
         // foreach ($oq as $oqKey => $oqValue) {
         //     $os = OutlineSupplier::where('outline_of_quotation_id', $oqValue->id)->get();
         // }     
-        $os = OutlineSupplier::all();
+        // $os = OutlineSupplier::all();
         
         $prMode = ProcurementMode::all();
 
@@ -42,38 +42,18 @@ class PurchaseOrderController extends Controller
         })->get(); 
 
         // return $pr;
-        return view('purchase_order.addPo', compact('pr','oq','os','po','prMode'));
+        return view('purchase_order.addPo', compact('pr','po','prMode'));
     }
 
     public function getModalData(Request $request) 
     {
         $pr_id = $request->input('pr_id');
-        $oq = OutlineOfQuotation::where('purchase_request_id', $pr_id)->get();
 
-        foreach ($oq as $oqKey => $oqValue) {
-            $os = OutlineSupplier::where('outline_of_quotation_id', $oqValue->id)->get();   
-        }
-
-        $prMode = ProcurementMode::all();
-
-
-        return response()->json(['prId'=>$pr_id, 'oq'=>$oq, 'os'=>$os]);
+        $pr = PurchaseRequest::find($pr_id);
+        $abstract = $pr->outlineQuotation->outlineSupplier->where('supplier_status', TRUE)->first();
+        return response()->json(['abstract'=>$abstract, 'pr'=>$pr]);
     }
 
-    public function createRFQ($id)
-    {
-        $pr = PurchaseRequest::findorFail($id);
-        $pr->created_rfq = 1;
-        $pr->save();
-
-        $rfq = RequestForQuotation::create([
-            'user_id' => Auth::user()->id,
-        ]);
-
-        $pr->rfq()->save($rfq);
-
-        return redirect()->back()->with('success', 'RFQ Created');
-    }
 
     /**
      * Show the form for creating a new resource.

@@ -104,20 +104,17 @@
               <div class="row">
                 <div class="col-md-6">
 
-                  @foreach ($oq as $oq)
-                      @foreach ($os as $os)
-                          @if ($pr->id == $oq->purchase_request_id && $oq->id == $os->outline_of_quotation_id)
-                          
+                 
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <span class="input-group-text">Supplier</span>
                             </div>
                             
-                                {{-- <input type="text" name="pr_id" value="{{$pr->id}}"> --}}
-                                {{-- <input type="text" name="user_id" value="{{$pr->user_id}}"> --}}
-                                {{-- <input type="text" name="outline_supplier_id" value="{{$os->id}}"> --}}
+                                {{-- <input type="text" name="pr_id" value="">
+                                <input type="text" name="user_id" value="{{Auth::user()->id}}">
+                                <input type="text" name="outline_supplier_id" value=""> --}}
                                 <input type="text" name="pr_id" value="" hidden>
-                                <input type="text" name="user_id" value="" hidden>
+                                {{-- <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>  --}}
                                 <input type="text" name="outline_supplier_id" value="" hidden>
 
                                 <input type="text" value="" name="supplierName" class="form-control" disabled>
@@ -143,8 +140,8 @@
                                   <label class="input-group-text">Procurement Mode</label>
                                 </div>
                                 <select class="custom-select" name="modeOfProcurement">
-                                  @foreach ($prMode as $prMode)
-                                    <option value="{{$prMode->id}}">{{$prMode->method_name}}</option>
+                                  @foreach ($prMode as $modes)
+                                    <option value="{{$modes->id}}">{{$modes->method_name}}</option>
                                   @endforeach
                                 </select>
                               </div>
@@ -154,7 +151,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text">Place of Delivery</span>
                                   </div>
-                                  <input type="text" name="placeOfDelivery" class="form-control">
+                                  <input type="text" name="placeOfDelivery" class="form-control" required>
                               </div>
                               <br>  
                               <div class="input-group">
@@ -179,9 +176,7 @@
                               </div>
                           </div>
                         </div>
-                          @endif
-                      @endforeach
-                  @endforeach
+        
 
               <input type="submit" value="Submit">
             </form>
@@ -206,7 +201,7 @@
 
         table.on('click', 'button#poContent', function () {
           var data = table.row( $(this).parents('tr') ).data();
-          // $('[name=pr_id]').val(data[0]);
+          $('[name=pr_id]').val(data[0]);
           
 
           getModalContent(data);
@@ -223,23 +218,20 @@
                 method: 'get',
                 data: values,
                 success: function ( response ) {
-                    // var updateData = response.updateContent;
-                    console.log(response.prId);
-                    console.log(response.oq[0]);
-                    console.log(response.os[0]);
+                    var updateData = response.updateContent;
+                    // console.log(response.abstract);
+                    // console.log(response.pr);
+
 
                     $('[name=pr_id]').empty();
-                    $('[name=user_id]').empty();
                     $('[name=outline_supplier_id]').empty();
                     $('[name=supplierName]').empty();
                     $('[name=supplierAddress]').empty();
                     
-                    $('[name=pr_id]').val(response.prId);
-                    $('[name=user_id]').val(response.oq[0].user_id);
-                    $('[name=user_id]').val(response.oq[0].user_id);
-                    $('[name=outline_supplier_id]').val(response.os[0].id);
-                    $('[name=supplierName]').val(response.os[0].supplier_name);
-                    $('[name=supplierAddress]').val(response.os[0].supplier_address);
+                    $('[name=pr_id]').val(response.pr['id']);
+                    $('[name=outline_supplier_id]').val(response.abstract['id']);
+                    $('[name=supplierName]').val(response.abstract['supplier_name']);
+                    $('[name=supplierAddress]').val(response.abstract['supplier_address']);
 
                                    
                 },

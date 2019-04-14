@@ -32,7 +32,9 @@
                     <label>Selected Bidder:</label>
                     <select name="bid_winner">
                         @forelse ($allSuppliers as $supp)
-                        <option value="{{$supp->id}}">{{$supp->supplier_name}}</option>
+                        <option value="{{$supp->id}}" @if ($supp->supplier_status == TRUE)
+                            selected
+                        @endif>{{$supp->supplier_name}}</option>
                         @empty
                         <option>Add Supplier</option>    
                         @endforelse
@@ -41,8 +43,12 @@
                 <div>
                     <label>Reason:</label>
                     <select name="status_reason">
-                        <option value="0">Lowest Price</option>
-                        <option value="1">Most Responsive</option>
+                        <option value="0" @if ($supp->status_reason == TRUE)
+                            selected
+                        @endif>Lowest Price</option>
+                        <option value="1" @if ($supp->status_reason == FALSE)
+                            selected
+                        @endif>Most Responsive</option>
                     </select>
                 </div>
                 <div>
