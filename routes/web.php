@@ -141,3 +141,6 @@ Route::get('/getModalPoData', 'InspectionReportController@getModalPoData');
 //assets
 Route::resource('assets', 'assetController');
 Route::get('/showDetails', 'assetController@showDetails');
+
+
+Route::resource('distribution', 'assetDistributionFormCreatorController');
