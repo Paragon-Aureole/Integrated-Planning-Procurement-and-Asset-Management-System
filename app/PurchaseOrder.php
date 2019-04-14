@@ -28,4 +28,11 @@ class PurchaseOrder extends Model
     {
         return $this->belongsTo(PurchaseRequest::class);
     }
+
+    public function asset()
+    {
+        return $this->hasMany(asset::class);
+    }
+
+    
 }

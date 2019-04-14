@@ -15,4 +15,9 @@ class asset extends Model
 //     return 'details';
 // }
 
+ public function purchaseOrder()
+    {
+        return $this->belongsTo(PurchaseOrder::class);
+    }
+
 }

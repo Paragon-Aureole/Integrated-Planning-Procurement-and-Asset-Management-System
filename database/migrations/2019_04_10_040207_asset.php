@@ -15,13 +15,15 @@ class Asset extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('PO_id');
+			$table->integer('purchase_order_id')->unsigned()->nullable()->index();
 			$table->string('details');
 			$table->string('amount');
 			$table->boolean('isSup');
 			$table->boolean('isICS');
 			$table->boolean('isPAR');
             $table->timestamps();
+
+            $table->foreign('purchase_order_id')->references('id')->on('purchase_orders')->onDelete('cascade');
         });
     }
 
