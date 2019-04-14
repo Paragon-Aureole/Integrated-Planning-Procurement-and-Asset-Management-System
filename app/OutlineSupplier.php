@@ -26,6 +26,11 @@ class OutlineSupplier extends Model
         return $this->hasMany(OutlineItemPrice::class);
     }
 
+    public function purchaseOrder()
+    {
+        return $this->hasOne(PurchaseOrder::class);
+    }
+
     public function office()
     {
         return $this->belongsTo('App\Office', 'canvasser_office', 'id');

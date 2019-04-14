@@ -7,6 +7,7 @@ use App\PurchaseRequest;
 use App\OutlineSupplier;
 use App\OutlineOfQuotation;
 use App\ProcurementMode;
+use App\asset;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -75,6 +76,10 @@ class PurchaseOrderController extends Controller
     {
         $input = $request->all();
         // dd($input);
+        
+        $pr = PurchaseRequest::findorFail($input['pr_id']);
+        $pr->created_po = 1;
+        $pr->save();
 
         $po = PurchaseOrder::create([
             'purchase_request_id' => $input['pr_id'],
@@ -87,12 +92,22 @@ class PurchaseOrderController extends Controller
             'delivery_term' => $input['deliveryTerm'],
             'payment_term' => $input['paymentTerm'],
         ]);
-        $po->save();
 
-        $pr = PurchaseRequest::findorFail($input['pr_id']);
-        $pr->created_po = 1;
-        $pr->save();
+        $items = $po->outlineSupplier->outlinePrice()->get();
+        foreach ($items as $key => $poItems) {
+            $asset = asset::create([
+            'details' => $poItems->prItem->ppmpItem->item_description,
+            'amount' => $poItems->final_cpi,
+            'item_quantity'=>$poItems->prItem->item_quantity,
+            ]);
+            $po->asset()->save($asset);
+        }
+        
 
+        // 
+        // $pr->purchaseOrder()->save($po);
+
+        
         return redirect()->back()->with('success', 'Purchase Order Created!');
     }
 

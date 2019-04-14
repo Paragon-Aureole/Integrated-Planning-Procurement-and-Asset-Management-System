@@ -68,6 +68,11 @@ class PurchaseRequest extends Model
     {
         return $this->hasOne(OutlineOfQuotation::class);
     }
+    
+    public function purchaseOrder()
+    {
+        return $this->hasOne(PurchaseOrder::class);
+    }
 
     public function prItem()
     {

@@ -19,4 +19,8 @@ class ProcurementMode extends Model
     {
         return $this->hasMany(PpmpItem::class);
     }
+    public function purchaseOrder()
+    {
+        return $this->hasMany(PurchaseOrder::class);
+    }
 }

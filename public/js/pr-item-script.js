@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 		 $('#itemDesc').on('change', function(){
+            $('select[name="item_quantity"]').empty()
             var itemId = $(this).val();
             if(itemId) {
                 $.ajax({

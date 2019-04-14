@@ -27,34 +27,22 @@ class InspectionReportController extends Controller
         ->where('created_po', 1)
         ->get();
 
-        // $oq = OutlineOfQuotation::all();
-        $os = OutlineSupplier::all();
-        $office = Office::all();
-        $po = purchaseOrder::all();
+
         $signatory = Signatory::all();
 
         $ir = InspectionReport::whereHas('purchaseRequest', function ($query){
             $query->where('office_id',  Auth::user()->office_id );
         })->get();
 
-        return view('inspection_report.addIr', compact('pr','os','office','po','signatory','ir'));
+        return view('inspection_report.addIr', compact('pr','signatory','ir'));
     }
 
     public function getModalPoData(Request $request)
     {
         $pr_id = $request->input('pr_id');
-        $po = purchaseOrder::where('purchase_request_id', $pr_id)->get();
-        $pr = PurchaseRequest::where('id', $pr_id)->get();
-
-        foreach ($po as $poKey => $poValue) {
-            $os = OutlineSupplier::where('id', $poValue->outline_supplier_id)->get();
-        };
-
-        foreach ($pr as $prKey => $prValue) {
-            $office = Office::where('id', $prValue->office_id)->get();
-        };
-
-        return response()->json(['prId'=>$pr_id, 'po'=>$po, 'os'=>$os, 'office'=>$office]);
+        $pr = PurchaseRequest::find($pr_id);
+        $po = $pr->purchaseOrder;
+        return response()->json(['po'=>$po->id, 'supplier_name'=>$po->outlineSupplier->supplier_name, 'office'=>$pr->office->office_name]);
     }
 
     /**

@@ -43,12 +43,19 @@
                 <div>
                     <label>Reason:</label>
                     <select name="status_reason">
-                        <option value="0" @if ($supp->status_reason == TRUE)
-                            selected
-                        @endif>Lowest Price</option>
-                        <option value="1" @if ($supp->status_reason == FALSE)
-                            selected
-                        @endif>Most Responsive</option>
+                        <option value="0"
+                        @foreach ($allSuppliers as $chosenSupplier)
+                            @if ($chosenSupplier->supplier_status == 1 &&$chosenSupplier->status_reason == 0)
+                                selected
+                            @endif 
+                        @endforeach>Lowest Price</option>
+                        <option value="1"
+                        @foreach ($allSuppliers as $chosenSupplier)
+                            @if ($chosenSupplier->supplier_status == 1 &&$chosenSupplier->status_reason == 1)
+                                selected
+                            @endif 
+                        @endforeach
+                        >Most Responsive</option>
                     </select>
                 </div>
                 <div>

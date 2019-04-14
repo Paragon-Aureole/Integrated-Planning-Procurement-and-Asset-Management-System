@@ -29,6 +29,16 @@ class PurchaseOrder extends Model
         return $this->belongsTo(PurchaseRequest::class);
     }
 
+    public function outlineSupplier()
+    {
+        return $this->belongsTo(OutlineSupplier::class);
+    }
+
+    public function procurementMode()
+    {
+        return $this->belongsTo(ProcurementMode::class);
+    }
+
     public function asset()
     {
         return $this->hasMany(asset::class);

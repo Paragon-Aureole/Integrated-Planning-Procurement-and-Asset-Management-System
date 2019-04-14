@@ -98,7 +98,7 @@
             <form action="{{route('abstract.store')}}" method="POST">
                 {{ csrf_field() }}
                 <div class="form-group">
-                  <input type="text" name="pr_id" value="">
+                  <input type="hidden" name="pr_id" value="">
                   <label>Procurement Of:</label>
                   <input name="outline_detail" class="form-control" type="text" required>
                 <div><br/>
