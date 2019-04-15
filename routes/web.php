@@ -143,6 +143,10 @@ Route::get('/getModalPoData', 'InspectionReportController@getModalPoData');
 //assets
 Route::resource('assets', 'assetController');
 Route::get('/showDetails', 'assetController@showDetails');
+Route::get('/printPar', 'assetController@printPar');
+Route::get('/printIcs', 'assetController@printIcs');
+Route::get('/printVehicle', 'assetController@printVehicle');
+Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 
 
 Route::resource('distribution', 'assetDistributionFormCreatorController');

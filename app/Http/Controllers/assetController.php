@@ -10,6 +10,8 @@ use Auth;
 use App\Http\Requests\PurchaseRequestItemRequest;
 use Illuminate\Http\Request;
 use App\asset;
+use PDF;
+use App;
 
 class assetController extends Controller
 {
@@ -189,4 +191,60 @@ class assetController extends Controller
     //     return view('assets.listRegisteredPOItems',compact('fetchedData'));
 
     // }
+
+    public function printPar()
+    {
+        // return view('assets.par.printPAR');
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.par.printPAR')->setPaper('Folio', 'landscape');
+        return $pdf->stream('PAR.pdf');
+    }
+
+    public function printIcs()
+    {
+        // return view('assets.par.printPAR');
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.ics.printICS')->setPaper('Folio', 'landscape');
+        return $pdf->stream('ICS.pdf');
+    }
+
+    public function printVehicle()
+    {
+        // return view('assets.par.printPAR');
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.data_capturing.vehicle.printvehicle')->setPaper('Folio', 'landscape');
+        return $pdf->stream('VEHICLE.pdf');
+    }
+
+    public function printOfficeAssets()
+    {
+        // return view('assets.par.printPAR');
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets')->setPaper('Folio', 'landscape');
+        return $pdf->stream('VEHICLE.pdf');
+    }
 }
