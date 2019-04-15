@@ -8,6 +8,8 @@ use App\PurchaseOrder;
 use App\OutlineSupplier;
 use App\Signatory;
 use App\Office;
+use Carbon\Carbon;
+use PDF;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -26,7 +28,6 @@ class InspectionReportController extends Controller
         ->where('created_abstract', 1)
         ->where('created_po', 1)
         ->get();
-
 
         $signatory = Signatory::all();
 
@@ -103,6 +104,38 @@ class InspectionReportController extends Controller
     public function edit(InspectionReport $inspectionReport)
     {
         //
+    }
+
+    /**
+     * Print the AIR/RIS in PDF Form.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function printAIR($id)
+    {
+        $ir = InspectionReport::findorFail($id);
+        $date   = Carbon::parse($ir->created_at);
+        $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$ir->purchaseRequest->pr_code;
+        $options = [
+            "footer-right" => "Page [page] of [topage]",
+            "footer-font-size" => 6,
+            'margin-top'    => 10,
+            'margin-right'  => 15,
+            'margin-bottom' => 15,
+            'margin-left'   => 15,
+            'page-size' => 'A4',
+            'orientation' => 'portrait',
+            "footer-left" => $created_code
+        ];
+
+        $pdf = PDF::loadView('inspection_report.printAIR', compact('ir','date','created_code'));
+
+        foreach ($options as $margin => $value) {
+            $pdf->setOption($margin, $value);
+        }
+
+        return $pdf->stream('AIR-'.$ir->purchaseRequest->pr_code.'.pdf');
     }
 
     /**

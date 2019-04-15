@@ -150,7 +150,7 @@
                     @endforeach
                     </tbody>
                 </table>
-                {{$querySupplier->links()}}
+                {{$querySupplier->links("pagination::bootstrap-4")}}
             </div>
         </div>
     </div>

@@ -33,7 +33,7 @@ class PurchaseRequestController extends Controller
     {   
 
         $user = Auth::user();
-        $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
+        $prDT = PurchaseRequest::where('office_id' , $user->office_id)->get();
         // $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
         
         return view('pr.addpr',compact('prDT','user'));

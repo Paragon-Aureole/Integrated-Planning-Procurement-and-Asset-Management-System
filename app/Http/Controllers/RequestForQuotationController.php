@@ -81,7 +81,7 @@ class RequestForQuotationController extends Controller
         foreach ($options as $margin => $value) {
             $pdf->setOption($margin, $value);
         }
-        return $pdf->stream('RFQ'.$rfq->purchaseRequest->pr_code.'.pdf');
+        return $pdf->stream('RFQ-'.$rfq->purchaseRequest->pr_code.'.pdf');
     }
 
     /**

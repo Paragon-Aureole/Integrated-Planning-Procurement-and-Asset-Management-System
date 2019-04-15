@@ -7,9 +7,13 @@ use App\PurchaseRequest;
 use App\OutlineSupplier;
 use App\OutlineOfQuotation;
 use App\ProcurementMode;
+use App\Signatory;
 use App\asset;
+use App\Ppmp;
 use Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use PDF;
 
 class PurchaseOrderController extends Controller
 {
@@ -25,17 +29,7 @@ class PurchaseOrderController extends Controller
         ->where('created_rfq', 1)
         ->where('created_abstract', 1)
         ->get();
-
-        // foreach ($pr as $prKey => $prValue) {
-            // $oq = OutlineOfQuotation::where('purchase_request_id', $prValue->id)->get();
-        // }
-            // $oq = OutlineOfQuotation::all();
-        
-        // foreach ($oq as $oqKey => $oqValue) {
-        //     $os = OutlineSupplier::where('outline_of_quotation_id', $oqValue->id)->get();
-        // }     
-        // $os = OutlineSupplier::all();
-        
+  
         $prMode = ProcurementMode::all();
 
         $po = PurchaseOrder::whereHas('purchaseRequest', function ($query){
@@ -81,8 +75,8 @@ class PurchaseOrderController extends Controller
         $pr->created_po = 1;
         $pr->save();
 
+
         $po = PurchaseOrder::create([
-            'purchase_request_id' => $input['pr_id'],
             'user_id' => Auth::user()->id,
             'outline_supplier_id' => $input['outline_supplier_id'],
             'supplier_tin' => $input['tinNumber'],
@@ -91,6 +85,12 @@ class PurchaseOrderController extends Controller
             'delivery_date' => $input['dateOfDelivery'],
             'delivery_term' => $input['deliveryTerm'],
             'payment_term' => $input['paymentTerm'],
+        ]);
+
+        $ppmp = Ppmp::where('ppmp_year', Carbon::parse($po->created_at)->Format('Y'))->first();
+        $budget = $ppmp->ppmpBudget->ppmp_est_budget - $po->outlineSupplier->outlinePrice()->sum('final_cpi');
+        $update_budget = $ppmp->ppmpBudget->update([
+            'ppmp_rem_budget' => $budget
         ]);
 
         $items = $po->outlineSupplier->outlinePrice()->get();
@@ -103,12 +103,50 @@ class PurchaseOrderController extends Controller
             $po->asset()->save($asset);
         }
         
-
-        // 
-        // $pr->purchaseOrder()->save($po);
+        $pr->purchaseOrder()->save($po);
 
         
         return redirect()->back()->with('success', 'Purchase Order Created!');
+    }
+
+    /**
+     * Print Purchase order Form in PDF Format.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function printPO($id)
+    {
+        $signatory = Signatory::where(['category' => 4, 'is_activated'=>TRUE])->firstorFail();
+        $purchase_order = PurchaseOrder::findorFail($id);
+        if ($purchase_order->purchaseRequest->supplier_type == 2) {
+            $query = $purchase_order->purchaseRequest->prItem()->chunk(15);
+            $grand_total = 0;
+        }else {
+            $query = $purchase_order->outlineSupplier->outlinePrice->chunk(15);
+            $grand_total = $purchase_order->outlineSupplier->outlinePrice()->sum('final_cpi');
+        }
+        $date   = Carbon::parse($purchase_order->created_at);
+        $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$purchase_order->purchaseRequest->pr_code;
+        $options = [
+            "footer-right" => "Page [page] of [topage]",
+            "footer-font-size" => 6,
+            'margin-top'    => 5,
+            'margin-right'  => 10,
+            'margin-bottom' => 6,
+            'margin-left'   => 10,
+            'page-size' => 'A4',
+            'orientation' => 'landscape',
+            "footer-left" => $created_code
+        ];
+
+        $pdf = PDF::loadView('purchase_order.printPo',compact('purchase_order', 'date', 'query', 'grand_total', 'signatory'));
+
+        foreach ($options as $margin => $value) {
+            $pdf->setOption($margin, $value);
+        }
+
+        return $pdf->stream('PO-'.$purchase_order->purchaseRequest->pr_code.'.pdf');
     }
 
     /**

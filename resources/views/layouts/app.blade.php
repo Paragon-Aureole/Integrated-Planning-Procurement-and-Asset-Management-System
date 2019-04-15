@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{asset('css/bootstrap4.min.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('css/app.css')}}"> --}}
     <link rel="stylesheet" type="text/css" href="{{asset('css/all.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/datatables.css')}}">
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
@@ -38,6 +39,7 @@
   <!--Scripts-->
   <script src="{{asset('js/datatables.js')}}"></script>
   <script src="{{asset('js/popper.js')}}"></script>
+  {{-- <script src="{{asset('js/app.js')}}"></script> --}}
   <script src="{{asset('js/bootstrap4.min.js')}}"></script>
   <script src="{{asset('js/validation-form.js')}}"></script>
   <script type="text/javascript">

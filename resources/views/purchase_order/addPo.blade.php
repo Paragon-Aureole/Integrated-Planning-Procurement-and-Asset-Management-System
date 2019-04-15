@@ -29,7 +29,7 @@
           </thead>
           <tbody>
             @foreach ($pr as $pr)
-              @if ($pr->created_po == '0')
+              @if ($pr->created_po == '0' && $pr->outlineQuotation->outlineSupplier()->where('supplier_status', TRUE)->count() > 0)
                 <tr>
                   <td>{{$pr->id}}</td>
                   <td>{{$pr->pr_code}}</td>
@@ -69,7 +69,7 @@
                   <td>{{$po->purchaseRequest->pr_code}}</td>
                   <td>{{Carbon\Carbon::parse($po->created_at)->format('m-d-y')}}</td>
                   <td>
-                      <a href="#" class="btn btn-sm btn-secondary">
+                      <a href="{{route('po.print', $po->id)}}" target="_blank" class="btn btn-sm btn-secondary">
                         <i class="fas fa-print"></i>
                       </a>
                       <a href="#" class="btn btn-sm btn-danger">
@@ -113,11 +113,11 @@
                                 {{-- <input type="text" name="pr_id" value="">
                                 <input type="text" name="user_id" value="{{Auth::user()->id}}">
                                 <input type="text" name="outline_supplier_id" value=""> --}}
-                                <input type="text" name="pr_id" value="" hidden>
+                                <input type="text" name="pr_id" value="" hidden required>
                                 {{-- <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>  --}}
-                                <input type="text" name="outline_supplier_id" value="" hidden>
+                                <input type="text" name="outline_supplier_id" value="" hidden required>
 
-                                <input type="text" value="" name="supplierName" class="form-control" disabled>
+                                <input type="text" value="" name="supplierName" class="form-control" disabled required>
 
                             </div>
                             <br>  
@@ -125,7 +125,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text">Supplier Address</span>
                                 </div>
-                                <input type="text" name="supplierAddress" value="" class="form-control" disabled>
+                                <input type="text" name="supplierAddress" value="" class="form-control" disabled required>
                             </div>
                             <br>
                             <div class="input-group">

@@ -110,7 +110,7 @@ class OutlineOfQuotationController extends Controller
             $pdf->setOption($margin, $value);
         }
 
-        return $pdf->stream('BEKKEL.pdf');
+        return $pdf->stream('AOQ-'.$abstract->purchaseRequest->pr_code.'.pdf');
     }
 
     /**

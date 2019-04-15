@@ -130,23 +130,28 @@ Route::resource('abstract', 'OutlineOfQuotationController');
 Route::resource('supplier', 'OutlineSupplierController');
 
 // PurchaseOrder
-Route::resource('po', 'PurchaseOrderController');
 Route::post('po/store', 'PurchaseOrderController@store')->name('po.store');
 Route::get('/getModalData', 'PurchaseOrderController@getModalData');
+Route::get('po/print/{id}', 'PurchaseOrderController@printPO')->name('po.print');
+Route::resource('po', 'PurchaseOrderController');
+
 
 // InspectionReport
-Route::resource('ir', 'InspectionReportController');
 Route::post('ir/store', 'InspectionReportController@store')->name('ir.store');
+Route::get('ir/print/{id}', 'InspectionReportController@printAIR')->name('ir.print');
 Route::get('/getModalPoData', 'InspectionReportController@getModalPoData');
+Route::resource('ir', 'InspectionReportController');
+
 
 
 //assets
-Route::resource('assets', 'assetController');
 Route::get('/showDetails', 'assetController@showDetails');
 Route::get('/printPar', 'assetController@printPar');
 Route::get('/printIcs', 'assetController@printIcs');
 Route::get('/printVehicle', 'assetController@printVehicle');
 Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
+Route::resource('assets', 'assetController');
+
 
 
 Route::resource('distribution', 'assetDistributionFormCreatorController');

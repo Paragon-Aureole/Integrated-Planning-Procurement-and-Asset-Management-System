@@ -74,6 +74,11 @@ class PurchaseRequest extends Model
         return $this->hasOne(PurchaseOrder::class);
     }
 
+    public function acceptanceInspection()
+    {
+        return $this->hasOne(InspectionReport::class);
+    }
+
     public function prItem()
     {
         return $this->hasMany(PurchaseRequestItem::class);
