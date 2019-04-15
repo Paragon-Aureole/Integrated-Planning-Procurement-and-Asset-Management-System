@@ -42,7 +42,8 @@ class InspectionReportController extends Controller
         $pr_id = $request->input('pr_id');
         $pr = PurchaseRequest::find($pr_id);
         $po = $pr->purchaseOrder;
-        return response()->json(['po'=>$po->id, 'supplier_name'=>$po->outlineSupplier->supplier_name, 'office'=>$pr->office->office_name]);
+        $user_id = Auth::user()->id;
+        return response()->json(['user_id'=>$user_id,'pr_id'=>$pr_id,'po'=>$po->id, 'supplier_name'=>$po->outlineSupplier->supplier_name, 'office'=>$pr->office->office_name]);
     }
 
     /**
@@ -71,9 +72,9 @@ class InspectionReportController extends Controller
             'user_id' => Auth::user()->id,
             'invoice_number' => $input['invoiceNo'],
             'property_officer' => $input['property_officer'],
-            'inspection_officer' => $input['inspection_officer'],
+            'inspection_officer' => $input['inspection_officer']
         ]);
-        $ir->save();
+        // $ir->save();
 
         $pr = PurchaseRequest::findorFail($input['purchase_request_id']);
         $pr->created_inspection = 1;

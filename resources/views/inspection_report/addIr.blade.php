@@ -69,7 +69,7 @@
                 @foreach ($ir as $ir)
                 <tr>
                   <td>{{$ir->id}}</td>
-                  <td>{{$pr->pr_code}}</td>
+                  <td>{{$ir->purchaseRequest->pr_code}}</td>
                   <td>{{Carbon\Carbon::parse($ir->created_at)->format('m-d-y')}}</td>
                   <td>
                     <a href="#" class="btn btn-sm btn-secondary">
@@ -211,22 +211,19 @@
         data: values,
         success: function (response) {
           console.log(response);
-          // console.log(response.po[0]);
-          // console.log(response.os[0]);
-          // console.log(response.office[0]);
 
-          // $('[name=purchase_request_id]').empty();
-          // $('[name=user_id]').empty();
-          // $('[name=poNumber]').empty();
-          // $('[name=supplierName]').empty();
-          // $('[name=tinNumber]').empty();
+          $('[name=purchase_request_id]').empty();
+          $('[name=user_id]').empty();
+          $('[name=poNumber]').empty();
+          $('[name=supplierName]').empty();
+          $('[name=tinNumber]').empty();
 
-          // $('[name=purchase_request_id]').val(response.prId);
-          // $('[name=user_id]').val(response.po[0].user_id);
-          // $('[name=poNumber]').val(response.po[0].id);
-          // $('[name=supplierName]').val(response.os[0].supplier_name);
-          // $('[name=tinNumber]').val(response.office[0].office_code);
-          // $('[name=supplierAddress]').val(response.os[0].supplier_address);
+          $('[name=purchase_request_id]').val(response['pr_id']);
+          $('[name=user_id]').val(response['user_id']);
+          $('[name=poNumber]').val(response['po']);
+          $('[name=supplierName]').val(response['supplier_name']);
+          $('[name=tinNumber]').val(response['office']);
+          //$('[name=supplierAddress]').val(response.os[0].supplier_address);
 
 
         },
