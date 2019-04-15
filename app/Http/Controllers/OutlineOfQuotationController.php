@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\OutlineOfQuotation;
 use App\OutlineSupplier;
 use App\PurchaseRequest;
+use App\Signatory;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
@@ -86,6 +87,8 @@ class OutlineOfQuotationController extends Controller
      */
     public function printOutline($id)
     {
+        $twg = Signatory::where(['category' => 5, 'is_activated' => true])->get();
+        // dd($twg);
         $abstract = OutlineOfQuotation::findorFail($id);
         $date   = Carbon::parse($abstract->created_at);
         $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$abstract->purchaseRequest->pr_code;
@@ -101,8 +104,7 @@ class OutlineOfQuotationController extends Controller
             "footer-left" => $created_code
         ];
 
-        $pdf = PDF::loadView('abstract.printAbstract',compact('abstract', 'date'))
-        ->setOption("footer-left",$created_code);
+        $pdf = PDF::loadView('abstract.printAbstract',compact('abstract', 'date', 'twg'));
 
         foreach ($options as $margin => $value) {
             $pdf->setOption($margin, $value);
