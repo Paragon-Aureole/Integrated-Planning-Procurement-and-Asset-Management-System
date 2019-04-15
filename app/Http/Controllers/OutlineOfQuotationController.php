@@ -7,6 +7,8 @@ use App\OutlineSupplier;
 use App\PurchaseRequest;
 use Auth;
 use Illuminate\Http\Request;
+use PDF;
+use Carbon\Carbon;
 
 class OutlineOfQuotationController extends Controller
 {
@@ -75,6 +77,38 @@ class OutlineOfQuotationController extends Controller
     public function edit(OutlineOfQuotation $outlineOfQuotation)
     {
         //
+    }
+
+    /**
+     * Print Abstract of Quotation Form in PDF Format
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function printOutline($id)
+    {
+        $abstract = OutlineOfQuotation::findorFail($id);
+        $date   = Carbon::parse($abstract->created_at);
+        $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$abstract->purchaseRequest->pr_code;
+        $options = [
+            "footer-right" => "Page [page] of [topage]",
+            "footer-font-size" => 6,
+            'margin-top'    => 5,
+            'margin-right'  => 10,
+            'margin-bottom' => 6,
+            'margin-left'   => 10,
+            'page-size' => 'A4',
+            'orientation' => 'landscape',
+            "footer-left" => $created_code
+        ];
+
+        $pdf = PDF::loadView('abstract.printAbstract',compact('abstract', 'date'))
+        ->setOption("footer-left",$created_code);
+
+        foreach ($options as $margin => $value) {
+            $pdf->setOption($margin, $value);
+        }
+
+        return $pdf->stream('BEKKEL.pdf');
     }
 
     /**

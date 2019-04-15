@@ -63,7 +63,7 @@
                 <td>{{$rfq->purchaseRequest->pr_code}}
                 <td>{{Carbon\Carbon::parse($rfq->created_at)->format('m-d-y')}}</td>
                 <td>
-                    <a href="#" class="btn btn-sm btn-secondary">
+                    <a href="{{route('rfq.print', $rfq->id)}}" target="_blank" class="btn btn-sm btn-secondary">
                       <i class="fas fa-print"></i>
                     </a>
                     <a href="#" class="btn btn-sm btn-danger">

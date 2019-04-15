@@ -120,9 +120,11 @@ Route::get('/pr/{pr_id}/item/delete/{id}', 'PurchaseRequestItemController@destro
 
 //rfq
 Route::get('rfq/{id}', 'RequestForQuotationController@createRFQ')->name('rfq.createone');
+Route::get('rfq/print/{id}', 'RequestForQuotationController@printRFQ')->name('rfq.print');
 Route::resource('rfq', 'RequestForQuotationController');
 
 // abstract
+Route::get('abstract/print/{id}', 'OutlineOfQuotationController@printOutline')->name('abstract.print');
 Route::resource('abstract', 'OutlineOfQuotationController');
 //abstractsupplier
 Route::resource('supplier', 'OutlineSupplierController');

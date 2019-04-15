@@ -41,7 +41,7 @@ class OutlineSupplierController extends Controller
         $input = $request->all();
         // dd($input);
         $abstract = OutlineofQuotation::findorFail($input['abstract_id']);
-        $count = sizeof($input['pr_item_id']);
+        // $count = sizeof($input['pr_item_id']);
 
         $add_supplier = $abstract->outlineSupplier()->create([
             'supplier_name' => $input['supplier_name'],
@@ -98,8 +98,7 @@ class OutlineSupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input = $request->all();
-        dd($input);
+       //
     }
 
     /**

@@ -62,10 +62,10 @@
                     <label>Comments:</label>
                     <textarea name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
                 </div>
-                <button type="submit" class="btn btn-sm btn-success">
+
+                <a href="{{route('abstract.print', $abstract->id)}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i>
-                </button>
-                
+                </a>
                 <button type="submit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
             @if ($countSupplier >= 3)
                 <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">

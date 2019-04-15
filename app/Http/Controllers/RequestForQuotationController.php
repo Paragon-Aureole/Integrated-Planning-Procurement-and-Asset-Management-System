@@ -6,6 +6,8 @@ use App\RequestForQuotation;
 use App\PurchaseRequest;
 use Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use PDF;
 
 class RequestForQuotationController extends Controller
 {
@@ -48,6 +50,38 @@ class RequestForQuotationController extends Controller
         $pr->rfq()->save($rfq);
 
         return redirect()->back()->with('success', 'RFQ Created');
+    }
+
+    /**
+     * Print RFQ Form in PDF Format.
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function printRFQ($id)
+    {
+        // dd($id);
+        $rfq = RequestForQuotation::findorFail($id);
+        $date   = Carbon::parse($rfq->created_at);
+        $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$rfq->purchaseRequest->pr_code;
+        // dd($rfq.$date.$created_code);
+        $options = [
+            "footer-right" => "Page [page] of [topage]",
+            "footer-font-size" => 6,
+            'margin-top'    => 5,
+            'margin-right'  => 10,
+            'margin-bottom' => 6,
+            'margin-left'   => 10,
+            'page-size' => 'A4',
+            'orientation' => 'landscape',
+            "footer-left" => $created_code
+        ];
+
+        $pdf = PDF::loadView('rfq.printrfq', compact('rfq','date'));
+
+        foreach ($options as $margin => $value) {
+            $pdf->setOption($margin, $value);
+        }
+        return $pdf->stream('RFQ'.$rfq->purchaseRequest->pr_code.'.pdf');
     }
 
     /**
