@@ -145,13 +145,19 @@ $( document ).ready( function () {
                 error: function ( response ){
                     console.log( response );
                 }
-            })            
-        }) 
-    }
+            });
 
-    // canceling update function
-    function cancelUpate () {
-        $('#cancelUpdate').on('click', function () {
+            $('#descriptionValue').val('');
+            $('#optionValue').val('');
+            
+            $('#updateContent').hide();
+            $('#cancelUpdate').hide();
+            $('#submitContent').show();
+        });
+        
+        // canceling update function
+        $('#cancelUpdate').on('click', function (event) {
+            event.preventDefault();
             console.log('Update cancelled');
             
             $('#descriptionValue').val('');
@@ -160,8 +166,9 @@ $( document ).ready( function () {
             $('#updateContent').hide();
             $('#cancelUpdate').hide();
             $('#submitContent').show();
+
+            getTableData();
         })
-                
     }
 
     
