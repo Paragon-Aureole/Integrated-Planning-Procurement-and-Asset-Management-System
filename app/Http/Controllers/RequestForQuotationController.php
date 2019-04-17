@@ -65,6 +65,7 @@ class RequestForQuotationController extends Controller
         $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$rfq->purchaseRequest->pr_code;
         // dd($rfq.$date.$created_code);
         $options = [
+            "zoom" => 1.25,
             "footer-right" => "Page [page] of [topage]",
             "footer-font-size" => 6,
             'margin-top'    => 5,
