@@ -11,8 +11,14 @@
   <!-- Links -->
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="{{route('view.ppmp')}}">PPMP</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="ppmpDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          PPMP
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="ppmpDropdownMenuLink">
+          <li><a class="dropdown-item" href="{{route('view.ppmp')}}">PPMP</a></li>
+          <li><a class="dropdown-item" href="#">Supplemental PPMP</a></li>
+        </ul>
       </li>
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="prDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -8,6 +8,7 @@ use App\PpmpItem;
 use App\PpmpItemCode;
 use App\MeasurementUnit;
 use App\ProcurementMode;
+use App\Office;
 use Auth;
 use App\Http\Requests\PpmpItemRequest;
 
@@ -33,7 +34,8 @@ class PpmpItemController extends Controller
     {
     	$ppmp = Ppmp::findorFail($id);
         $ppmp_itemDT = $ppmp->ppmpItem()->get()->groupBy('ppmp_item_code_id');
-        $ppmp_codeDT = $ppmp->ppmpItemCode()->get();
+        $office = Office::findorFail($ppmp->office_id);
+        $ppmp_codeDT = $office->ppmpItemCode()->get();
         $total = $ppmp->ppmpBudget;
         $units = MeasurementUnit::all();
         $modes = ProcurementMode::all();
@@ -43,8 +45,8 @@ class PpmpItemController extends Controller
     public function dataTable(Request $request)
     {
         $ppmp_id = $request->input('ppmp_id');
-        // $ppmp = PpmpItemCode::where('ppmp_id', $ppmp_id);
-        $ppmp = PpmpItemCode::where('ppmp_id', $ppmp_id)->get();
+        $ppmpfile = Ppmp::find($ppmp_id);
+        $ppmp = PpmpItemCode::where('office_id', $ppmpfile->office_id)->get();
         
         return response()->json(['tableContent'=>$ppmp]);
     }

@@ -35,6 +35,11 @@ class Office extends Model
         return $this->hasMany(Ppmp::class);
     }
 
+    public function ppmpItemCode()
+    {
+        return $this->hasMany(PpmpItemCode::class);
+    }
+
     public function signatory()
     {
         return $this->hasOne(Signatory::class);

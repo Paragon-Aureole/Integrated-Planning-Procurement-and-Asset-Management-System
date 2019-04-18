@@ -12,16 +12,17 @@ class PpmpItemCode extends Model
      * @var array
      */
     protected $fillable = [
-        'ppmp_id', 'code_description', 'code_type',
+        'code_description', 'code_type', 'office_id'
         //code_type: 1=Office and Department Supplies ,2 = Projects directly under the department, 3= Projects charged on other offices
     ];
 
-    public function ppmp()
-    {
-        return $this->belongsTo(Ppmp::class);
-    }
     public function ppmpItem()
     {
         return $this->hasMany(PpmpItem::class);
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class);
     }
 }

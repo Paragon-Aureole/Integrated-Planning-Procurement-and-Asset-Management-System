@@ -16,13 +16,13 @@ class CreatePpmpItemCodesTable extends Migration
         Schema::create('ppmp_item_codes', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->integer('ppmp_id')->unsigned()->index()->nullable();
+            $table->integer('office_id')->unsigned()->index()->nullable();
             $table->string('code_description');
             $table->integer('code_type')->nullable();
         });
 
         Schema::table('ppmp_item_codes', function($table) {
-            $table->foreign('ppmp_id')->references('id')->on('ppmps')->onDelete('cascade');
+            $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');
         });
 
         Schema::table('ppmp_budgets', function($table) {

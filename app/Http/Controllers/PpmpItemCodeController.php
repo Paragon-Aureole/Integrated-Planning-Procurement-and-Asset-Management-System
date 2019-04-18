@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Ppmp;
 use App\PpmpItemCode;
+use App\Office;
 use Auth;
 use App\Http\Requests\PpmpItemCodeRequest;
 
@@ -29,7 +30,8 @@ class PpmpItemCodeController extends Controller
     public function index($id)
     {
         $ppmp = Ppmp::findorFail($id);
-        $ppmp_codeDT = $ppmp->ppmpItemCode()->get();
+        $office = Office::findorFail($id);
+        $ppmp_codeDT = $office->ppmpItemCode()->get();
         return view('ppmp.ppmp_item_codes.viewppmpcodes', compact('ppmp_codeDT','ppmp'));
     }
 
@@ -44,8 +46,9 @@ class PpmpItemCodeController extends Controller
     {
         $input = $request->all();
         $ppmp = Ppmp::findorFail($id);
+        $office = Office::findorFail($ppmp->office_id);
 
-        $add_code = $ppmp->ppmpItemCode()->create([
+        $add_code = $office->ppmpItemCode()->create([
           "code_description" => $input['code_description'],
           "code_type" => $input['code_type'],
         ]);
@@ -64,7 +67,8 @@ class PpmpItemCodeController extends Controller
     public function edit($ppmp_id, $ppmpcode_id)
     {
         $ppmp = Ppmp::findorFail($ppmp_id);
-        $ppmp_codeDT = $ppmp->ppmpItemCode()->get();
+        $office = Office::findorFail($ppmp->office_id);
+        $ppmp_codeDT = $office->ppmpItemCode()->get();
 
         $ppmp_key = PpmpItemCode::findorFail($ppmpcode_id);
 
@@ -73,23 +77,6 @@ class PpmpItemCodeController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  App\Http\Requests\OfficeRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(PpmpItemCodeRequest $request, $id)
-    {
-        $input = $request->all();
-        $ppmp_code = PpmpItemCode::findorFail($id);
-        $update_code = $ppmp_code->update([
-            "code_description" => $input['code_description'],
-            "code_type" => $input['code_type'],
-        ]);
-        return redirect()->back()->with('success', 'PPMP Item Code successfully updated');
-    }
 
     public function updateData(Request $request) 
     {
@@ -97,10 +84,7 @@ class PpmpItemCodeController extends Controller
         $optionValue = $request->input('optionValue');
         $codeId = $request->input('codeId');
 
-        // $data = array("code_description"=>$code_description,"code_type"=>$optionValue);
-
-        // $updateData = PpmpItemCode::updateData($codeId, $data);
-        $updateData = PpmpItemCode::where('id', $codeId)->update(['code_description' => $code_description, 'code_type' => $optionValue]);
+        $updateData = PpmpItemCode::findorFail($codeId)->update(['code_description' => $code_description, 'code_type' => $optionValue]);
 
         return response()->json(['UpdateData'=>$updateData]);
 

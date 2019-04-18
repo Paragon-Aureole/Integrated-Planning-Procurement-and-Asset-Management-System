@@ -23,7 +23,7 @@
           <div class="input-group mb-3">
             <input type="text" id="ppmp_id" value="{{$ppmp->id}}" hidden>
             <select class="custom-select custom-select-sm {{ $errors->has('item_code') ? 'is-invalid' : '' }}" name="item_code" required="required">
-              @foreach($ppmp->ppmpItemCode as $codes)
+              @foreach($ppmp_codeDT as $codes)
                 <option value="{{$codes->id}}" name="{{$codes->code_type}}" >{{$codes->code_description}}</option>
               @endforeach
             </select>
