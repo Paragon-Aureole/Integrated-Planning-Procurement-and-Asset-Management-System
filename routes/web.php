@@ -156,6 +156,7 @@ Route::get('/printVehicle', 'assetController@printVehicle');
 Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 Route::resource('assets', 'assetController');
 
-
+//asset Par routes
+Route::resource('DistributeAssets', 'asset_parController');
 
 Route::resource('distribution', 'assetDistributionFormCreatorController');

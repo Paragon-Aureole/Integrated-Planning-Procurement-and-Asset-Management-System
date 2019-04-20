@@ -53,8 +53,10 @@
 
                 <input type="submit" class="btn btn-primary">
                 <br> <br>
-                <button name="createPAR" class="btn btn-secondary"> Create PAR </button>
-                <button name="createICS" class="btn btn-secondary"> Create ICS </button>
+                {{-- <button name="createPAR" class="btn btn-secondary"> Create PAR </button>
+                <button name="createICS" class="btn btn-secondary"> Create ICS </button> --}}
+                <a href="{{route('DistributeAssets.index')}}" class="btn btn-secondary">create PAR</a>
+                <a href="{{route('DistributeAssets.index')}}" class="btn btn-secondary">create ICS</a>
 
             </div>
         </div>
