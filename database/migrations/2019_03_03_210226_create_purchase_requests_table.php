@@ -30,6 +30,8 @@ class CreatePurchaseRequestsTable extends Migration
             $table->boolean('created_abstract')->default(0);
             $table->boolean('created_po')->default(0);
             $table->boolean('created_inspection')->default(0);
+            $table->boolean('is_supplemental')->default(0);
+            $table->integer('former_pr_id')->default(0);
             $table->timestamps();
         });
 

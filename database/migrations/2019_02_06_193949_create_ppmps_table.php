@@ -19,6 +19,8 @@ class CreatePpmpsTable extends Migration
             $table->integer('office_id')->unsigned()->index()->nullable();
             $table->year('ppmp_year');
             $table->boolean('is_active')->default(0);
+            $table->boolean('is_supplemental')->default(0);
+            $table->integer('former_ppmp_id')->unsigned()->nullable();
             $table->timestamps();
         });
 

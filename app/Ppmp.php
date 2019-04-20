@@ -22,7 +22,7 @@ class Ppmp extends Model
      * @var array
      */
     protected $fillable = [
-        'ppmp_year', 'office_id', 'user_id', 'ppmp_budget_id', 'is_active'
+        'ppmp_year', 'office_id', 'user_id', 'ppmp_budget_id', 'is_active', 'is_supplemental', 'former_pr_id'
     ];
 
     public function user()

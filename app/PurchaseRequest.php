@@ -37,6 +37,8 @@ class PurchaseRequest extends Model
         'created_abstract',
         'created_po',
         'created_inspection',
+        'is_supplemental',
+        'former_pr_id',
     ];
 
 
