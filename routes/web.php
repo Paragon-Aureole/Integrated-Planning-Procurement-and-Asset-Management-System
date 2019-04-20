@@ -146,6 +146,10 @@ Route::resource('ir', 'InspectionReportController');
 
 //assets
 Route::get('/showDetails', 'assetController@showDetails');
+Route::get('/getVoucherNo', 'assetController@getVoucherNo')->name('assets.getVoucherNo');
+Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.saveVoucherNo');
+Route::get('/assetClassification', 'assetController@assetClassification')->name('assets.assetClassification');
+Route::get('/parIndex', 'assetController@parIndex');
 Route::get('/printPar', 'assetController@printPar');
 Route::get('/printIcs', 'assetController@printIcs');
 Route::get('/printVehicle', 'assetController@printVehicle');

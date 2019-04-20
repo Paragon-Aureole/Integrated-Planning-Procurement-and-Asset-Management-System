@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<form action="{{route('assets.getVoucherNo')}}" method="get">
+<form action="{{route('assets.saveVoucherNo')}}" method="get">
     {{csrf_field()}}
     {{-- <label>Search PO:</label>
     <input name="searchPO" type="text"></input>
@@ -17,7 +17,8 @@
 
     <div class="container">
         <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search for Purchase Order Number" name="searchPO">
+        <input type="hidden" name="purchase_order_no" value={{$poID}}>
+        <input type="text" class="form-control" placeholder="Input Voucher No" name="voucherNo">
         <div class="input-group-append">
             <input class="btn btn-outline-secondary" type="submit" />
         </div>

@@ -12,6 +12,7 @@
 
 <form action="{{route('assets.store')}}" method="post">
     {{csrf_field()}}
+    <input type="hidden" name="purchase_order_id" value={{$assetData[0]->purchase_order_id}}>
     {{--  <input type="hidden" name="PO_id" value={{$id->searchPO}}></input>  --}}
     <div class="container-fluid">
         <div class="card">
@@ -30,14 +31,13 @@
                     <tbody>
                         @foreach ($assetData as $key => $record)
                         <tr>
+                            <input type="hidden" name="id[{{$key}}]" value={{$record['id']}}>
+                            <td>{{$record['details']}}</td>
+                            {{--  <input type="hidden" name="recordDetails[{{$key}}]" value={{$record['details']}}>  --}}
+                            <td>{{$record['amount']}}</td>
+                            {{--  <input type="hidden" name="recordAmount[{{$key}}]" value={{$record['amount']}}>  --}}
                             
-                            <input type="hidden" name="recordItemID[{{$key}}]" value={{$record[0]}}>
-                            <td>{{$record[0]}}</td>
-                            <input type="hidden" name="recordDetails[{{$key}}]" value={{$record[0]}}>
-                            <td>{{$record[1]}}</td>
-                            <input type="hidden" name="recordAmount[{{$key}}]" value={{$record[1]}}>
-                            
-                            <td>{{$record[2]}}</td>
+                            <td>{{$record['item_quantity']}}</td>
                             
                             {{-- <td> <input type="hidden" name="ICS[{{$key}}]" value=0></input></td> --}}
                             <input type="hidden" name="ICS[{{$key}}]" value=0>
@@ -52,6 +52,10 @@
                 </table>
 
                 <input type="submit" class="btn btn-primary">
+                <br> <br>
+                <button name="createPAR" class="btn btn-secondary"> Create PAR </button>
+                <button name="createICS" class="btn btn-secondary"> Create ICS </button>
+
             </div>
         </div>
     </div>

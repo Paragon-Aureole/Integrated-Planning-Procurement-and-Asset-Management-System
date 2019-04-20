@@ -10,6 +10,7 @@ use Auth;
 use App\Http\Requests\PurchaseRequestItemRequest;
 use Illuminate\Http\Request;
 use App\asset;
+use App\asset_po_disbursement_voucher_no;
 use PDF;
 use App;
 
@@ -22,7 +23,7 @@ class assetController extends Controller
      */
     public function index()
     {
-
+        // $data = asset::All();
         // $pr = PurchaseRequest::findorFail(1);
         // $pr_code = explode("-", $pr->pr_code);
         
@@ -30,41 +31,71 @@ class assetController extends Controller
         // $ppmp_item = $ppmp->ppmpItem->all();
 
         // dd($ppmp_item);
-        // dd($dummyData);
+        // dd($data);
         return view('assets.index');
         // return $dummyData;
     }
 
-    public function showDetails()
+    public function parIndex(Request $request)
     {
+        $data = asset::All();
+        // $pr = PurchaseRequest::findorFail(1);
+        // $pr_code = explode("-", $pr->pr_code);
+        
+        // $ppmp= Ppmp::where('office_id', $pr->office_id)->where('ppmp_year', $pr_code[2])->first();
+        // $ppmp_item = $ppmp->ppmpItem->all();
 
-        return view('assets.am_details');
+        // dd($ppmp_item);
+        // dd($data);
+        return view('assets.par.index');
+        // return $dummyData;
     }
+
+    public function getVoucherNo(Request $request)
+    {
+        $poID = $request->get('searchPO');
+        // return($poID);
+        return view('assets.getVoucherNo', compact('poID'));
+    }
+
+    public function saveVoucherNo(Request $request)
+    {
+        $purchase_order_no = $request->get('purchase_order_no');
+        $voucherNo = $request->get('voucherNo');
+
+        // asset_po_disbursement_voucher_no::create([
+        //         'purchase_order_id' => $purchase_order_no,
+        //         'disbursementNo' => $voucherNo,
+        //     ]);
+        return redirect()->route('assets.assetClassification', compact('purchase_order_no'))->with('success', 'PO Disbursement Number has been Registered.');
+
+        
+        // dd($purchase_order_no, $voucherNo);
+
+
+    }
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $id)
+    public function create()
     {
-     
-    if ($id->searchPO == '1') {
-        $dummyData = [
-            ['sticker(barcode)', '1000'], 
-            ['external hdd', '3500'], 
-            ['printer', '15000']
-    ];   
-    } else {
-            $dummyData = [
-                    ['stapler', '200'],
-                    ['guitar', '9600'],
-                    ['laptop', '69999']
-        ];
+    
     }
-        // dd($dummyData);
-        // dd($id->searchPO);
-        return view('assets.create',compact('id', 'dummyData'));
+
+    public function assetClassification(Request $id)
+    {
+    //  dd($id->All());
+
+    // $data = asset::findorFail($id->purchase_order_id);
+    $assetData = asset::where('purchase_order_id', $id->purchase_order_no)->get();
+    // dd($assetData);
+    
+        return view('assets.assetClassification', compact('assetData'));
+        // return view('assets.create');
     }
 
     /**
@@ -79,24 +110,18 @@ class assetController extends Controller
         // dd($request->all());
         $sortedArray = [];
 
-        $recordDetails = $request->get('recordDetails');
-        $recordAmount = $request->get('recordAmount');
-        $Supply = $request->get('Supply');
+        $recordID = $request->get('id');
         $ICS = $request->get('ICS');
         $PAR = $request->get('PAR');
 
-        for ($i=0; $i <= 2; $i++) { 
-            $sortedArray[$i] = [$recordDetails[$i], $recordAmount[$i], $Supply[$i], $ICS[$i], $PAR[$i]];
+        for ($i=0; $i <= 1; $i++) { 
+            $sortedArray[$i] = [$recordID[$i], $ICS[$i], $PAR[$i]];
         }
-
+        // dd($sortedArray);
         foreach ($sortedArray as $key => $value) {
-            asset::create([
-                'PO_id' => $request->PO_id,
-                'details' => $value[0],
-                'amount' => $value[1],
-                'isSup' => $value[2],
-                'isICS' => $value[3],
-                'isPAR' => $value[4]
+            asset::whereId($value[0])->update([
+                'isICS' => $value[1],
+                'isPAR' => $value[2]
             ]);
         }
 
@@ -175,7 +200,7 @@ class assetController extends Controller
 
     public function displayRegisteredPOItems($id)
     {
-        $fetchedData = asset::Where('PO_id', $id)->get();
+        $fetchedData = asset::Where('purchase_order_id', $id)->get();
         // $fetchedData = asset::all();
         // dd($fetchedData);
 

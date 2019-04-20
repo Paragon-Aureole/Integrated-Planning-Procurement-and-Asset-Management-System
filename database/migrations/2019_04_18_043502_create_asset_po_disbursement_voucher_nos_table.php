@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Asset extends Migration
+class CreateAssetPoDisbursementVoucherNosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,14 @@ class Asset extends Migration
      */
     public function up()
     {
-        Schema::create('assets', function (Blueprint $table) {
+        Schema::create('asset_po_disbursement_voucher_nos', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('purchase_order_id')->unsigned()->nullable()->index();
-			$table->string('details');
+			$table->string('disbursementNo')->default('0');
             $table->double('amount', 15, 2);
-            $table->integer('item_quantity');
-			$table->boolean('isICS')->nullable()->default(FALSE);
-			$table->boolean('isPAR')->nullable()->default(FALSE);
-			$table->boolean('isAssigned')->nullable()->default(FALSE);
             $table->timestamps();
 
-            $table->foreign('purchase_order_id')->references('id')->on('purchase_orders')->onDelete('cascade');
+            $table->foreign('purchase_order_id')->references('purchase_order_id')->on('assets')->onDelete('cascade');
         });
     }
 
@@ -35,6 +31,6 @@ class Asset extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('asset_po_disbursement_voucher_nos');
     }
 }
