@@ -10,10 +10,13 @@
 
 @section('content')
 
-{{$parData}}
-<input type="hidden" id="currentPARNo" value={{$asset_parData}}>
+{{-- {{$parData}} --}}
 
-<form action="{{route('assets.store')}}" method="post">
+{{-- {{route('distribution.store')}} --}}
+{{-- <input type="hidden" id="currentPARNo" value={{$asset_parData}}> --}}
+<input type="hidden" id="currentPARNo">
+
+<form action="" method="post">
   {{csrf_field()}}
   {{--  <input type="hidden" name="purchase_order_id" value={{$assetData[0]->purchase_order_id}}> --}}
   {{--  <input type="hidden" name="PO_id" value={{$id->searchPO}}></input> --}}
@@ -39,8 +42,8 @@
                   <td>{{$record['details']}}</td>
                   <td>{{$record['item_quantity']}}</td>
                   <td>{{$record['amount']}}</td>
-                  <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs" data-toggle="modal"
-                      data-target="#inputSignatoryModal">Assign</button></td>
+                  <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button></td>
+                  {{-- <td><a href="{{route('DistributeAssets.create')}}" target="_blank" class="btn btn-sm btn-secondary">Assign</a></td> --}}
                 </tr>
                 @endforeach
               </tbody>
@@ -60,8 +63,8 @@
                   <td>TEDD MAMUYAC</td>
                   <td>
                     <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn-xs" data-toggle="modal"
-                      data-target="#itemsAssignedModal">Items Assigned</button>
+                    {{-- <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#itemsAssignedModal">Items Assigned</button> --}}
+                    <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">Items Assigned</a>
                   </td>
                   <td>
                     <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">
@@ -81,7 +84,7 @@
   </div>
 
 </form>
-
+{{-- <button id="btn_test">shit</button> --}}
 <!-- Modal for inputting signatory -->
 <div class="modal" id="inputSignatoryModal">
   <div class="modal-dialog modal-dialog-scrollable modal-xl">
@@ -90,8 +93,10 @@
         <h3 class="modal-title">Input Signatory</h3>
         <button type="button" class="close" data-dismiss="modal">×</button>
       </div>
-
-      <div class="modal-body">
+<input name="remainingItems" type="hidden"></input>
+<form id="itemAssignForm" action="http://ipams.test/DistributeAssets" method="POST">
+  {{csrf_field()}}
+      <div class="modal-body" id="assetAssignBody">
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-6">
@@ -100,15 +105,14 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">Item</span>
                 </div>
                 {{-- SELECTED ITEM INPUT HERE  --}}
-                <input type="text" name="selectedItemName" id="selectedItemName" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" name="selectedItemName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
                 </div>
                 {{-- QUANTITY SELECITION HERE --}}
-                <select name="selectedItemQty" id="selectedItemQty" class="custom-select">
+                <select name="selectedItemQty" class="custom-select">
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="N">N</option>
@@ -119,8 +123,8 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">Unit Cost</span>
                 </div>
                 {{-- UNIT COST INPUT HERE  --}}
-                <input type="text" name="selectedItemUnitCost" id="selectedItemUnitCost" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" name="selectedItemUnitCost" class="form-control"
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
             </div>
             <div class="col-md-6">
@@ -129,24 +133,24 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">PAR No.</span>
                 </div>
                 {{-- PAR NUMBER INPUT HERE  --}}
-                <input type="text" name="selectedItemPARNo" id="selectedItemPARNo" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" name="selectedItemPARNo" class="form-control"
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-sm">Date Assigned</span>
                 </div>
                 {{-- ASSIGNED DATE HERE  --}}
-                <input type="date" name="selectedItemDateAssigned" id="selectedItemDateAssigned" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                <input type="date" name="selectedItemDateAssigned" class="form-control"
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-sm">Total Amount</span>
                 </div>
                 {{-- TOTAL AMOUNT INPUT HERE  --}}
-                <input type="text" name="selectedItemTotalAmount" id="selectedItemTotalAmount" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" name="selectedItemTotalAmount" class="form-control"
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
             </div>
           </div>
@@ -157,9 +161,9 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">Signatory</span>
                 </div>
                 {{-- NAME AND POSITION OF EMPLOYEE INPUT HERE  --}}
-                <input type="text" name="selectedItemEmployeeName" id="selectedItemEmployeeName" class="form-control"
+                <input type="text" name="selectedItemEmployeeName" class="form-control"
                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Name">
-                <input type="text" name="selectedItemEmployeePosition" id="selectedItemEmployeePosition"
+                <input type="text" name="selectedItemEmployeePosition"
                   class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
                   placeholder="Position">
               </div>
@@ -168,17 +172,20 @@
           <div class="row">
             <div class="col-md-12">
               <label>Specifications:</label><br>
-              <textarea name="selectedItemSpecifications" id="selectedItemSpecifications" cols="30" rows="10"
+              <textarea name="selectedItemSpecifications" cols="30" rows="10"
                 class="form-control form-control-sm"></textarea>
             </div>
           </div>
         </div>
       </div>
-
+      
       <div class="modal-footer">
-        <button class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">Save</button>
         <button class="btn btn-warning">cancel</button>
       </div>
+</form>
+
+
     </div>
   </div>
 </div>
@@ -230,5 +237,6 @@
 @endsection
 
 @section('script')
+
 <script src="{{asset('js/asset_parIndex.js')}}"></script>
 @endsection
