@@ -28,9 +28,21 @@ class asset_parController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function getPARCount()
+    {
+        $asset_parData = asset_par::get()->count();
+        return ($asset_parData);
+    }
+    
     public function create()
     {
-        //
+        // dd('tang ina mo');
+        
+        // dd($id->all());
+        $parData = asset::where('purchase_order_id', 2)->where('isPAR', 1)->get();
+        // dd($parData);
+        return view('assets.par.create', compact('parData', 'asset_parData'));
     }
 
     /**
@@ -39,9 +51,28 @@ class asset_parController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
-        //
+        $items = $request->input('data');
+
+        asset_par::create([
+            'par_id' => $items[0],
+            'name' => $items[1],
+            'quantity' => $items[2],
+            'unitCost' => $items[3],
+            'description' => $items[4],
+            'assignedTo' => $items[5],
+            'position' => $items[6]
+        ]);
+
+
+        if ($request->isMethod('post')) {
+            // return response()->json(['response' => 'This is post method', 'error' => false]);
+            return response()->json(['response' => 'Save Success', 'error' => false]);
+        } else {
+            return response()->json(['response' => 'failure']);
+        }
     }
 
     /**

@@ -159,5 +159,6 @@ Route::resource('assets', 'assetController');
 //asset Par routes
 // Route::get('/DistributeAssets/{id}', 'asset_parController@index')->name('assets.index');
 Route::resource('DistributeAssets', 'asset_parController');
+Route::get('/getPARNo', 'asset_parController@getPARCount');
 
-Route::resource('distribution', 'assetDistributionFormCreatorController');
+// Route::resource('distribution', 'assetDistributionFormCreatorController');
