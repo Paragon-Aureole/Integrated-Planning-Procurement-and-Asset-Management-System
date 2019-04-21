@@ -160,4 +160,7 @@ Route::resource('assets', 'assetController');
 // Route::get('/DistributeAssets/{id}', 'asset_parController@index')->name('assets.index');
 Route::resource('DistributeAssets', 'asset_parController');
 
+// assetMigrations
+Route::resource('migrateAssets', 'MigratedAssetsController');
+
 Route::resource('distribution', 'assetDistributionFormCreatorController');

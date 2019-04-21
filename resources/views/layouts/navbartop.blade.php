@@ -76,7 +76,7 @@
           Assets
         </a>
         <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
-          <li><a class="dropdown-item" href="#">Migrate Current Assets</a></li>
+          <li><a class="dropdown-item" href="/migrateAssets">Migrate Current Assets</a></li>
           <li><a class="dropdown-item" href="/assets">Procured Assets</a></li>
           <li><a class="dropdown-item" href="/DistributeAssets">Distribute Assets</a></li>
         </ul>
