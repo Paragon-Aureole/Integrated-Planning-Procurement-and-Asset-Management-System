@@ -36,20 +36,6 @@ class assetController extends Controller
         // return $dummyData;
     }
 
-    public function parIndex(Request $request)
-    {
-        $data = asset::All();
-        // $pr = PurchaseRequest::findorFail(1);
-        // $pr_code = explode("-", $pr->pr_code);
-        
-        // $ppmp= Ppmp::where('office_id', $pr->office_id)->where('ppmp_year', $pr_code[2])->first();
-        // $ppmp_item = $ppmp->ppmpItem->all();
-
-        // dd($ppmp_item);
-        // dd($data);
-        return view('assets.par.index');
-        // return $dummyData;
-    }
 
     public function getVoucherNo(Request $request)
     {
@@ -106,15 +92,16 @@ class assetController extends Controller
      */
     public function store(Request $request)
     {
-
+        
         // dd($request->all());
         $sortedArray = [];
+        $assetCount = asset::where('purchase_order_id', $request->purchase_order_id)->get()->count() - 1;
 
         $recordID = $request->get('id');
         $ICS = $request->get('ICS');
         $PAR = $request->get('PAR');
 
-        for ($i=0; $i <= 1; $i++) { 
+        for ($i=0; $i <= $assetCount; $i++) { 
             $sortedArray[$i] = [$recordID[$i], $ICS[$i], $PAR[$i]];
         }
         // dd($sortedArray);

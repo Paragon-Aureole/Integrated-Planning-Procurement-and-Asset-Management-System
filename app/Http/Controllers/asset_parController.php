@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\asset;
+use App\asset_par;
+
 use Illuminate\Http\Request;
 
 class asset_parController extends Controller
@@ -11,9 +14,13 @@ class asset_parController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $id)
     {
-        return view('assets.par.index');
+        $asset_parData = asset_par::get()->count();
+        // dd($id->all());
+        $parData = asset::where('purchase_order_id', $id->id)->where('isPAR', 1)->get();
+        // dd($parData);
+        return view('assets.par.index', compact('parData', 'asset_parData'));
     }
 
     /**

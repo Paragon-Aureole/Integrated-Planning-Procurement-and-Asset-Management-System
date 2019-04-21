@@ -157,6 +157,7 @@ Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 Route::resource('assets', 'assetController');
 
 //asset Par routes
+// Route::get('/DistributeAssets/{id}', 'asset_parController@index')->name('assets.index');
 Route::resource('DistributeAssets', 'asset_parController');
 
 Route::resource('distribution', 'assetDistributionFormCreatorController');
