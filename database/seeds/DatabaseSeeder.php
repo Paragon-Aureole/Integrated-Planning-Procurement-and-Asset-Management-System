@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MeasurementUnitSeeder::class);
         $this->call(ProcurementModesSeeder::class);
         $this->call(SignatorySeeder::class);
+        $this->call(AssetTypeSeeder::class);
 
     }
 }
