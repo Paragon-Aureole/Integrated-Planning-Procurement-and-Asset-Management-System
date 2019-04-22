@@ -17,7 +17,7 @@
     <div class="card">
         <div class="card-header pt-2 pb- 2"><b>Add Suppliers</b></div>
         <div class="card-body">
-            <form action="{{route('abstract.update', $abstract->id)}}" method="POST">
+            <form action="{{route('abstract.update', $abstract->id)}}" id="bekkelAbstract" method="POST">
                 {{ csrf_field() }}
                 {{ method_field('PATCH') }}
                 <div>
@@ -26,8 +26,9 @@
                 </div>
                 <div>
                     <label>Requesting Office:</label>
-                    <input value="{{$abstract->purchaseRequest->office->office_name}}">
+                    <input value="{{$abstract->purchaseRequest->office->office_name}}" readonly>
                 </div>
+                @if($abstract->outlineSupplier()->count() > 0)
                 <div>
                     <label>Selected Bidder:</label>
                     <select name="bid_winner">
@@ -58,15 +59,17 @@
                         >Most Responsive</option>
                     </select>
                 </div>
+                @endif  
                 <div>
                     <label>Comments:</label>
                     <textarea name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
                 </div>
-
+            @if ($allSuppliers->where('status_reason', 1)->count() == 1)
                 <a href="{{route('abstract.print', $abstract->id)}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i>
                 </a>
-                <button type="submit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+            @endif
+                {{--<button type="submit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>--}}
             @if ($countSupplier >= 3)
                 <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
                     <i class="fas fa-plus"></i>
@@ -244,5 +247,24 @@
 @section('script')
 
 <script src="{{asset('js/function-script.js')}}"></script>
+<script>
+$(document).ready(function() {
+    $('select[name="bid_winner"]').change(function() {
+      $('#bekkelAbstract').submit();
+    });
+    $('select[name="status_reason"]').change(function() {
+      $('#bekkelAbstract').submit();
+    });
+    $('textarea[name="supplier_comments"]').change(function() {
+        var text_area_val = $('textarea[name="supplier_comments"]').val();
+        if (text_area_val == "None" || text_area_val == "") {
+            $('#bekkelAbstract').preventDefault;
+        }else{
+            $('#bekkelAbstract').submit();
+        }
+      
+    });
+} );
+</script>
     
 @endsection
