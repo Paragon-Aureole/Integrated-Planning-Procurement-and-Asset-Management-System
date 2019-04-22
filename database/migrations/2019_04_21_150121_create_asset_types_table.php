@@ -22,6 +22,10 @@ class CreateAssetTypesTable extends Migration
         Schema::table('migrated_assets', function (Blueprint $table) {
             $table->foreign('asset_type_id')->references('id')->on('asset_types')->onDelete('cascade');
         });
+
+        Schema::table('asset_pars', function (Blueprint $table) {
+            $table->foreign('asset_type_id')->references('id')->on('asset_types')->onDelete('cascade');
+        });
     }
 
     /**

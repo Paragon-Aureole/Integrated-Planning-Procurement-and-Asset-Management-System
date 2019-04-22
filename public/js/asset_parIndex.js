@@ -98,7 +98,7 @@
       var itemDescription = $('[name=selectedItemSpecifications]').val();
       var itemEmployeeName = $('[name=selectedItemEmployeeName]').val();
       var itemEmployeePosition = $('[name=selectedItemEmployeePosition]').val();
-      var itemTotalAmount = $('[name=selectedItemTotalAmount]').val();
+      // var itemTotalAmount = $('[name=selectedItemTotalAmount]').val();
       // 
 
       itemData[0] = itemPARNo;
@@ -108,7 +108,7 @@
       itemData[4] = itemDescription;
       itemData[5] = itemEmployeeName;
       itemData[6] = itemEmployeePosition;
-      itemData[7] = itemTotalAmount;
+      // itemData[7] = itemTotalAmount;
 
       // console.log(itemData);
       // console.log($(this).serialize());

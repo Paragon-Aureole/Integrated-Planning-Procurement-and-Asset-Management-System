@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssetTurnoversTable extends Migration
+class CreateEditDistributedAssetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,15 @@ class CreateAssetTurnoversTable extends Migration
      */
     public function up()
     {
-        Schema::create('asset_turnovers', function (Blueprint $table) {
+        Schema::create('edit_distributed_assets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('par_id')->unsigned()->nullable()->index();
             $table->integer('ics_id')->unsigned()->nullable()->index();
-            $table->integer('turnover_id');
-            $table->string('name');
-            $table->string('description');
-            $table->string('remarks');
-            $table->string('assignedTo');
+            $table->string('reason');
             $table->timestamps();
         });
 
-        Schema::table('asset_turnovers', function (Blueprint $table) {
+        Schema::table('edit_distributed_assets', function (Blueprint $table) {
             $table->foreign('par_id')->references('id')->on('asset_pars')->onDelete('cascade');
             $table->foreign('ics_id')->references('id')->on('asset_icslips')->onDelete('cascade');
         });
@@ -38,6 +34,6 @@ class CreateAssetTurnoversTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asset_turnovers');
+        Schema::dropIfExists('edit_distributed_assets');
     }
 }

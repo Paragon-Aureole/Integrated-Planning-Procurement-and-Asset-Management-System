@@ -57,14 +57,14 @@ class asset_parController extends Controller
         $items = $request->input('data');
         // dd($items);
         asset_par::create([
-            'par_id' => $items[0],
+            // 'par_id' => $items[0],
             'name' => $items[1],
             'quantity' => $items[2],
-            'unit_cost' => $items[3],
+            'unitCost' => $items[3],
             'description' => $items[4],
-            'assigned_to' => $items[5],
-            'position' => $items[6],
-            'amount' => $items[7]
+            'assignedTo' => $items[5],
+            'position' => $items[6]
+            // 'amount' => $items[7]
         ]);
 
 
