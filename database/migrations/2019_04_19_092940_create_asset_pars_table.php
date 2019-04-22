@@ -16,7 +16,13 @@ class CreateAssetParsTable extends Migration
         Schema::create('asset_pars', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('purchase_order_id')->unsigned()->nullable()->index();
-			$table->integer('par_id')->unsigned()->nullable()->index();
+            $table->integer('par_id')->unsigned()->nullable()->index();
+            $table->string('name');
+            $table->integer('quantity');
+            $table->integer('unit_cost');
+            $table->string('description');
+            $table->string('assigned_to');
+            $table->string('position');
 			$table->string('disbursementNo')->default('0');
             $table->double('amount', 15, 2);
             $table->timestamps();

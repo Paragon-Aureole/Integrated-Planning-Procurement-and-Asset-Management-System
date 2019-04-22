@@ -142,7 +142,7 @@
                 </div>
                 {{-- ASSIGNED DATE HERE  --}}
                 <input type="date" name="selectedItemDateAssigned" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
               </div>
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
