@@ -18,7 +18,7 @@ class CreateInspectionReportsTable extends Migration
             $table->integer('purchase_request_id')->unsigned()->nullable()->index();
             $table->integer('user_id')->unsigned()->nullable()->index();
             $table->string('invoice_number', 100)->nullable()->default('-');
-            $table->string('property_officer', 100)->nullable()->default('-');
+            $table->string('property_officer', 100)->nullable();
             $table->string('inspection_officer', 100)->nullable()->default('-');
             $table->timestamps();
         });

@@ -122,7 +122,7 @@
 			<div class="col-xs-10">Partial</div>
 			<div class="col-xs-12">&nbsp;</div>
 			<div class="col-xs-12">&nbsp;</div>
-			<div class="col-xs-12 text-center"><hr></div>
+			<div class="col-xs-12 text-center">{{strtoUpper($ir->property_officer)}}<hr></div>
 			<div class="col-xs-12 text-center">Property Officer</div>
 		</div>
 		<div class="col-xs-6" style="border:1px solid #262626;">
@@ -137,9 +137,121 @@
 			<div class="col-xs-12 text-right">As to quantity and specifications</div>
 			<div class="col-xs-12">&nbsp;</div>
 			<div class="col-xs-12">&nbsp;</div>
-			<div class="col-xs-12 text-center"><hr></div>
+			<div class="col-xs-12 text-center">{{strtoUpper($ir->inspection_officer)}}<hr></div>
 			<div class="col-xs-12 text-center">Inspection Officer/Committee</div>
 		</div>
+	</div>
+</div>
+
+{{-- RIS --}}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-12 text-center"><h4><b><i>REQUISITION AND ISSUE SLIP</i></b></h4></div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 text-center"><h5><u>City Government of San Fernando</u></h5></div>
+		<div class="col-xs-12 text-center">LGU</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-3" style="padding: 1px 5px 5px 5px;border:1px solid #262626;">
+			<div class="col-xs-12">Divsion:</div>
+			<div class="col-xs-12">Office:</div>
+			<div class="col-xs-12">{{$ir->purchaseRequest->office->office_code}}<hr></div>
+		</div>
+		<div class="col-xs-3" style="padding: 1px 5px 5px 5px;border:1px solid #262626;">
+			<div class="col-xs-12">Responsibility Center Code:</div>
+			<div class="col-xs-12">&nbsp;<hr></div>
+		</div>
+		<div class="col-xs-6" style="padding: 1px 5px 5px 5px;border:1px solid #262626;">
+			<div class="col-xs-7">RIS No:<hr style="margin-left:50px;"></div>
+			<div class="col-xs-5">Date:<hr style="margin-left:40px;"></div><br><br>
+			<div class="col-xs-7">SAI No:<hr style="margin-left:50px;"></div>
+			<div class="col-xs-5">Date:<hr style="margin-left:40px;"></div>
+		</div>
+		{{-- <div class="col-xs-12">&nbsp;</div> --}}
+	</div>
+	<div class="row" style="margin-bottom:-21px;">
+		<table class="table table-condensed content">
+			<thead>
+				<tr>
+					<th colspan="4"><i>REQUISITION</i></th>
+					<th colspan="2"><i>ISSUANCE</i></th>
+				</tr>
+				<tr>
+					<th class="col-xs-1"><i>Item No.</i></th>
+					<th class="col-xs-1"><i>Unit</i></th>
+					<th class="col-xs-6"><i>Description</i></th>
+					<th class="col-xs-1"><i>Qty</i></th>
+					<th class="col-xs-1"><i>Qty</i></th>
+					<th class="col-xs-2"><i>Remarks</i></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($items as $item_no => $item)
+					<tr>
+						<td>{{$item_no + 1}}</td>
+						<td>{{$item->prItem->ppmpItem->measurementUnit->unit_code}}</td>
+						<td style="text-align: left;">&nbsp;{{$item->prItem->ppmpItem->item_description}}</td>
+						<td>{{$item->prItem->item_quantity}}</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				@endforeach
+				
+				@for($i=$items->count();$i < 35 ;$i++)
+					<tr>
+						@for($j=0;$j < 6;$j++)
+						<td>&nbsp;</td>
+						@endfor
+					</tr>
+				@endfor
+			
+			</tbody>
+		</table>
+	</div>
+	<div class="row" style="border:1px solid #262626; padding: 5px;">
+		<div class="col-xs-12">Purpose: <b><u>{{$ir->purchaseRequest->pr_purpose}}</u></b></div>
+	</div>
+	<div class="row">
+		<table class="table table-condensed content">
+			<thead>
+				<tr>
+					<th class="col-xs-1">&nbsp;</th>
+					<th class="col-xs-3"><i>Requested By:</i></th>
+					<th class="col-xs-3"><i>Approved By:</i></th>
+					<th class="col-xs-3"><i>Issued By:</i></th>
+					<th class="col-xs-2"><i>Received By:</i></th>
+				</tr>
+				<tr>
+					<td style="padding: 20px 20px 20px;">Signature</td>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
+				</tr>
+				<tr>
+					<td>Printed Name</td>
+					<th>{{strtoUpper($ir->purchaseRequest->signatory->signatory_name)}}</th>
+					<th>{{strToUpper('Teresita M. Gacayan')}}</th>
+					<th></th>
+					<th></th>
+				</tr>
+				<tr>
+					<td>Designation</td>
+					<th>{{$ir->purchaseRequest->signatory->signatory_position}}</th>
+					<th>OIC GSO Officer</th>
+					<th></th>
+					<th></th>
+				</tr>
+				<tr>
+					<td>Date</td>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+		</table>
 	</div>
 </div>
 @endforeach

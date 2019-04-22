@@ -32,6 +32,7 @@
                 <div>
                     <label>Selected Bidder:</label>
                     <select name="bid_winner">
+                        <option value="">Select Supplier</option>
                         @forelse ($allSuppliers as $supp)
                         <option value="{{$supp->id}}" @if ($supp->supplier_status == TRUE)
                             selected
@@ -44,6 +45,7 @@
                 <div>
                     <label>Reason:</label>
                     <select name="status_reason">
+                        <option value="">Select Reason</option>
                         <option value="0"
                         @foreach ($allSuppliers as $chosenSupplier)
                             @if ($chosenSupplier->supplier_status == 1 &&$chosenSupplier->status_reason == 0)
@@ -64,7 +66,7 @@
                     <label>Comments:</label>
                     <textarea name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
                 </div>
-            @if ($allSuppliers->where('status_reason', 1)->count() == 1)
+            @if ($allSuppliers->where('supplier_status', 1)->count() >= 1)
                 <a href="{{route('abstract.print', $abstract->id)}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i>
                 </a>
@@ -80,12 +82,12 @@
             <div class="table-responsive">
                 <table class="table table-sm table-bordered">
                     <thead>
-                        <tr class="text-center">
-                            <th rowspan="4" class="w-75">Particulars</th>
-                            <th rowspan="4" class="w-25">Qty</th>
-                            <th rowspan="4" class="w-50">Unit</th>
+                        <tr class="text-center thead-light">
+                            <th rowspan="4" style="width:25%;">Particulars</th>
+                            <th rowspan="4" style="width:5%;">Qty</th>
+                            <th rowspan="4" style="width:5%;">Unit</th>
                             @foreach ($querySupplier as $action)
-                            <th colspan="2">
+                            <th colspan="2" style="width:15%;">
                                 <button class="btn btn-sm btn-warning">
                                     <i class="fas fa-edit"></i>
                                 </button>
@@ -95,14 +97,14 @@
                             </th>
                             @endforeach
                             @for ($i = $countSupplier; $i <= 2; $i++)
-                            <th colspan="2" >
+                            <th colspan="2" style="width:15%;">
                                 <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </th>
                             @endfor 
                         </tr>
-                        <tr class="text-center">
+                        <tr class="text-center thead-light">
                   
                             @foreach ($querySupplier as $indexkey1 => $supplierNo)
                                 <th colspan="2" >Supplier {{$indexkey1+1}}</th> 
@@ -119,14 +121,14 @@
                                 <td colspan="2">Supplier Name</td>
                             @endfor 
                         </tr>
-                        <tr class="text-center">
+                        <tr class="text-center thead-light">
                             @foreach ($querySupplier as $priceHeader)
                                 <th>Price/Unit</th>
                                 <th>Price/Item</th>
                             @endforeach
                             @for ($i = $countSupplier; $i <= 2; $i++)
-                                <th class="col-2">Price/Unit</th>
-                                <th class="col-2">Price/Item</th>
+                                <th>Price/Unit</th>
+                                <th>Price/Item</th>
                             @endfor  
                         </tr> 
                     </thead>
@@ -134,14 +136,14 @@
                     @foreach ($pr_items as $pr)
                         <tr>
                             <td>{{$pr->ppmpItem->item_description}}</td>
-                            <td>{{$pr->item_quantity}}</td>
-                            <td>{{$pr->ppmpItem->measurementUnit->unit_code}}</td>
+                            <td class="text-center">{{$pr->item_quantity}}</td>
+                            <td class="text-center">{{$pr->ppmpItem->measurementUnit->unit_code}}</td>
                             @foreach ($querySupplier as $supplierId)
                                 @php
                                     $price = $supplierId->outlinePrice()->where('pr_item_id', $pr->id)->first(); 
                                 @endphp
-                                <td>{{$price->final_cpu}}</td>
-                                <td>{{$price->final_cpi}}</td>
+                                <td class="text-right">{{number_format($price->final_cpu, 2)}}</td>
+                                <td class="text-right">{{number_format($price->final_cpi, 2)}}</td>
                             @endforeach
                             
                             @for ($i = $countSupplier; $i <= 2; $i++)
@@ -152,6 +154,18 @@
                         </tr>
                     @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr class="thead-light">
+                            <th class="text-right" colspan="3">TOTAL</th>
+                            @foreach ($querySupplier as $total_price)
+                            @php
+                                $total = $total_price->outlinePrice()->sum('final_cpi'); 
+                            @endphp
+                                <th>&nbsp;</th>
+                                <th class="text-right">&#8369; {{number_format($total, 2)}}</th>
+                            @endforeach
+                        </tr>
+                    </tfoot>
                 </table>
                 {{$querySupplier->links("pagination::bootstrap-4")}}
             </div>
@@ -250,10 +264,21 @@
 <script>
 $(document).ready(function() {
     $('select[name="bid_winner"]').change(function() {
-      $('#bekkelAbstract').submit();
+        var bidder = $('select[name="bid_winner"]').val();
+        if (bidder == "") {
+            $('#bekkelAbstract').preventDefault;
+        } else {
+            $('#bekkelAbstract').submit();
+        }       
     });
+
     $('select[name="status_reason"]').change(function() {
-      $('#bekkelAbstract').submit();
+        var bidder = $('select[name="status_reason"]').val();
+        if (bidder == "") {
+            $('#bekkelAbstract').preventDefault;
+        } else {
+            $('#bekkelAbstract').submit();
+        } 
     });
     $('textarea[name="supplier_comments"]').change(function() {
         var text_area_val = $('textarea[name="supplier_comments"]').val();
