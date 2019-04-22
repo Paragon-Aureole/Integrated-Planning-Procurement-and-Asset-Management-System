@@ -20,6 +20,8 @@ class CreateInspectionReportsTable extends Migration
             $table->string('invoice_number', 100)->nullable()->default('-');
             $table->string('property_officer', 100)->nullable();
             $table->string('inspection_officer', 100)->nullable()->default('-');
+            $table->string('issuing_officer', 100)->nullable()->default('-');
+            $table->string('issuing_officer_position', 100)->nullable()->default('-');
             $table->timestamps();
         });
 
