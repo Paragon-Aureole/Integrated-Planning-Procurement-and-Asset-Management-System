@@ -63,8 +63,8 @@
                   <td>TEDD MAMUYAC</td>
                   <td>
                     <!-- Trigger the modal with a button -->
-                    {{-- <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#itemsAssignedModal">Items Assigned</button> --}}
-                    <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">Items Assigned</a>
+                    <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#itemsAssignedModal">Items Assigned</button>
+                    {{-- <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">Items Assigned</a> --}}
                   </td>
                   <td>
                     <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">

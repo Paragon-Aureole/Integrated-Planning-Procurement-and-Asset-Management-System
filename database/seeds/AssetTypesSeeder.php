@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\assetType;
 
-class assetTypeSeeder extends Seeder
+class AssetTypesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,17 +12,16 @@ class assetTypeSeeder extends Seeder
      */
     public function run()
     {
-        $assetType = [
+        $type_names = [
             [ 'type_name'=>'vehicle'],
             [ 'type_name'=>'Office Supplies'],
             [ 'type_name'=>'Furniture and Fixtures'],
-            [ 'type_name'=>'IT Equipments']
+            [ 'type_name'=>'IT Equipments'],
         ];
 
-        foreach ($assetType as $key => $assetTypes) {
+        foreach ($type_names as $key => $asset_types) {
             # code...
-            assetType::create($assetTypes);
+            assetType::create($asset_types);
       };
-
     }
 }

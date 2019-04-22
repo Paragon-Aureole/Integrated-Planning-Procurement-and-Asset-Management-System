@@ -95,6 +95,36 @@ $( document ).ready( function () {
 
             updateTableContent(data);
         })
+        table.on('click', 'button#btnDelete', function () {
+            // console.log("button delete clicked");
+            var data2 = table.row( $(this).parents('tr') ).data();
+            // console.log(data2);
+            
+            // $('#updateContent').show();
+            // $('#cancelUpdate').show();
+            // $('#submitContent').hide();
+
+            deleteTableContent(data2);
+        })
+    }
+
+    //function that deletes the field
+    function deleteTableContent (data2){
+        // console.log('/ppmp/code/delete/' + data2.id);
+        $.ajax({
+            url: '/ppmp/code/delete/' + data2.id,
+            method: 'get',
+            success: function ( response ) {
+                // var updateData = response.updateContent;
+                // console.log(response);
+
+                getTableData();
+                               
+            },
+            error: function ( response ){
+                // console.log( response );
+            }
+        });
     }
 
     // Function that populates textboxes

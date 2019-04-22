@@ -10,12 +10,12 @@
 @section('content')
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header pt-2 pb-2"><i class="fas fa-table"></i> Project Procurement Management Plan</div>
+        <div class="card-header pt-2 pb-2"><i class="fas fa-table"></i>Migrate Existing Assets</div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-5">
                         <h6 class="card-title">
-                            Add PPMP
+                            Migrate Existing Assets
                         </h6>
 
                         <form action="{{route('migrateAssets.store')}}" method="post" id="needs-validation" novalidate>
