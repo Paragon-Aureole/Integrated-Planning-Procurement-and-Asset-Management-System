@@ -31,7 +31,9 @@
                 <li><a class="dropdown-item" href="#">Supplemental Purchase Request</a></li>
               </ul>
             </li>
+            @can('close')
             <li><a class="dropdown-item" href="{{ url('/pr/view') }}">Close Purchase Request</a></li>
+            @endcan
             <li><a class="dropdown-item" href="{{route('archive.pr')}}">Previous Purchase Requests</a></li>
           </ul>
        </li>

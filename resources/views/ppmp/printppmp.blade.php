@@ -101,16 +101,28 @@
 			<div>
 				Note: Technical Specifications for each Item/ Project being proposed shall be submitted as part of the PPMP
 			</div><br>
-			<table class="table table-sm table-borderless w-50">
+			<table
+			@if($ppmp->office->office_code == "ICT")
+				class="table table-sm table-borderless w-50"
+			@else
+				class="table table-sm table-borderless w-25"
+			@endif
+			>
 				@php
 					$signatory = App\Signatory::where('office_id', $ppmp->office_id)->where('category','1')->where('is_activated', '1')->first();
+					$office = App\Office::where('office_code', 'ADM')->first();
+					$adm = App\Signatory::where('office_id', $office->id)->where('category','1')->where('is_activated', '1')->first();
 				@endphp
 				<tr>
 					<td>Prepared By:</td>
 					<td></td>
+					@if($ppmp->office->office_code == "ICT")
 					<td>
 						Noted By:
 					</td>
+					@else
+					<td>&nbsp;</td>
+					@endif
 				</tr>
 				<tr>
 					<td colspan="3"></td>
@@ -123,26 +135,26 @@
 						{{strtoUpper($signatory->signatory_name)}}
 					</td>
 					<td></td>
+					@if($ppmp->office->office_code == "ICT")
 					<td class="text-center">
-						@if($ppmp->office->office_code = "ICT")
-							@php
-								$office = App\Office::where('office_code', 'ADM')->first();
-								$adm = App\Signatory::where('office_id', $office->id)->where('category','1')->where('is_activated', '1')->first();
-							@endphp
-							{{$adm->signatory_name}}
-						@endif
+							{{$adm->signatory_name}}					
 					</td>
+					@else
+					<td>&nbsp;</td>
+					@endif
 				</tr>				
 				<tr>
 					<td class="border border-left-0 border-right-0 border-bottom-0 text-center">
 						{{$signatory->signatory_position}}
 					</td>
 					<td></td>
+					@if($ppmp->office->office_code == "ICT")
 					<td class="border border-left-0 border-right-0 border-bottom-0 text-center">
-						@if($ppmp->office->office_code = "ICT")
 							{{$adm->signatory_position}}
-						@endif
 					</td>
+					@else
+					<td>&nbsp;</td>
+					@endif
 				</tr>
 			</table>
 		</div>

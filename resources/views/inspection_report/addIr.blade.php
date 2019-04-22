@@ -72,7 +72,7 @@
                   <td>{{$ir->purchaseRequest->pr_code}}</td>
                   <td>{{Carbon\Carbon::parse($ir->created_at)->format('m-d-y')}}</td>
                   <td>
-                    <a href="{{route('ir.print', $ir->id)}}" class="btn btn-sm btn-secondary">
+                    <a href="{{route('ir.print', $ir->id)}}" target="_blank" class="btn btn-sm btn-secondary">
                       <i class="fas fa-print"></i>
                     </a>
                     <a href="#" class="btn btn-sm btn-danger">
@@ -139,30 +139,33 @@
                 <input type="text" name="invoiceNo" class="form-control" required>
               </div>
               <br>
+              
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Property Officer</span>
                 </div>
-                <select class="custom-select" name="property_officer">
-                  @foreach ($signatory as $signatory1)
-                  @if ($signatory1->category == 6 && $signatory1->is_activated == 1)
-                  <option value="{{$signatory1->id}}">{{$signatory1->signatory_name}}</option>
-                  @endif
-                  @endforeach
-                </select>
+                <input class="form-control" list="propOfficer" name="property_officer"/>
+                <datalist id="propOfficer">
+                    @foreach ($signatory as $signatory1)
+                    @if ($signatory1->category == 6 && $signatory1->is_activated == 1)
+                    <option>{{$signatory1->signatory_name}}</option>
+                    @endif
+                    @endforeach
+                </datalist>
               </div>
               <br>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Inspection Officer</span>
                 </div>
-                <select class="custom-select" name="inspection_officer">
-                  @foreach ($signatory as $signatory2)
-                  @if ($signatory2->category == 7 && $signatory2->is_activated == 1 && $signatory2->office_id == Auth::user()->office_id)
-                  <option value="{{$signatory2->id}}">{{$signatory2->signatory_name}}</option>
-                  @endif
-                  @endforeach
-                </select>
+                <input class="form-control" list="inspOfficer" name="inspection_officer"/>
+                <datalist id="inspOfficer">
+                    @foreach ($signatory as $signatory1)
+                    @if ($signatory1->category == 7 && $signatory1->is_activated == 1)
+                    <option>{{$signatory1->signatory_name}}</option>
+                    @endif
+                    @endforeach
+                </datalist>
               </div>
             </div>
           </div>

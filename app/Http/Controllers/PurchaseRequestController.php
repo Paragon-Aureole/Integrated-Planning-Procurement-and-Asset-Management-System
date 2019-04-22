@@ -165,8 +165,9 @@ class PurchaseRequestController extends Controller
 
 
     public function prView()
-    {   
-        $prDT = PurchaseRequest::where('pr_status', 0)->get();
+    {
+        $prDT = PurchaseRequest::where('pr_status', 0)->whereHas('prItem')->get();      
+
         return view('pr.closepr', compact('prDT'));
     }
 

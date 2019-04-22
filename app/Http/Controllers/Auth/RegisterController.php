@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Spatie\Permission\Models\Role;
+use Illuminate\Auth\Events\Registered;
+use Auth;
 
 class RegisterController extends Controller
 {
@@ -24,6 +26,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+    // use RedirectsUsers;
 
      /**
      * Show the application registration form.
@@ -37,6 +40,22 @@ class RegisterController extends Controller
         $user_DT = User::withTrashed()->get();
 
         return  view('auth.register', compact('roles','offices', 'user_DT'));
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
     }
 
     /**
@@ -132,7 +151,7 @@ class RegisterController extends Controller
             $user->roles()->detach(); 
         }
 
-        return redirect()->back()->with('success','User updated successfully!');
+        return redirect()->route('register')->with('success','User updated successfully!');
     }
 
     /**

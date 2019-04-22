@@ -143,7 +143,18 @@ class PurchaseRequestItemController extends Controller
      */
     public function destroy($pr_id, $item_id)
     {
-       
-         
+        $pr = PurchaseRequest::find($pr_id);
+        $pr_item = PurchaseRequestItem::find($item_id);
+
+        $pr->pr_budget = $pr->pr_budget - $pr_item->item_budget;
+        $pr->save();
+
+        $pr_item->ppmpItem->item_stock = $pr_item->ppmpItem->item_stock + $pr_item->item_quantity;
+        $pr_item->ppmpItem->save();
+
+        $pr_item->delete();
+        
+        return redirect()->route('view.pritm', $pr_id)->with('info', 'PR Item Deleted');
+   
     }
 }
