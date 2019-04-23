@@ -16,8 +16,7 @@ class CreateAssetParsTable extends Migration
         Schema::create('asset_pars', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('purchase_order_id')->unsigned()->nullable()->index();
-            $table->integer('asset_type_id')->unsigned()->nullable()->index();
-			// $table->integer('par_id')->unsigned()->nullable()->index();
+            $table->integer('asset_id')->unsigned()->nullable()->index();
 			$table->string('name')->default('N/A');
 			$table->integer('quantity');
             $table->float('unitCost', 15, 2);
@@ -29,6 +28,7 @@ class CreateAssetParsTable extends Migration
 
         Schema::table('asset_pars', function (Blueprint $table) {
             $table->foreign('purchase_order_id')->references('purchase_order_id')->on('assets')->onDelete('cascade');
+            $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
         });
     }
 

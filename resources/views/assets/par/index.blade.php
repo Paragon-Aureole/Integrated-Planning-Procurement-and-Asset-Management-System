@@ -10,11 +10,14 @@
 
 @section('content')
 
-{{-- {{$parData}} --}}
+{{-- {{$asset_parData}} --}}
 
 {{-- {{route('distribution.store')}} --}}
 {{-- <input type="hidden" id="currentPARNo" value={{$asset_parData}}> --}}
 <input type="hidden" id="currentPARNo">
+<input type="hidden" id="currentPONo" value={{$purchase_order_id}}>
+
+{{-- {{$assetTypes}} --}}
 
 <form action="" method="post">
   {{csrf_field()}}
@@ -29,16 +32,17 @@
             <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
               <thead class="thead-dark">
                 <tr>
+                  <th>ID</th>
                   <th>Item</th>
                   <th>Item Qty</th>
-                  <th>Price</th>
+                  <th>Total Price</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($parData as $key => $record)
                 <tr>
-                  <input type="hidden" name="id[{{$key}}]" value={{$record['id']}}>
+                  <td>{{$record['id']}}</td>
                   <td>{{$record['details']}}</td>
                   <td>{{$record['item_quantity']}}</td>
                   <td>{{$record['amount']}}</td>
@@ -53,25 +57,26 @@
             <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
               <thead class="thead-dark">
                 <tr>
+                  <th>PAR ID</th>
                   <th>Received By</th>
-                  <th>Items</th>
+                  <th>Item Assigned</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody>                
+                @foreach ($asset_parData as $record)
                 <tr>
-                  <td>TEDD MAMUYAC</td>
-                  <td>
-                    <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#itemsAssignedModal">Items Assigned</button>
-                    {{-- <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">Items Assigned</a> --}}
-                  </td>
+                  <td>{{$record['id']}}</td>
+                  <td>{{$record['assignedTo']}}</td>
+                  <td>{{$record['name']}}</td>
                   <td>
                     <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">
                       <i class="fas fa-print"></i>
                     </a>
                   </td>
                 </tr>
+                @endforeach
+                
               </tbody>
             </table>
           </div>
@@ -94,6 +99,7 @@
         <button type="button" class="close" data-dismiss="modal">×</button>
       </div>
 <input name="remainingItems" type="hidden"></input>
+<input name="currentItemID" type="hidden"></input>
 <form id="itemAssignForm" action="http://ipams.test/DistributeAssets" method="POST">
   {{csrf_field()}}
       <div class="modal-body" id="assetAssignBody">

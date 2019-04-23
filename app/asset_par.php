@@ -13,7 +13,9 @@ class asset_par extends Model
         'unitCost', 
         'description', 
         'assignedTo', 
-        'position' 
+        'position',
+        'asset_id',
+        'purchase_order_id'
         // 'amount' 
     ];
 }

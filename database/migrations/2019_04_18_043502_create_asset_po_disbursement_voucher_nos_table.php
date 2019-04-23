@@ -17,7 +17,6 @@ class CreateAssetPoDisbursementVoucherNosTable extends Migration
             $table->increments('id');
 			$table->integer('purchase_order_id')->unsigned()->nullable()->index();
 			$table->string('disbursementNo')->default('0');
-            $table->double('amount', 15, 2);
             $table->timestamps();
 
             $table->foreign('purchase_order_id')->references('purchase_order_id')->on('assets')->onDelete('cascade');

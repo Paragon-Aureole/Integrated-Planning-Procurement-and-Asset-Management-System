@@ -159,6 +159,7 @@ Route::resource('assets', 'assetController');
 //asset Par routes
 // Route::get('/DistributeAssets/{id}', 'asset_parController@index')->name('assets.index');
 Route::resource('DistributeAssets', 'asset_parController');
+Route::post('/setIsAssigned', 'asset_parController@setIsAssigned');
 Route::get('/getPARNo', 'asset_parController@getPARCount');
 
 // assetMigrations
