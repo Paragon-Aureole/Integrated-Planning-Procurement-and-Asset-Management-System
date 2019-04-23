@@ -26,6 +26,8 @@ class RolesAndPermissionsSeeder extends Seeder
             ['name' => 'write'],
 
             ['name' => 'close'],
+            ['name' => 'asset mgt'],
+            ['name' => 'gso supervisor'],
 
 
         ];

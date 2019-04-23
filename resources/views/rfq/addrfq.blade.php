@@ -66,9 +66,11 @@
                     <a href="{{route('rfq.print', $rfq->id)}}" target="_blank" class="btn btn-sm btn-secondary">
                       <i class="fas fa-print"></i>
                     </a>
+                    @can('full control')
                     <a href="#" class="btn btn-sm btn-danger">
                       <i class="fas fa-minus"></i>
                     </a>
+                    @endcan
                   </td>
               </tr>
           @endforeach
