@@ -15,14 +15,20 @@ class CreateMigratedAssetsTable extends Migration
     {
         Schema::create('migrated_assets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('item');
-            $table->integer('quantity');
-            $table->integer('unit_cost');
-            $table->string('classification_no');
-            $table->date('date_assigned');
-            $table->integer('total_amount');
-            $table->string('signatory_name');
-            $table->string('position');
+            $table->string('name_of_accountable');
+            $table->string('official_designation');
+            $table->string('lgu');
+            $table->string('article');
+            $table->string('office_id');
+            $table->string('description');
+            $table->integer('property_number');
+            $table->string('unit_of_measure');
+            $table->integer('unit_value');
+            $table->integer('balance_per_card');
+            $table->integer('on_hand_per_count');
+            $table->string('shortage_overage');
+            $table->date('date_purchase');
+            $table->string('remarks');
             $table->integer('asset_type_id')->unsigned()->nullable()->index();
             $table->timestamps();
         });

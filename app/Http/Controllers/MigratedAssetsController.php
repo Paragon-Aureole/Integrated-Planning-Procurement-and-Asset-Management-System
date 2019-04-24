@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\migratedAssets;
+use App\Office;
 use Illuminate\Http\Request;
 
 class MigratedAssetsController extends Controller
@@ -15,7 +16,8 @@ class MigratedAssetsController extends Controller
     public function index()
     {
         $migratedAssets = migratedAssets::all();
-        return view('assets.data_capturing.officeAssets.index', compact('migratedAssets'));
+        $office = Office::all();
+        return view('assets.data_capturing.officeAssets.index', compact('migratedAssets', 'office'));
     }
 
     /**
@@ -38,20 +40,29 @@ class MigratedAssetsController extends Controller
     {
         $input = $request->all();
 
-        // dd($input['signatoryName']);
+        dd($input);
         $inputMigration = migratedAssets::create([
-            'item'=>$input['item'],
-            'quantity'=>$input['itemQty'],
-            'unit_cost'=>$input['unitCost'],
-            'classification_no'=>$input['classificationNo'],
-            'date_assigned'=>$input['dateAssigned'],
-            'total_amount'=>$input['totalAmount'],
-            'asset_type_id'=>$input['assetType'],
-            'signatory_name'=>$input['signatoryName'],
-            'position'=>$input['position']
+            'name_of_accountable'=>$input['name_of_accountable'],
+            'official_designation'=>$input['official_designation'],
+            'lgu'=>$input['lgu'],
+            'article'=>$input['article'],
+            'office_id'=>$input['office_id'],
+            'description'=>$input['description'],
+            'property_number'=>$input['property_number'],
+            'unit_of_measure'=>$input['unit_of_measure'],
+            'unit_value'=>$input['unit_value'],
+            'balance_per_card'=>$input['balance_per_card']
+            
         ]);
 
         return redirect()->back()->with('success', 'Item Successfully Migrated');
+    }
+
+    public function storeVehicle(Request $request)
+    {
+        $input = $request->all();
+
+        dd($input);
     }
 
     /**

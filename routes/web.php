@@ -163,5 +163,6 @@ Route::get('/getPARNo', 'asset_parController@getPARCount');
 
 // assetMigrations
 Route::resource('migrateAssets', 'MigratedAssetsController');
+Route::post('migrateAssetsVehicle', 'MigratedAssetsController@storeVehicle')->name('migrateAssetsVehicle.storeVehicle');
 
 Route::resource('distribution', 'assetDistributionFormCreatorController');
