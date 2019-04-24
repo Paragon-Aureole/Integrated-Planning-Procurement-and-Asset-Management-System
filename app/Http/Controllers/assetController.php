@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\asset;
 use App\asset_po_disbursement_voucher_no;
 use App\assetType;
+use App\asset_par;
 use PDF;
 use App;
 
@@ -210,8 +211,9 @@ class assetController extends Controller
 
     // }
 
-    public function printPar()
+    public function printPar($id)
     {
+        $parData = asset_par::findorFail($id);
         // return view('assets.par.printPAR');
         $options = [
             'margin-top'    => 10,
@@ -220,7 +222,9 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.par.printPAR')->setPaper('Folio', 'landscape');
+        // dd($parData);
+
+        $pdf = PDF::loadView('assets.par.printPAR', compact('parData'))->setPaper('Folio', 'landscape');
         return $pdf->stream('PAR.pdf');
     }
 

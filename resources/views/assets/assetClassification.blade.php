@@ -67,9 +67,8 @@
                 <br> <br>
                 {{-- <button name="createPAR" class="btn btn-secondary"> Create PAR </button>
                 <button name="createICS" class="btn btn-secondary"> Create ICS </button> --}}
-                <a href="{{route('DistributeAssets.index', 'id=' . $assetData[0]->purchase_order_id)}}"
-                    class="btn btn-secondary">create PAR</a>
-                <a href="{{route('DistributeAssets.index')}}/1" class="btn btn-secondary">create ICS</a>
+                <a href="{{route('DistributeAssetsPAR.index', 'id=' . $assetData[0]->purchase_order_id)}}" class="btn btn-secondary">create PAR</a>
+                <a href="{{route('DistributeAssetsICS.index', 'id= . $assetData[0]->purchase_order_id')}}" class="btn btn-secondary">create ICS</a>
 
             </div>
         </div>

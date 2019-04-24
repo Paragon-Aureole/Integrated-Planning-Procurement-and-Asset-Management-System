@@ -21,6 +21,7 @@ class Asset extends Migration
             $table->integer('item_quantity');
 			$table->boolean('isICS')->nullable()->default(FALSE);
 			$table->boolean('isPAR')->nullable()->default(FALSE);
+			$table->boolean('asset_type_id')->nullable()->default(FALSE);
 			$table->boolean('isAssigned')->nullable()->default(FALSE);
 			$table->boolean('isEditable')->nullable()->default(FALSE);
             $table->timestamps();

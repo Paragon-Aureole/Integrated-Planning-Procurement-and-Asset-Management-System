@@ -41,6 +41,21 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td>{{$parData->quantity}}</td>
+                        <td>Sample Unit</td>
+                        <td>{{$parData->description}}</td>
+                        {{--  <td>Sample Description</td>  --}}
+                        <td>Sample Property Number</td>
+                        <td>{{$parData->created_at}}</td>
+                        {{--  <td>Sample Date Acquired</td>  --}}
+                        <td>{{$parData->unitCost}}</td>
+                        {{--  <td>SampleUnit Cost</td>  --}}
+                        @php
+                          $totalAmount = $parData->quantity * $parData->unitCost;  
+                        @endphp
+                        <td>{{$totalAmount}}</td>
+                    </tr>
+                    {{--  <tr>
                         <td>sample Quantity</td>
                         <td>Sample Unit</td>
                         <td>Sample Description</td>
@@ -48,16 +63,7 @@
                         <td>Sample Date Aqcuired</td>
                         <td>SampleUnit Cost</td>
                         <td>Sample Amount</td>
-                    </tr>
-                    <tr>
-                        <td>sample Quantity</td>
-                        <td>Sample Unit</td>
-                        <td>Sample Description</td>
-                        <td>Sample Property Number</td>
-                        <td>Sample Date Aqcuired</td>
-                        <td>SampleUnit Cost</td>
-                        <td>Sample Amount</td>
-                    </tr>
+                    </tr>  --}}
                     <tr>       
                         <td colspan="3">
                             <div class="container">

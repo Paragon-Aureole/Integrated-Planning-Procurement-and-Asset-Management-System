@@ -70,7 +70,7 @@
                   <td>{{$record['assignedTo']}}</td>
                   <td>{{$record['name']}}</td>
                   <td>
-                    <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">
+                    <a href="http://ipams.test/printPar/{{$record['id']}}"  target="_blank" class="btn btn-sm btn-secondary">
                       <i class="fas fa-print"></i>
                     </a>
                   </td>
