@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssetTypesTable extends Migration
+class CreateEditAssetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateAssetTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('asset_types', function (Blueprint $table) {
+        Schema::create('edit_assets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type_name');
+            $table->integer('asset_id')->unsigned()->nullable()->index();
+            $table->string('reason');
             $table->timestamps();
         });
+
 
     }
 
@@ -28,6 +30,6 @@ class CreateAssetTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asset_types');
+        Schema::dropIfExists('edit_assets');
     }
 }

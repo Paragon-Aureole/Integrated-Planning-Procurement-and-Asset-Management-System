@@ -10,14 +10,25 @@ class asset extends Model
         'purchase_order_id', 'details', 'amount', 'isICS', 'isPAR', 'item_quantity'
     ];
 
-// public function getRouteKeyName()
-// {
+    // public function getRouteKeyName()
+    // {
 //     return 'details';
-// }
+    // }
 
- public function purchaseOrder()
+    public function purchaseOrder()
     {
         return $this->belongsTo(PurchaseOrder::class);
     }
+
+    public function measurementUnit()
+    {
+        return $this->belongsTo(MeasurementUnit::class);
+    }
+
+    public function asset_par()
+    {
+        return $this->hasMany(assetPar::class);
+    }
+
 
 }

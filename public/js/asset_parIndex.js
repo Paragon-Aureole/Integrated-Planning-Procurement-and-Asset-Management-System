@@ -202,7 +202,7 @@
             data: formData
           },
           type: 'POST',
-          url: 'http://ipams.test/DistributeAssets',
+          url: 'http://ipams.test/DistributeAssetsPAR',
           success: function (data) {
             console.log(data);
 
@@ -243,7 +243,7 @@
             asset_id: id
           },
           type: 'POST',
-          url: 'http://ipams.test/setIsAssigned',
+          url: 'http://ipams.test/setIsAssignedPAR',
           success: function (data) {
             console.log(data);
             window.location.reload();

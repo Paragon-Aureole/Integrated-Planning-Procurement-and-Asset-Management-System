@@ -21,10 +21,7 @@ class CreateEditDistributedAssetsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('edit_distributed_assets', function (Blueprint $table) {
-            $table->foreign('par_id')->references('id')->on('asset_pars')->onDelete('cascade');
-            $table->foreign('ics_id')->references('id')->on('asset_icslips')->onDelete('cascade');
-        });
+
     }
 
     /**

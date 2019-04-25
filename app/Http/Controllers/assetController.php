@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\asset;
 use App\asset_po_disbursement_voucher_no;
 use App\assetType;
-use App\asset_par;
+use App\assetPar;
 use PDF;
 use App;
 
@@ -213,7 +213,7 @@ class assetController extends Controller
 
     public function printPar($id)
     {
-        $parData = asset_par::findorFail($id);
+        $parData = assetPar::findorFail($id);
         // return view('assets.par.printPAR');
         $options = [
             'margin-top'    => 10,

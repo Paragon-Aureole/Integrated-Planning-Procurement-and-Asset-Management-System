@@ -157,10 +157,10 @@ Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 Route::resource('assets', 'assetController');
 
 //asset Par routes
-// Route::get('/DistributeAssets/{id}', 'asset_parController@index')->name('assets.index');
-Route::resource('DistributeAssetsPAR', 'asset_parController');
-Route::post('/setIsAssignedPAR', 'asset_parController@setIsAssigned');
-Route::get('/getPARNo', 'asset_parController@getPARCount');
+// Route::get('/DistributeAssets/{id}', 'assetParController@index')->name('assets.index');
+Route::resource('DistributeAssetsPAR', 'assetParController');
+Route::post('/setIsAssignedPAR', 'assetParController@setIsAssigned');
+Route::get('/getPARNo', 'assetParController@getPARCount');
 
 Route::resource('DistributeAssetsICS', 'asset_icsController');
 Route::post('/setIsAssignedICS', 'asset_icsController@setIsAssigned');
