@@ -16,7 +16,7 @@ class CreateDisbursementVouchersTable extends Migration
         Schema::create('disbursement_vouchers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('purchase_order_id')->unsigned()->nullable()->index();
-            $table->string('disbursementNo')->default('0');
+            $table->string('disbursementNo')->nullable()->default('0');
             $table->timestamps();
         });
     }

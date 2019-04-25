@@ -99,6 +99,8 @@ class PurchaseOrderController extends Controller
             'details' => $poItems->prItem->ppmpItem->item_description,
             'amount' => $poItems->final_cpi,
             'item_quantity'=>$poItems->prItem->item_quantity,
+            'measurement_unit_id'=>$poItems->prItem->ppmpItem->measurement_unit_id,
+
             ]);
             $po->asset()->save($asset);
         }

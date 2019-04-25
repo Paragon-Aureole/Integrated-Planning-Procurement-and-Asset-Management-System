@@ -17,8 +17,6 @@ class CreateAssetTurnoversTable extends Migration
             $table->increments('id');
             $table->integer('par_id')->unsigned()->nullable()->index();
             $table->integer('ics_id')->unsigned()->nullable()->index();
-            // $table->string('name');
-            // $table->string('description');
             $table->string('remarks');
             $table->string('assignedTo');
             $table->timestamps();

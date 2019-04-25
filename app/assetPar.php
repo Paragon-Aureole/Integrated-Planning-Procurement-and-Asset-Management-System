@@ -7,20 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 class assetPar extends Model
 {
     protected $fillable = [
-        // 'par_id',
-        'name',
-        'quantity',
-        'unitCost',
-        'description',
-        'assignedTo',
-        'position',
         'asset_id',
-        'purchase_order_id'
-        // 'amount'
+        'quantity',
+        'description',
+        'property_no',
+        'assignedTo',
+        'position'
     ];
 
     public function asset()
     {
         return $this->belongsTo(asset::class);
+    }
+
+    public function asset_turnover()
+    {
+        return $this->hasOne(assetTurnover::class);
+    }
+
+    public function distributedAsset()
+    {
+        return $this->hasOne(editDistributedAsset::class);
     }
 }

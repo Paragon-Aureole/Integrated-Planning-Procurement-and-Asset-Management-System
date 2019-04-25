@@ -7,7 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class asset extends Model
 {
     protected $fillable = [
-        'purchase_order_id', 'details', 'amount', 'isICS', 'isPAR', 'item_quantity'
+        'purchase_order_id',
+        'measurement_unit_id',
+        'details',
+        'amount',
+        'item_quantity',
+        'isICS',
+        'isPAR',
+        'asset_type_id',
+        'isAssigned',
+        'isEditable'
     ];
 
     // public function getRouteKeyName()
@@ -28,6 +37,16 @@ class asset extends Model
     public function asset_par()
     {
         return $this->hasMany(assetPar::class);
+    }
+
+    public function asset_type()
+    {
+        return $this->belongsTo(assetType::class);
+    }
+
+    public function asset_ics()
+    {
+        return $this->hasMany(assetIcslip::class);
     }
 
 

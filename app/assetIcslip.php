@@ -7,13 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 class assetIcslip extends Model
 {
     protected $fillable = [
-        'ics_id',
-        'name',
-        'quanity',
-        'unit',
+        'asset_id',
+        'quantity',
         'description',
         'assignedTo',
-        'inventory_item_no',
+        'inventory_name_no',
         'useful_life'
     ];
+
+    public function assets()
+    {
+        return $this->belongsTo(asset::class);
+    }
+
+    public function asset_turnover()
+    {
+        return $this->hasOne(assetTurnover::class);
+    }
+
+    public function distributedAsset()
+    {
+        return $this->hasOne(editDistributedAsset::class);
+    }
 }
