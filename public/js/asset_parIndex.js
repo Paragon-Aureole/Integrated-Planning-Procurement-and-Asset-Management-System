@@ -1,5 +1,6 @@
   $(document).ready(function () {
     getPARNo();
+    // getPARData();
     var table = $('#prDatatable').DataTable({
       responsive: true,
       "lengthMenu": [
@@ -15,6 +16,7 @@
       clearModalFields().done(function () {
         console.log(selectedRow);
         $('[name=currentItemID]').val(selectedRow[0]);
+        $('[name=totalItemQuantity]').val(selectedRow[2]);
         // console.log(selectedRow[4]);
 
         // createModalForms(selectedRow[1]);
@@ -39,31 +41,19 @@
       });
     };
 
-    // function createModalForms(itemQty) {
-    //   // for (let index = 0; index < itemQty; index++) {
-    //   //   $('#bull').append("<div id='sheet" + index + "'></div>");
-    //   //   createModalFields(index);
+    // function getPARData() {
+    //   return new Promise(function (resolve) {
+    //     $.ajax({
 
-    //   // }
-
-    //   $('#bull').append("<div id='sheet" + index + "'></div>");
-    //   createModalFields(index);
-    // }
-
-    // function createModalFields(param) {
-    //   console.log(param);
-
-    //   $('#sheet' + param).append('Name:<input type="text" name="selectedItemName"> <br>');
-    //   $('#sheet' + param).append('Quantity:<select name="selectedItemQty"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> </select> <br>');
-    //   $('#sheet' + param).append('UnitCost:<input type="text" name="selectedItemUnitCost"> <br>');
-    //   $('#sheet' + param).append('PAR No:<input type="text" name="selectedItemPARNo"> <br>');
-    //   $('#sheet' + param).append('DateAssigned:<input type="date" name="selectedItemDateAssigned"> <br>');
-    //   $('#sheet' + param).append('TotalAmount<input type="text" name="selectedItemTotalAmount"> <br>');
-    //   $('#sheet' + param).append('EmployeeName<input type="text" name="selectedItemEmployeeName"> <br>');
-    //   $('#sheet' + param).append('EmployeePosition<input type="text" name="selectedItemEmployeePosition"> <br>');
-    //   $('#sheet' + param).append('Specifications:<textarea name="selectedItemSpecifications" cols="30" rows="10"></textarea> <br>');
-
-    // }
+    //       type: 'GET',
+    //       url: '/getPARData',
+    //       success: function (data) {
+    //         console.log(data);
+    //         // resolve($('#currentPARNo').val(parseInt(data) + 1));
+    //       }
+    //     });
+    //   });
+    // };
 
     //select item quantity calculates the total amount
     $('[name=selectedItemQty]').on('change', function () {
@@ -71,12 +61,13 @@
     });
 
     function setTotalAmount() {
+      // console.log($('[name=selectedItemQty]').val());
+      
       var itemQty = parseInt($('[name=selectedItemQty]').val());
       var unitCost = parseFloat($('[name=selectedItemUnitCost]').val());
       var finalResult = calculateTotalAmount(itemQty, unitCost);
       $('[name=selectedItemTotalAmount]').val(finalResult);
     }
-
 
     //save function
     $('#itemAssignForm').on('submit', function (e) {
@@ -103,8 +94,6 @@
       var itemEmployeePosition = $('[name=selectedItemEmployeePosition]').val();
       var itemID = $('[name=currentItemID').val();
       var itemCurrentPONo = $('#currentPONo').val();
-      // var itemTotalAmount = $('[name=selectedItemTotalAmount]').val();
-      // 
 
       itemData[0] = itemPARNo;
       itemData[1] = itemName;
@@ -117,7 +106,6 @@
       itemData[8] = itemCurrentPONo;
 
       // console.log(itemData);
-      // console.log($(this).serialize());
 
       savePARAssign(itemData);
 
@@ -139,7 +127,7 @@
     }
 
     function fillModalFields(selectedRow) {
-      $('[name=remainingItems]').val(selectedRow[2]);
+      $('[name=remainingItems]').val(selectedRow[3]);
       getPARNo().then(function () {
 
         //setting Date to Now
@@ -151,7 +139,7 @@
 
         fillQuantityDropdown($('[name=remainingItems]').val());
 
-        var unitCost = parseFloat(selectedRow[3]) / parseFloat(selectedRow[2]);
+        var unitCost = parseFloat(selectedRow[4]) / parseFloat(selectedRow[2]);
         var currentPARNo = $('#currentPARNo').val();
         $('[name=selectedItemName]').val(selectedRow[1]);
         // console.log(parseFloat(selectedRow[1]));
@@ -164,7 +152,7 @@
         // $('#selectedItemEmployeePosition').val();
         $('[name=selectedItemPARNo]').val(currentPARNo);
         // $('#selectedItemDateAssigned').val();
-        $('[name=selectedItemTotalAmount]').val(selectedRow[3]);
+        $('[name=selectedItemTotalAmount]').val(setTotalAmount());
         // $('#selectedItemSpecifications').val();
       });
     }
@@ -179,6 +167,8 @@
 
     function calculateTotalAmount(itemQty, unitCost) {
       var result = itemQty * unitCost;
+      // console.log(itemQty);
+      // console.log(unitCost);
       return result;
     }
 

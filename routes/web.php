@@ -158,16 +158,16 @@ Route::resource('assets', 'assetController');
 
 //asset Par routes
 // Route::get('/DistributeAssets/{id}', 'assetParController@index')->name('assets.index');
-Route::resource('DistributeAssetsPAR', 'assetParController');
-Route::post('/setIsAssignedPAR', 'assetParController@setIsAssigned');
-Route::get('/getPARNo', 'assetParController@getPARCount');
+Route::resource('DistributeAssetsPAR', 'AssetParController');
+Route::post('/setIsAssignedPAR', 'AssetParController@setIsAssigned');
+Route::get('/getPARNo', 'AssetParController@getPARCount');
+// Route::get('/getPARData', 'AssetParController@getPARData');
 
-Route::resource('DistributeAssetsICS', 'asset_icsController');
-Route::post('/setIsAssignedICS', 'asset_icsController@setIsAssigned');
-Route::get('/getICSNo', 'asset_icsController@getPARCount');
+Route::resource('DistributeAssetsICS', 'AssetIcslipController');
+Route::post('/setIsAssignedICS', 'AssetIcslipController@setIsAssigned');
+Route::get('/getICSNo', 'AssetIcslipController@getPARCount');
 
 
 // assetMigrations
 Route::resource('migrateAssets', 'MigratedAssetsController');
 
-Route::resource('distribution', 'assetDistributionFormCreatorController');

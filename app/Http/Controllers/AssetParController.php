@@ -16,13 +16,18 @@ class AssetParController extends Controller
      */
     public function index(Request $id)
     {
-        // dd($id->purchase_order_id);
+
         $assetParData = assetPar::all();
-        // dd($id->all());
+        
+        // dd($assetParRemainingQuantity);
+
+        // $assetParData = assetPar::select('asset_id')->groupBy('asset_id')->get();
+        // $assetParData = assetPar::where('asset_id', 3)->sum('quantity');
         $parData = asset::where('purchase_order_id', $id->id)->where('isPAR', 1)->where('isAssigned', 0)->get();
-        // dd($parData);
         $purchase_order_id = $id->id;
-        // $assetTypes = assetType::All();
+
+        // dd($parData[0]->item_quantity);
+
         // return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id', 'assetTypes'));
         return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id'));
     }
@@ -35,9 +40,15 @@ class AssetParController extends Controller
 
     public function getPARCount()
     {
-        $assetParData = assetPar::get()->count();
-        return ($assetParData);
+        $assetParCount = assetPar::get()->count();
+        return ($assetParCount);
     }
+
+    // public function getPARData()
+    // {
+    //     $assetParData = assetPar::All();
+    //     return ($assetParData);
+    // }
 
     public function setIsAssigned(Request $request)
     {
@@ -50,6 +61,7 @@ class AssetParController extends Controller
     
     public function create()
     {
+
     }
 
     /**
@@ -63,17 +75,20 @@ class AssetParController extends Controller
     {
         $items = $request->input('data');
         // dd($items);
+
         assetPar::create([
             // 'par_id' => $items[0],
             'name' => $items[1],
             'quantity' => $items[2],
-            'unitCost' => $items[3],
+            // 'unitCost' => $items[3],
             'description' => $items[4],
             'assignedTo' => $items[5],
             'position' => $items[6],
             'asset_id' => $items[7],
             'purchase_order_id' => $items[8]
         ]);
+
+        asset::find($items[7])->decrement('item_stock', $items[2]);
 
 
         if ($request->isMethod('post')) {

@@ -20,6 +20,7 @@ class Asset extends Migration
             $table->string('details');
             $table->double('amount', 15, 2);
             $table->integer('item_quantity');
+            $table->integer('item_stock');
             $table->boolean('isICS')->nullable()->default(false);
             $table->boolean('isPAR')->nullable()->default(false);
             $table->integer('asset_type_id')->unsigned()->nullable()->index();
