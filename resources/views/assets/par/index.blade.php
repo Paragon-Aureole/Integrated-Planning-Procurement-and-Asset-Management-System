@@ -10,10 +10,10 @@
 
 @section('content')
 
-{{-- {{$asset_parData}} --}}
+{{-- {{$assetParData}} --}}
 
 {{-- {{route('distribution.store')}} --}}
-{{-- <input type="hidden" id="currentPARNo" value={{$asset_parData}}> --}}
+{{-- <input type="hidden" id="currentPARNo" value={{$assetParData}}> --}}
 <input type="hidden" id="currentPARNo">
 <input type="hidden" id="currentPONo" value={{$purchase_order_id}}>
 
@@ -35,6 +35,7 @@
                   <th>ID</th>
                   <th>Item</th>
                   <th>Item Qty</th>
+                  <th>Items Remaining</th>
                   <th>Total Price</th>
                   <th>Actions</th>
                 </tr>
@@ -45,6 +46,7 @@
                   <td>{{$record['id']}}</td>
                   <td>{{$record['details']}}</td>
                   <td>{{$record['item_quantity']}}</td>
+                  <td>{{$record['item_stock']}}</td>
                   <td>{{$record['amount']}}</td>
                   <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button></td>
                   {{-- <td><a href="{{route('DistributeAssets.create')}}" target="_blank" class="btn btn-sm btn-secondary">Assign</a></td> --}}
@@ -64,7 +66,7 @@
                 </tr>
               </thead>
               <tbody>                
-                @foreach ($asset_parData as $record)
+                @foreach ($assetParData as $record)
                 <tr>
                   <td>{{$record['id']}}</td>
                   <td>{{$record['assignedTo']}}</td>
@@ -100,7 +102,8 @@
       </div>
 <input name="remainingItems" type="hidden"></input>
 <input name="currentItemID" type="hidden"></input>
-<form id="itemAssignForm" action="http://ipams.test/DistributeAssets" method="POST">
+<input name="totalItemQuantity" type="hidden"></input>
+<form id="itemAssignForm" action="{{route('DistributeAssetsPAR.store')}}" method="POST">
   {{csrf_field()}}
       <div class="modal-body" id="assetAssignBody">
         <div class="container-fluid">
@@ -119,9 +122,7 @@
                 </div>
                 {{-- QUANTITY SELECITION HERE --}}
                 <select name="selectedItemQty" class="custom-select">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="N">N</option>
+                  <option>None</option>
                 </select>
               </div>
               <div class="input-group input-group-sm mb-3">

@@ -10,9 +10,9 @@ use Auth;
 use App\Http\Requests\PurchaseRequestItemRequest;
 use Illuminate\Http\Request;
 use App\asset;
-use App\asset_po_disbursement_voucher_no;
+use App\DisbursementVoucher;
 use App\assetType;
-use App\asset_par;
+use App\assetPar;
 use PDF;
 use App;
 
@@ -25,6 +25,7 @@ class assetController extends Controller
      */
     public function index()
     {
+        
         // $data = asset::All();
         // $pr = PurchaseRequest::findorFail(1);
         // $pr_code = explode("-", $pr->pr_code);
@@ -39,30 +40,28 @@ class assetController extends Controller
     }
 
 
-    public function getVoucherNo(Request $request)
-    {
-        $poID = $request->get('searchPO');
-        // return($poID);
-        return view('assets.getVoucherNo', compact('poID'));
-    }
+    // public function getVoucherNo(Request $request)
+    // {
+    //     $poID = $request->get('searchPO');
+    //     // return($poID);
+    //     return view('assets.getVoucherNo', compact('poID'));
+    // }
 
-    public function saveVoucherNo(Request $request)
-    {
-        $purchase_order_no = $request->get('purchase_order_no');
-        $voucherNo = $request->get('voucherNo');
+    // public function saveVoucherNo(Request $request)
+    // {
+    //     $purchase_order_no = $request->get('purchase_order_no');
+    //     $voucherNo = $request->get('voucherNo');
 
-        asset_po_disbursement_voucher_no::create([
-                'purchase_order_id' => $purchase_order_no,
-                'disbursementNo' => $voucherNo
-            ]);
+    //     DisbursementVoucher::create([
+    //             'purchase_order_id' => $purchase_order_no,
+    //             'disbursementNo' => $voucherNo
+    //         ]);
         
-        return redirect()->route('assets.assetClassification', compact('purchase_order_no'))->with('success', 'PO Disbursement Number has been Registered.');
+    //     return redirect()->route('assets.assetClassification', compact('purchase_order_no'))->with('success', 'PO Disbursement Number has been Registered.');
 
         
-        // dd($purchase_order_no, $voucherNo);
-
-
-    }
+    //     // dd($purchase_order_no, $voucherNo);
+    // }
 
 
     /**
@@ -72,17 +71,16 @@ class assetController extends Controller
      */
     public function create()
     {
-    
     }
 
     public function assetClassification(Request $id)
     {
-    //  dd($id->All());
+        //  dd($id->All());
 
-    // $data = asset::findorFail($id->purchase_order_id);
-    $assetData = asset::where('purchase_order_id', $id->purchase_order_no)->get();
-    $assetTypeData = assetType::All();
-    // dd($assetData);
+        // $data = asset::findorFail($id->purchase_order_id);
+        $assetData = asset::where('purchase_order_id', $id->purchase_order_id)->get();
+        $assetTypeData = assetType::All();
+        // dd($assetData);
     
         return view('assets.assetClassification', compact('assetData', 'assetTypeData'));
         // return view('assets.create');
@@ -96,7 +94,12 @@ class assetController extends Controller
      */
     public function store(Request $request)
     {
-        
+        DisbursementVoucher::create([
+                'purchase_order_id' => $request->purchase_order_id,
+                'disbursementNo' => $request->voucherNo
+            ]);
+
+
         // dd($request->all());
         $sortedArray = [];
         $assetCount = asset::where('purchase_order_id', $request->purchase_order_id)->get()->count() - 1;
@@ -106,7 +109,7 @@ class assetController extends Controller
         $PAR = $request->get('PAR');
         $asset_type_id = $request->get('asset_type');
 
-        for ($i=0; $i <= $assetCount; $i++) { 
+        for ($i=0; $i <= $assetCount; $i++) {
             $sortedArray[$i] = [$recordID[$i], $ICS[$i], $PAR[$i], $asset_type_id[$i]];
         }
         // dd($sortedArray);
@@ -159,18 +162,18 @@ class assetController extends Controller
      */
     public function update(Request $request, asset $asset)
     {
-            // asset::whereId($asset->id)->update(
-            //     [
-            //     'PO_id' => $asset->PO_id,
-            //     'details' => $request->details,
-            //     'amount' => $request->amount,
-            //     'isSup' => $request->isSup,
-            //     'isICS' => $request->isICS,
-            //     'isPAR' => $request->isPAR
-            // ]);
+        // asset::whereId($asset->id)->update(
+        //     [
+        //     'PO_id' => $asset->PO_id,
+        //     'details' => $request->details,
+        //     'amount' => $request->amount,
+        //     'isSup' => $request->isSup,
+        //     'isICS' => $request->isICS,
+        //     'isPAR' => $request->isPAR
+        // ]);
             
-            asset::whereId($asset->id)->update($request->except(['_method','_token']));
-            return redirect()->back()->with('success', 'Update Success.');
+        asset::whereId($asset->id)->update($request->except(['_method','_token']));
+        return redirect()->back()->with('success', 'Update Success.');
             
             
         // dd($request->all());
@@ -198,8 +201,7 @@ class assetController extends Controller
         // $fetchedData = asset::all();
         // dd($fetchedData);
 
-        return view('assets.listRegisteredPOItems',compact('fetchedData'));
-
+        return view('assets.listRegisteredPOItems', compact('fetchedData'));
     }
     // public function displayRegisteredPOItems($id)
     // {
@@ -213,7 +215,7 @@ class assetController extends Controller
 
     public function printPar($id)
     {
-        $parData = asset_par::findorFail($id);
+        $parData = assetPar::findorFail($id);
         // return view('assets.par.printPAR');
         $options = [
             'margin-top'    => 10,

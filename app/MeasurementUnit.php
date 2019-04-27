@@ -29,4 +29,9 @@ class MeasurementUnit extends Model
     {
         return $this->hasMany(PpmpItem::class);
     }
+
+    public function asset()
+    {
+        return $this->hasMany(asset::class);
+    }
 }

@@ -10,11 +10,16 @@
 
 @section('content')
 
-{{-- {{$assetData}} --}}
 
-<form action="{{route('assets.store')}}" method="post">
+<input type="hidden" name="assetDataCount" value="{{count($assetData->where('isEditable', 0))}}">
+<form id="assetClassificationForm" action="{{route('assets.store')}}" method="post">
     {{csrf_field()}}
     <input type="hidden" name="purchase_order_id" value={{$assetData[0]->purchase_order_id}}>
+
+            {{--  <input type="hidden" name="purchase_order_no" value={{$poID}}>  --}}
+    Disbursement Voucher No:<input type="text" class="form-control" placeholder="Input Voucher No" name="voucherNo">
+
+
     {{--  <input type="hidden" name="PO_id" value={{$id->searchPO}}></input> --}}
     <div class="container-fluid">
         <div class="card">
@@ -45,16 +50,16 @@
 
                             {{-- <td> <input type="hidden" name="ICS[{{$key}}]" value=0></input></td> --}}
                             <input type="hidden" name="ICS[{{$key}}]" value=0>
-                            <td> <input type="checkbox" name="ICS[{{$key}}]" value=1></td>
+                            <td> <input type="checkbox" class="assetCheckboxSelection[{{$key}}]" name="ICS[{{$key}}]" value=1></td>
 
                             {{-- <td> <input type="hidden" name="PAR[{{$key}}]" value=0></input></td> --}}
                             <input type="hidden" name="PAR[{{$key}}]" value=0>
-                            <td> <input type="checkbox" name="PAR[{{$key}}]" value=1></td>
-                            <td> 
+                            <td> <input type="checkbox" class="assetCheckboxSelection[{{$key}}]" name="PAR[{{$key}}]" value=1></td>
+                            <td>
                                 <select name="asset_type[{{$key}}]" class="custom-select">
-                                @foreach ($assetTypeData as $key => $record)
-                                <option value={{$key}}>{{$record['type_name']}}</option>
-                                @endforeach
+                                    @foreach ($assetTypeData as $key => $record)
+                                    <option value={{$key}}>{{$record['type_name']}}</option>
+                                    @endforeach
                                 </select>
                             </td>
                         </tr>
@@ -67,8 +72,10 @@
                 <br> <br>
                 {{-- <button name="createPAR" class="btn btn-secondary"> Create PAR </button>
                 <button name="createICS" class="btn btn-secondary"> Create ICS </button> --}}
-                <a href="{{route('DistributeAssetsPAR.index', 'id=' . $assetData[0]->purchase_order_id)}}" class="btn btn-secondary">create PAR</a>
-                <a href="{{route('DistributeAssetsICS.index', 'id= . $assetData[0]->purchase_order_id')}}" class="btn btn-secondary">create ICS</a>
+                <a href="{{route('DistributeAssetsPAR.index', 'id=' . $assetData[0]->purchase_order_id)}}"
+                    class="btn btn-secondary">create PAR</a>
+                <a href="{{route('DistributeAssetsICS.index', 'id=' . $assetData[0]->purchase_order_id)}}"
+                    class="btn btn-secondary">create ICS</a>
 
             </div>
         </div>
@@ -78,19 +85,5 @@
 @endsection
 
 @section('script')
-<script type="text/javascript">
-    $(document).ready(function () {
-        var table = $('#prDatatable').DataTable({
-            responsive: true,
-            "lengthMenu": [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "All"]
-            ],
-        });
-
-        $('#prDatatable tbody').on('click', 'tr', function () {
-            $('[name=pr_id]').val(table.row(this).index() + 1);
-        });
-    });
-</script>
+<script src="{{asset('js/assetClassification.js')}}"></script>
 @endsection

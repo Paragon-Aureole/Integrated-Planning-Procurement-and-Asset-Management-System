@@ -4,18 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class assetIcslip extends Model
+class assetPar extends Model
 {
     protected $fillable = [
         'asset_id',
         'quantity',
         'description',
+        'property_no',
         'assignedTo',
-        'inventory_name_no',
-        'useful_life'
+        'position'
     ];
 
-    public function assets()
+    public function asset()
     {
         return $this->belongsTo(asset::class);
     }

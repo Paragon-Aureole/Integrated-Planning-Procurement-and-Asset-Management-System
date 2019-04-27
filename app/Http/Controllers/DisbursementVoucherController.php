@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\editDistributedAsset;
+use App\DisbursementVoucher;
 use Illuminate\Http\Request;
 
-class EditDistributedAssetController extends Controller
+class DisbursementVoucherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class EditDistributedAssetController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\editDistributedAsset  $editDistributedAsset
+     * @param  \App\DisbursementVoucher  $disbursementVoucher
      * @return \Illuminate\Http\Response
      */
-    public function show(editDistributedAsset $editDistributedAsset)
+    public function show(DisbursementVoucher $disbursementVoucher)
     {
         //
     }
@@ -52,10 +52,10 @@ class EditDistributedAssetController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\editDistributedAsset  $editDistributedAsset
+     * @param  \App\DisbursementVoucher  $disbursementVoucher
      * @return \Illuminate\Http\Response
      */
-    public function edit(editDistributedAsset $editDistributedAsset)
+    public function edit(DisbursementVoucher $disbursementVoucher)
     {
         //
     }
@@ -64,10 +64,10 @@ class EditDistributedAssetController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\editDistributedAsset  $editDistributedAsset
+     * @param  \App\DisbursementVoucher  $disbursementVoucher
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, editDistributedAsset $editDistributedAsset)
+    public function update(Request $request, DisbursementVoucher $disbursementVoucher)
     {
         //
     }
@@ -75,10 +75,10 @@ class EditDistributedAssetController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\editDistributedAsset  $editDistributedAsset
+     * @param  \App\DisbursementVoucher  $disbursementVoucher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(editDistributedAsset $editDistributedAsset)
+    public function destroy(DisbursementVoucher $disbursementVoucher)
     {
         //
     }

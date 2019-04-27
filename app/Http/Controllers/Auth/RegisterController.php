@@ -38,7 +38,7 @@ class RegisterController extends Controller
         $offices = Office::all();
         $roles = Role::all();
         $user_DT = User::withTrashed()->get();
-
+        
         return  view('auth.register', compact('roles','offices', 'user_DT'));
     }
 
@@ -53,6 +53,10 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
+
+        activity()
+        ->performedOn($user)
+        ->log('Added new user');
 
         return $this->registered($request, $user)
                         ?: redirect($this->redirectPath());

@@ -15,18 +15,18 @@ class Asset extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('purchase_order_id')->unsigned()->nullable()->index();
-			$table->string('details');
+            $table->integer('purchase_order_id')->unsigned()->index()->nullable();
+            $table->integer('measurement_unit_id')->unsigned()->index()->nullable();
+            $table->string('details');
             $table->double('amount', 15, 2);
             $table->integer('item_quantity');
-			$table->boolean('isICS')->nullable()->default(FALSE);
-			$table->boolean('isPAR')->nullable()->default(FALSE);
-			$table->boolean('asset_type_id')->nullable()->default(FALSE);
-			$table->boolean('isAssigned')->nullable()->default(FALSE);
-			$table->boolean('isEditable')->nullable()->default(FALSE);
+            $table->integer('item_stock');
+            $table->boolean('isICS')->nullable()->default(false);
+            $table->boolean('isPAR')->nullable()->default(false);
+            $table->integer('asset_type_id')->unsigned()->nullable()->index();
+            $table->boolean('isAssigned')->nullable()->default(false);
+            $table->boolean('isEditable')->nullable()->default(false);
             $table->timestamps();
-
-            $table->foreign('purchase_order_id')->references('id')->on('purchase_orders')->onDelete('cascade');
         });
     }
 

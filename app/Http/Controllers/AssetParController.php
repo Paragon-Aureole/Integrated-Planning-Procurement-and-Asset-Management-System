@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\asset;
-use App\asset_par;
-// use App\assetType;
+use App\assetPar;
 
 use Illuminate\Http\Request;
 
-class asset_parController extends Controller
+class AssetParController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,15 +16,20 @@ class asset_parController extends Controller
      */
     public function index(Request $id)
     {
-        // dd($id->purchase_order_id);
-        $asset_parData = asset_par::all();
-        // dd($id->all());
+
+        $assetParData = assetPar::all();
+        
+        // dd($assetParRemainingQuantity);
+
+        // $assetParData = assetPar::select('asset_id')->groupBy('asset_id')->get();
+        // $assetParData = assetPar::where('asset_id', 3)->sum('quantity');
         $parData = asset::where('purchase_order_id', $id->id)->where('isPAR', 1)->where('isAssigned', 0)->get();
-        // dd($parData);
         $purchase_order_id = $id->id;
-        // $assetTypes = assetType::All();
-        // return view('assets.par.index', compact('parData', 'asset_parData', 'purchase_order_id', 'assetTypes'));
-        return view('assets.par.index', compact('parData', 'asset_parData', 'purchase_order_id'));
+
+        // dd($parData[0]->item_quantity);
+
+        // return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id', 'assetTypes'));
+        return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id'));
     }
 
     /**
@@ -36,9 +40,15 @@ class asset_parController extends Controller
 
     public function getPARCount()
     {
-        $asset_parData = asset_par::get()->count();
-        return ($asset_parData);
+        $assetParCount = assetPar::get()->count();
+        return ($assetParCount);
     }
+
+    // public function getPARData()
+    // {
+    //     $assetParData = assetPar::All();
+    //     return ($assetParData);
+    // }
 
     public function setIsAssigned(Request $request)
     {
@@ -51,7 +61,7 @@ class asset_parController extends Controller
     
     public function create()
     {
-        
+
     }
 
     /**
@@ -65,17 +75,20 @@ class asset_parController extends Controller
     {
         $items = $request->input('data');
         // dd($items);
-        asset_par::create([
+
+        assetPar::create([
             // 'par_id' => $items[0],
             'name' => $items[1],
             'quantity' => $items[2],
-            'unitCost' => $items[3],
+            // 'unitCost' => $items[3],
             'description' => $items[4],
             'assignedTo' => $items[5],
             'position' => $items[6],
             'asset_id' => $items[7],
             'purchase_order_id' => $items[8]
         ]);
+
+        asset::find($items[7])->decrement('item_stock', $items[2]);
 
 
         if ($request->isMethod('post')) {
