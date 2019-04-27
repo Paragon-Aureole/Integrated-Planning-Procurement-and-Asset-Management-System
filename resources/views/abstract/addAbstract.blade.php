@@ -23,7 +23,7 @@
             <tr>
               <th>ID</th>
               <th>PR Code</th>
-              <th>Date Cerated</th>
+              <th>Date Created</th>
               <th>Action</th>
             </tr>
           </thead>

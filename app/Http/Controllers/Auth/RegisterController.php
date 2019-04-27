@@ -142,7 +142,7 @@ class RegisterController extends Controller
 
         $input = $request->except('user_role');
 
-        $user->update([
+        $update_user = $user->update([
             'wholename' => $input['wholename'],
             'office_id' => $input['office'],
             'contact_number' => $input['contacts'],
@@ -154,6 +154,10 @@ class RegisterController extends Controller
         else {
             $user->roles()->detach(); 
         }
+
+        activity()
+        ->performedOn($user)
+        ->log('Updated user '.$user->id);
 
         return redirect()->route('register')->with('success','User updated successfully!');
     }
@@ -169,6 +173,9 @@ class RegisterController extends Controller
         //
         $user = User::findOrFail($id);
         $user->delete();
+        activity()
+        ->performedOn($user)
+        ->log('Deactivated user '.$user->id);
         return redirect()->route('register')->with('info','User has been deactivated.');
 
     }
@@ -180,8 +187,11 @@ class RegisterController extends Controller
      */
     public function restore($id)
     {
-        //
+        $user = User::findorFail($id);
         $restore_user = User::withTrashed()->where('id', $id)->restore();
+        activity()
+        ->performedOn($user)
+        ->log('Reactivated user '.$user->id);
         return redirect()->route('register')->with('success','User has been reactivated.');
     }
 }
