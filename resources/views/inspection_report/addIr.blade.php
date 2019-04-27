@@ -75,9 +75,15 @@
                     <a href="{{route('ir.print', $ir->id)}}" target="_blank" class="btn btn-sm btn-secondary">
                       <i class="fas fa-print"></i>
                     </a>
+                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#"
+                      id="#">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    @can('full control')
                     <a href="#" class="btn btn-sm btn-danger">
                       <i class="fas fa-minus"></i>
                     </a>
+                    @endcan
                   </td>
                 </tr>
                 @endforeach
@@ -184,12 +190,9 @@
 <script type="text/javascript">
   $(document).ready(function () {
     var table = $('#prDatatable').DataTable({
-      responsive: true,
-      "lengthMenu": [
-        [5, 10, 25, 50, -1],
-        [5, 10, 25, 50, "All"]
-      ],
-    });
+            responsive: true,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+        });
 
     table.on('click', 'button#poModal', function () {
       var data = table.row($(this).parents('tr')).data();

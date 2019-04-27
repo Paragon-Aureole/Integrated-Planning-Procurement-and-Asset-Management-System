@@ -71,9 +71,11 @@
               <a href="#" class="btn btn-sm btn-warning">
                     <i class="fas fa-edit"></i>
               </a>
+              @can('full control')
               <a href="#" class="btn btn-sm btn-danger">
                     <i class="fas fa-minus"></i>
               </a>
+              @endcan
               </td>
               </tr>
           @endforeach

@@ -11,6 +11,8 @@ use App\Http\Requests\PurchaseRequestItemRequest;
 use Illuminate\Http\Request;
 use App\asset;
 use App\asset_po_disbursement_voucher_no;
+use App\assetType;
+use App\asset_par;
 use PDF;
 use App;
 
@@ -49,10 +51,11 @@ class assetController extends Controller
         $purchase_order_no = $request->get('purchase_order_no');
         $voucherNo = $request->get('voucherNo');
 
-        // asset_po_disbursement_voucher_no::create([
-        //         'purchase_order_id' => $purchase_order_no,
-        //         'disbursementNo' => $voucherNo,
-        //     ]);
+        asset_po_disbursement_voucher_no::create([
+                'purchase_order_id' => $purchase_order_no,
+                'disbursementNo' => $voucherNo
+            ]);
+        
         return redirect()->route('assets.assetClassification', compact('purchase_order_no'))->with('success', 'PO Disbursement Number has been Registered.');
 
         
@@ -78,9 +81,10 @@ class assetController extends Controller
 
     // $data = asset::findorFail($id->purchase_order_id);
     $assetData = asset::where('purchase_order_id', $id->purchase_order_no)->get();
+    $assetTypeData = assetType::All();
     // dd($assetData);
     
-        return view('assets.assetClassification', compact('assetData'));
+        return view('assets.assetClassification', compact('assetData', 'assetTypeData'));
         // return view('assets.create');
     }
 
@@ -100,15 +104,18 @@ class assetController extends Controller
         $recordID = $request->get('id');
         $ICS = $request->get('ICS');
         $PAR = $request->get('PAR');
+        $asset_type_id = $request->get('asset_type');
 
         for ($i=0; $i <= $assetCount; $i++) { 
-            $sortedArray[$i] = [$recordID[$i], $ICS[$i], $PAR[$i]];
+            $sortedArray[$i] = [$recordID[$i], $ICS[$i], $PAR[$i], $asset_type_id[$i]];
         }
         // dd($sortedArray);
         foreach ($sortedArray as $key => $value) {
             asset::whereId($value[0])->update([
                 'isICS' => $value[1],
-                'isPAR' => $value[2]
+                'isPAR' => $value[2],
+                'asset_type_id' => $value[3],
+                'isEditable' => 1
             ]);
         }
 
@@ -204,8 +211,9 @@ class assetController extends Controller
 
     // }
 
-    public function printPar()
+    public function printPar($id)
     {
+        $parData = asset_par::findorFail($id);
         // return view('assets.par.printPAR');
         $options = [
             'margin-top'    => 10,
@@ -214,7 +222,9 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.par.printPAR')->setPaper('Folio', 'landscape');
+        // dd($parData);
+
+        $pdf = PDF::loadView('assets.par.printPAR', compact('parData'))->setPaper('Folio', 'landscape');
         return $pdf->stream('PAR.pdf');
     }
 

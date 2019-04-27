@@ -19,9 +19,10 @@ class migratedAssets extends Model
     'unit_of_measure',
     'unit_value',
     'balance_per_card',
-    'onhand_per_count',
+    'on_hand_per_count',
     'shortage_overage',
     'date_purchase',
+    'status',
     'remarks',
     'asset_type_id'
     ];

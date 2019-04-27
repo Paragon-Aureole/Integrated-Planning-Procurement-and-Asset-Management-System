@@ -14,6 +14,9 @@
       var selectedRow = table.row(tr).data();
       clearModalFields().done(function () {
         console.log(selectedRow);
+        $('[name=currentItemID]').val(selectedRow[0]);
+        // console.log(selectedRow[4]);
+
         // createModalForms(selectedRow[1]);
         fillModalFields(selectedRow);
 
@@ -98,6 +101,8 @@
       var itemDescription = $('[name=selectedItemSpecifications]').val();
       var itemEmployeeName = $('[name=selectedItemEmployeeName]').val();
       var itemEmployeePosition = $('[name=selectedItemEmployeePosition]').val();
+      var itemID = $('[name=currentItemID').val();
+      var itemCurrentPONo = $('#currentPONo').val();
       // var itemTotalAmount = $('[name=selectedItemTotalAmount]').val();
       // 
 
@@ -108,7 +113,8 @@
       itemData[4] = itemDescription;
       itemData[5] = itemEmployeeName;
       itemData[6] = itemEmployeePosition;
-      // itemData[7] = itemTotalAmount;
+      itemData[7] = itemID;
+      itemData[8] = itemCurrentPONo;
 
       // console.log(itemData);
       // console.log($(this).serialize());
@@ -133,7 +139,7 @@
     }
 
     function fillModalFields(selectedRow) {
-      $('[name=remainingItems]').val(selectedRow[1]);
+      $('[name=remainingItems]').val(selectedRow[2]);
       getPARNo().then(function () {
 
         //setting Date to Now
@@ -145,9 +151,9 @@
 
         fillQuantityDropdown($('[name=remainingItems]').val());
 
-        var unitCost = parseFloat(selectedRow[2]) / parseFloat(selectedRow[1]);
+        var unitCost = parseFloat(selectedRow[3]) / parseFloat(selectedRow[2]);
         var currentPARNo = $('#currentPARNo').val();
-        $('[name=selectedItemName]').val(selectedRow[0]);
+        $('[name=selectedItemName]').val(selectedRow[1]);
         // console.log(parseFloat(selectedRow[1]));
         // console.log(parseFloat(selectedRow[2]));
         // $('#selectedItemName').val(selectedRow[0]);
@@ -158,7 +164,7 @@
         // $('#selectedItemEmployeePosition').val();
         $('[name=selectedItemPARNo]').val(currentPARNo);
         // $('#selectedItemDateAssigned').val();
-        $('[name=selectedItemTotalAmount]').val(selectedRow[2]);
+        $('[name=selectedItemTotalAmount]').val(selectedRow[3]);
         // $('#selectedItemSpecifications').val();
       });
     }
@@ -206,6 +212,10 @@
 
               fillQuantityDropdown($('[name=remainingItems]').val());
               setTotalAmount();
+              if ($('[name=remainingItems]').val() == 0) {
+                // console.log($('[name=currentItemID]').val());
+                setIsAssigned($('[name=currentItemID]').val());
+              }
             });
 
             // resolve($('#currentPARNo').val(parseInt(data) + 1));
@@ -218,6 +228,35 @@
         });
       });
 
+    }
+
+    function setIsAssigned(id)
+    {
+      return new Promise(function (resolve) {
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+        $.ajax({
+          data: {
+            asset_id: id
+          },
+          type: 'POST',
+          url: 'http://ipams.test/setIsAssigned',
+          success: function (data) {
+            console.log(data);
+            window.location.reload();
+
+            // resolve($('#currentPARNo').val(parseInt(data) + 1));
+          },
+          error: function (data) {
+            console.log(data);
+
+            // console.log(response);
+          }
+        });
+      });
     }
 
   });

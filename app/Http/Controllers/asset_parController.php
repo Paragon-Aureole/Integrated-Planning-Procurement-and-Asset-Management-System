@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\asset;
 use App\asset_par;
+// use App\assetType;
 
 use Illuminate\Http\Request;
 
@@ -16,11 +17,15 @@ class asset_parController extends Controller
      */
     public function index(Request $id)
     {
-        $asset_parData = asset_par::get()->count();
+        // dd($id->purchase_order_id);
+        $asset_parData = asset_par::all();
         // dd($id->all());
-        $parData = asset::where('purchase_order_id', $id->id)->where('isPAR', 1)->get();
+        $parData = asset::where('purchase_order_id', $id->id)->where('isPAR', 1)->where('isAssigned', 0)->get();
         // dd($parData);
-        return view('assets.par.index', compact('parData', 'asset_parData'));
+        $purchase_order_id = $id->id;
+        // $assetTypes = assetType::All();
+        // return view('assets.par.index', compact('parData', 'asset_parData', 'purchase_order_id', 'assetTypes'));
+        return view('assets.par.index', compact('parData', 'asset_parData', 'purchase_order_id'));
     }
 
     /**
@@ -34,15 +39,19 @@ class asset_parController extends Controller
         $asset_parData = asset_par::get()->count();
         return ($asset_parData);
     }
+
+    public function setIsAssigned(Request $request)
+    {
+        asset::whereId($request->asset_id)->update([
+                'isAssigned' => 1
+            ]);
+
+        return response()->json(['response' => 'Assigning Successful. You may now print.', 'error' => false]);
+    }
     
     public function create()
     {
-        // dd('tang ina mo');
         
-        // dd($id->all());
-        $parData = asset::where('purchase_order_id', 2)->where('isPAR', 1)->get();
-        // dd($parData);
-        return view('assets.par.create', compact('parData', 'asset_parData'));
     }
 
     /**
@@ -63,14 +72,15 @@ class asset_parController extends Controller
             'unitCost' => $items[3],
             'description' => $items[4],
             'assignedTo' => $items[5],
-            'position' => $items[6]
-            // 'amount' => $items[7]
+            'position' => $items[6],
+            'asset_id' => $items[7],
+            'purchase_order_id' => $items[8]
         ]);
 
 
         if ($request->isMethod('post')) {
             // return response()->json(['response' => 'This is post method', 'error' => false]);
-            return response()->json(['response' => 'Save Success', 'error' => false]);
+            return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
         } else {
             return response()->json(['response' => 'failure']);
         }

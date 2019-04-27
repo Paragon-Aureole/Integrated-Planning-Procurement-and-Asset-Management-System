@@ -36,13 +36,14 @@
                                     {{csrf_field()}}
                                 <div class="row">
                                     <div class="col-md-6">
+                                        <input type="text" id="asset_type_officeAsset" name="asset_type_officeAsset" hidden>
                                         <div class="form-group col-md-12">
                                             <label for="name_of_accountable" class="small">Name of Accountable:</label>
-                                            <input type="text" name="name_of_accountable" class="form-control form-control-sm">
+                                            <input type="text" name="name_of_accountable" class="form-control form-control-sm" value="Teresita M. Gacayan" readonly>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label for="official_designation" class="small">Official Designation:</label>
-                                            <input type="text" name="official_designation" class="form-control form-control-sm">
+                                            <input type="text" name="official_designation" class="form-control form-control-sm" value="OIC-City GSO" readonly>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label for="lgu" class="small">LGU:</label>
@@ -90,8 +91,8 @@
                                             <input type="number" name="balance_per_card" class="form-control form-control-sm">
                                         </div>
                                         <div class="form-group col-md-12">
-                                            <label for="onhand_per_count" class="small">Onhand Per Card:</label>
-                                            <input type="number" name="onhand_per_count" class="form-control form-control-sm">
+                                            <label for="on_hand_per_count" class="small">Onhand Per Card:</label>
+                                            <input type="number" name="on_hand_per_count" class="form-control form-control-sm">
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label for="shortage_overage" class="small">Shortage/Overage:</label>
@@ -99,7 +100,16 @@
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label for="date_purchase" class="small">Date Purchase:</label>
-                                            <input type="text" name="date_purchase" class="form-control form-control-sm">
+                                            <input type="date" name="date_purchase" class="form-control form-control-sm">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="status" class="small">Status/Condition/Worthiness:</label>
+                                            <select name="status" class="form-control form-control-sm">
+                                                <option value="Good">Good</option>
+                                                <option value="Fair">Fair</option>
+                                                <option value="Repairable">Repairable</option>
+                                                <option value="Unserviceable">Unserviceable</option>
+                                            </select>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label for="remarks" class="small">Remarks:</label>
@@ -112,10 +122,11 @@
 
                         {{-- inputs for vehicle --}}
                         <div id="vehicle" style="display:none">
-                            <form action="{{route('migrateAssetsVehicle.storeVehicle')}}" method="post">
+                            <form action="{{route('migrateVehicle.store')}}" method="post">
                                     {{csrf_field()}}
                                 <div class="row">
                                     <div class="col-md-6">
+                                        <input type="text" id="asset_type_vehicle" name="asset_type_vehicle" hidden>
                                         <div class="form-group col-md-12">
                                             <label for="number" class="small">Number:</label>
                                             <input type="text" name="number" class="form-control form-control-sm">
@@ -141,15 +152,20 @@
                                     <div class="col-md-6">
                                         <div class="form-group col-md-12">
                                             <label for="acquisition_date" class="small">Acquisition Date:</label>
-                                            <input type="text" name="acquisition_date" class="form-control form-control-sm">
+                                            <input type="date" name="acquisition_date" class="form-control form-control-sm">
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label for="acquisition_cost" class="small">Acquisition Cost:</label>
                                             <input type="text" name="acquisition_cost" class="form-control form-control-sm">
                                         </div>
                                         <div class="form-group col-md-12">
-                                            <label for="office" class="small">Office:</label>
-                                            <input type="text" name="office" class="form-control form-control-sm">
+                                                <label for="office" class="small">Department:</label>
+                                                <select name="office" class="form-control form-control-sm">
+                                                    <option value="">-Select One-</option>
+                                                    @foreach ($office as $officeValue)
+                                                        <option value="{{$officeValue->id}}">{{$officeValue->office_name}}</option>
+                                                    @endforeach
+                                                </select>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label for="accountable_officer" class="small">Accountable Officer:</label>
@@ -170,24 +186,29 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-7">
-                        <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+                    <div class="col-md-7" id="officeDataTable">
+                        <table id="migratedAssetDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th style="display:none">Office ID</th>
                                     <th>Department</th>
-                                    <th>Asset Type</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($migratedAssets as $migrationItem)
+                                @foreach ($office as $officeItem)
                                     <tr>
-                                        <td>{{$migrationItem->signatory_name}}</td>
-                                        <td>{{$migrationItem->item}}</td>
+                                        <td style="display:none;">
+                                            {{$officeItem->id}}
+                                        </td>
                                         <td>
-                                            <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">
+                                            {{$officeItem->office_name}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info" data-target="#migratedAssetModal" data-toggle="modal" id="viewMigratedItems"><i class="fas fa-th-list"></i></button>
+                                            {{-- <a href="http://ipams.test/printPar" target="_blank" class="btn btn-sm btn-secondary">
                                                 <i class="fas fa-print"></i>
-                                            </a>
+                                            </a> --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -198,30 +219,214 @@
             </div>
         </div>
     </div>
-</div>
+
+    {{-- MODAL --}}
+    <div class="modal fade" id="migratedAssetModal" data-backdrop="static" data-keyboard="false"> 
+            <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5>Purchase Order Form Details</h5>
+                    <button id="closeModal" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                       <div class="col-md-12">
+                            <div class="input-group">
+                                <select class="custom-select" id="modal_asset_type">
+                                    <option value="0">-Select One-</option>
+                                    @foreach ($assetType as $assetTypeItem)
+                                        <option value="{{$assetTypeItem->id}}">{{$assetTypeItem->type_name}}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-append">
+                                    <a href="#print" target="_blank" class="btn btn-xl btn-secondary"><i class="fas fa-print"></i> Print</a>
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                    <div>&nbsp</div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Name of Accountable</th>
+                                        <th>Office</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
 @endsection
 
 @section('script')
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#asset_type').on('change', function(){
-    var asset_type = $('#asset_type').val();
-        if (asset_type == 1) {
-            console.log('show vehicle');
-            $('#vehicle').show();
-            $('#office_assets').hide();
+    
+    selectAssetType();
+    function selectAssetType () {
+        $('#asset_type').on('change', function(){
+            var asset_type = $('#asset_type').val();
+                if (asset_type == 1) {
+                    console.log('show vehicle');
+                    $('#asset_type_vehicle').empty();
+
+                    $('#asset_type_vehicle').val(asset_type);
+                    $('#vehicle').show();
+                    $('#office_assets').hide();
+                    
+                } else if (asset_type == 1 || asset_type == 2 || asset_type == 3 || asset_type == 4) {
+                    console.log('show Ofice Asset');
+                    $('#asset_type_officeAsset').empty();
+
+                    $('#asset_type_officeAsset').val(asset_type);
+                    $('#office_assets').show();
+                    $('#vehicle').hide();
+                }else {
+                    console.log('No type Selected');
+                    $('#vehicle').hide();
+                    $('#office_assets').hide();
+                }
+            });
+    }
+
+    $('[name=asset_types]').on('change', function () {
+        console.log('changed');
+        
+        var assetTypes = $('[name=asset_types]').val();
+        if (assetTypes == 1) {
+            console.log('1');
             
-        } else if (asset_type == 1 || asset_type == 2 || asset_type == 3 || asset_type == 4) {
-            console.log('show Ofice Asset');
-            $('#office_assets').show();
-            $('#vehicle').hide();
-        }else {
-            console.log('No type Selected');
-            $('#vehicle').hide();
-            $('#office_assets').hide();
+            $('[name=asset_id]').val(assetTypes);
+
+        }else if (assetTypes == 2) {
+            $('[name=asset_id]').val(assetTypes);
+
+        }else if (assetTypes == 3) {
+            $('[name=asset_id]').val(assetTypes);
         }
+    });
+
+    var table = $('#migratedAssetDatatable').DataTable({
+            responsive: true,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+        });
+
+    table.on('click', 'button#viewMigratedItems', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        getModalContent(data);
         
     });
+
+    $('#closeModal').on('click', function () {
+        location.reload()
+        
+    })
+
+    
+    function  getModalContent(data) {
+        var values;
+        values = {
+            office_id : data[0]
+        }
+        $.ajax({
+            url: '/migrationDatatable',
+            method: 'get',
+            data: values,
+            success: function ( response ) {
+                var migratedOfficeAssets = response.migratedAssets;
+                var migratedOfficeVehicles = response.migratedVehicles;
+                
+                // console.log(migratedVehicles);
+                
+                validateAssetType(migratedOfficeAssets, migratedOfficeVehicles);               
+            }
+        })  
+    }
+
+    function validateAssetType(migratedOfficeAssets, migratedOfficeVehicles) {     
+        var office_id_asset;
+        var office_id_vehicle;
+        $('#modal_asset_type').on('change', function () {
+            $(migratedOfficeAssets).each(function(i, v) {
+                office_id_asset = v.office_id
+            })
+
+            $(migratedOfficeVehicles).each(function(i, v) {
+                office_id_vehicle = v.office_id
+            })
+
+            var values = {
+                asset_type_id : $('#modal_asset_type').val(),
+                office_id : office_id_asset,
+                office_id_vehicle : office_id_vehicle
+            }
+
+            if (values.asset_type_id == 2 || values.asset_type_id == 3 || values.asset_type_id == 4) {
+                $.ajax({
+                    url: '/validateAssetType',
+                    method: 'get',
+                    data: values,
+                    success: function ( response ) {
+                        var migratedAssets = response.migratedAssets;
+                        var office = response.office;
+                        
+                        // console.log(office);
+                        
+                        populateModalTable(migratedAssets, office);               
+                    }
+                }); 
+
+            } else if (values.asset_type_id == 1) { 
+                $.ajax({
+                    url: '/validateAssetTypeVehicle',
+                    method: 'get',
+                    data: values,
+                    success: function ( response ) {
+                        var migratedVehicles = response.migratedVehicles;
+                        var office = response.office;
+                        
+                        // console.log(office);
+                        console.log(migratedVehicles);
+                        
+                        populateModalTableVehicle(migratedVehicles, office);               
+                    }
+                }); 
+            } 
+        });
+    }
+
+    function populateModalTable(migratedAssets, office) {
+        
+        table = $('#datatable').DataTable({
+            destroy:true,
+            data: migratedAssets,
+            responsive:true,
+            columns:[
+                {data:'name_of_accountable'},
+                {data: 'office_id'},
+                {data:'status'},
+            ]
+        })
+    }
+
+    function populateModalTableVehicle(migratedVehicles, office) {
+        table = $('#datatable').DataTable({
+            destroy:true,
+            data: migratedVehicles,
+            responsive:true,
+            columns:[
+                {data:'accountable_officer'},
+                {data:'office_id'},
+                {data:'status'},
+            ]
+        })
+    }
   });
 </script>
 @endsection

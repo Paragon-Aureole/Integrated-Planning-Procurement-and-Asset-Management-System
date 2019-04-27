@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\migratedAssets;
+use App\migratedVehicles;
 use App\Office;
+use App\assetType;
 use Illuminate\Http\Request;
 
 class MigratedAssetsController extends Controller
@@ -17,7 +19,8 @@ class MigratedAssetsController extends Controller
     {
         $migratedAssets = migratedAssets::all();
         $office = Office::all();
-        return view('assets.data_capturing.officeAssets.index', compact('migratedAssets', 'office'));
+        $assetType = assetType::all();
+        return view('assets.data_capturing.officeAssets.index', compact('migratedAssets', 'office', 'assetType'));
     }
 
     /**
@@ -40,7 +43,7 @@ class MigratedAssetsController extends Controller
     {
         $input = $request->all();
 
-        dd($input);
+        // dd($input);
         $inputMigration = migratedAssets::create([
             'name_of_accountable'=>$input['name_of_accountable'],
             'official_designation'=>$input['official_designation'],
@@ -51,19 +54,35 @@ class MigratedAssetsController extends Controller
             'property_number'=>$input['property_number'],
             'unit_of_measure'=>$input['unit_of_measure'],
             'unit_value'=>$input['unit_value'],
-            'balance_per_card'=>$input['balance_per_card']
-            
+            'balance_per_card'=>$input['balance_per_card'],
+            'on_hand_per_count'=>$input['on_hand_per_count'],
+            'shortage_overage'=>$input['shortage_overage'],
+            'date_purchase'=>$input['date_purchase'],
+            'status'=>$input['status'],
+            'remarks'=>$input['remarks'],
+            'asset_type_id'=>$input['asset_type_officeAsset'],
         ]);
 
         return redirect()->back()->with('success', 'Item Successfully Migrated');
     }
 
-    public function storeVehicle(Request $request)
+    public function migrationDatatable(Request $request) 
     {
-        $input = $request->all();
-
-        dd($input);
+        $migratedAssets = migratedAssets::where('office_id', $request->all())->get();
+        $migratedVehicles = migratedVehicles::where('office_id', $request->all())->get();
+        // $migratedAssets = migratedAssets::all();
+        return response()->json(['migratedAssets'=>$migratedAssets, 'migratedVehicles'=>$migratedVehicles]);
     }
+
+    public function validateAssetType(Request $request) 
+    {
+        $migratedAssets = migratedAssets::where('asset_type_id', $request->asset_type_id)
+        ->where('office_id', $request->office_id)
+        ->get();
+        $office = Office::all();
+        return response()->json(['migratedAssets'=>$migratedAssets, 'office'=>$office]);
+    }
+
 
     /**
      * Display the specified resource.

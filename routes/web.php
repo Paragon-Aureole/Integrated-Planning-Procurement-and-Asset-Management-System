@@ -150,7 +150,7 @@ Route::get('/getVoucherNo', 'assetController@getVoucherNo')->name('assets.getVou
 Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.saveVoucherNo');
 Route::get('/assetClassification', 'assetController@assetClassification')->name('assets.assetClassification');
 Route::get('/parIndex', 'assetController@parIndex');
-Route::get('/printPar', 'assetController@printPar');
+Route::get('/printPar/{id}', 'assetController@printPar');
 Route::get('/printIcs', 'assetController@printIcs');
 Route::get('/printVehicle', 'assetController@printVehicle');
 Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
@@ -158,11 +158,20 @@ Route::resource('assets', 'assetController');
 
 //asset Par routes
 // Route::get('/DistributeAssets/{id}', 'asset_parController@index')->name('assets.index');
-Route::resource('DistributeAssets', 'asset_parController');
+Route::resource('DistributeAssetsPAR', 'asset_parController');
+Route::post('/setIsAssignedPAR', 'asset_parController@setIsAssigned');
 Route::get('/getPARNo', 'asset_parController@getPARCount');
+
+Route::resource('DistributeAssetsICS', 'asset_icsController');
+Route::post('/setIsAssignedICS', 'asset_icsController@setIsAssigned');
+Route::get('/getICSNo', 'asset_icsController@getPARCount');
+
 
 // assetMigrations
 Route::resource('migrateAssets', 'MigratedAssetsController');
-Route::post('migrateAssetsVehicle', 'MigratedAssetsController@storeVehicle')->name('migrateAssetsVehicle.storeVehicle');
+Route::resource('migrateVehicle', 'MigratedVehiclesController');
+Route::get('migrationDatatable', 'MigratedAssetsController@migrationDatatable');
+Route::get('validateAssetType', 'MigratedAssetsController@validateAssetType');
+Route::get('validateAssetTypeVehicle', 'MigratedVehiclesController@validateAssetTypeVehicle');
 
 Route::resource('distribution', 'assetDistributionFormCreatorController');

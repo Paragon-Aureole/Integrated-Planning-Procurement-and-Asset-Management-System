@@ -19,7 +19,7 @@ class CreateMigratedAssetsTable extends Migration
             $table->string('official_designation');
             $table->string('lgu');
             $table->string('article');
-            $table->string('office_id');
+            $table->integer('office_id')->unsigned()->nullable()->index();;
             $table->string('description');
             $table->integer('property_number');
             $table->string('unit_of_measure');
@@ -29,8 +29,13 @@ class CreateMigratedAssetsTable extends Migration
             $table->string('shortage_overage');
             $table->date('date_purchase');
             $table->string('remarks');
+            $table->string('status');
             $table->integer('asset_type_id')->unsigned()->nullable()->index();
             $table->timestamps();
+        });
+
+        Schema::table('migrated_assets', function (Blueprint $table) {
+            $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');
         });
     }
 
