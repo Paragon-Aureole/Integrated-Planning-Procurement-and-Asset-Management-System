@@ -12,6 +12,7 @@ class asset extends Model
         'details',
         'amount',
         'item_quantity',
+        'item_stock',
         'isICS',
         'isPAR',
         'asset_type_id',
