@@ -36,6 +36,7 @@ class CreatePpmpItemCodesTable extends Migration
         });
 
         Schema::table('ppmp_items', function($table) {
+            $table->softDeletes();
             $table->foreign('ppmp_id')->references('id')->on('ppmps')->onDelete('cascade')->onDelete('cascade');
             $table->foreign('measurement_unit_id')->references('id')->on('measurement_units')->onDelete('cascade');
             $table->foreign('procurement_mode_id')->references('id')->on('procurement_modes')->onDelete('cascade');

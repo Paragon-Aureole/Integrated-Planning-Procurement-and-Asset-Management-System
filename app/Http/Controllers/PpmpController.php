@@ -32,9 +32,9 @@ class PpmpController extends Controller
     	$user = Auth::user();
 
     	if ($user->hasRole('Admin')) {
-    		$ppmp_DT = Ppmp::all();
+    		$ppmp_DT = Ppmp::get()->where('is_supplemental', 0);
     	}else{
-    		$ppmp_DT = Ppmp::get()->where('office_id', '=', $user->office_id);
+    		$ppmp_DT = Ppmp::get()->where('office_id', '=', $user->office_id)->where('is_supplemental', 0);
     	}
     	$offices = Office::all();
         return view('ppmp.addppmp', compact('ppmp_DT','offices'));
@@ -63,7 +63,12 @@ class PpmpController extends Controller
 		$add_ppmp = $user->ppmp()->create([
 		    "ppmp_year" => $input['ppmp_year'],
             "office_id" => $input['office_id'],
-		]);
+        ]);
+        
+        activity('PPMP')
+        ->performedOn($add_ppmp)
+        ->causedBy($user)
+        ->log('New PPMP added for the year '. $input['ppmp_year']."-".$add_ppmp->office->office_code);
 
        return redirect()->route('add.ppmp.budget', $add_ppmp->id);
     }
@@ -81,9 +86,16 @@ class PpmpController extends Controller
 		$add_ppmp_budget = $ppmp->ppmpBudget()->create([
 		    'ppmp_est_budget' => 0,
 		    'ppmp_rem_budget' => 0,
-		]);
+        ]);
+        
 
-        return redirect()->route('view.ppmp')->with('success', 'A new PPMP has been added.');
+        if ($ppmp->is_supplemental == 1) {
+            return redirect()->route('supplemental.ppmp')->with('success', 'Supplemental PPMP Created');
+        }else{
+            return redirect()->route('view.ppmp')->with('success', 'PPMP Created');
+        }
+
+        
 
     }
 
@@ -99,6 +111,18 @@ class PpmpController extends Controller
 
     	$deactivate = Ppmp::where('office_id', $ppmp->office_id)->update(['is_active' => 0]);
         $ppmp->update(['is_active' => 1]);
+
+        $message = "";
+        if ($ppmp->is_supplemental == 1) {
+            $message = "-S";
+        }
+
+        activity('PPMP')
+        ->performedOn($ppmp)
+        ->causedBy(Auth::user())
+        ->log('Activate PPMP '. $ppmp->ppmp_year . $message."-".$ppmp->office->office_code);
+
+
         return redirect()->back()->with('success','PPMP Form Activated');
 
     }
@@ -110,8 +134,19 @@ class PpmpController extends Controller
      */
     public function deactivatePpmp($id)
     {
-        $signatory = Ppmp::findorFail($id);
-        $signatory->update(['is_active' => 0]);
+        $ppmp = Ppmp::findorFail($id);
+        $ppmp->update(['is_active' => 0]);
+
+        $message = "";
+        if ($ppmp->is_supplemental == 1) {
+            $message = "-S";
+        }
+
+        activity('PPMP')
+        ->performedOn($ppmp)
+        ->causedBy(Auth::user())
+        ->log('Deactived PPMP '. $ppmp->ppmp_year . $message."-".$ppmp->office->office_code);
+
         return redirect()->back()->with('info','PPMP Form Deactivated');
     }
 
@@ -138,6 +173,17 @@ class PpmpController extends Controller
         foreach ($options as $margin => $value) {
             $pdf->setOption($margin, $value);
         }
+
+        $message = "";
+        if ($ppmp->is_supplemental == 1) {
+            $message = "-S";
+        }
+
+        activity('PPMP')
+        ->performedOn($ppmp)
+        ->causedBy(Auth::user())
+        ->log('Print PPMP '. $ppmp->ppmp_year . $message."-".$ppmp->office->office_code);
+
         return $pdf->stream('PPMP'.$ppmp->ppmp_year.'.pdf');
     }
 
@@ -150,8 +196,70 @@ class PpmpController extends Controller
     public function destroy($id)
     {
         $ppmp = Ppmp::findorFail($id);
+
+        $ppmp->update(['is_active' => 0]);
         $ppmp->delete();
+
+        $message = "";
+        if ($ppmp->is_supplemental == 1) {
+            $message = "-S";
+        }
+
+        activity('PPMP')
+        ->performedOn($ppmp)
+        ->causedBy(Auth::user())
+        ->log('Delete PPMP '. $ppmp->ppmp_year . $message."-".$ppmp->office->office_code);
+
         return redirect()->back()->with('info', 'PPMP deleted');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function viewSupplemental()
+    {
+        $user = Auth::user();
+
+    	if ($user->hasRole('Admin')) {
+            $created_ppmp = Ppmp::get()->where('is_supplemental', 0)->where('is_active', 1);
+    		$ppmp_DT = Ppmp::get()->where('is_supplemental', 1);
+    	}else{
+            $created_ppmp = Ppmp::get()->where('is_supplemental', 0)->where('is_active', 1)->where('office_id', '=', $user->office_id);
+    		$ppmp_DT = Ppmp::get()->where('office_id', '=', $user->office_id)->where('is_supplemental', 1);
+    	}
+    	$offices = Office::all();
+        return view('ppmp.supplementalppmp', compact('ppmp_DT','offices', 'created_ppmp'));
+    }
+
+    /**
+     * Create the Supplemental PPMP Form.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function createSupplemental($id)
+    {
+        $ppmp = Ppmp::findorFail($id);
+
+    	$user = Auth::user();
+
+		$add_ppmp = $user->ppmp()->create([
+		    "ppmp_year" => $ppmp->ppmp_year,
+            "office_id" => $ppmp->office_id,
+            "is_supplemental" => 1,
+            "former_ppmp_id" => $ppmp->id,
+            "is_active" => 1
+        ]);
+        
+        activity('PPMP')
+        ->performedOn($add_ppmp)
+        ->causedBy($user)
+        ->log('Supplemental PPMP added for the year'. $add_ppmp->ppmp_year ."-". $add_ppmp->office->office_code);
+
+       return redirect()->route('add.ppmp.budget', $add_ppmp->id);
+
     }
 
 

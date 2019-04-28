@@ -25,6 +25,7 @@ class CreatePurchaseRequestItemsTable extends Migration
         });
 
         Schema::table('purchase_request_items', function($table) {
+            $table->softDeletes();
             $table->foreign('ppmp_item_id')->references('id')->on('ppmp_items')->onDelete('cascade');
             $table->foreign('purchase_request_id')->references('id')->on('purchase_requests')->onDelete('cascade');
         });

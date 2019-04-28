@@ -12,7 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    if(Auth::check()){
+        return redirect()->route('home');
+    }else{
+        return view('auth.login');
+    }
 });
 Route::view('/forbidden', 'errors.403');
 
@@ -69,10 +73,13 @@ Route::get('/distributor/delete/{id}', 'DistributorController@destroy')->name('d
 //add ppmp
 Route::get('/ppmp', 'PpmpController@index')->name('view.ppmp');
 Route::post('/ppmp/new', 'PpmpController@store')->name('add.ppmp');
-// Route::put('/ppmp/update/{id}', 'PpmpController@update')->name('update.ppmp');
 Route::get('/ppmp/delete/{id}', 'PpmpController@destroy')->name('delete.ppmp');
 Route::get('/ppmp/activate/{id}', 'PpmpController@activatePpmp')->name('activate.ppmp');
 Route::get('/ppmp/deactivate/{id}', 'PpmpController@deactivatePpmp')->name('deactivate.ppmp');
+
+
+Route::get('/ppmp/supplemental', 'PpmpController@viewSupplemental')->name('supplemental.ppmp');
+Route::get('/ppmp/supplemental/{id}', 'PpmpController@createSupplemental')->name('createsupplemental.ppmp');
 
 Route::get('ppmp/print/{id}', 'PpmpController@printPpmp')->name('print.ppmp');
 
@@ -100,12 +107,17 @@ Route::put('/ppmp/{ppmp_id}/item/update/{id}', 'PpmpItemController@update')->nam
 Route::get('/ppmp/{ppmp_id}/item/delete/{id}', 'PpmpItemController@destroy')->name('delete.ppmpitm');
 
 
-//add purchase reuest
+//add purchase request
 Route::get('/pr/view', 'PurchaseRequestController@prView');
 Route::get('/pr/archive', 'PurchaseRequestController@archive')->name('archive.pr');
 Route::get('/pr/print/{id}', 'PurchaseRequestController@printPurchaseRequest')->name('print.pr');
 Route::get('/pr/close/{id}', 'PurchaseRequestController@closePurchaseRequest')->name('close.pr');
 Route::get('/pr/dist/get', 'PurchaseRequestController@getDistributorData')->name('get.dist');
+
+Route::get('/pr/supplemental', 'PurchaseRequestController@viewSupplemental')->name('pr.supplemental');
+Route::get('/pr/supplemental/{id}', 'PurchaseRequestController@addSupplemental')->name('pr.addSupplemental');
+
+
 Route::resource('pr', 'PurchaseRequestController');
 
 

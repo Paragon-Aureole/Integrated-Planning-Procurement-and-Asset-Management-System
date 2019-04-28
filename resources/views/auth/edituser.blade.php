@@ -19,14 +19,14 @@
 		  	  <h6 class="card-title">
 		  	  	<i class="fas fa-user-plus"></i> Edit User
 		  	  </h6>
-			  <form method="post" action="{{ route('update.user', $user_data->id) }}" id="needs-validation" novalidate>
+			  <form method="post" action="{{ route('update.user', $user_data->id) }}" id="needs-validation">
 			  	{{csrf_field()}}
 			  	{{ method_field('put') }}
 				<div class="row">
 					<div class="col-md-12 form-group">
 					  <label for="username" class="small">Username:</label>
-		    		  <input type="text" class="form-control form-control-sm
-		    		  name="username" id="username" value="{{ $user_data->username }}" disabled>
+		    		  <input type="text" class="form-control form-control-sm"
+		    		  name='username' id="username" value="{{ $user_data->username }}" disabled>
 					</div>
 					<div class="col form-group">
 
@@ -119,6 +119,18 @@
 		    	  	  </div>
 					</div>
 					<div class="col-md-12 form-group">
+						<label for="reason" class="small">Reason:</label>
+			    	<input class="form-control form-control-sm {{ $errors->has('contacts') ? 'is-invalid' : '' }}"
+			    	   id="reason" name="reason" value=""  required>
+			    	<div class="invalid-feedback">
+		    	  	@if ($errors->has('contacts'))
+	              {{$errors->first('contacts')}}
+	            @else
+	              Contact detail is required.
+	          	@endif
+		    	  </div>
+					</div>
+					<div class="col-md-12 form-group">
 					  <button type="submit" class="btn btn-warning btn-sm">Update</button>
 					</div>
 				</div>
@@ -129,7 +141,55 @@
 		  	  	<div class="table-responsive">
 		  	  		@include('auth.userdatatable')
 		  		</div>
-		  	</div>
+				</div>
+
+				<!-- The Modal -->
+				<div class="modal" id="reasonModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								
+								<!-- Modal Header -->
+								<div class="modal-header">
+									<h4 class="modal-title">Deactivate User Account</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+									
+								<!-- Modal body -->
+								<div class="modal-body">
+										<form name="deactivation_reason">
+										 {{ csrf_field() }}
+										 {{method_field('GET')}}
+											<div class="form-row">
+												<div class="form-group col-md-6">
+													<label class="small">User ID:</label>
+													<input id="userId" class="form-control form-control-sm" value="" readonly>
+												</div>
+												<div class="form-group col-md-6">
+														<label class="small">Department:</label>
+														<input id="userDept" class="form-control form-control-sm" value="" readonly>
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group col-md-12">
+													<label class="small">Reason for Deactivation</label>
+													<textarea class="form-control form-control-sm" name="reason" required></textarea>
+												</div>
+											</div>
+											<div class="form-group">
+												<button class="btn btn-primary" type="submit">Submit</button>
+											</div>
+										</form>
+									</div>
+										
+									{{-- <!-- Modal footer -->
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+									</div> --}}
+									
+							</div>
+						</div>
+					</div>
+		
 		  </div>
 		</div>
 	</div>

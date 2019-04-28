@@ -33,10 +33,13 @@
 		  	  		  				<i class="fas fa-minus"></i>
 		  	  		  			</button>
 		  	  		  			@else
-		  	  		  			<a href="{{route('delete.user',$user->id)}}" class="btn btn-sm btn-danger">
+		  	  		  			{{-- <a href="{{route('delete.user',$user->id)}}" class="btn btn-sm btn-danger">
 		  	  		  				<i class="fas fa-minus"></i>
-		  	  		  			</a>
-		  	  		  			@endif
+		  	  		  			</a> --}}
+									<button type="button" name="delete_user" class="btn btn-danger btn-sm" data-useroffice="{{$user->office->office_code}}" data-userid="{{$user->id}}" data-toggle="modal" data-target="#reasonModal">
+										<i class="fas fa-minus"></i>
+									</button>	  
+								@endif
 	  	  		  			@else
 	  	  		  			<button class="btn btn-sm btn-warning" disabled>
 		  	  		  			<i class="fas fa-user-edit"></i>

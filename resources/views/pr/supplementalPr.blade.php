@@ -3,17 +3,17 @@
 @section('breadcrumb')
 <ol class="breadcrumb p-2">
 	<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-	<li class="breadcrumb-item active" aria-current="page">RFQ</li>
+	<li class="breadcrumb-item active" aria-current="page">Supplemental Purchase Request</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="container-fluid">
 <div class="card">
- <div class="card-header pt-2 pb-2">Reqeust for Quotation</div>
+ <div class="card-header pt-2 pb-2">Supplemental Purchase Request</div>
  <div class="card-body">
    <div class="row">
-   	<div class="col-md-5">
+   	<div class="col-md-6">
    	  <h6 class="card-title">
   		Available Purchase Request
   	  </h6>
@@ -22,6 +22,7 @@
           <thead class="thead-dark">
             <tr>
               <th>PR Code</th>
+              <th>Purpose</th>
               <th>Date Created</th>
               <th>Action</th>
             </tr>
@@ -30,9 +31,10 @@
             @foreach ($pr as $pr)
                 <tr>
                   <td>{{$pr->pr_code}}</td>
+                  <td>{{$pr->pr_purpose}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                 <td>
-                  <a href="{{route('rfq.createone', $pr->id)}}" class="btn btn-sm btn-primary">
+                  <a href="{{route('pr.addSupplemental', $pr->id)}}" class="btn btn-sm btn-primary">
                     <i class="fas fa-plus"></i>
                   </a>
                 </td>
@@ -44,36 +46,29 @@
     </div>
 
    	<!-- table -->
-   	<div class="col-md-7">
-   	  <h6 class="card-title">Registered Request for Quotation</h6>
+   	<div class="col-md-6">
+   	  <h6 class="card-title">Registered Supplemental Purchase Requests</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
-              <th>ID</th>
-              <th>Code</th>
-              <th>Date </th>
+              <th>Supplemental PR Code</th>
+              <th>Supplemented Items</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-          @foreach ($rfq as $rfq)
-              <tr>
-                <td>{{$rfq->id}}</td>
-                <td>{{$rfq->purchaseRequest->pr_code}}
-                <td>{{Carbon\Carbon::parse($rfq->created_at)->format('m-d-y')}}</td>
+            @foreach ($supplemental as $sup_pr)
+            @php
+                $firstTwo = $sup_pr->prItem->take(2);
+            @endphp
+                <td>{{$sup_pr->pr_code}}</td>
                 <td>
-                    <a href="{{route('rfq.print', $rfq->id)}}" target="_blank" class="btn btn-sm btn-secondary">
-                      <i class="fas fa-print"></i>
-                    </a>
-                    @can('full control')
-                    <a href="#" class="btn btn-sm btn-danger">
-                      <i class="fas fa-minus"></i>
-                    </a>
-                    @endcan
-                  </td>
-              </tr>
-          @endforeach
+                    @foreach ($firstTwo as $item)
+                        {{$item->ppmpItem->item_description}} @if ($firstTwo->count() > 1) , @endif 
+                    @endforeach
+                </td>
+            @endforeach
           </tbody>
         </table>
    	  </div>	

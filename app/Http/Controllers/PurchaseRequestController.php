@@ -33,10 +33,25 @@ class PurchaseRequestController extends Controller
     {   
 
         $user = Auth::user();
-        $prDT = PurchaseRequest::where('office_id' , $user->office_id)->get();
-        // $ppmp = Ppmp::where('is_active', '=', 1)->where('office_id' , $user->office_id)->get();
-        
-        return view('pr.addpr',compact('prDT','user'));
+        $pr_count = PurchaseRequest::where('office_id' , $user->office_id)->count();
+
+        if ($user->can('full control')) {
+            $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
+              ->whereMonth('created_at', date('m'))
+              ->where('is_supplemental', 0)
+              ->orWhere('pr_status', 0)
+              ->get();
+            // $prDT = PurchaseRequest::all();
+        } else {
+            $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
+            ->whereMonth('created_at', date('m'))
+            ->where('is_supplemental', 0)
+            ->orWhere('pr_status', 0)
+            ->where('office_id' , $user->office_id)
+            ->get();
+        }
+
+        return view('pr.addpr',compact('prDT','user','pr_count'));
     }
 
 
@@ -74,8 +89,13 @@ class PurchaseRequestController extends Controller
             'agency_name' => $input['agency_name'],
             'supplier_id' => $input['supplier_id'],
         ]);
+        
+        activity('Purchase Request')
+        ->performedOn($add_pr)
+        ->causedBy(Auth::user())
+        ->log('Generated '. $input['pr_code']);
 
-       return redirect()->back()->with('success', 'PR Form succesfully generated, please add items for printing.');
+       return redirect()->back()->with('success', 'PR Form generated, please add items for printing.');
     }
 
     /**
@@ -87,7 +107,21 @@ class PurchaseRequestController extends Controller
     public function edit($id)
     {
         $user = Auth::user();
-        $prDT = PurchaseRequest::where('pr_status', '=', 0)->where('office_id' , $user->office_id)->get();
+        if ($user->can('full control')) {
+            $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
+              ->whereMonth('created_at', date('m'))
+              ->where('is_supplemental', 0)
+              ->orWhere('pr_status', 0)
+              ->get();
+        } else {
+            $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
+            ->whereMonth('created_at', date('m'))
+            ->where('is_supplemental', 0)
+            ->orWhere('pr_status', 0)
+            ->where('office_id' , $user->office_id)
+            ->get();
+        }
+
         $pr = PurchaseRequest::findorFail($id);
         return view('pr.editpr',compact('pr', 'prDT', 'user'));
     }
@@ -114,6 +148,12 @@ class PurchaseRequestController extends Controller
             'agency_name' => $input['agency_name'],
             'supplier_id' => $input['supplier_id'],
         ]);
+
+        activity('Purchase Request')
+        ->performedOn($pr)
+        ->causedBy(Auth::user())
+        ->withProperties(['Reason' => $input['edit_reason']])
+        ->log('Updated '. $input['pr_code']);
 
        return redirect()->route('pr.index')->with('success', 'PR Form succesfully updated!');
     }
@@ -166,7 +206,11 @@ class PurchaseRequestController extends Controller
 
     public function prView()
     {
-        $prDT = PurchaseRequest::where('pr_status', 0)->whereHas('prItem')->get();      
+        // $prDT = PurchaseRequest::where('pr_status', 0)->whereHas('prItem')->get();      
+        $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
+        ->whereMonth('created_at', date('m'))
+        ->where('is_supplemental', 0)
+        ->get();     
 
         return view('pr.closepr', compact('prDT'));
     }
@@ -201,7 +245,86 @@ class PurchaseRequestController extends Controller
     {
        $pr = PurchaseRequest::findorFail($id);
        $pr->update(['pr_status' => 1]);
-       return redirect()->back()->with('success', 'PR Approved');
+
+       activity('Purchase Request')
+        ->performedOn($pr)
+        ->causedBy(Auth::user())
+        ->log('Closed Purchase Request '. $pr->code);
+       
+       return redirect()->back()->with('success', 'Purchase Request Closed');
     }
+
+    /**
+     * Display all closed Purchase Request that are not government suppliers.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function viewSupplemental()
+    {
+        $user = Auth::user();
+        if ($user->hasPermissionTo('full control')) {
+            $pr = PurchaseRequest::where('pr_status', 1)
+                ->where('is_supplemental', 0)
+                ->where('created_supplemental', 0)
+                ->get();
+            $supplemental = PurchaseRequest::where('is_supplemental', 1)->get();
+
+        } else {
+            $pr = PurchaseRequest::where('office_id', $user->office_id)
+                ->where('pr_status', 1)
+                ->where('created_rfq', 0)
+                ->where('created_supplemental', 0)
+                ->get();
+
+            $supplemental = PurchaseRequest::where('office_id', $user->office_id)->where('is_supplemental', 1)->get();
+        }
+        
+        
+
+        // $rfq = RequestForQuotation::whereHas('purchaseRequest', function ($query){
+        //     $query->where('office_id',  Auth::user()->office_id );
+        // })->get(); 
+
+        // dd($rfq);
+ 
+        return view('pr.supplementalPr', compact('pr','supplemental'));
+    }
+
+
+    /**
+     * Add Supplemental Purchase Request.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addSupplemental($id)
+    {
+        $pr = PurchaseRequest::findorFail($id);
+        $pr->update(['created_supplemental' => 1]);
+
+        $supplemental  = PurchaseRequest::create([
+            'signatory_id' => $pr->signatory_id,
+            'user_id' => Auth::id(),
+            'office_id' => $pr->office_id,
+            'pr_code' => $pr->pr_code . "-01",
+            'pr_purpose' => $pr->pr_purpose,
+            'pr_budget' => 0.00,
+            'supplier_type' => $pr->supplier_type,
+            'agency_name' => $pr->agency_name,
+            'supplier_id' => $pr->supplier_id,
+            'is_supplemental' => 1,
+            'former_pr_id' => $pr->id,
+        ]);
+
+       activity('Purchase Request')
+        ->performedOn($supplemental)
+        ->causedBy(Auth::user())
+        ->log('Created Supplemental Purchase Request '. $supplemental->code);
+       
+       return redirect()->back()->with('success', 'Supplemental Purchase Request Added.');
+    }
+
+
 
 }

@@ -23,10 +23,30 @@
 	  	<div class="row">
         <div class="form-group col-md-12">
           <label for="prCode" class="small">PR Code:</label>
-          @php
-            $prcode = "PR-".Auth::user()->office->office_code.'-'.date('Y').'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', App\PurchaseRequest::all()->count());
-          @endphp
-          <input value="{{$prcode}}" name="pr_code" class="form-control form-control-sm" readonly>
+          @can('full control')
+            @php
+              $has_ppmp = App\Office::whereHas('ppmp', function ($query) {
+                  $query->where('ppmp_year', date('Y'));
+              })->get();
+            @endphp
+            <select class="custom-select custom-select-sm" name="pr_code" readonly required>
+              <option value="">None</option>
+              @foreach ($has_ppmp as $office_ppmp)
+                @php
+                  $requestor = App\Signatory::where(['office_id' => $office_ppmp->id, 'is_activated' => 1])->first();
+                  $pr_query = App\PurchaseRequest::where('office_id', $office_ppmp->id)->count();
+                  $prcode = "PR-".$office_ppmp->office_code.'-'.date('Y').'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $pr_query);
+                @endphp
+                <option data-requestor-id="{{$requestor->id}}" data-requestor-name="{{$requestor->signatory_name}}" data-office-id="{{$office_ppmp->id}}" data-office-name="{{$office_ppmp->office_name}}" value="{{$prcode}}">{{$prcode}}</option>
+              @endforeach
+            </select>
+          @else
+            @php
+              $prcode = "PR-".$user->office->office_code.'-'.date('Y').'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $pr_count);    
+            @endphp
+            <input value="{{$prcode}}" name="pr_code" class="form-control form-control-sm" readonly required>
+          @endcan
+          
           <div class="invalid-feedback">  
             @if ($errors->has('pr_code'))
               {{$errors->first('pr_code')}}
@@ -37,8 +57,14 @@
         </div>
         <div class="form-group col-md-12">
           <label for="deptId" class="small">Office:</label>
-          <input id="deptId" class="form-control form-control-sm " type="text" value="{{Auth::user()->office->office_name}}" disabled>
-          <input type="hidden" name="pr_office" value="{{Auth::user()->office->id}}">
+          @can('full_control')
+            <input id="deptName" class="form-control form-control-sm" value="" disabled>
+            <input class="form-control form-control-sm"  type="hidden" name="pr_office" value="">
+          @else
+            <input class="form-control form-control-sm " type="text" value="{{Auth::user()->office->office_name}}" disabled>
+            <input type="hidden" name="pr_office" value="{{Auth::user()->office->id}}">
+          @endcan
+          
         </div>
         <div class="form-group col-md-12">
           <label for="prPurpose" class="small">Purpose:</label>
@@ -92,14 +118,19 @@
         </div>
         <div class="form-group col-md-12">
           <label for="prRequestor" class="small">Requestor:</label>
-          @php
+          @can('full_control')
+            <input id="requestorName" class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" value="" disabled>
+            <input type="hidden" name="pr_requestor" value="" required>
+          @else
+            @php
               $requestor = App\Signatory::where('office_id', Auth::user()->office->id)
-                          ->where('category', '=', '1')
-                          ->where('is_activated', '=', '1')
-                          ->first();
-          @endphp
-          <input class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" type="text"  value="{{$requestor->signatory_name}}" disabled>
-          <input type="hidden" name="pr_requestor" value="{{$requestor->id}}">
+                ->where('category', '=', '1')
+                ->where('is_activated', '=', '1')
+                ->first();
+            @endphp
+            <input class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" type="text"  value="{{$requestor->signatory_name}}" disabled>
+            <input type="hidden" name="pr_requestor" value="{{$requestor->id}}">
+          @endcan
           <div class="invalid-feedback">  
             @if ($errors->has('pr_requestor'))
               {{$errors->first('pr_requestor')}}
@@ -121,7 +152,7 @@
    	  <div class="table-responsive">
    	  	@include('pr.prdatatable')
    	  </div>	
-   	</div>
+     </div>
    </div>
  </div>
 </div>

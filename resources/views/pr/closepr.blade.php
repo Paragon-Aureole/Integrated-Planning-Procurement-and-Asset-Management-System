@@ -42,12 +42,18 @@
               <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
               <td>
                 
+                <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
+
+                @if ($pr->pr_status == 0)
                 <a href="{{route('close.pr', $pr->id)}}" class="btn btn-sm btn-success">
                   <i class="fas fa-check"></i>
-                </a>
+                </a> 
+                @endif
                 <a href="{{route('pr.destroy', $pr->id)}}" class="btn btn-sm btn-danger">
                   <i class="fas fa-minus"></i>
                 </a>
+
+                
               </td>
             </tr>
           @endforeach

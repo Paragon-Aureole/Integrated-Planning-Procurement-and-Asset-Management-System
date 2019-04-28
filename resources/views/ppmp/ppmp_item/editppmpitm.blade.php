@@ -29,7 +29,8 @@
               @endforeach 
             </select>
             <div class="input-group-append">
-              <a href="{{route('view.ppmpitemcode', $ppmp->id)}}" class="btn btn-outline-secondary btn-sm">Add Item Code</a> 
+              {{-- <a href="{{route('view.ppmpitemcode', $ppmp->id)}}" class="btn btn-outline-secondary btn-sm">Add Item Code</a>  --}}
+              <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#itemCodeModal" name="addItemCode">Add Item Code</button>
             </div>
             <div class="invalid-feedback">  
               @if ($errors->has('item_code'))
@@ -152,7 +153,7 @@
     </div>
   </div>
 </div>
-  
+@include('ppmp.ppmp_item.itemcodeModal')
  </div>
 </div>
 
@@ -162,4 +163,6 @@
 
 @section('script')
 <script src="{{asset('js/function-script.js')}}"></script>
+<script src="{{asset('js/ppmp_field_validation.js')}}"></script>
+<script src="{{asset('js/editPpmpItem-script.js')}}"></script>
 @endsection

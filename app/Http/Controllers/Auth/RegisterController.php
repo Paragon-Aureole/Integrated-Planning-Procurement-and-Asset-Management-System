@@ -54,9 +54,9 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-        activity()
+        activity('User Management')
         ->performedOn($user)
-        ->log('Added new user');
+        ->log('Registered User '.$user->username);
 
         return $this->registered($request, $user)
                         ?: redirect($this->redirectPath());
@@ -155,9 +155,10 @@ class RegisterController extends Controller
             $user->roles()->detach(); 
         }
 
-        activity()
+        activity('User Management')
         ->performedOn($user)
-        ->log('Updated user '.$user->id);
+        ->withProperties(['Reason' => $input['reason']])
+        ->log('Updated user '.$user->username);
 
         return redirect()->route('register')->with('success','User updated successfully!');
     }
@@ -168,14 +169,17 @@ class RegisterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         //
         $user = User::findOrFail($id);
         $user->delete();
-        activity()
+
+        activity('User Management')
         ->performedOn($user)
-        ->log('Deactivated user '.$user->id);
+        ->withProperties(['Reason' => $request->get('reason')])
+        ->log('Deactivated user '.$user->username);
+
         return redirect()->route('register')->with('info','User has been deactivated.');
 
     }
@@ -187,11 +191,12 @@ class RegisterController extends Controller
      */
     public function restore($id)
     {
-        $user = User::findorFail($id);
+        $user = User::withTrashed()->find($id);
         $restore_user = User::withTrashed()->where('id', $id)->restore();
-        activity()
+
+        activity('User Management')
         ->performedOn($user)
-        ->log('Reactivated user '.$user->id);
+        ->log('Reactivated user '.$user->username);
         return redirect()->route('register')->with('success','User has been reactivated.');
     }
 }

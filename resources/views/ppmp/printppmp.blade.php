@@ -26,7 +26,11 @@
 		</div>
 		<div class="row text-center header">
 			<div class="col-xs-12">&nbsp;</div>
-			<div class="col-xs-12"><b>Project Procurement Management Plan</b></div>
+			<div class="col-xs-12">
+				<b>
+					@if ($ppmp->is_supplemental == 1) Supplemental @endif Project Procurement Management Plan
+				</b>
+			</div>
 			<div class="col-xs-12">&nbsp;</div>
 		</div>
 		@foreach($ppmp->ppmpItem()->get()->groupBy('ppmp_item_code_id')->chunk(100); as $collection)

@@ -35,5 +35,19 @@
             }
 
         });
+
+        $('select[name="pr_code"]').on('change', function(){
+            var office_id = $("select[name='pr_code'] option:selected").attr('data-office-id');
+            var office_name = $("select[name='pr_code'] option:selected").attr('data-office-name');
+            var requestor_name = $("select[name='pr_code'] option:selected").attr('data-requestor-name');
+            var requestor_id = $("select[name='pr_code'] option:selected").attr('data-requestor-id');
+
+            $('input[name="pr_office"]').val(office_id);
+            $('#deptName').val(office_name);
+            $('input[name="pr_requestor"]').val(requestor_id);
+            $('#requestorName').val(requestor_name);
+
+
+        });
        
     });

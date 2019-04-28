@@ -118,4 +118,5 @@
 
 	@section('script')
 	<script src="{{asset('js/function-script.js')}}"></script>
+	<script src="{{asset('js/pr-item-script.js')}}"></script>
 	@endsection

@@ -25,11 +25,11 @@ $(document).ready(function () {
     }
     if ($("[name=item_code] option:selected").attr('name') == 1) {
       if (itemqtyCount != itemqtyGoal) {
-        console.log($("[name=item_code] option:selected").attr('name'));
-        console.log("incomplete entries, please distribute scheduled items properly.");
+        // console.log($("[name=item_code] option:selected").attr('name'));
+        alert("Incomplete or surplus entries, Please distribute scheduled items properly.");
         // return false;
       } else {
-        console.log('blyat');
+        // console.log('Ok for submimssion');
         $("#needs-validation").submit();
         // return true;
       }

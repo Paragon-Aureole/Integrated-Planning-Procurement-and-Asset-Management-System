@@ -100,16 +100,6 @@ class SignatoryController extends Controller
         return redirect()->back()->with('success', 'A Signatory has been added.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  App\Http\Requests\SignatoryRequest  $signatory
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Signatory $signatory)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

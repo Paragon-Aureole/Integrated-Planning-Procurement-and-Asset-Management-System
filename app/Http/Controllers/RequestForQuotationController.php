@@ -84,50 +84,7 @@ class RequestForQuotationController extends Controller
         return $pdf->stream('RFQ-'.$rfq->purchaseRequest->pr_code.'.pdf');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $rfq_id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($rfq)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\RequestForQuotation  $requestForQuotation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($rfq)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int $rfq_id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $rfq)
-    {
-        //
-    }
+    
 
     /**
      * Remove the specified resource from storage.

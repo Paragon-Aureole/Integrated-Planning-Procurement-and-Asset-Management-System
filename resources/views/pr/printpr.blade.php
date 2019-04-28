@@ -106,6 +106,8 @@
 				<div class="col-xs-9" style="padding: 0px;">
 				@if($pr->office->office_code == 'ICT')
 					Information Technology Section
+				@else 
+				&nbsp;
 				@endif
 					<hr>
 				</div>

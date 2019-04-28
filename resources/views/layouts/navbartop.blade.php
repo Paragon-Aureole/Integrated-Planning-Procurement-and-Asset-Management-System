@@ -1,9 +1,11 @@
 <!-- A grey horizontal navbar that becomes vertical on small screens -->
 <nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
-  <a class="navbar-brand" href="{{route('home')}}">
-  	<img src="{{asset('img/sfclogo.png')}}" width="30" height="30" class="d-inline-block align-top" alt="">
-	<span class="mb-0 h5">IPPAMS</span>
-  </a>
+    <a class="navbar-brand" href="{{route('home')}}">
+        <img src="{{asset('img/sfclogo.png')}}" width="40" height="40" class="d-inline-block align-top" alt="">
+    </a>
+    <span class="navbar-brand mb-0 h5">Integrated Planning Procurement and Asset Management System</span>
+</nav>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
   <!-- Toggler/collapsibe Button -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
@@ -17,7 +19,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="ppmpDropdownMenuLink">
           <li><a class="dropdown-item" href="{{route('view.ppmp')}}">PPMP</a></li>
-          <li><a class="dropdown-item" href="#">Supplemental PPMP</a></li>
+          <li><a class="dropdown-item" href="{{route('supplemental.ppmp')}}">Supplemental PPMP</a></li>
         </ul>
       </li>
       <li class="nav-item dropdown">
@@ -28,7 +30,7 @@
             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-plus"></i> New</a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{{route('pr.index')}}">Purchase Request</a></li>
-                <li><a class="dropdown-item" href="#">Supplemental Purchase Request</a></li>
+                <li><a class="dropdown-item" href="{{route('pr.supplemental')}}">Supplemental Purchase Request</a></li>
               </ul>
             </li>
             @can('close')

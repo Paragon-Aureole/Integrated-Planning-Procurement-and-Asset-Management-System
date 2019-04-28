@@ -105,13 +105,15 @@ class PpmpItemController extends Controller
     {
         $ppmp = Ppmp::findorFail($ppmp_id);
         $ppmp_itemDT = $ppmp->ppmpItem()->get()->groupBy('ppmp_item_code_id');
+        $office = Office::findorFail($ppmp->office_id);
+        $ppmp_codeDT = $office->ppmpItemCode()->get();
         $total = $ppmp->ppmpBudget;
         $units = MeasurementUnit::all();
         $modes = ProcurementMode::all();
 
         $ppmp_item = PpmpItem::findorFail($item_id);
 
-       return view('ppmp.ppmp_item.editppmpitm', compact('ppmp_itemDT','ppmp', 'units', 'modes','total', 'ppmp_item'));  
+       return view('ppmp.ppmp_item.editppmpitm', compact('ppmp_codeDT', 'ppmp_itemDT','ppmp', 'units', 'modes','total', 'ppmp_item'));  
 
     }
 

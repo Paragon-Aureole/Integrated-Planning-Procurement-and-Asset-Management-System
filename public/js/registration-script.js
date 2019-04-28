@@ -12,4 +12,14 @@ $(document).ready(function() {
        }
     });
 
+   $("button[name='delete_user']").click(function() {
+        var user_id = $(this).attr('data-userid');
+        var office = $(this).attr('data-useroffice');
+        // console.log(user_id);
+        $("#userId").val(user_id);
+        $("#userDept").val(office);
+        // console.log('register/delete/'+user_id);
+        $("form[name='deactivation_reason']").attr('action', 'register/delete/'+user_id);
+    });
+
 } );

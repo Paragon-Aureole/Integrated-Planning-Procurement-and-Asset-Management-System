@@ -19,7 +19,7 @@
   		Edit Purchase Request
   	  </h6>
       
-      <form action="{{route('pr.update', $pr->id)}}" method="post" id="needs-validation" novalidate>
+      <form action="{{route('pr.update', $pr->id)}}" method="post" id="needs-validation">
           {{csrf_field()}}
           {{ method_field('put') }}
           <div class="row">
@@ -107,8 +107,12 @@
                 @endif  
               </div>
             </div> 
+            <div class="form-group col-md-12">
+              <label class="small">Reason for Editing</label>
+              <textarea class="form-control form-control-sm" name="edit_reason" required></textarea>
+            </div>
             <div class="form-group col">
-              <button type="submit" id="prBtn" class="btn btn-primary btn-sm" @hasRole('Admin')disabled@endrole>Submit</button>
+              <button type="Update" id="prBtn" class="btn btn-warning btn-sm" @hasRole('Admin')disabled@endrole>Submit</button>
             </div>
           </div>
         </form>

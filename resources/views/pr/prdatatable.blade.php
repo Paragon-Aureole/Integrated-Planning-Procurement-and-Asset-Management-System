@@ -23,10 +23,18 @@
       <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
       <td>
         <a href="{{route('view.pritm', $pr->id)}}" class="btn btn-sm btn-info" title="Add PR Items"><i class="fas fa-th-list"></i></a>
-        <a href="{{route('pr.edit', $pr->id)}}" class="btn btn-sm btn-warning">
-          <i class="fas fa-edit"></i>
-        </a>
+        @can('full control')
+          <a href="{{route('pr.edit', $pr->id)}}" class="btn btn-sm btn-warning">
+              <i class="fas fa-edit"></i>
+          </a>
+        @endcan
+        @if ($pr->prItem->count() > 0)
+          <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
+        @endif
         @can(['full control', 'close'])
+        {{-- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#reasonModal">
+            <i class="fas fa-minus"></i>
+        </button> --}}
         <a href="{{route('pr.destroy', $pr->id)}}" class="btn btn-sm btn-danger">
           <i class="fas fa-minus"></i>
         </a>
