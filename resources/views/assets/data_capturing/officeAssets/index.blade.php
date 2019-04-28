@@ -237,7 +237,7 @@
                     <div class="row">
                        <div class="col-md-12">
                             <div class="input-group">
-                                <input type="text" id="office_id_modal">
+                                <input type="text" id="office_id_modal" hidden>
                                 <select class="custom-select" id="modal_asset_type">
                                     <option value="0">-Select One-</option>
                                     @foreach ($assetType as $assetTypeItem)
