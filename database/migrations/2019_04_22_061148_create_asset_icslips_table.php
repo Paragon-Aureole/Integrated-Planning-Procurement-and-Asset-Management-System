@@ -21,6 +21,7 @@ class CreateAssetIcslipsTable extends Migration
             $table->integer('quantity');
             $table->string('description');
             $table->string('assignedTo');
+            $table->string('position');
             $table->string('inventory_name_no')->nullable()->default('');
             $table->string('useful_life');
             $table->timestamps();

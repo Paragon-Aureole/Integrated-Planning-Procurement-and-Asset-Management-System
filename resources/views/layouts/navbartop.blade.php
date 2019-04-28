@@ -78,9 +78,14 @@
           Assets
         </a>
         <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
+          <li><a class="dropdown-item" href="/assets">Asset Procurement and Distribution</a></li>
+          <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Print Reports</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/printOfficeAssets">REPORT OF THE PHYSICAL COUNT OF PROPERTY, PLANT AND EQUIPMENT</a></li>
+              <li><a class="dropdown-item" href="/printVehicle">UPDATED INVENTORY/ACCOUNTING OF ALL EXISTING MOTOR VEHICLES</a></li>
+            </ul>
+          </li>
           <li><a class="dropdown-item" href="/migrateAssets">Migrate Current Assets</a></li>
-          <li><a class="dropdown-item" href="/assets">Procured Assets</a></li>
-          <li><a class="dropdown-item" href="/DistributeAssets">Distribute Assets</a></li>
         </ul>
       </li>
       @can('full control')

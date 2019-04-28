@@ -26,18 +26,18 @@
     }
 
     //save function
-    $('#assetClassificationForm').on('submit', function (e) {
-      // console.log('clicking');
-      e.preventDefault();
+    // $('#assetClassificationForm').on('submit', function (e) {
+    //   // console.log('clicking');
+    //   e.preventDefault();
 
-      var voucherNo = $('[name=voucherNo]').val();
-      if (voucherNo == "") {
-        console.log('voucherNo Empty, Please fill.');
+    //   var voucherNo = $('[name=voucherNo]').val();
+    //   if (voucherNo == "") {
+    //     console.log('voucherNo Empty, Please fill.');
         
-      } else {
-        console.log('voucherNo filled.');
-        // return true;
-      }
-    });
+    //   } else {
+    //     console.log('voucherNo filled.');
+    //     // return true;
+    //   }
+    // });
 
   });

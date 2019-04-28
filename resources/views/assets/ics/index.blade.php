@@ -10,13 +10,12 @@
 
 @section('content')
 
-{{-- {{$assetParData}} --}}
+{{--  {{$assetIcslipData}}  --}}
+{{--  {{$IcslipData}}  --}}
 
 {{-- {{route('distribution.store')}} --}}
 {{-- <input type="hidden" id="currentPARNo" value={{$assetParData}}> --}}
-<input type="hidden" id="currentPARNo">
-{{-- <input type="hidden" id="currentPONo" value={{$purchase_order_id}}> --}}
-<input type="hidden" id="currentPONo">
+<input type="hidden" id="currentICSNo">
 
 {{-- {{$assetTypes}} --}}
 
@@ -35,24 +34,24 @@
                 <tr>
                   <th>ID</th>
                   <th>Item</th>
-                  <th>Item Qty</th>
-                  <th>Items Remaining</th>
+                  <th>Total Qty</th>
+                  <th>Remaining</th>
                   <th>Total Price</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {{-- @foreach ($parData as $key => $record) --}}
+                @foreach ($IcslipData as $key => $record)
                 <tr>
-                  <td>Sample ID</td>
-                  <td>Sample ITEM</td>
-                  <td>Sample ITEM QTY</td>
-                  <td>Sample ITEMS REMAINING</td>
-                  <td>Sample TOTAL PRICE</td>
+                  <td>{{$record['id']}}</td>
+                  <td>{{$record['details']}}</td>
+                  <td>{{$record['item_quantity']}}</td>
+                  <td>{{$record['item_stock']}}</td>
+                  <td>{{$record['amount']}}</td>
                   <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button></td>
                   {{-- <td><a href="{{route('DistributeAssets.create')}}" target="_blank" class="btn btn-sm btn-secondary">Assign</a></td> --}}
                 </tr>
-                {{-- @endforeach --}}
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -67,20 +66,18 @@
                 </tr>
               </thead>
               <tbody>                
-                {{-- @foreach ($assetParData as $record) --}}
+                @foreach ($assetIcslipData as $record)
                 <tr>
-                  <td>Sample ID</td>
-                  <td>Sample RECEIVER</td>
-                  <td>Sample ITEM ASSIGNED</td>
+                  <td>{{$record['id']}}</td>
+                  <td>{{$record['assignedTo']}}</td>
+                  <td>{{$record['name']}}</td>
                   <td>
-                    {{-- <a href="http://ipams.test/printPar/{{$record['id']}}"  target="_blank" class="btn btn-sm btn-secondary"> --}}
-                    <a href="http://ipams.test/printPar/"  target="_blank" class="btn btn-sm btn-secondary">
+                    <a href="http://ipams.test/printIcs/{{$record['id']}}"  target="_blank" class="btn btn-sm btn-secondary">
                       <i class="fas fa-print"></i>
                     </a>
                   </td>
                 </tr>
-                {{-- @endforeach --}}
-                
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -127,39 +124,23 @@
                   <option>None</option>
                 </select>
               </div>
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">Unit Cost</span>
-                </div>
-                {{-- UNIT COST INPUT HERE  --}}
-                <input type="text" name="selectedItemUnitCost" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
-              </div>
             </div>
             <div class="col-md-6">
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-sm">ICS No.</span>
                 </div>
-                {{-- PAR NUMBER INPUT HERE  --}}
-                <input type="text" name="selectedItemPARNo" class="form-control"
+                {{-- ICS NUMBER INPUT HERE  --}}
+                <input type="text" name="selectedItemICSNo" class="form-control"
                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-sm">Date Assigned</span>
                 </div>
-                {{-- ASSIGNED DATE HERE  --}}
-                <input type="date" name="selectedItemDateAssigned" class="form-control"
+                {{-- ESTIMATED USEFUL LIFE DATE HERE  --}}
+                <input type="text" name="selectedItemEstimatedUsefulLife" class="form-control"
                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-              </div>
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">Total Amount</span>
-                </div>
-                {{-- TOTAL AMOUNT INPUT HERE  --}}
-                <input type="text" name="selectedItemTotalAmount" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
             </div>
           </div>
@@ -180,8 +161,8 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <label>Specifications:</label><br>
-              <textarea name="selectedItemSpecifications" cols="30" rows="10"
+              <label>Description:</label><br>
+              <textarea name="selectedItemDescription" cols="30" rows="10"
                 class="form-control form-control-sm"></textarea>
             </div>
           </div>
@@ -247,5 +228,5 @@
 
 @section('script')
 
-<script src="{{asset('js/asset_parIndex.js')}}"></script>
+<script src="{{asset('js/asset_icsIndex.js')}}"></script>
 @endsection

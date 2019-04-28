@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\asset;
 use App\assetIcslip;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,43 @@ class AssetIcslipController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $id)
     {
-        return view('assets.ics.index');
+        $assetIcslipData = assetIcslip::all();
+        
+        // dd($assetIcslipRemainingQuantity);
+
+        // $assetIcslipData = assetIcslip::select('asset_id')->groupBy('asset_id')->get();
+        // $assetIcslipData = assetIcslip::where('asset_id', 3)->sum('quantity');
+        $IcslipData = asset::where('purchase_order_id', $id->id)->where('isICS', 1)->where('isAssigned', 0)->get();
+        $purchase_order_id = $id->id;
+
+        // dd($IcslipData[0]->item_quantity);
+
+        // return view('assets.Icslip.index', compact('IcslipData', 'assetIcslipData', 'purchase_order_id', 'assetTypes'));
+        return view('assets.ics.index', compact('IcslipData', 'assetIcslipData', 'purchase_order_id'));
+
+    }
+
+        public function getICSCount()
+    {
+        $assetIcslipCount = assetIcslip::get()->count();
+        return ($assetIcslipCount);
+    }
+
+    // public function getPARData()
+    // {
+    //     $assetParData = assetPar::All();
+    //     return ($assetParData);
+    // }
+
+    public function setIsAssigned(Request $request)
+    {
+        asset::whereId($request->asset_id)->update([
+                'isAssigned' => 1
+            ]);
+
+        return response()->json(['response' => 'Assigning Successful. You may now print.', 'error' => false]);
     }
 
     /**
@@ -35,7 +70,28 @@ class AssetIcslipController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $items = $request->input('data');
+        // dd($items);
+
+        assetIcslip::create([
+            'asset_id' => $items[0],
+            'quantity' => $items[1],
+            'description' => $items[2],
+            'assignedTo' => $items[3],
+            'position' => $items[4],
+            'useful_life' => $items[5]
+        ]);
+
+        asset::find($items[0])->decrement('item_stock', $items[1]);
+
+
+        if ($request->isMethod('post')) {
+            // return response()->json(['response' => 'This is post method', 'error' => false]);
+            return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
+        } else {
+            return response()->json(['response' => 'failure']);
+        }
+
     }
 
     /**

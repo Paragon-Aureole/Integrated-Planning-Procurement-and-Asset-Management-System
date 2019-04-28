@@ -13,6 +13,7 @@ use App\asset;
 use App\DisbursementVoucher;
 use App\assetType;
 use App\assetPar;
+use App\assetIcslip;
 use PDF;
 use App;
 
@@ -230,17 +231,18 @@ class assetController extends Controller
         return $pdf->stream('PAR.pdf');
     }
 
-    public function printIcs()
+    public function printIcs($id)
     {
         // return view('assets.par.printPAR');
+        $IcslipData = assetIcslip::findorFail($id);
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,
             'margin-bottom' => 10,
             'margin-left'   => 10,
         ];
-
-        $pdf = PDF::loadView('assets.ics.printICS')->setPaper('Folio', 'landscape');
+        // dd($IcslipData);
+        $pdf = PDF::loadView('assets.ics.printICS', compact('IcslipData'))->setPaper('Folio', 'landscape');
         return $pdf->stream('ICS.pdf');
     }
 

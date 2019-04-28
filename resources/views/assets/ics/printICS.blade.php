@@ -31,7 +31,7 @@
                             <div class="container" style="font-size:20px;">
                                 INVENTORY CUSTODIAN SLIP
                                 <div class="col-xs-12">&nbsp;</div>
-                                <div class="text-right">PAR No.:</div>
+                                <div class="text-right">ICS No.: {{$IcslipData->id}}</div>
                             </div>
                         </th>
                     </tr>
@@ -44,12 +44,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                    $amount = $IcslipData->asset->amount;
+                    $item_quantity = $IcslipData->asset->item_quantity;
+                    @endphp
                     <tr>
-                        <td>Sample Quantity</td>
-                        <td>Sample Unit</td>
-                        <td colspan="2">Sample Description</td>
-                        <td>Sample Inventory Item No.</td>
-                        <td>Sample Estimated Useful Life</td>
+                        <td>{{$IcslipData->quantity}}</td>
+                        <td>{{$IcslipData->asset->measurementUnit->unit_code}}</td>
+                        {{--  <td>{{$unit->unit_code}}</td> --}}
+                        <td colspan="2">{{$IcslipData->description}}</td>
+                        {{--  <td>Sample Description</td>  --}}
+                        <td></td>
+                        <td>{{$IcslipData->useful_life}}</td>
+                        {{--  <td>Sample Date Acquired</td>  --}}
                     </tr>
                     <tr>       
                         <td colspan="3">
@@ -60,9 +67,9 @@
                                     Received by:
                                 </div>
                                 <div class="text-center">
-                                    <div class="col-xs-12">_______________________________________</div>
+                                    <div class="col-xs-12">{{$IcslipData->assignedTo}}</div>
                                     <div class="col-xs-12" style="font-size:15px;">Signature over Printed Name</div><br>
-                                    <div class="col-xs-12">Administrative Office V</div>
+                                    <div class="col-xs-12">{{$IcslipData->position}}</div>
                                     <div class="col-xs-12" style="font-size:15px;">Position/Office</div><br>
                                     <div class="col-xs-12" style="font-size:15px;">Date</div>
                                 </div>

@@ -29,7 +29,7 @@
         <div class="text-left">
             <div class="col-xs-12">Entity Name:</div>
             <div class="col-xs-12">fund Cluster:</div>
-            <div class="text-right">PAR No.:</div>
+            <div class="text-right">PAR No.: {{$parData->id}}</div>
         </div>
         <div class="row text-center">
             <table class=" table table-bordered table-hover table-sm table-condensed display nowrap w-100">
@@ -47,6 +47,7 @@
                 <tbody>
                     @php
                     $amount = $parData->asset->amount;
+                    {{$parData->asset;}}
                     $item_quantity = $parData->asset->item_quantity;
                     $unitCost = $amount / $item_quantity;
                     @endphp
@@ -84,10 +85,10 @@
                                     Received by:
                                 </div>
                                 <div class="text-center">
-                                    <div class="col-xs-12">_______________________________________</div>
+                                    <div class="col-xs-12">{{$parData->assignedTo}}</div>
                                     <div class="col-xs-12" style="font-size:15px;">Signature over Printed Name of End
                                         User</div><br>
-                                    <div class="col-xs-12">Information Technology Officer II</div>
+                                    <div class="col-xs-12">{{$parData->position}}</div>
                                     <div class="col-xs-12" style="font-size:15px;">Position/Office</div><br>
                                     <div class="col-xs-12" style="font-size:15px;">Date</div>
                                 </div>
