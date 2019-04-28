@@ -115,6 +115,10 @@
                                             <label for="remarks" class="small">Remarks:</label>
                                             <input type="text" name="remarks" class="form-control form-control-sm">
                                         </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="par_ics_number" class="small">PAR/ICS Number:</label>
+                                            <input type="text" name="par_ics_number" class="form-control form-control-sm">
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -233,6 +237,7 @@
                     <div class="row">
                        <div class="col-md-12">
                             <div class="input-group">
+                                <input type="text" id="office_id_modal">
                                 <select class="custom-select" id="modal_asset_type">
                                     <option value="0">-Select One-</option>
                                     @foreach ($assetType as $assetTypeItem)
@@ -240,7 +245,7 @@
                                     @endforeach
                                 </select>
                                 <div class="input-group-append">
-                                    <a href="#print" target="_blank" class="btn btn-xl btn-secondary"><i class="fas fa-print"></i> Print</a>
+                                <button class="btn btn-xl btn-secondary" id="print_migration"><i class="fas fa-print"></i> Print</button>
                                 </div>
                             </div>
                        </div>
@@ -319,6 +324,7 @@
 
     table.on('click', 'button#viewMigratedItems', function () {
         var data = table.row( $(this).parents('tr') ).data();
+        $('#office_id_modal').val(data[0]);
         getModalContent(data);
         
     });
@@ -426,7 +432,36 @@
                 {data:'status'},
             ]
         })
-    }
+    };
+
+    $('#print_migration').on('click', function () {
+        var values = {
+            office_id : $('#office_id_modal').val(),
+            asset_type_id : $('#modal_asset_type').val(),
+        }
+        console.log(values);
+        
+        $.ajax({
+            url: '/selectMigratedAssets',
+            method: 'get',
+            data: values,
+            success: function ( response ) {
+                if (response.input.asset_type_id == 1) {
+                    window.open('printMigratedVehicles/' + response.input.office_id + '/' + response.input.asset_type_id , '_blank');
+
+                } else {
+                    window.open('printMigratedAssets/' + response.input.office_id + '/' + response.input.asset_type_id , '_blank');
+                    
+                }
+                          
+            },
+            error: function ( response ) {
+                console.log(response);
+                
+            }
+        }); 
+    });
+
   });
 </script>
 @endsection

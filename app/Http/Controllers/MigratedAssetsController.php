@@ -7,6 +7,7 @@ use App\migratedVehicles;
 use App\Office;
 use App\assetType;
 use Illuminate\Http\Request;
+use PDF;
 
 class MigratedAssetsController extends Controller
 {
@@ -58,6 +59,7 @@ class MigratedAssetsController extends Controller
             'on_hand_per_count'=>$input['on_hand_per_count'],
             'shortage_overage'=>$input['shortage_overage'],
             'date_purchase'=>$input['date_purchase'],
+            'par_ics_number'=>$input['par_ics_number'],
             'status'=>$input['status'],
             'remarks'=>$input['remarks'],
             'asset_type_id'=>$input['asset_type_officeAsset'],
@@ -127,5 +129,32 @@ class MigratedAssetsController extends Controller
     public function destroy(migratedAssets $migratedAssets)
     {
         //
+    }
+
+    public function selectMigratedAssets(Request $request)
+    {
+        $input = $request->all();
+
+        return response()->json(['input'=>$input]);
+    }
+
+    public function printMigratedAssets($office_id, $asset_type_id) 
+    {
+        $migratedAssetsFirst = migratedAssets::where('asset_type_id', $asset_type_id)
+        ->where('office_id', $office_id)
+        ->take(1)->get();
+
+        $migratedAssets = migratedAssets::where('asset_type_id', $asset_type_id)
+        ->where('office_id', $office_id)
+        ->get();
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printMigratedAssets', compact('migratedAssets', 'migratedAssetsFirst'))->setPaper('Folio', 'landscape');
+        return $pdf->stream('migrated_assets.pdf');
     }
 }

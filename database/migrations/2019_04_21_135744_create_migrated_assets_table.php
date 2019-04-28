@@ -28,6 +28,7 @@ class CreateMigratedAssetsTable extends Migration
             $table->integer('on_hand_per_count');
             $table->string('shortage_overage');
             $table->date('date_purchase');
+            $table->string('par_ics_number');
             $table->string('remarks');
             $table->string('status');
             $table->integer('asset_type_id')->unsigned()->nullable()->index();

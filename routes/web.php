@@ -170,4 +170,10 @@ Route::get('/getICSNo', 'AssetIcslipController@getPARCount');
 
 // assetMigrations
 Route::resource('migrateAssets', 'MigratedAssetsController');
-
+Route::resource('migrateVehicle', 'MigratedVehiclesController');
+Route::get('migrationDatatable', 'MigratedAssetsController@migrationDatatable');
+Route::get('validateAssetType', 'MigratedAssetsController@validateAssetType');
+Route::get('validateAssetTypeVehicle', 'MigratedVehiclesController@validateAssetTypeVehicle');
+Route::get('selectMigratedAssets', 'MigratedAssetsController@selectMigratedAssets');
+Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsController@printMigratedAssets');
+Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');

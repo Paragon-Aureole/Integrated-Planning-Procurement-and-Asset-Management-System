@@ -23,6 +23,7 @@ class migratedAssets extends Model
     'shortage_overage',
     'date_purchase',
     'status',
+    'par_ics_number',
     'remarks',
     'asset_type_id'
     ];

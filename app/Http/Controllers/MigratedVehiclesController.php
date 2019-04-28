@@ -6,6 +6,7 @@ use App\migratedVehicles;
 use App\Office;
 use App\assetType;
 use Illuminate\Http\Request;
+use PDF;
 
 class MigratedVehiclesController extends Controller
 {
@@ -108,5 +109,25 @@ class MigratedVehiclesController extends Controller
     public function destroy(migratedVehicles $migratedVehicles)
     {
         //
+    }
+
+    public function printMigratedVehicles($office_id, $asset_type_id) 
+    {
+        $migratedVehicleFirst = migratedVehicles::where('asset_type_id', $asset_type_id)
+        ->where('office_id', $office_id)
+        ->take(1)->get();
+
+        $migratedVehicle = migratedVehicles::where('asset_type_id', $asset_type_id)
+        ->where('office_id', $office_id)
+        ->get();
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.data_capturing.vehicle.printMigratedVehicle', compact('migratedVehicle', 'migratedVehicleFirst'))->setPaper('Folio', 'landscape');
+        return $pdf->stream('migrated_assets.pdf');
     }
 }

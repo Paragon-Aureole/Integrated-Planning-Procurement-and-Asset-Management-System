@@ -13,7 +13,6 @@ class AssetTypeSeeder extends Seeder
     public function run()
     {
         $assetType = [
-            ['type_name'=>'None'],
             ['type_name'=>'Vehicle'],
             ['type_name'=>'Office Supplies'],
             ['type_name'=>'Furniture and Fixtures'],
