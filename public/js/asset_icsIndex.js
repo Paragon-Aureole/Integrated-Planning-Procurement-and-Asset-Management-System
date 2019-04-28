@@ -1,5 +1,5 @@
   $(document).ready(function () {
-    getPARNo();
+    getICSNo();
     // getPARData();
     var table = $('#prDatatable').DataTable({
       responsive: true,
@@ -27,108 +27,86 @@
       //$('[name=pr_id]').val(table.row(this).index()+1);
     });
 
-    function getPARNo() {
+    function getICSNo() {
       return new Promise(function (resolve) {
         $.ajax({
 
           type: 'GET',
-          url: '/getPARNo',
+          url: '/getICSNo',
           success: function (data) {
             console.log(data);
-            resolve($('#currentPARNo').val(parseInt(data) + 1));
+            resolve($('#currentICSNo').val(parseInt(data) + 1));
           }
         });
       });
     };
 
-    //select item quantity calculates the total amount
-    $('[name=selectedItemQty]').on('change', function () {
-      setTotalAmount();
-    });
-
-    function setTotalAmount() {
-      // console.log($('[name=selectedItemQty]').val());
-      
-      var itemQty = parseInt($('[name=selectedItemQty]').val());
-      var unitCost = parseFloat($('[name=selectedItemUnitCost]').val());
-      var finalResult = calculateTotalAmount(itemQty, unitCost);
-      $('[name=selectedItemTotalAmount]').val(finalResult);
-    }
-
     //save function
     $('#itemAssignForm').on('submit', function (e) {
       // console.log('clicking');
       e.preventDefault();
-
+      
       var itemData = [];
-
+      
+      // console.log($('[name=selectedItemICSNo]').val());
+      // console.log($('[name=selectedItemName]').val());
+      // console.log($('[name=selectedItemQty]').val());
+      // console.log($('[name=selectedItemEstimatedUsefulLife]').val());
+      // console.log($('[name=selectedItemDescription]').val());
+      // console.log($('[name=selectedItemEmployeeName]').val());
+      // console.log($('[name=selectedItemEmployeePosition]').val());
+      // console.log($('[name=currentItemID]').val());
+      
+      
       var itemQty = $('[name=selectedItemQty]').val();
-      var itemDescription = $('[name=selectedItemSpecifications]').val();
+      var itemEstimatedUsefulLife = $('[name=selectedItemEstimatedUsefulLife]').val();
+      var itemDescription = $('[name=selectedItemDescription]').val();
       var itemEmployeeName = $('[name=selectedItemEmployeeName]').val();
       var itemEmployeePosition = $('[name=selectedItemEmployeePosition]').val();
       var itemID = $('[name=currentItemID').val();
-
+      
       itemData[0] = itemID;
       itemData[1] = itemQty;
       itemData[2] = itemDescription;
       itemData[3] = itemEmployeeName;
       itemData[4] = itemEmployeePosition;
+      itemData[5] = itemEstimatedUsefulLife;
+      
 
       // console.log(itemData);
 
-      savePARAssign(itemData);
+      saveICSAssign(itemData);
 
     });
 
     function clearModalFields() {
       var deferredObject = $.Deferred();
+      $('[name=selectedItemICSNo]').empty();
       $('[name=selectedItemName]').empty();
       $('[name=selectedItemQty]').empty();
-      $('[name=selectedItemUnitCost]').empty();
+      // $('[name=selectedItemUnitCost]').empty();
+      $('[name=selectedItemSpecifications]').empty();
       $('[name=selectedItemEmployeeName]').empty();
       $('[name=selectedItemEmployeePosition]').empty();
-      $('[name=selectedItemPARNo]').empty();
-      $('[name=selectedItemDateAssigned]').empty();
-      $('[name=selectedItemTotalAmount]').empty();
-      $('[name=selectedItemSpecifications]').empty();
+      $('[name=currentItemID]').empty();
+      
       deferredObject.resolve();
       return deferredObject.promise();
     }
 
     function fillModalFields(selectedRow) {
       $('[name=remainingItems]').val(selectedRow[3]);
-      getPARNo().then(function () {
-
-        //setting Date to Now
-        var now = new Date();
-        var day = ("0" + now.getDate()).slice(-2);
-        var month = ("0" + (now.getMonth() + 1)).slice(-2);
-        var today = now.getFullYear() + "-" + (month) + "-" + (day);
-        $('[name=selectedItemDateAssigned]').val(today);
+      getICSNo().then(function () {
 
         fillQuantityDropdown($('[name=remainingItems]').val());
 
-        var unitCost = parseFloat(selectedRow[4]) / parseFloat(selectedRow[2]);
-        var currentPARNo = $('#currentPARNo').val();
+        var currentICSNo = $('#currentICSNo').val();
         $('[name=selectedItemName]').val(selectedRow[1]);
-        // console.log(parseFloat(selectedRow[1]));
-        // console.log(parseFloat(selectedRow[2]));
-        // $('#selectedItemName').val(selectedRow[0]);
-        // $('#selectedItemQty').val(selectedRow[1]);
-
-        $('[name=selectedItemUnitCost]').val(unitCost);
-        // $('#selectedItemEmployeeName').val();
-        // $('#selectedItemEmployeePosition').val();
-        $('[name=selectedItemPARNo]').val(currentPARNo);
-        // $('#selectedItemDateAssigned').val();
-        $('[name=selectedItemTotalAmount]').val(setTotalAmount());
-        // $('#selectedItemSpecifications').val();
+        $('[name=selectedItemICSNo]').val(currentICSNo);
       });
     }
 
     function fillQuantityDropdown(remainingItems) {
-      console.log(remainingItems);
-      
       var dropdown = $('[name=selectedItemQty]');
       dropdown.empty();
       for (let index = remainingItems; index >= 1; index--) {
@@ -136,14 +114,7 @@
       }
     }
 
-    function calculateTotalAmount(itemQty, unitCost) {
-      var result = itemQty * unitCost;
-      // console.log(itemQty);
-      // console.log(unitCost);
-      return result;
-    }
-
-    function savePARAssign(formData) {
+    function saveICSAssign(formData) {
 
       var minuend = parseInt($('[name=remainingItems]').val());
       var subtrahend = parseInt(formData[1]);
@@ -163,23 +134,23 @@
             data: formData
           },
           type: 'POST',
-          url: 'http://ipams.test/DistributeAssetsPAR',
+          url: 'http://ipams.test/DistributeAssetsICS',
           success: function (data) {
             console.log(data);
 
-            getPARNo().then(function () {
-              var currentPARNo = $('#currentPARNo').val();
-              $('[name=selectedItemPARNo]').val(currentPARNo);
+            getICSNo().then(function () {
+              var currentICSNo = $('#currentICSNo').val();
+              $('[name=selectedItemICSNo]').val(currentICSNo);
 
               fillQuantityDropdown($('[name=remainingItems]').val());
-              setTotalAmount();
+              
               if ($('[name=remainingItems]').val() == 0) {
                 // console.log($('[name=currentItemID]').val());
                 setIsAssigned($('[name=currentItemID]').val());
               }
             });
 
-            // resolve($('#currentPARNo').val(parseInt(data) + 1));
+            // resolve($('#currentICSNo').val(parseInt(data) + 1));
           },
           error: function (data) {
             console.log(data);
@@ -209,7 +180,7 @@
             console.log(data);
             window.location.reload();
 
-            // resolve($('#currentPARNo').val(parseInt(data) + 1));
+            // resolve($('#currentICSNo').val(parseInt(data) + 1));
           },
           error: function (data) {
             console.log(data);

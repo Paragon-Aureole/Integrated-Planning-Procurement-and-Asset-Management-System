@@ -15,7 +15,6 @@
 {{-- {{route('distribution.store')}} --}}
 {{-- <input type="hidden" id="currentPARNo" value={{$assetParData}}> --}}
 <input type="hidden" id="currentPARNo">
-<input type="hidden" id="currentPONo" value={{$purchase_order_id}}>
 
 {{-- {{$assetTypes}} --}}
 
@@ -35,7 +34,7 @@
                   <th>ID</th>
                   <th>Item</th>
                   <th>Item Qty</th>
-                  <th>Items Remaining</th>
+                  <th>Remaining</th>
                   <th>Total Price</th>
                   <th>Actions</th>
                 </tr>

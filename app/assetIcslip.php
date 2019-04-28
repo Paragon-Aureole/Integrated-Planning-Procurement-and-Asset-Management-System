@@ -11,11 +11,12 @@ class assetIcslip extends Model
         'quantity',
         'description',
         'assignedTo',
+        'position',
         'inventory_name_no',
         'useful_life'
     ];
 
-    public function assets()
+    public function asset()
     {
         return $this->belongsTo(asset::class);
     }

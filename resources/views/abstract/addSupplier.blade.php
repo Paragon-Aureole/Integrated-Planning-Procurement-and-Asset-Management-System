@@ -20,18 +20,19 @@
             <form action="{{route('abstract.update', $abstract->id)}}" id="bekkelAbstract" method="POST">
                 {{ csrf_field() }}
                 {{ method_field('PATCH') }}
-                <div>
+            <div class="form-row">  
+                <div class="form-group col-md-3">
                     <label>Purchase Request #</label>
-                    <input value="{{$abstract->purchaseRequest->pr_code}}" readonly>
+                    <input class="form-control form-control-sm" value="{{$abstract->purchaseRequest->pr_code}}" readonly>
                 </div>
-                <div>
+                <div class="form-group col-md-2">
                     <label>Requesting Office:</label>
-                    <input value="{{$abstract->purchaseRequest->office->office_name}}" readonly>
+                    <input class="form-control form-control-sm" value="{{$abstract->purchaseRequest->office->office_code}}" readonly>
                 </div>
                 @if($abstract->outlineSupplier()->count() > 0)
-                <div>
+                <div class="form-group col-md-3">
                     <label>Selected Bidder:</label>
-                    <select name="bid_winner">
+                    <select class="form-control form-control-sm" name="bid_winner">
                         <option value="">Select Supplier</option>
                         @forelse ($allSuppliers as $supp)
                         <option value="{{$supp->id}}" @if ($supp->supplier_status == TRUE)
@@ -42,9 +43,9 @@
                         @endforelse
                     </select>
                 </div>
-                <div>
+                <div class="form-group col-md-2">
                     <label>Reason:</label>
-                    <select name="status_reason">
+                    <select class="form-control form-control-sm" name="status_reason">
                         <option value="">Select Reason</option>
                         <option value="0"
                         @foreach ($allSuppliers as $chosenSupplier)
@@ -61,22 +62,27 @@
                         >Most Responsive</option>
                     </select>
                 </div>
-                @endif  
-                <div>
-                    <label>Comments:</label>
-                    <textarea name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
-                </div>
+                @endif
+                <div class="form-group col-md-2">
+                        <label>Comments:</label>
+                        <textarea class="form-control form-control-sm" name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
+                    </div>
+            </div>
+            <div class="form-row">  
+            <div class="form-group col-md-3">
+            <button type="submit" class="btn btn-sm btn-primary">Submit</button>
             @if ($allSuppliers->where('supplier_status', 1)->count() >= 1)
                 <a href="{{route('abstract.print', $abstract->id)}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i>
                 </a>
             @endif
-                {{--<button type="submit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>--}}
             @if ($countSupplier >= 3)
                 <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
-                    <i class="fas fa-plus"></i>
+                    <i class="fas fa-plus"></i> Add Additional Suppliers
                 </button>
             @endif
+            </div>
+            </div>
             </form>
             
             <div class="table-responsive">

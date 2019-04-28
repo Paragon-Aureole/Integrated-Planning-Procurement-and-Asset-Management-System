@@ -145,28 +145,25 @@ Route::resource('ir', 'InspectionReportController');
 
 
 //assets
-Route::get('/showDetails', 'assetController@showDetails');
 Route::get('/getVoucherNo', 'assetController@getVoucherNo')->name('assets.getVoucherNo');
 Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.saveVoucherNo');
 Route::get('/assetClassification', 'assetController@assetClassification')->name('assets.assetClassification');
-Route::get('/parIndex', 'assetController@parIndex');
-Route::get('/printPar/{id}', 'assetController@printPar');
-Route::get('/printIcs', 'assetController@printIcs');
-Route::get('/printVehicle', 'assetController@printVehicle');
-Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 Route::resource('assets', 'assetController');
 
 //asset Par routes
-// Route::get('/DistributeAssets/{id}', 'assetParController@index')->name('assets.index');
 Route::resource('DistributeAssetsPAR', 'AssetParController');
 Route::post('/setIsAssignedPAR', 'AssetParController@setIsAssigned');
 Route::get('/getPARNo', 'AssetParController@getPARCount');
-// Route::get('/getPARData', 'AssetParController@getPARData');
 
 Route::resource('DistributeAssetsICS', 'AssetIcslipController');
 Route::post('/setIsAssignedICS', 'AssetIcslipController@setIsAssigned');
-Route::get('/getICSNo', 'AssetIcslipController@getPARCount');
+Route::get('/getICSNo', 'AssetIcslipController@getICSCount');
 
+//asset printing
+Route::get('/printPar/{id}', 'assetController@printPar');
+Route::get('/printIcs/{id}', 'assetController@printIcs');
+Route::get('/printVehicle', 'assetController@printVehicle');
+Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 
 // assetMigrations
 Route::resource('migrateAssets', 'MigratedAssetsController');

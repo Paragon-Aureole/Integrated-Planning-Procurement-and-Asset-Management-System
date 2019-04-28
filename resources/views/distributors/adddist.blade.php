@@ -67,7 +67,7 @@
 
    	<!-- table -->
    	<div class="col-md-8">
-   	  <h6 class="card-title">Registered Methods</h6>
+   	  <h6 class="card-title">Registered Distributors</h6>
    	  <div class="table-responsive">
    	  	@include('distributors.distdatatable')
    	  </div>	

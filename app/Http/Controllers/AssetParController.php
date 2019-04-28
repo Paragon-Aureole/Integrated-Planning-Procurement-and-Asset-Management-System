@@ -77,18 +77,14 @@ class AssetParController extends Controller
         // dd($items);
 
         assetPar::create([
-            // 'par_id' => $items[0],
-            'name' => $items[1],
-            'quantity' => $items[2],
-            // 'unitCost' => $items[3],
-            'description' => $items[4],
-            'assignedTo' => $items[5],
-            'position' => $items[6],
-            'asset_id' => $items[7],
-            'purchase_order_id' => $items[8]
+            'asset_id' => $items[0],
+            'quantity' => $items[1],
+            'description' => $items[2],
+            'assignedTo' => $items[3],
+            'position' => $items[4]
         ]);
 
-        asset::find($items[7])->decrement('item_stock', $items[2]);
+        asset::find($items[0])->decrement('item_stock', $items[1]);
 
 
         if ($request->isMethod('post')) {
