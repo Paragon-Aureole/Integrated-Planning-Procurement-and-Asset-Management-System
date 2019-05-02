@@ -23,8 +23,8 @@ class PurchaseRequestItemController extends Controller
         $pr = PurchaseRequest::findorFail($id);
         $pr_code = explode("-", $pr->pr_code);
 
-        $ppmp_item = PpmpItem::whereHas('ppmp', function ($query) use ($pr_code){
-            $query->where('ppmp_year', $pr_code[2]);
+        $ppmp_item = PpmpItem::whereHas('ppmp', function ($query) use ($pr_code, $pr){
+            $query->where('ppmp_year', $pr_code[2])->where('office_id', $pr->office_id);
         })->get(); 
         return view('pr.pr_item.addpritem', compact('pr', 'ppmp_item'));
     }

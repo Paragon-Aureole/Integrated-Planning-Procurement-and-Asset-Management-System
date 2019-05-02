@@ -208,12 +208,18 @@
 			</tr>
 			<tr>
 				<td style='border:1px solid #262626;height:10px;text-align:center;text-transform:uppercase;font-weight:bold;'>
+				@if($pr->signatory != null)	
 				{{$pr->signatory->signatory_name}}
+				@else
+				&nbsp;
+				@endif
 				</td>
 			</tr>
 			<tr>
 				<td style='text-align:center;border:1px solid #262626;text-transform:uppercase;height:10px;font-weight:bold'>
+				@if($pr->signatory != null)	
 				{{$pr->signatory->signatory_position}}
+				@endif
 				</td>
 			</tr>
 			<tr>
