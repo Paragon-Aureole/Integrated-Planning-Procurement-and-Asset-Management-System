@@ -29,21 +29,26 @@ class PurchaseOrderController extends Controller
             ->where('created_rfq', 1)
             ->where('created_abstract', 1)
             ->get();
+
+            $po = PurchaseOrder::all(); 
+
         }else{
             $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
             ->where('pr_status', 1)
             ->where('created_rfq', 1)
             ->where('created_abstract', 1)
             ->get();
+
+            $po = PurchaseOrder::whereHas('purchaseRequest', function ($query){
+                $query->where('office_id',  Auth::user()->office_id );
+            })->get(); 
         }
 
         
   
         $prMode = ProcurementMode::all();
 
-        $po = PurchaseOrder::whereHas('purchaseRequest', function ($query){
-            $query->where('office_id',  Auth::user()->office_id );
-        })->get(); 
+      
 
         // return $pr;
         return view('purchase_order.addPo', compact('pr','po','prMode'));

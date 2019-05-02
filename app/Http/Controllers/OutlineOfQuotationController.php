@@ -26,21 +26,21 @@ class OutlineOfQuotationController extends Controller
             ->where('created_rfq', 1)
             ->where('created_abstract', 0)
             ->get();
+
+            $aoq = OutlineOfQuotation::all();
+
         }else{
             $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
-        ->where('pr_status', 1)
-        ->where('created_rfq', 1)
-        ->where('created_abstract', 0)
-        ->get();
+            ->where('pr_status', 1)
+            ->where('created_rfq', 1)
+            ->where('created_abstract', 0)
+            ->get();
+
+            $aoq = OutlineOfQuotation::whereHas('purchaseRequest', function ($query){
+                $query->where('office_id',  Auth::user()->office_id );
+            })->get(); 
         }
 
-        
-
-        $aoq = OutlineOfQuotation::whereHas('purchaseRequest', function ($query){
-            $query->where('office_id',  Auth::user()->office_id );
-        })->get(); 
-
-        // dd($pr);
 
         return view('abstract.addAbstract', compact('pr', 'aoq'));
     }

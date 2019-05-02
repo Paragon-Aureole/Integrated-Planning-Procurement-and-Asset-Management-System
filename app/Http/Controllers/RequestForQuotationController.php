@@ -22,17 +22,21 @@ class RequestForQuotationController extends Controller
             $pr = PurchaseRequest::where('pr_status', 1)
             ->where('created_rfq', 0)
             ->get();
+            
+            $rfq = RequestForQuotation::all();
+
         }else{
             $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
                 ->where('pr_status', 1)
                 ->where('created_rfq', 0)
                 ->get();
+
+            $rfq = RequestForQuotation::whereHas('purchaseRequest', function ($query){
+                    $query->where('office_id',  Auth::user()->office_id );
+            })->get();
         }
         
-
-        $rfq = RequestForQuotation::whereHas('purchaseRequest', function ($query){
-            $query->where('office_id',  Auth::user()->office_id );
-        })->get(); 
+         
 
         // dd($rfq);
  
