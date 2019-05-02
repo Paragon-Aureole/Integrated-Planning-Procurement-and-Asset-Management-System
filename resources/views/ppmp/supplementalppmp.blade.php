@@ -56,7 +56,8 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody>    
+            @foreach ($ppmp_DT as $supplementals)
             @php
                 if(Auth::user()->hasPermissionTo('full control')){
                     $suffix = App\Ppmp::where('office_id', $supplementals->office_id)->where('is_supplemental' , true)->count();
@@ -64,7 +65,6 @@
                   $suffix = $ppmp_DT->count();
                 }
             @endphp
-            @foreach ($ppmp_DT as $supplementals)
             @php
                 $firstTwo = $supplementals->ppmpItem->take(2);
             @endphp

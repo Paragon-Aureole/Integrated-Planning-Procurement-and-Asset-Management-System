@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\OutlineSupplier;
 use App\OutlineOfQuotation;
+use App\OutlineItemPrice;
+use App\Office;
 use Illuminate\Http\Request;
+use Auth;
 
 class OutlineSupplierController extends Controller
 {
@@ -81,12 +84,16 @@ class OutlineSupplierController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\OutlineSupplier  $outlineSupplier
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(OutlineSupplier $outlineSupplier)
+    public function edit($supplier)
     {
-        //
+        $supplier_data = OutlineSupplier::find($supplier);
+        $items = $supplier_data->outlinePrice()->with('prItem.ppmpItem.measurementUnit')->get();
+
+        // dd([$supplier, $gso]);
+        return response()->json([$supplier_data, $items]);
     }
 
     /**
@@ -96,9 +103,54 @@ class OutlineSupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $supplier)
     {
-       //
+        $input = $request->all();
+        // dd($input);
+
+        $supplier = OutlineSupplier::findorFail($supplier);
+
+        $add_supplier = $supplier->update([
+            'supplier_name' => $input['supplier_name2'],
+            'supplier_address' => $input['supplier_address2'],
+            'canvasser_name' => $input['canvasser_name2'],
+            'canvasser_office' => $input['canvasser_dept2']
+        ]);
+        
+        foreach ($input['item_id'] as $key => $id) {
+            $price = OutlineItemPrice::find($input['item_id'][$key]);
+            $update_price = $price->update([
+                'final_cpu' => $input['unit_price2'][$key],
+                'final_cpi' => $input['item_price2'][$key]
+            ]);
+        }
+
+        activity('Abstract of Quotation - Suppliers')
+        ->performedOn($supplier)
+        ->withProperties(['Reason' => $input['s_reason']])
+        ->causedBy(Auth::user())
+        ->log('Updated Supplier '. $input['supplier_name2']);
+
+        return redirect()->back()->with('success', 'Supplier Updated');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $outlineSupplier
+     * @return \Illuminate\Http\Response
+     */
+    public function destroySupplier($supplier)
+    {
+        $supplier_log = OutlineSupplier::find($supplier);
+        $supplier_log->delete();
+
+        activity('Abstract of Quotation - Suppliers')
+        ->performedOn($supplier_log)
+        ->causedBy(Auth::user())
+        ->log('Deleted Supplier ');
+
+        return redirect()->back()->with('info', 'Supplier Deleted');
     }
 
     /**
@@ -107,8 +159,19 @@ class OutlineSupplierController extends Controller
      * @param  \App\OutlineSupplier  $outlineSupplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OutlineSupplier $outlineSupplier)
+    public function deleteSupplier(Request $request, $supplier)
     {
-        //
+        $input = $request->all();
+        $supplier_log = OutlineSupplier::find($supplier);
+        $supplier_log->delete();
+
+
+        activity('Abstract of Quotation - Suppliers')
+        ->performedOn($supplier_log)
+        ->withProperties(['Reason' => $input['del_reason']])
+        ->causedBy(Auth::user())
+        ->log('Deleted Supplier '. $input['sName']);
+
+        return redirect()->back()->with('info', 'Supplier Deleted');
     }
 }

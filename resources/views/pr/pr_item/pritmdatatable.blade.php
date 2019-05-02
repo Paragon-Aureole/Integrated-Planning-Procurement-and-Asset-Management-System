@@ -1,4 +1,4 @@
-<table name="items_dt" id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
               <th data-priority="1">Item No.</th>
@@ -10,10 +10,10 @@
               <th data-priority="1" style="width: 100px;">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="itemRow" name="items_dt">
             @foreach($pr->prItem()->get() as $items)
             <tr>
-              <td id="itemRow"></td>
+              <td></td>
               <td>{{$items->ppmpItem->item_description}}</td>
               <td>{{$items->item_quantity}}</td>
               <td>{{$items->ppmpItem->measurementUnit->unit_code}}</td>

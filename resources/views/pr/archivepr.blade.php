@@ -41,7 +41,7 @@
               </td>
               <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
               <td>
-              <a href="{{route('print.pr', $pr->id)}}" class="btn btn-sm btn-secondary" target="_blank" =title="Print PR"><i class="fas fa-print"></i></a>
+              <a href="{{route('print.pr', $pr->id)}}" class="btn btn-sm btn-success" target="_blank" title="Print PR"><i class="fas fa-print"></i></a>
             </td>
             </tr>
           @endforeach

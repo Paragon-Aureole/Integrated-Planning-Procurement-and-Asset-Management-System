@@ -128,7 +128,7 @@ class OutlineOfQuotationController extends Controller
         $outlineOfQuotation = OutlineOfQuotation::findorFail($id);
         $update = $outlineOfQuotation->update([
             "outline_comment" => $input['supplier_comments'],
-        //     "code_type" => $input['code_type'],
+            "outline_detail" => $input['outline_detail']
         ]);  
 
         $outlineSupplierId = OutlineSupplier::Where('outline_of_quotation_id', $id)->update(['supplier_status' => '0', 'status_reason' => '0']);
@@ -146,10 +146,10 @@ class OutlineOfQuotationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\OutlineOfQuotation  $outlineOfQuotation
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OutlineOfQuotation $outlineOfQuotation)
+    public function destroy($id)
     {
         //
     }

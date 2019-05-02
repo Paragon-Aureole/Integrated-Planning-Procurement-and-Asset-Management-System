@@ -139,6 +139,8 @@ Route::resource('rfq', 'RequestForQuotationController');
 Route::get('abstract/print/{id}', 'OutlineOfQuotationController@printOutline')->name('abstract.print');
 Route::resource('abstract', 'OutlineOfQuotationController');
 //abstractsupplier
+Route::get('supplier/delete/{supplier}', 'OutlineSupplierController@deleteSupplier');
+Route::get('supplier/destroy/{supplier}', 'OutlineSupplierController@destroySupplier')->name('destruct.supplier');
 Route::resource('supplier', 'OutlineSupplierController');
 
 // PurchaseOrder

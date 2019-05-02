@@ -13,16 +13,17 @@
  <div class="card-header pt-2 pb-2">Abstract of Quotation</div>
  <div class="card-body">
    <div class="row">
-   	<div class="col-md-5">
+   	<div class="col-md-6">
    	  <h6 class="card-title">
-  		Available Abstract
+  		Available Purchase Requests
   	  </h6>
       <div class="table-responsive">
         <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
-              <th>ID</th>
+              {{-- <th>ID</th> --}}
               <th>PR Code</th>
+              <th>Purpose</th>
               <th>Date Created</th>
               <th>Action</th>
             </tr>
@@ -34,7 +35,7 @@
                 <td>{{$pr->pr_code}}</td>
                 <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
               <td>
-              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal" name="abstractContent" id="abstractContent">
+              <button type="button" class="btn btn-sm btn-primary" data-prcode="{{$pr->pr_code}}" data-prid="{{$pr->id}}" data-prpurpose="{{$pr->pr_purpose}}" data-toggle="modal" data-target="#myModal" name="abstractContent">
                     <i class="fas fa-plus"></i>
                 </button>
               </td>
@@ -46,30 +47,31 @@
     </div>
 
    	<!-- table -->
-   	<div class="col-md-7">
+   	<div class="col-md-6">
    	  <h6 class="card-title">Registered Abstract of Quotation</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
-              <th>ID</th>
+              {{-- <th>ID</th> --}}
               <th>Code</th>
-              <th>Date </th>
+              <th>Purpose</th>
+              <th>Date Created</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
           @foreach ($aoq as $aoq)
               <tr>
-                <td>{{$aoq->id}}</td>
                 <td>{{$aoq->purchaseRequest->pr_code}}</td>
+                <td>{{$aoq->purchaseRequest->pr_purpose}}</td>
                 <td>{{Carbon\Carbon::parse($aoq->created_at)->format('m-d-y')}}</td>
               <td>
               <a href="{{route('supplier.show', $aoq->id)}}" class="btn btn-sm btn-primary">
                     <i class="fas fa-th-list"></i>
               </a>
-              <a href="#" class="btn btn-sm btn-warning">
-                    <i class="fas fa-edit"></i>
+              <a href="{{route('abstract.print', $aoq->id)}}" target="_blank" class="btn btn-sm btn-success">
+                  <i class="fas fa-print"></i>
               </a>
               @can('full control')
               <a href="#" class="btn btn-sm btn-danger">
@@ -99,10 +101,18 @@
             <div class="modal-body">
             <form action="{{route('abstract.store')}}" method="POST">
                 {{ csrf_field() }}
+                <input type="hidden" name="pr_id" value="">
                 <div class="form-group">
-                  <input type="hidden" name="pr_id" value="">
+                    <label>PR Code:</label>
+                    <input id="prCode" class="form-control" type="text" disabled>
+                <div>
+                <div class="form-group">
+                    <label>PR Purpose:</label>
+                    <input id="prPurpose" class="form-control" type="text" disabled>
+                <div>
+                <div class="form-group">
                   <label>Procurement Of:</label>
-                  <input name="outline_detail" class="form-control" type="text" required>
+                  <textarea name="outline_detail" class="form-control" required></textarea>
                 <div><br/>
                 <div class="form-group">
                   <button class="btn btn-primary" type="submit">Submit</button>
@@ -129,12 +139,27 @@
               "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
       });
 
-      table.on('click', 'button#abstractContent', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        $('[name=pr_id]').val(data[0]);
-        console.log(data[0]);
+      // table.on('click', 'button#abstractContent', function () {
+      //   var data = table.row( $(this).parents('tr') ).data();
+      //   $('[name=pr_id]').val(data[0]);
+      //   console.log(data[0]);
         
-      })
+      // })
+
+      $("button[name='abstractContent']").click(function() {
+        var pr_id = $(this).attr('data-prid');
+        var pr_code = $(this).attr('data-prcode');
+        var pr_purpose = $(this).attr('data-prpurpose');
+
+        console.log(pr_id);
+
+        
+
+        $("input[name='pr_id']").val(pr_id);
+        $("#prCode").val(pr_code);
+        $("#prPurpose").val(pr_purpose);
+        
+      });
   });
 </script>
 @endsection

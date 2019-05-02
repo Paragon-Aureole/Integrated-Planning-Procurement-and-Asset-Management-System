@@ -25,14 +25,14 @@
                     <label>Purchase Request #</label>
                     <input class="form-control form-control-sm" value="{{$abstract->purchaseRequest->pr_code}}" readonly>
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label>Requesting Office:</label>
-                    <input class="form-control form-control-sm" value="{{$abstract->purchaseRequest->office->office_code}}" readonly>
+                    <input class="form-control form-control-sm" value="{{$abstract->purchaseRequest->office->office_name}}" readonly>
                 </div>
                 @if($abstract->outlineSupplier()->count() > 0)
                 <div class="form-group col-md-3">
                     <label>Selected Bidder:</label>
-                    <select class="form-control form-control-sm" name="bid_winner">
+                    <select class="form-control form-control-sm" name="bid_winner" required>
                         <option value="">Select Supplier</option>
                         @forelse ($allSuppliers as $supp)
                         <option value="{{$supp->id}}" @if ($supp->supplier_status == TRUE)
@@ -43,9 +43,9 @@
                         @endforelse
                     </select>
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label>Reason:</label>
-                    <select class="form-control form-control-sm" name="status_reason">
+                    <select class="form-control form-control-sm" name="status_reason" required>
                         <option value="">Select Reason</option>
                         <option value="0"
                         @foreach ($allSuppliers as $chosenSupplier)
@@ -63,24 +63,33 @@
                     </select>
                 </div>
                 @endif
-                <div class="form-group col-md-2">
-                        <label>Comments:</label>
-                        <textarea class="form-control form-control-sm" name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
-                    </div>
+                
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Procurement Of:</label>
+                    <textarea class="form-control form-control-sm" name="outline_detail" required>{{$abstract->outline_detail}}</textarea>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Comments:</label>
+                    <textarea class="form-control form-control-sm" name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
+                </div>
             </div>
             <div class="form-row">  
             <div class="form-group col-md-3">
             <button type="submit" class="btn btn-sm btn-primary">Submit</button>
-            @if ($allSuppliers->where('supplier_status', 1)->count() >= 1)
+            @if ($allSuppliers->where('supplier_status', 1)->count() == 1)
                 <a href="{{route('abstract.print', $abstract->id)}}" target="_blank" class="btn btn-sm btn-success">
-                    <i class="fas fa-print"></i>
+                    <i class="fas fa-print"></i> Print
                 </a>
-            @endif
-            @if ($countSupplier >= 3)
+            @else
+                @if ($countSupplier >= 3)
                 <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
                     <i class="fas fa-plus"></i> Add Additional Suppliers
                 </button>
+                @endif
             @endif
+           
             </div>
             </div>
             </form>
@@ -94,19 +103,32 @@
                             <th rowspan="4" style="width:5%;">Unit</th>
                             @foreach ($querySupplier as $action)
                             <th colspan="2" style="width:15%;">
-                                <button class="btn btn-sm btn-warning">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger">
-                                    <i class="fas fa-minus"></i>
-                                </button>
+                                @if($allSuppliers->where('supplier_status', 1)->count() == 1)
+                                    @can('full control')
+                                        <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}" name='update_supplier' data-toggle="modal" data-target="#editSupplier">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" name='delete_supplier' data-toggle="modal" data-target="#deleteSupplier" data-supplierid="{{$action->id}}" data-suppliername="{{$action->supplier_name}}">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    @endcan
+                                @else
+                                    <button class="btn btn-sm btn-warning" name='update_supplier' data-toggle="modal" data-target="#editSupplier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <a href="{{route('destruct.supplier', $action->id)}}" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+                                @endif
                             </th>
                             @endforeach
                             @for ($i = $countSupplier; $i <= 2; $i++)
                             <th colspan="2" style="width:15%;">
+                                @if ($allSuppliers->where('supplier_status', 1)->count() < 1)
                                 <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
                                     <i class="fas fa-plus"></i>
                                 </button>
+                                @endif
                             </th>
                             @endfor 
                         </tr>
@@ -179,7 +201,7 @@
     </div>
 </div>
 
-    <!-- The Modal -->
+    <!-- Add Supplier Modal -->
     <div class="modal" id="supplierModal">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
@@ -192,7 +214,7 @@
       
             <!-- Modal body -->
             <div class="modal-body">
-            <form action="{{route('supplier.store')}}" method="POST" class="needs-validation">
+            <form action="{{route('supplier.store')}}" name="s_store" method="POST" class="needs-validation">
                     {{ csrf_field() }}
                     <input type="hidden" name="abstract_id" value="{{$abstract->id}}">
                     <div class="form-row">
@@ -235,67 +257,189 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($pr_items as $indexKey => $pr)
-                            <tr>
-                                <td>
-                                    {{$pr->ppmpItem->item_description}}
-                                    <input type="hidden" name="pr_item_id[]" value="{{$pr->id}}" required>
-                                </td>
-                                <td>
-                                <input id="itemQty{{$indexKey}}" value="{{$pr->item_quantity}}" class="form-control form-control-sm" disabled>
-                                </td>
-                                <td>{{$pr->ppmpItem->measurementUnit->unit_code}}</td>
-                                <td>
-                                <input oninput="multiply2({{$indexKey}});" id="itemCost{{$indexKey}}" name="unit_price[]" value="" class="form-control form-control-sm" required>
-                                </td>
-                                <td>
-                                <input id="itemBudget{{$indexKey}}" name="item_price[]" value="" class="form-control form-control-sm" readonly>
-                                </td>
-                            </tr>
-                        @endforeach
+                            @foreach ($pr_items as $indexKey => $pr)
+                                <tr>
+                                    <td>
+                                        {{$pr->ppmpItem->item_description}}
+                                        <input type="hidden" name="pr_item_id[]" value="{{$pr->id}}" required>
+                                    </td>
+                                    <td>
+                                    <input id="itemQty{{$indexKey}}" value="{{$pr->item_quantity}}" class="form-control form-control-sm" disabled>
+                                    </td>
+                                    <td>{{$pr->ppmpItem->measurementUnit->unit_code}}</td>
+                                    <td>
+                                    <input oninput="multiply2({{$indexKey}});" id="itemCost{{$indexKey}}" name="unit_price[]" value="" class="form-control form-control-sm" required>
+                                    </td>
+                                    <td>
+                                    <input id="itemBudget{{$indexKey}}" name="item_price[]" value="" class="form-control form-control-sm" readonly>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             </div>
           </div>
         </div>
     </div>
+
+    <!-- Edit Supplier Modal -->
+    <div class="modal" id="editSupplier">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h5>Edit Supplier</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+            <form name="s_update" method="POST" class="needs-validation">
+                    {{ csrf_field() }}
+                    {{ method_field('PUT') }}
+                    {{-- <input type="hidden" name="abstract_id" value="{{$abstract->id}}"> --}}
+                    <div class="form-row">
+                        <div class="col">
+                            <label class="small">Supplier Name</label>
+                            <input type="text" name="supplier_name2" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col">
+                            <label class="small">Supplier Address</label>
+                            <input type="text" name="supplier_address2" class="form-control form-control-sm" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <label class="small">Canvasser Name</label>
+                            <input type="text" name="canvasser_name2" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col">
+                             <label class="small">Canvasser Department</label>
+                            @php
+                                $gso = App\Office::where('office_code', 'GSO')->firstorFail();
+                            @endphp
+                            <select class="custom-select custom-select-sm" name="canvasser_dept2" required>
+                                <option value="">Select Office</option>
+                                <option value="{{$abstract->purchaseRequest->office_id}}">{{$abstract->purchaseRequest->office->office_name}}</option>
+                                <option value="{{$gso->id}}">{{$gso->office_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    @can('full control')
+                    <div class="form-row">
+                        <div class="col">
+                            <label class="small">Reason</label>
+                            <textarea type="text" name="s_reason" class="form-control form-control-sm" required></textarea>
+                        </div>
+                    </div>
+                    @else
+                        <input type="hidden" name="reason" class="form-control form-control-sm" value="None" required>
+                    @endcan
+                
+                <div>&nbsp;</div>
+                <div class="table-responsive">
+                    <table name="edit_table" class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Particulars</th>
+                                <th style="width:10%;">Qty</th>
+                                <th style="width:10%;">Unit</th>
+                                <th style="width:20%;">Unit Price</th>
+                                <th style="width:20%;">Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="submit" class="btn btn-warning">Update</button>
+            </form>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    				<!-- Delete -->
+				<div class="modal" id="deleteSupplier">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								
+								<!-- Modal Header -->
+								<div class="modal-header">
+									<h4 class="modal-title">Deactivate User Account</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+									
+								<!-- Modal body -->
+								<div class="modal-body">
+										<form name="deactivation_reason">
+										 {{ csrf_field() }}
+										 {{method_field("get")}}
+											<div class="form-row">
+												<div class="form-group col-md-6">
+													<label class="small">Supplier ID:</label>
+													<input name="sId" class="form-control form-control-sm" value="" readonly>
+												</div>
+												<div class="form-group col-md-6">
+														<label class="small">Supplier_name:</label>
+														<input name="sName" class="form-control form-control-sm" value="" readonly>
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group col-md-12">
+													<label class="small">Reason for Deletion</label>
+													<textarea class="form-control form-control-sm" name="del_reason" required></textarea>
+												</div>
+											</div>
+											<div class="form-group">
+												<button class="btn btn-primary" type="submit">Submit</button>
+											</div>
+										</form>
+									</div>
+							</div>
+						</div>
+					</div>
 @endsection
 
 @section('script')
 
 <script src="{{asset('js/function-script.js')}}"></script>
 <script>
-$(document).ready(function() {
-    $('select[name="bid_winner"]').change(function() {
-        var bidder = $('select[name="bid_winner"]').val();
-        if (bidder == "") {
-            $('#bekkelAbstract').preventDefault;
-        } else {
-            $('#bekkelAbstract').submit();
-        }       
+    $("button[name='update_supplier']").click(function() {
+       var supplier_id = $(this).attr('data-supplierid');
+    //    console.log(supplier_id);
+    
+        $.get("http://ipams.test/supplier/"+supplier_id+"/edit", function(data, status){
+            console.log(supplier_id);
+            $( "input[name='supplier_name2']" ).val(data[0]['supplier_name']);
+            $( "input[name='supplier_address2']" ).val(data[0]['supplier_address']);
+            $( "input[name='canvasser_name2']" ).val(data[0]['canvasser_name']);
+            
+            var items = data[1];
+            var markup ='';
+            $('table[name="edit_table"] tbody tr').remove();
+                items.forEach(function(entry, index) {
+                    markup += '<tr> <td><input type="hidden" name="item_id[]" value="'+entry['id']+'" required> '+entry['pr_item']['ppmp_item']['item_description']+'</td> <td>'+entry['pr_item']['item_quantity']+'</td> <td>'+entry['pr_item']['ppmp_item']['measurement_unit']['unit_code']+'</td> <td><input name="unit_price2[]" value="'+entry['final_cpu']+'" class="form-control form-control-sm" required></td> <td><input name="item_price2[]" value="'+entry['final_cpi']+'" class="form-control form-control-sm" required></td> </tr>';
+                });
+                $(markup).appendTo('table[name="edit_table"] tbody');
+                
+            });
+
+        $( "form[name='s_update']" ).attr("action", "http://ipams.test/supplier/"+supplier_id+"");
     });
 
-    $('select[name="status_reason"]').change(function() {
-        var bidder = $('select[name="status_reason"]').val();
-        if (bidder == "") {
-            $('#bekkelAbstract').preventDefault;
-        } else {
-            $('#bekkelAbstract').submit();
-        } 
+    $("button[name='delete_supplier']").click(function() {
+        var supplier_id = $(this).attr('data-supplierid');
+        var supplier_name = $(this).attr('data-suppliername');
+        // console.log(user_id);
+        $("[name='sId']").val(supplier_id);
+        $("[name='sName']").val(supplier_name);
+        $("form[name='deactivation_reason']").attr('action', 'http://ipams.test/supplier/delete/'+supplier_id);
     });
-    $('textarea[name="supplier_comments"]').change(function() {
-        var text_area_val = $('textarea[name="supplier_comments"]').val();
-        if (text_area_val == "None" || text_area_val == "") {
-            $('#bekkelAbstract').preventDefault;
-        }else{
-            $('#bekkelAbstract').submit();
-        }
-      
-    });
-} );
+
 </script>
-    
 @endsection

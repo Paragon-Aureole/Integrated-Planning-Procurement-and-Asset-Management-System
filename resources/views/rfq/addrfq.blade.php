@@ -13,7 +13,7 @@
  <div class="card-header pt-2 pb-2">Reqeust for Quotation</div>
  <div class="card-body">
    <div class="row">
-   	<div class="col-md-5">
+   	<div class="col-md-6">
    	  <h6 class="card-title">
   		Available Purchase Request
   	  </h6>
@@ -22,6 +22,7 @@
           <thead class="thead-dark">
             <tr>
               <th>PR Code</th>
+              <th>Purpose</th>
               <th>Date Created</th>
               <th>Action</th>
             </tr>
@@ -30,6 +31,7 @@
             @foreach ($pr as $pr)
                 <tr>
                   <td>{{$pr->pr_code}}</td>
+                  <td>{{$pr->pr_purpose}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                 <td>
                   <a href="{{route('rfq.createone', $pr->id)}}" class="btn btn-sm btn-primary">
@@ -44,14 +46,14 @@
     </div>
 
    	<!-- table -->
-   	<div class="col-md-7">
+   	<div class="col-md-6">
    	  <h6 class="card-title">Registered Request for Quotation</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
-              <th>ID</th>
               <th>Code</th>
+              <th>Purpose</th>
               <th>Date </th>
               <th>Action</th>
             </tr>
@@ -59,11 +61,11 @@
           <tbody>
           @foreach ($rfq as $rfq)
               <tr>
-                <td>{{$rfq->id}}</td>
-                <td>{{$rfq->purchaseRequest->pr_code}}
+                <td>{{$rfq->purchaseRequest->pr_code}}</td>
+                <td>{{$rfq->purchaseRequest->pr_purpose}}</td>
                 <td>{{Carbon\Carbon::parse($rfq->created_at)->format('m-d-y')}}</td>
                 <td>
-                    <a href="{{route('rfq.print', $rfq->id)}}" target="_blank" class="btn btn-sm btn-secondary">
+                    <a href="{{route('rfq.print', $rfq->id)}}" target="_blank" class="btn btn-sm btn-success">
                       <i class="fas fa-print"></i>
                     </a>
                     @can('full control')

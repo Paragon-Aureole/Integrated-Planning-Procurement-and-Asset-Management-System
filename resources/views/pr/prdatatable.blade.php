@@ -29,7 +29,7 @@
           </a>
         @endcan
         @if ($pr->prItem->count() > 0)
-          <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
+          <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
         @endif
         @can(['full control', 'close'])
         {{-- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#reasonModal">
