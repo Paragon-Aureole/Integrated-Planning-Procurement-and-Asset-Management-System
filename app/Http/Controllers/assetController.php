@@ -14,6 +14,7 @@ use App\DisbursementVoucher;
 use App\assetType;
 use App\assetPar;
 use App\assetIcslip;
+use App\assetTurnover;
 use PDF;
 use App;
 
@@ -95,6 +96,7 @@ class assetController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         DisbursementVoucher::create([
                 'purchase_order_id' => $request->purchase_order_id,
                 'disbursementNo' => $request->voucherNo
@@ -103,11 +105,22 @@ class assetController extends Controller
 
         // dd($request->all());
         $sortedArray = [];
+        $PAR = [];
+        $ICS = [];
         $assetCount = asset::where('purchase_order_id', $request->purchase_order_id)->get()->count() - 1;
 
         $recordID = $request->get('id');
-        $ICS = $request->get('ICS');
-        $PAR = $request->get('PAR');
+        $PARorICS = $request->get('PARorICS');
+        foreach ($PARorICS as $key => $value) {
+            if ($value == "ICS") {
+                $ICS[$key] = '1';
+                $PAR[$key] = '0';
+            }elseif ($value == "PAR") {
+                $ICS[$key] = '0';
+                $PAR[$key] = '1';
+            }
+        }
+        // $PAR = $request->get('PAR');
         $asset_type_id = $request->get('asset_type');
 
         for ($i=0; $i <= $assetCount; $i++) {
@@ -217,6 +230,7 @@ class assetController extends Controller
     public function printPar($id)
     {
         $parData = assetPar::findorFail($id);
+        // dd($parData);
         // return view('assets.par.printPAR');
         $options = [
             'margin-top'    => 10,
@@ -262,6 +276,12 @@ class assetController extends Controller
 
     public function printOfficeAssets()
     {
+        $parData = assetPar::All();
+        $IcslipData = assetIcslip::All();
+   
+        // dd($parData);
+        // dd($IcslipData);
+
         // return view('assets.par.printPAR');
         $options = [
             'margin-top'    => 10,
@@ -270,7 +290,33 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets')->setPaper('Folio', 'landscape');
-        return $pdf->stream('VEHICLE.pdf');
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets', compact('parData', 'IcslipData'))->setPaper('Folio', 'landscape');
+        return $pdf->stream('OFFICEASSETS.pdf');
+    }
+
+    public function printTurnover($id)
+    {
+        // dd($id);
+        // $turnoverData = assetTurnover::whereId($id)->get();
+        $turnoverData = assetTurnover::findorFail($id);
+        if ($turnoverData->par_id != null) {
+            $parData = assetPar::where('id', $turnoverData->par_id)->get();
+            $turnoverAssetData = $parData;
+        }elseif ($turnoverData->ics_id != null) {
+            $icsData = assetIcslip::where('id', $turnoverData->ics_id)->get();
+            $turnoverAssetData = $icsData;
+        }
+        // dd($parData);
+
+        // return view('assets.par.printPAR');
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.turnover.printTurnover', compact('turnoverData', 'turnoverAssetData'))->setPaper('Folio', 'portrait');
+        return $pdf->stream('TURNOVER.pdf');
     }
 }

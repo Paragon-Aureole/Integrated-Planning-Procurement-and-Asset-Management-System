@@ -99,6 +99,7 @@
             </ul>
           </li>
           <li><a class="dropdown-item" href="/migrateAssets">Migrate Current Assets</a></li>
+          <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>
         </ul>
       </li>
       @endcan

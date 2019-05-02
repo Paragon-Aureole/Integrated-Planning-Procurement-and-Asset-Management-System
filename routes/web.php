@@ -176,8 +176,10 @@ Route::get('/getICSNo', 'AssetIcslipController@getICSCount');
 //asset printing
 Route::get('/printPar/{id}', 'assetController@printPar');
 Route::get('/printIcs/{id}', 'assetController@printIcs');
+Route::get('/printTurnover/{id}', 'assetController@printTurnover');
 Route::get('/printVehicle', 'assetController@printVehicle');
 Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
+
 
 // assetMigrations
 Route::resource('migrateAssets', 'MigratedAssetsController');
@@ -188,3 +190,5 @@ Route::get('validateAssetTypeVehicle', 'MigratedVehiclesController@validateAsset
 Route::get('selectMigratedAssets', 'MigratedAssetsController@selectMigratedAssets');
 Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsController@printMigratedAssets');
 Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
+
+Route::resource('AssetTurnover', 'AssetTurnoverController');

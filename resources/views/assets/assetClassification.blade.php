@@ -49,12 +49,12 @@
                             <td>{{$record['item_quantity']}}</td>
 
                             {{-- <td> <input type="hidden" name="ICS[{{$key}}]" value=0></input></td> --}}
-                            <input type="hidden" name="ICS[{{$key}}]" value=0>
-                            <td> <input type="checkbox" class="assetCheckboxSelection[{{$key}}]" name="ICS[{{$key}}]" value=1></td>
+                            {{--  <input type="hidden" name="PARorICS[{{$key}}]" value=0>  --}}
+                            <td> <input type="radio" name="PARorICS[{{$key}}]" value="ICS"></td>
 
                             {{-- <td> <input type="hidden" name="PAR[{{$key}}]" value=0></input></td> --}}
-                            <input type="hidden" name="PAR[{{$key}}]" value=0>
-                            <td> <input type="checkbox" class="assetCheckboxSelection[{{$key}}]" name="PAR[{{$key}}]" value=1></td>
+                            {{--  <input type="hidden" name="PAR[{{$key}}]" value=0>  --}}
+                            <td> <input type="radio" name="PARorICS[{{$key}}]" value="PAR"></td>
                             <td>
                                 <select name="asset_type[{{$key}}]" class="custom-select">
                                     @foreach ($assetTypeData as $key => $record)
@@ -68,7 +68,7 @@
                     </tbody>
                 </table>
 
-                <input type="submit" class="btn btn-primary">
+                <button id="btn_submit" class="btn btn-primary">Submit</button>
                 <br> <br>
                 {{-- <button name="createPAR" class="btn btn-secondary"> Create PAR </button>
                 <button name="createICS" class="btn btn-secondary"> Create ICS </button> --}}
