@@ -85,6 +85,7 @@
           <li><a class="dropdown-item" href="#">Previous Inspection Reports</a></li>
         </ul>
       </li>
+      @can('asset mgt', 'gso supervisor')
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="irDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Assets
@@ -100,6 +101,7 @@
           <li><a class="dropdown-item" href="/migrateAssets">Migrate Current Assets</a></li>
         </ul>
       </li>
+      @endcan
       @can('full control')
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="settingsDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

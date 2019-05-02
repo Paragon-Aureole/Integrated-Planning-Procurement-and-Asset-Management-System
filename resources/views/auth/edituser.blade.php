@@ -75,6 +75,20 @@
 		    	  	  </div>
 					</div>
 
+
+					<div class="col-md-12 form-group">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input type="checkbox" class="form-check-input" name="check_supervisor"
+									@if ($user_data->hasPermissionTo('gso supervisor'))
+									checked	
+									@endif
+									> Is GSO Supervisor?
+								</label>
+								<input type="hidden" name="is_supervisor" value="0">
+							</div>
+					</div>
+
 					<div class="col-md-7 form-group">
 					  <label for="contacts" class="small">Contact Number:</label>
 			    	  <input type="text" class="form-control form-control-sm {{ $errors->has('contacts') ? 'is-invalid' : '' }}"

@@ -76,7 +76,7 @@
 		    	  	  <select id="officeInput" class="custom-select custom-select-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" name="office" required>
 		    	  	  	<option value = "">-Select One-</option>
 		    			@foreach($offices as $department)
-			    	  		<option value = "{{$department->id}}">{{$department->office_name}}</option>
+			    	  		<option data-office-code="{{$department->office_code}}" value = "{{$department->id}}">{{$department->office_name}}</option>
 			    	  	@endforeach
 		    	  	  </select>
 		    	  	  <div class="invalid-feedback">
@@ -86,6 +86,15 @@
 	                    Select a valid office.
 	                  @endif
 		    	  	  </div>
+					</div>
+
+					<div id="supervisorCheck" class="col-md-12 form-group">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input type="checkbox" class="form-check-input" name="check_supervisor"> Is GSO Supervisor?
+								</label>
+								<input type="hidden" name="is_supervisor" value="0">
+							</div>
 					</div>
 
 					<div class="col-md-7 form-group">

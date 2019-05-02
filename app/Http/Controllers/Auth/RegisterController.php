@@ -105,13 +105,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        // dd($data);
+        $create_user = User::create([
             'wholename' => $data['wholename'],
             'username' => $data['username'],
             'password' => bcrypt($data['password']),
             'office_id' => $data['office'],
             'contact_number' => $data['contacts'],
-        ])->assignRole($data['user_role']);      
+        ])->assignRole($data['user_role']);
+
+        if ($create_user->office->office_code == "GSO") {
+            $create_user->givePermissionTo('asset mgt');
+        }
+        if ($create_user->office->office_code == "GSO" && $data['is_supervisor'] == "1") {
+            $create_user->givePermissionTo('gso supervisor');
+        }
+
+        return $create_user;       
     }
 
     /**
@@ -126,6 +136,7 @@ class RegisterController extends Controller
         $roles = Role::all();
         $user_DT = User::withTrashed()->get();
         $user_data = User::find($id);
+        // dd($user_data->hasPermissionTo('gso supervisor'));
         return view('auth.edituser', compact('offices', 'roles', 'user_DT', 'user_data'));
     }
 
@@ -138,15 +149,29 @@ class RegisterController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
+
         $user = User::findOrFail($id);
 
         $input = $request->except('user_role');
+
+        
 
         $update_user = $user->update([
             'wholename' => $input['wholename'],
             'office_id' => $input['office'],
             'contact_number' => $input['contacts'],
         ]);
+
+        if($user->hasPermissionTo('gso supervisor')){
+            if ($input['is_supervisor'] == "0") {
+                $user->revokePermissionTo('gso supervisor');
+            }
+        }else{
+            if ($user->office->office_code == "GSO" && $input['is_supervisor'] == "1") {
+                $user->givePermissionTo('gso supervisor');
+            }
+        }
 
         if ($request->user_role <> '') {
             $user->roles()->sync($request->user_role);        
