@@ -24,11 +24,20 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
-        ->where('pr_status', 1)
-        ->where('created_rfq', 1)
-        ->where('created_abstract', 1)
-        ->get();
+        if (Auth::user()->hasRole('Admin')) {
+            $pr = PurchaseRequest::where('pr_status', 1)
+            ->where('created_rfq', 1)
+            ->where('created_abstract', 1)
+            ->get();
+        }else{
+            $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
+            ->where('pr_status', 1)
+            ->where('created_rfq', 1)
+            ->where('created_abstract', 1)
+            ->get();
+        }
+
+        
   
         $prMode = ProcurementMode::all();
 

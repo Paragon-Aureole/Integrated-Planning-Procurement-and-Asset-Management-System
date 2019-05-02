@@ -20,11 +20,21 @@ class OutlineOfQuotationController extends Controller
      */
     public function index()
     {
-        $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
+
+        if (Auth::user()->hasRole('Admin')) {
+            $pr = PurchaseRequest::where('pr_status', 1)
+            ->where('created_rfq', 1)
+            ->where('created_abstract', 0)
+            ->get();
+        }else{
+            $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
         ->where('pr_status', 1)
         ->where('created_rfq', 1)
         ->where('created_abstract', 0)
         ->get();
+        }
+
+        
 
         $aoq = OutlineOfQuotation::whereHas('purchaseRequest', function ($query){
             $query->where('office_id',  Auth::user()->office_id );
@@ -52,6 +62,10 @@ class OutlineOfQuotationController extends Controller
             'user_id' => Auth::user()->id,
             'outline_detail' => $input['outline_detail'],
         ]);
+
+        // if ($abstract->purchaseRequest->supplier_type) {
+        //     # code...
+        // }
 
         $pr->outlineQuotation()->save($abstract);
         

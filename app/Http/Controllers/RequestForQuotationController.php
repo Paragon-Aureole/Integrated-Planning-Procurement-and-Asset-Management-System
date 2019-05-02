@@ -18,10 +18,17 @@ class RequestForQuotationController extends Controller
      */
     public function index()
     {
-        $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
-        ->where('pr_status', 1)
-        ->where('created_rfq', 0)
-        ->get();
+        if (Auth::user()->hasRole('Admin')) {
+            $pr = PurchaseRequest::where('pr_status', 1)
+            ->where('created_rfq', 0)
+            ->get();
+        }else{
+            $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
+                ->where('pr_status', 1)
+                ->where('created_rfq', 0)
+                ->get();
+        }
+        
 
         $rfq = RequestForQuotation::whereHas('purchaseRequest', function ($query){
             $query->where('office_id',  Auth::user()->office_id );
