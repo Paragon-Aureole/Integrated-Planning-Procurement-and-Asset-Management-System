@@ -66,23 +66,36 @@
                 
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>Procurement Of:</label>
                     <textarea class="form-control form-control-sm" name="outline_detail" required>{{$abstract->outline_detail}}</textarea>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>Comments:</label>
                     <textarea class="form-control form-control-sm" name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
                 </div>
+                @if ($allSuppliers->where('supplier_status', 1)->count() == 1)
+                    @can('full control')
+                        <div class="form-group col-md-4">
+                            <label>Reason:</label>
+                            <textarea class="form-control form-control-sm" name="supplier_comments" required>None</textarea>
+                        </div>
+                    @endcan
+                @endif
+                
             </div>
             <div class="form-row">  
             <div class="form-group col-md-3">
-            <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+           
             @if ($allSuppliers->where('supplier_status', 1)->count() == 1)
+                @can('full control')
+                <button type="submit" class="btn btn-sm btn-warning">Update</button>
+                @endcan
                 <a href="{{route('abstract.print', $abstract->id)}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i> Print
                 </a>
             @else
+                <button type="submit" class="btn btn-sm btn-primary">Submit</button>
                 @if ($countSupplier >= 3)
                 <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
                     <i class="fas fa-plus"></i> Add Additional Suppliers

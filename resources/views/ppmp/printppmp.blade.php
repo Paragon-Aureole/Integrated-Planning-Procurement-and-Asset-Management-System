@@ -136,7 +136,11 @@
 				</tr>
 				<tr>
 					<td class="text-center">
+						@if($signatory != null)
 						{{strtoUpper($signatory->signatory_name)}}
+						@else	
+						&nbsp;
+						@endif
 					</td>
 					<td></td>
 					@if($ppmp->office->office_code == "ICT")
@@ -149,7 +153,11 @@
 				</tr>				
 				<tr>
 					<td class="border border-left-0 border-right-0 border-bottom-0 text-center">
-						{{$signatory->signatory_position}}
+							@if($signatory != null)
+							{{$signatory->signatory_position}}
+							@else	
+							&nbsp;
+							@endif
 					</td>
 					<td></td>
 					@if($ppmp->office->office_code == "ICT")

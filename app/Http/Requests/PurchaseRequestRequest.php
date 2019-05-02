@@ -28,7 +28,7 @@ class PurchaseRequestRequest extends FormRequest
             'pr_purpose' => 'required|string|max:185',
             'supplier_type' => 'required',
             'pr_office' => 'required|numeric',
-            'pr_requestor' => 'required|numeric',
+            // 'pr_requestor' => 'numeric',
         ];
     }
 }

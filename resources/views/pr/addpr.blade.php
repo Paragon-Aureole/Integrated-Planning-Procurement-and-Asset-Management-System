@@ -37,7 +37,7 @@
                   $pr_query = App\PurchaseRequest::where('office_id', $office_ppmp->id)->count();
                   $prcode = "PR-".$office_ppmp->office_code.'-'.date('Y').'-'.sprintf('%02d', Auth::id()).'-'.sprintf('%04d', $pr_query);
                 @endphp
-                <option data-requestor-id="{{$requestor->id}}" data-requestor-name="{{$requestor->signatory_name}}" data-office-id="{{$office_ppmp->id}}" data-office-name="{{$office_ppmp->office_name}}" value="{{$prcode}}">{{$prcode}}</option>
+                <option @if($requestor != null)data-requestor-id="{{$requestor->id}}" data-requestor-name="{{$requestor->signatory_name}}"@endif data-office-id="{{$office_ppmp->id}}" data-office-name="{{$office_ppmp->office_name}}" value="{{$prcode}}">{{$prcode}}</option>
               @endforeach
             </select>
           @else
