@@ -1,17 +1,27 @@
 <!-- A grey horizontal navbar that becomes vertical on small screens -->
+
+{{-- hidden Message --}}
+<div style="background-color:#343a40; color:white" id="demo" class="collapse">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h5" style="font-size:20px;">Integrated Planning Procurement and Asset Management System</span>
+  </div>
+</div>
+
 <nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
-    <a class="navbar-brand" href="{{route('home')}}">
-        <img src="{{asset('img/sfclogo.png')}}" width="40" height="40" class="d-inline-block align-top" alt="">
-    </a>
-    <span class="navbar-brand mb-0 h5">Integrated Planning Procurement and Asset Management System</span>
-</nav>
-<nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
-  <!-- Toggler/collapsibe Button -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <!-- Links -->
+  {{-- button that shows the System Name and Home Dropdown  --}}
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="navbar-brand" href="#" id="ppmpDropdownMenuLink" aria-haspopup="true" aria-expanded="false" data-toggle="collapse" data-target="#demo">
+          <img src="{{asset('img/sfclogo.png')}}" width="40" height="40" class="d-inline-block align-top" alt="">
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="ppmpDropdownMenuLink">
+          <li><a class="dropdown-item" href="{{route('home')}}">HOME</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- Links -->
     <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="ppmpDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
