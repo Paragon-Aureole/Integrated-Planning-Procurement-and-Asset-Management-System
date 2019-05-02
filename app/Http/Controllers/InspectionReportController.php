@@ -22,18 +22,33 @@ class InspectionReportController extends Controller
      */
     public function index()
     {
-        $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
-        ->where('pr_status', 1)
-        ->where('created_rfq', 1)
-        ->where('created_abstract', 1)
-        ->where('created_po', 1)
-        ->get();
+        if (Auth::user()->hasRole('Admin')) {
+            $pr = PurchaseRequest::where('pr_status', 1)
+            ->where('created_rfq', 1)
+            ->where('created_abstract', 1)
+            ->where('created_po', 1)
+            ->get();
+
+            $ir = InspectionReport::all();
+
+        }else{
+            $pr = PurchaseRequest::where('office_id', Auth::user()->office_id)
+            ->where('pr_status', 1)
+            ->where('created_rfq', 1)
+            ->where('created_abstract', 1)
+            ->where('created_po', 1)
+            ->get();
+
+            $ir = InspectionReport::whereHas('purchaseRequest', function ($query){
+                $query->where('office_id',  Auth::user()->office_id );
+            })->get();
+        }
+
+        
 
         $signatory = Signatory::all();
 
-        $ir = InspectionReport::whereHas('purchaseRequest', function ($query){
-            $query->where('office_id',  Auth::user()->office_id );
-        })->get();
+       
 
         return view('inspection_report.addIr', compact('pr','signatory','ir'));
     }

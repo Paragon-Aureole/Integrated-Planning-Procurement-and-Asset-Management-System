@@ -231,14 +231,14 @@
 				</tr>
 				<tr>
 					<td>Printed Name</td>
-					<th>{{strtoUpper($ir->purchaseRequest->signatory->signatory_name)}}</th>
+					<th>@if($ir->purchaseRequest->signatory != NULL){{strtoUpper($ir->purchaseRequest->signatory->signatory_name)}}@endif</th>
 					<th>{{strToUpper('Teresita M. Gacayan')}}</th>
 					<th></th>
 					<th></th>
 				</tr>
 				<tr>
 					<td>Designation</td>
-					<th>{{$ir->purchaseRequest->signatory->signatory_position}}</th>
+					<th>@if($ir->purchaseRequest->signatory != NULL){{$ir->purchaseRequest->signatory->signatory_position}}@endif</th>
 					<th>OIC GSO Officer</th>
 					<th></th>
 					<th></th>

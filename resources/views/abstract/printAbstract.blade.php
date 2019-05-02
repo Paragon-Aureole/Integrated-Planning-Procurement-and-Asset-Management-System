@@ -313,7 +313,7 @@
 		@endif
 	</div>
 	<div class="row text-center">
-		<div class="col-xs-4"><b>{{strtoupper($abstract->purchaseRequest->signatory->signatory_name)}}</b><br>Requesting Office</div>
+		<div class="col-xs-4"><b>@if($abstract->purchaseRequest->signatory != NULL){{strtoupper($abstract->purchaseRequest->signatory->signatory_name)}}@endif</b><br>Requesting Office</div>
 		<div class="col-xs-4"><b>CLEOPATRA A. NOCES</b><br>BAC Member</div>
 		<div class="col-xs-4"><b>TERESITA M. GACAYAN</b><br>BAC Member</div>
 	</div>

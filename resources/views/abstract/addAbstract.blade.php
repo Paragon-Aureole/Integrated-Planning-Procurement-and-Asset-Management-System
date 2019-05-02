@@ -31,8 +31,9 @@
           <tbody>
           @foreach ($pr as $pr)
               <tr>
-                <td style="display: none;">{{$pr->id}}</td>
+                {{-- <td style="display: none;">{{$pr->id}}</td> --}}
                 <td>{{$pr->pr_code}}</td>
+                <td>{{$pr->pr_purpose}}</td>
                 <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
               <td>
               <button type="button" class="btn btn-sm btn-primary" data-prcode="{{$pr->pr_code}}" data-prid="{{$pr->id}}" data-prpurpose="{{$pr->pr_purpose}}" data-toggle="modal" data-target="#myModal" name="abstractContent">
