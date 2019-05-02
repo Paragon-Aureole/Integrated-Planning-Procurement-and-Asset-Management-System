@@ -59,8 +59,13 @@ class PurchaseRequest extends Model
     }
     public function distributor()
     {
-        return $this->hasOne(Distributor::class);
+        return $this->belongsTo(Distributor::class);
     }
+    
+    // public function distributor()
+    // {
+    //     return $this->hasOne('App\Distributor', 'id', 'supplier_id');
+    // }
 
     public function rfq()
     {

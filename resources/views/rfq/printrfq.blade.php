@@ -94,9 +94,9 @@
 		<div class="col-xs-4 topped-border" style="padding: 0px;">
 			<div class="col-xs-12 topped-border heading-sm">SUPPLIER</div>
 			<div class="col-xs-12 f-12-px">Name/Company:<br>
-				@if($rfq->purchaseRequest->supplier_type == "3")
-					{{$rfq->purchaseRequest->distributor->distributor_name}}
-                @else <br> @endif
+
+					
+               <br> 
                 {{--  <br>  --}}
 				<hr></div>
 			<div class="col-xs-12 f-12-px">Address:<br><br><hr></div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\RequestForQuotation;
 use App\PurchaseRequest;
+use App\Distributor;
 use Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -72,6 +73,7 @@ class RequestForQuotationController extends Controller
     {
         // dd($id);
         $rfq = RequestForQuotation::findorFail($id);
+        // dd($rfq->purchaseRequest->distributor);
         $date   = Carbon::parse($rfq->created_at);
         $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$rfq->purchaseRequest->pr_code;
         // dd($rfq.$date.$created_code);

@@ -63,8 +63,15 @@ class OutlineOfQuotationController extends Controller
             'outline_detail' => $input['outline_detail'],
         ]);
 
-        // if ($abstract->purchaseRequest->supplier_type) {
-        //     # code...
+        // if ($abstract->purchaseRequest->supplier_type == 3) {
+        //     $auto_add = $abstract->outlineSupplier()->create([
+        //         'supplier_name' => $abstract->purchaseRequest->distributor->distributor_name,
+        //         'supplier_address' => $abstract->purchaseRequest->distributor->distributor_address,
+        //         'canvasser_name'=>Auth::user()->wholename,
+        //         'canvasser_office' => Auth::user()->office_id,
+        //         'supplier_status' => 1,
+        //         'status_reason' => 1,
+        //     ]);
         // }
 
         $pr->outlineQuotation()->save($abstract);

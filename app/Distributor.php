@@ -27,6 +27,10 @@ class Distributor extends Model
 
     public function purchaseRequest()
     {
-        return $this->belongsTo(PurchaseRequest::class);
+        return $this->hasOne(PurchaseRequest::class);
     }
+    // public function purchaseRequest()
+    // {
+    //     return $this->belongsTo('App\PurchaseRequest', 'supplier_id', 'id');
+    // }
 }

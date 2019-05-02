@@ -55,7 +55,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="rfqDropdownMenuLink">
           <li><a class="dropdown-item" href="{{route('rfq.index')}}">New Request for Quotation</a></li>
-          <li><a class="dropdown-item" href="#">Previous Requests for Quotation</a></li>
+          {{-- <li><a class="dropdown-item" href="#">Previous Requests for Quotation</a></li> --}}
         </ul>
       </li>
       <li class="nav-item dropdown">
@@ -64,7 +64,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="abstractDropdownMenuLink">
           <li><a class="dropdown-item" href="/abstract">New Abstract of Quotation</a></li>
-          <li><a class="dropdown-item" href="#">Previous Abstracts of Quotation</a></li>
+          {{-- <li><a class="dropdown-item" href="#">Previous Abstracts of Quotation</a></li> --}}
         </ul>
       </li>
       <li class="nav-item dropdown">
@@ -73,7 +73,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="poDropdownMenuLink">
           <li><a class="dropdown-item" href="/po">New Purchase Order</a></li>
-          <li><a class="dropdown-item" href="#">Previous Purchase Orders</a></li>
+          {{-- <li><a class="dropdown-item" href="#">Previous Purchase Orders</a></li> --}}
         </ul>
       </li>
       <li class="nav-item dropdown">
@@ -82,7 +82,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
           <li><a class="dropdown-item" href="/ir">New Inspection Report</a></li>
-          <li><a class="dropdown-item" href="#">Previous Inspection Reports</a></li>
+          {{-- <li><a class="dropdown-item" href="#">Previous Inspection Reports</a></li> --}}
         </ul>
       </li>
       @can('asset mgt', 'gso supervisor')
