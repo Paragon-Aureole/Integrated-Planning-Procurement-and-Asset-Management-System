@@ -98,7 +98,7 @@
               <li><a class="dropdown-item" href="/printVehicle">UPDATED INVENTORY/ACCOUNTING OF ALL EXISTING MOTOR VEHICLES</a></li>
             </ul>
           </li>
-          <li><a class="dropdown-item" href="/migrateAssets">Migrate Current Assets</a></li>
+          <li><a class="dropdown-item" href="/migrateAssets">Capture Exisiting Assets</a></li>
           <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>
         </ul>
       </li>
