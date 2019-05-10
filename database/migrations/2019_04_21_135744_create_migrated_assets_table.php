@@ -15,28 +15,27 @@ class CreateMigratedAssetsTable extends Migration
     {
         Schema::create('migrated_assets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name_of_accountable');
-            $table->string('official_designation');
-            $table->string('lgu');
-            $table->string('article');
-            $table->integer('office_id')->unsigned()->nullable()->index();;
-            $table->string('description');
-            $table->integer('property_number');
-            $table->string('unit_of_measure');
-            $table->integer('unit_value');
-            $table->integer('balance_per_card');
-            $table->integer('on_hand_per_count');
-            $table->string('shortage_overage');
-            $table->date('date_purchase');
-            $table->string('par_ics_number');
-            $table->string('remarks');
-            $table->string('status');
             $table->integer('asset_type_id')->unsigned()->nullable()->index();
+            $table->string('classification');
+            $table->integer('entity_name')->unsigned()->nullable()->index();;
+            $table->string('fund_cluster');
+            $table->string('receiver_name');
+            $table->string('receiver_position');
+            $table->string('issuer_name');
+            $table->string('issuer_position');
+            $table->Double('item_quantity');
+            $table->string('item_unit');
+            $table->string('property_number');
+            $table->date('date_acquired');
+            $table->Double('unit_cost');
+            $table->Double('amount');
+            $table->string('description');
+            $table->string('par_number');
             $table->timestamps();
         });
 
         Schema::table('migrated_assets', function (Blueprint $table) {
-            $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');
+            $table->foreign('entity_name')->references('id')->on('offices')->onDelete('cascade');
         });
     }
 

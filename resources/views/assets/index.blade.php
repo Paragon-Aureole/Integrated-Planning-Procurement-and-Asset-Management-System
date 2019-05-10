@@ -31,7 +31,7 @@
             Available Items Procured
             </h6>
             <div class="table-responsive">
-              <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+              <table id="availableDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                 <thead class="thead-dark">
                   <tr>
                     <th>PO Number</th>
@@ -40,16 +40,21 @@
                   </tr>
                 </thead>
                 <tbody>
+                  @foreach ($asset as $assetValue)
+                    <tr>
+                      {{-- <td>00000001</td>
+                      <td>Office of the City Mayor</td> --}}
+                      <td>{{$assetValue->purchaseOrder->id}}</td>
+                      <td>{{$assetValue->user->office->office_name}}</td>
+                        <td>
+                          <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#itemsProcured" id="classificationModalBtn">
+                            <i class="fas fa-plus"></i>
+                          </button>
+                        </td>
+                    </tr>
+                      
+                  @endforeach
 
-                      <tr>
-                        <td>00000001</td>
-                        <td>Office of the City Mayor</td>
-                      <td>
-                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#itemsProcured">
-                          <i class="fas fa-plus"></i>
-                        </button>
-                      </td>
-                      </tr>
                 </tbody>
               </table>
             </div> 
@@ -59,7 +64,7 @@
           <div class="col-md-6">
             <h6 class="card-title">Classified Items</h6>
             <div class="table-responsive">
-                <table id="classificationDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+                <table id="classifiedDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                   <thead class="thead-dark">
                     <tr>
                       <th>Item Name</th>
@@ -175,7 +180,7 @@
 
           {{-- body --}}
           <div class="modal-body">
-            <label style="color:tomato">PO Number:  00000001</label>
+            <label style="color:tomato">PO Number:  <p id="po_id"></p></label>
               <table id="itemClassification" class="table table-bordered table-hover table-sm display nowrap w-100">
                   <thead class="thead-dark">
                     <tr>
@@ -188,25 +193,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Laptop</td>
-                      <td>100,000</td>
-                      <td>2</td>
-                      <td><input type="radio" name="PARorICS[]" value="ICS"></td>
-                      <td><input type="radio" name="PARorICS[]" value="PAR"></td>
-                      <td>
-                          <select name="asset_type[]" class="custom-select">
-                              {{-- @foreach ($assetTypeData as $key => $record) --}}
-                              {{-- <option value="{{$key}}">{{$record['type_name']}}</option> --}}
-                              <option value="">None</option>
-                              <option value="">Vehicle</option>
-                              <option value="">Office Supplies</option>
-                              <option value="">Furniture and Fixture</option>
-                              <option value="">IT Equipments</option>
-                              {{-- @endforeach --}}
-                          </select>
-                      </td>
-                    </tr>
+
                   </tbody>
               </table>
           </div>
@@ -382,12 +369,7 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function() {
-        var table = $('#classificationDatatable').DataTable({
-            responsive: true,
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
-        });
-
-        $('#itemClassification').DataTable({
+        var table = $('#classifiedDatatable').DataTable({
             responsive: true,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });
@@ -406,6 +388,7 @@
 
         });
 
+        // show hide toggle for par and ics
         function toggleModalBody(data) {
           if (data[2] == 'PAR') {
             $('#parInputs').show();
@@ -416,6 +399,84 @@
             
           }
         }
+        
+        // fetching procured Asset PO id from Table
+        ClassificationModal();
+        function ClassificationModal () {
+            var table = $('#availableDatatable').DataTable({
+                responsive: true,
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+            });
+            
+            // onclick function for fetching
+            $('#availableDatatable').on('click', 'button#classificationModalBtn', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            
+            console.log(data[0]);
+            
+              // give fetched data to this function
+            getClassifcationModalContent(data);
+          
+          });
+        }
+
+        // get data from controller using ajax 
+        function getClassifcationModalContent(data) {
+          // id that will fetch from controller
+          var values = {
+            po_id : data[0]
+          }
+          
+          // ajax function
+          $.ajax({
+                url: '/getClassificationModalData',
+                method: 'get',
+                data: values,
+                success: function ( response ) {
+                  var ClassificationModalContent = response.ClassificationModalContent;
+                  // give fetched data to this function
+                  populateClassificationModal(ClassificationModalContent);
+                },
+                error: function ( response ){
+                    console.log( response );
+                }
+            }) 
+        }
+
+        // get data then populate the modal dataTable
+        function populateClassificationModal(ClassificationModalContent){
+          // populate PO Id
+            $('#po_id').empty();
+            console.log(ClassificationModalContent[0].id);
+            
+            $('#po_id').text(ClassificationModalContent[0].id);
+
+            // Populate DataTable
+            table = $('#itemClassification').DataTable({
+              destroy:true,
+              "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+              data: ClassificationModalContent,
+              responsive:true,
+              columns:[
+                  {data:'details'},
+                  {data:'amount'},
+                  {data:'item_stock'},
+                  {
+                      'data': null,
+                      'defaultContent': '<input type="radio" name="PARorICS[]" value="ICS">'
+                  },
+                  {
+                      'data': null,
+                      'defaultContent': '<input type="radio" name="PARorICS[]" value="PAR">'
+                  },
+                  {
+                      'data': null,
+                      'defaultContent': '<select name="asset_type[]" class="custom-select"><option value="">None</option><option value="">Vehicle</option>option value="">Office Supplies</option><option value="">Furniture and Fixture</option><option value="">IT Equipments</option>'
+                  }
+              ]
+          })
+        }
+        
     } );
 </script>
 @endsection
