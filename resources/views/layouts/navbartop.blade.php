@@ -85,12 +85,13 @@
           {{-- <li><a class="dropdown-item" href="#">Previous Inspection Reports</a></li> --}}
         </ul>
       </li>
-      @can('Asset Management', 'Supervisor')
+      
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="irDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Assets
         </a>
         <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
+          @can('Asset Management', 'Supervisor')
           <li><a class="dropdown-item" href="/assets">Asset Procurement and Distribution</a></li>
           <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Print Reports</a>
             <ul class="dropdown-menu">
@@ -99,27 +100,11 @@
             </ul>
           </li>
           <li><a class="dropdown-item" href="/migrateAssets">Capture Exisiting Assets</a></li>
+          @endcan
           <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>
         </ul>
       </li>      
-      @else
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="irDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Assets
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
-          {{-- <li><a class="dropdown-item" href="/assets">Asset Procurement and Distribution</a></li> --}}
-          {{-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Print Reports</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/printOfficeAssets">REPORT OF THE PHYSICAL COUNT OF PROPERTY, PLANT AND EQUIPMENT</a></li>
-              <li><a class="dropdown-item" href="/printVehicle">UPDATED INVENTORY/ACCOUNTING OF ALL EXISTING MOTOR VEHICLES</a></li>
-            </ul>
-          </li> --}}
-          {{-- <li><a class="dropdown-item" href="/migrateAssets">Capture Exisiting Assets</a></li> --}}
-          <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>
-        </ul>
-      </li>
-      @endcan
+    
 
       @can('full control')
       <li class="nav-item dropdown">
