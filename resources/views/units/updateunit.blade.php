@@ -46,7 +46,7 @@
 		  	</div>
 
 		  	<div class="form-group col">
-		  		<button type="submit" class="btn btn-warning btn-sm">Update</button>
+		  		<button type="submit" class="btn btn-warning btn-sm">Update Unit</button>
 		  	</div>
 
 	  	</div>

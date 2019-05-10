@@ -39,11 +39,10 @@
     @endguest
 
   <!--Scripts-->
-  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.4/awesomplete.js" async></script> --}}
   <script src="{{asset('js/datatables.js')}}"></script>
   <script src="{{asset('js/popper.js')}}"></script>
-  {{-- <script src="{{asset('js/app.js')}}"></script> --}}
   <script src="{{asset('js/bootstrap4.min.js')}}"></script>
+  <script src="{{asset('js/bootstrap-confirmation.js')}}"></script>
   <script src="{{asset('js/validation-form.js')}}"></script>
   
   <script type="text/javascript">
@@ -52,6 +51,12 @@
             responsive: true,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });
+
+        $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]',
+        // other options
+        });
+        
     } );
   </script>
   

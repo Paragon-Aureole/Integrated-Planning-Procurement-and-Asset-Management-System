@@ -145,7 +145,7 @@ class PpmpController extends Controller
         activity('PPMP')
         ->performedOn($ppmp)
         ->causedBy(Auth::user())
-        ->log('Deactived PPMP '. $ppmp->ppmp_year . $message."-".$ppmp->office->office_code);
+        ->log('Deactivated PPMP '. $ppmp->ppmp_year . $message."-".$ppmp->office->office_code);
 
         return redirect()->back()->with('info','PPMP Form Deactivated');
     }

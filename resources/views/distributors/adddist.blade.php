@@ -61,7 +61,7 @@
         </div>
          
 		  	<div class="form-group col">
-		  		<button type="submit" class="btn btn-primary btn-sm">Submit</button>
+		  		<button type="submit" class="btn btn-primary btn-sm">Add Distributor</button>
 		  	</div>
 
 	  	</div>

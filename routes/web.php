@@ -192,3 +192,6 @@ Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsCon
 Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
 
 Route::resource('AssetTurnover', 'AssetTurnoverController');
+
+//activity log
+Route::resource('logs', 'ActivityLogController');

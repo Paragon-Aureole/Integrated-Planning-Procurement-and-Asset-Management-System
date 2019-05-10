@@ -124,9 +124,13 @@
           <li><a class="dropdown-item" href="{{route('view.modes')}}">Modes of Procurement</a></li>
           <li><a class="dropdown-item" href="{{route('view.units')}}">Units of Measurement</a></li>
           <li><a class="dropdown-item" href="{{route('view.dist')}}">Sole Distributors</a></li>
+          <li><a class="dropdown-item" href="{{route('logs.index')}}">Activity Log</a></li>
         </ul>
       </li>
       @endcan
+
+      {{-- help here --}}
+
     </ul>
 
     <!-- logout -->

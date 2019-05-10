@@ -133,7 +133,7 @@
 		    	  	  </div>
 					</div>
 					<div class="col-md-12 form-group">
-					  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+					  <button type="submit" class="btn btn-primary btn-sm">Add User</button>
 					</div>
 				</div>
 		  	  </form>

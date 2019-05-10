@@ -19,7 +19,7 @@
 		  	  <h6 class="card-title">
 		  	  	<i class="fas fa-user-plus"></i> Edit User
 		  	  </h6>
-			  <form method="post" action="{{ route('update.user', $user_data->id) }}" class="needs-validation">
+			  <form method="post" action="{{ route('update.user', $user_data->id) }}" class="needs-validation" novalidate>
 			  	{{csrf_field()}}
 			  	{{ method_field('put') }}
 				<div class="row">
@@ -134,18 +134,18 @@
 					</div>
 					<div class="col-md-12 form-group">
 						<label for="reason" class="small">Reason:</label>
-			    	<input class="form-control form-control-sm {{ $errors->has('contacts') ? 'is-invalid' : '' }}"
+			    	<input class="form-control form-control-sm {{ $errors->has('reason') ? 'is-invalid' : '' }}"
 			    	   id="reason" name="reason" value=""  required>
 			    	<div class="invalid-feedback">
-		    	  	@if ($errors->has('contacts'))
-	              {{$errors->first('contacts')}}
+		    	  	@if ($errors->has('reason'))
+	              {{$errors->first('reason')}}
 	            @else
-	              Contact detail is required.
+	              Reason is required.
 	          	@endif
 		    	  </div>
 					</div>
 					<div class="col-md-12 form-group">
-					  <button type="submit" class="btn btn-warning btn-sm">Update</button>
+					  <button type="submit" class="btn btn-warning btn-sm">Update User</button>
 					</div>
 				</div>
 		  	  </form>
