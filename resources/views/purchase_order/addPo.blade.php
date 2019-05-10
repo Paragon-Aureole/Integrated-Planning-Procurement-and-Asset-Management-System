@@ -21,9 +21,9 @@
         <table id="poDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
-              <th>PR Code</th>
-              <th>PR Purpose</th>
-              <th>Date Created</th>
+              <th>ID</th>
+              <th>PR CODE</th>
+              <th>Purpose</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -31,9 +31,9 @@
             @foreach ($pr as $pr)
               @if ($pr->created_po == '0' && $pr->outlineQuotation->outlineSupplier()->where('supplier_status', TRUE)->count() > 0)
                 <tr>
+                  <td>{{$pr->id}}</td>
                   <td>{{$pr->pr_code}}</td>
                   <td>{{$pr->pr_purpose}}</td>
-                  <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                   <td>
                   <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal" id="poContent">
                         <i class="fas fa-plus"></i>

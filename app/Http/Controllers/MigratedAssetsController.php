@@ -119,23 +119,17 @@ class MigratedAssetsController extends Controller
         return redirect()->back()->with('error','A Captured PAR has been removed.');
     }
 
-    public function printMigratedAssets($office_id, $asset_type_id) 
+    public function print($id) 
     {
-        $migratedAssetsFirst = migratedAssets::where('asset_type_id', $asset_type_id)
-        ->where('office_id', $office_id)
-        ->take(1)->get();
-
-        $migratedAssets = migratedAssets::where('asset_type_id', $asset_type_id)
-        ->where('office_id', $office_id)
-        ->get();
+        $parData = MigratedAssets::findorFail($id);
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,
             'margin-bottom' => 10,
             'margin-left'   => 10,
         ];
-
-        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printMigratedAssets', compact('migratedAssets', 'migratedAssetsFirst'))->setPaper('Folio', 'landscape');
-        return $pdf->stream('migrated_assets.pdf');
+        // dd($IcslipData);
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printMigratedAssets', compact('parData'))->setPaper('A4', 'portrait');
+        return $pdf->stream('PAR-Migrated.pdf');
     }
 }
