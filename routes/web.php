@@ -193,8 +193,8 @@ Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsCon
 Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
 
 Route::resource('AssetTurnover', 'AssetTurnoverController');
+Route::get('migrateAssets/print/{id}', 'MigratedAssetsController@print')->name('migrateAssets.print');
+Route::resource('AssetTurnover', 'AssetTurnoverController');
 
 //activity log
 Route::resource('logs', 'ActivityLogController');
-Route::get('migrateAssets/print/{id}', 'MigratedAssetsController@print')->name('migrateAssets.print');
-Route::resource('AssetTurnover', 'AssetTurnoverController');
