@@ -55,7 +55,7 @@
                         <td>{{$parData->quantity}}</td>
                         <td>{{$parData->asset->measurementUnit->unit_code}}</td>
                         {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td>{{$parData->description}}</td>
+                        <td><textarea cols="30" rows="20" style="border:none">{{$parData->description}}</textarea></td>
                         {{--  <td>Sample Description</td>  --}}
                         <td></td>
                         <td>{{$parData->created_at}}</td>
@@ -67,6 +67,13 @@
                         @endphp
                         <td>{{$totalAmount}}</td>
                     </tr>
+                    @for ($i = 0; $i < 5; $i++)
+                        <tr>
+                            @for ($j = 0; $j < 7; $j++)
+                                <td>&nbsp;</td>
+                            @endfor
+                        </tr>
+                    @endfor
                     {{--  <tr>
                         <td>sample Quantity</td>
                         <td>Sample Unit</td>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\MigratedIcsAssets;
 use Illuminate\Http\Request;
+use PDF;
 
 class MigratedIcsAssetsController extends Controller
 {
@@ -105,5 +106,19 @@ class MigratedIcsAssetsController extends Controller
     {
         $capturedIcs = MigratedIcsAssets::destroy($id);
         return redirect()->back()->with('error','A Captured ICS has been removed.');
+    }
+
+    public function print($id)
+    {
+        $IcsData = MigratedIcsAssets::findorFail($id);
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+        // dd($IcslipData);
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printIcsAssets', compact('IcsData'))->setPaper('A4', 'portrait');
+        return $pdf->stream('ICS-Migrated.pdf');
     }
 }
