@@ -92,7 +92,7 @@ class RegisterController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|confirmed',
             'office' => 'required|numeric',
-            'contacts' => 'required|numeric',
+            'contacts' => 'required|string',
             'user_role' => 'required',
         ]);
     }
@@ -114,11 +114,8 @@ class RegisterController extends Controller
             'contact_number' => $data['contacts'],
         ])->assignRole($data['user_role']);
 
-        if ($create_user->office->office_code == "GSO") {
-            $create_user->givePermissionTo('asset mgt');
-        }
         if ($create_user->office->office_code == "GSO" && $data['is_supervisor'] == "1") {
-            $create_user->givePermissionTo('gso supervisor');
+            $create_user->givePermissionTo('Supervisor');
         }
 
         return $create_user;       
@@ -163,13 +160,13 @@ class RegisterController extends Controller
             'contact_number' => $input['contacts'],
         ]);
 
-        if($user->hasPermissionTo('gso supervisor')){
+        if($user->hasPermissionTo('Supervisor')){
             if ($input['is_supervisor'] == "0") {
-                $user->revokePermissionTo('gso supervisor');
+                $user->revokePermissionTo('Supervisor');
             }
         }else{
             if ($user->office->office_code == "GSO" && $input['is_supervisor'] == "1") {
-                $user->givePermissionTo('gso supervisor');
+                $user->givePermissionTo('Supervisor');
             }
         }
 
