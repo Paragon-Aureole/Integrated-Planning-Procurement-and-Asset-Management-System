@@ -164,6 +164,7 @@ Route::get('/getVoucherNo', 'assetController@getVoucherNo')->name('assets.getVou
 Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.saveVoucherNo');
 Route::get('/assetClassification', 'assetController@assetClassification')->name('assets.assetClassification');
 Route::resource('assets', 'assetController');
+Route::get('getClassificationModalData', 'assetController@getClassificationModalData');
 
 //asset Par routes
 Route::resource('DistributeAssetsPAR', 'AssetParController');
@@ -184,11 +185,9 @@ Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 
 // assetMigrations
 Route::resource('migrateAssets', 'MigratedAssetsController');
-Route::resource('migrateVehicle', 'MigratedVehiclesController');
-Route::get('migrationDatatable', 'MigratedAssetsController@migrationDatatable');
-Route::get('validateAssetType', 'MigratedAssetsController@validateAssetType');
-Route::get('validateAssetTypeVehicle', 'MigratedVehiclesController@validateAssetTypeVehicle');
-Route::get('selectMigratedAssets', 'MigratedAssetsController@selectMigratedAssets');
+Route::resource('migrateIcsAssets', 'MigratedIcsAssetsController');
+Route::get('migrateIcsAssets/delete/{id}', 'MigratedIcsAssetsController@destroy')->name('migrateIcsAssets.destroy');
+Route::get('migrateAssets/delete/{id}', 'MigratedAssetsController@destroy')->name('migrateAssets.destroy');
 Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsController@printMigratedAssets');
 Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
 

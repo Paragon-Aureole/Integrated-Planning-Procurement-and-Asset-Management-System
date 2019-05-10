@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\migratedAssets;
-use App\migratedVehicles;
+use App\migratedIcsAssets;
 use App\Office;
 use App\assetType;
 use Illuminate\Http\Request;
@@ -19,9 +19,10 @@ class MigratedAssetsController extends Controller
     public function index()
     {
         $migratedAssets = migratedAssets::all();
+        $migratedIcsAssets = migratedIcsAssets::all();
         $office = Office::all();
         $assetType = assetType::all();
-        return view('assets.data_capturing.officeAssets.index', compact('migratedAssets', 'office', 'assetType'));
+        return view('assets.data_capturing.officeAssets.index', compact('migratedAssets', 'migratedIcsAssets', 'office', 'assetType'));
     }
 
     /**
@@ -42,49 +43,35 @@ class MigratedAssetsController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-
+        $input = $request->except(['_token','_method']);
         // dd($input);
-        $inputMigration = migratedAssets::create([
-            'name_of_accountable'=>$input['name_of_accountable'],
-            'official_designation'=>$input['official_designation'],
-            'lgu'=>$input['lgu'],
-            'article'=>$input['article'],
-            'office_id'=>$input['office_id'],
-            'description'=>$input['description'],
-            'property_number'=>$input['property_number'],
-            'unit_of_measure'=>$input['unit_of_measure'],
-            'unit_value'=>$input['unit_value'],
-            'balance_per_card'=>$input['balance_per_card'],
-            'on_hand_per_count'=>$input['on_hand_per_count'],
-            'shortage_overage'=>$input['shortage_overage'],
-            'date_purchase'=>$input['date_purchase'],
-            'par_ics_number'=>$input['par_ics_number'],
-            'status'=>$input['status'],
-            'remarks'=>$input['remarks'],
-            'asset_type_id'=>$input['asset_type_officeAsset'],
-        ]);
+        for($i=0; $i < count($input['amount']); $i++) {
+            
+            $data = [ 
+                'asset_type_id' => $input['asset_type_id'][$i],
+                'classification' => $input['classification'][$i],
+                'entity_name' => $input['entity_name'][$i],
+                'fund_cluster' => $input['fund_cluster'][$i],
+                'receiver_name' => $input['receiver_name'][$i],
+                'receiver_position' => $input['receiver_position'][$i],
+                'issuer_name' => $input['issuer_name'][$i],
+                'issuer_position' => $input['issuer_position'][$i],
+                'item_quantity' => $input['item_quantity'][$i],
+                'item_unit' => $input['item_unit'][$i],
+                'property_number' => $input['property_number'][$i],
+                'date_acquired' => $input['date_acquired'][$i],
+                'unit_cost' => $input['unit_cost'][$i],
+                'amount' => $input['amount'][$i],
+                'description' => $input['description'][$i],
+                'par_number' => $input['par_number'][$i],
+            ];
+            
+            // dd($data);
+        migratedAssets::create($data);
+        }
 
         return redirect()->back()->with('success', 'Item Successfully Migrated');
     }
-
-    public function migrationDatatable(Request $request) 
-    {
-        $migratedAssets = migratedAssets::where('office_id', $request->all())->get();
-        $migratedVehicles = migratedVehicles::where('office_id', $request->all())->get();
-        // $migratedAssets = migratedAssets::all();
-        return response()->json(['migratedAssets'=>$migratedAssets, 'migratedVehicles'=>$migratedVehicles]);
-    }
-
-    public function validateAssetType(Request $request) 
-    {
-        $migratedAssets = migratedAssets::where('asset_type_id', $request->asset_type_id)
-        ->where('office_id', $request->office_id)
-        ->get();
-        $office = Office::all();
-        return response()->json(['migratedAssets'=>$migratedAssets, 'office'=>$office]);
-    }
-
 
     /**
      * Display the specified resource.
@@ -126,16 +113,10 @@ class MigratedAssetsController extends Controller
      * @param  \App\migratedAssets  $migratedAssets
      * @return \Illuminate\Http\Response
      */
-    public function destroy(migratedAssets $migratedAssets)
+    public function destroy($id)
     {
-        //
-    }
-
-    public function selectMigratedAssets(Request $request)
-    {
-        $input = $request->all();
-
-        return response()->json(['input'=>$input]);
+        $capturedPar = migratedAssets::destroy($id);
+        return redirect()->back()->with('error','A Captured PAR has been removed.');
     }
 
     public function printMigratedAssets($office_id, $asset_type_id) 

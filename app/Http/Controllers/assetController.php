@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\PurchaseRequestItem;
+use App\PurchaseOrder;
 use App\PurchaseRequest;
 use App\PpmpItem;
 use App\Ppmp;
@@ -28,7 +29,7 @@ class assetController extends Controller
     public function index()
     {
         
-        // $data = asset::All();
+        $asset = purchaseRequest::where('created_inspection', 1)->get();
         // $pr = PurchaseRequest::findorFail(1);
         // $pr_code = explode("-", $pr->pr_code);
         
@@ -37,8 +38,17 @@ class assetController extends Controller
 
         // dd($ppmp_item);
         // dd($data);
-        return view('assets.index');
+        return view('assets.index', compact('asset'));
         // return $dummyData;
+    }
+
+    public function getClassificationModalData(Request $request)
+    {
+        $input = $request->all();
+
+        $ClassificationModalContent = asset::where('purchase_order_id', $input['po_id'])->get();
+
+        return response()->json(['ClassificationModalContent'=>$ClassificationModalContent]);
     }
 
 

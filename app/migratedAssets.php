@@ -9,22 +9,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class migratedAssets extends Model
 {
     protected $fillable = [
-    'name_of_accountable',
-    'official_designation',
-    'lgu',
-    'article',
-    'office_id',
-    'description',
+    'classification',
+    'asset_type_id',
+    'entity_name',
+    'fund_cluster',
+    'receiver_name',
+    'receiver_position',
+    'issuer_name',
+    'issuer_position',
+    'item_quantity',
+    'item_unit',
     'property_number',
-    'unit_of_measure',
-    'unit_value',
-    'balance_per_card',
-    'on_hand_per_count',
-    'shortage_overage',
-    'date_purchase',
-    'status',
-    'par_ics_number',
-    'remarks',
-    'asset_type_id'
+    'date_acquired',
+    'unit_cost',
+    'amount',
+    'description',
+    'par_number',
     ];
 }
