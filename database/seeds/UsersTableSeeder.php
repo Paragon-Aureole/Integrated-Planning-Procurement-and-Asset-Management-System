@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
                     'username' => "user1",
                     'password' => bcrypt('users1'),
                     'office_id' => '2' ,
-                    'wholename' => "Sample Department User",
+                    'wholename' => "Depaertment User",
                     'contact_number' => "139",
                 ]
             )->assignRole('Department');
@@ -39,7 +39,7 @@ class UsersTableSeeder extends Seeder
                     'username' => "bac1",
                     'password' => bcrypt('bacbac'),
                     'office_id' => '2' ,
-                    'wholename' => "Sample BAC Secretariat",
+                    'wholename' => "BAC Secretariat User",
                     'contact_number' => "139",
                 ]
             )->assignRole('Secretariat');
@@ -49,20 +49,20 @@ class UsersTableSeeder extends Seeder
                     'username' => "gso1",
                     'password' => bcrypt('gsogso'),
                     'office_id' => '25' ,
-                    'wholename' => "Sample GSO User",
+                    'wholename' => "GSO User",
                     'contact_number' => "139",
                 ]
-            )->assignRole('Department')->givePermissionTo('asset mgt');
+            )->assignRole('General Services');
 
             User::create(
                 [
                     'username' => "gso2",
                     'password' => bcrypt('gsogso'),
                     'office_id' => '25' ,
-                    'wholename' => "Sample GSO Supervisor",
+                    'wholename' => "GSO Supervisor",
                     'contact_number' => "139",
                 ]
-            )->assignRole('Department')->givePermissionTo('asset mgt')->givePermissionTo('gso supervisor');
+            )->assignRole('General Services')->givePermissionTo('Supervisor');
 
 
         Schema::enableForeignKeyConstraints();

@@ -13,7 +13,7 @@
  <div class="card-header pt-2 pb-2">Purchase Order</div>
  <div class="card-body">
    <div class="row">
-   	<div class="col-md-5">
+   	<div class="col-md-6">
    	  <h6 class="card-title">
   		Available Purchase Order
   	  </h6>
@@ -21,8 +21,8 @@
         <table id="poDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
-              <th>ID</th>
               <th>PR Code</th>
+              <th>PR Purpose</th>
               <th>Date Created</th>
               <th>Action</th>
             </tr>
@@ -31,8 +31,8 @@
             @foreach ($pr as $pr)
               @if ($pr->created_po == '0' && $pr->outlineQuotation->outlineSupplier()->where('supplier_status', TRUE)->count() > 0)
                 <tr>
-                  <td>{{$pr->id}}</td>
                   <td>{{$pr->pr_code}}</td>
+                  <td>{{$pr->pr_purpose}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                   <td>
                   <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal" id="poContent">
@@ -50,14 +50,14 @@
     </div>
 
    	<!-- table -->
-   	<div class="col-md-7">
+   	<div class="col-md-6">
    	  <h6 class="card-title">Registered Purchase Order</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-dark">
             <tr>
-              <th>ID</th>
               <th>Code</th>
+              <th>Purpose</th>
               <th>Date </th>
               <th>Action</th>
             </tr>
@@ -65,8 +65,8 @@
           <tbody>
             @foreach ($po as $po)
                 <tr>
-                  <td>{{$po->id}}</td>
-                  <td>{{$po->purchaseRequest->pr_code}}</td>
+                    <td>{{$po->purchaseRequest->pr_code}}</td>
+                  <td>{{$po->purchaseRequest->pr_purpose}}</td>
                   <td>{{Carbon\Carbon::parse($po->created_at)->format('m-d-y')}}</td>
                   <td>
                       <a href="{{route('po.print', $po->id)}}" target="_blank" class="btn btn-sm btn-secondary">

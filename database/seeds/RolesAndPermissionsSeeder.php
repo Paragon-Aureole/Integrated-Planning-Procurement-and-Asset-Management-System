@@ -26,8 +26,9 @@ class RolesAndPermissionsSeeder extends Seeder
             ['name' => 'write'],
 
             ['name' => 'close'],
-            ['name' => 'asset mgt'],
-            ['name' => 'gso supervisor'],
+
+            ['name' => 'Asset Management'],
+            ['name' => 'Supervisor'],
 
 
         ];
@@ -45,6 +46,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $role = Role::create(['name' => 'Secretariat'])
         ->givePermissionTo(['read', 'write', 'modify', 'close']);
+
+        $role = Role::create(['name' => 'General Services'])
+        ->givePermissionTo(['Asset Management']);
 
         $role = Role::create(['name' => 'Admin']);
         $role->givePermissionTo(Permission::all());

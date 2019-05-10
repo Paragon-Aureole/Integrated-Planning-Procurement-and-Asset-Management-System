@@ -17,7 +17,7 @@
 		  	  <h6 class="card-title">
 		  	  	<i class="fas fa-user-plus"></i> Register User
 		  	  </h6>
-			  <form method="POST" action="{{ route('register') }}" id="needs-validation" novalidate>
+				<form method="POST" id="myForm" action="{{ route('register') }}" class="needs-validation" novalidate>
 			  	{{csrf_field()}}
 				<div class="row">
 					<div class="col-md-12 form-group">
@@ -73,20 +73,26 @@
 
 					<div class="col-md-12 form-group">
 				  	  <label for="officeInput" class="small">Office:</label>
-		    	  	  <select id="officeInput" class="custom-select custom-select-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" name="office" required>
-		    	  	  	<option value = "">-Select One-</option>
-		    			@foreach($offices as $department)
-			    	  		<option data-office-code="{{$department->office_code}}" value = "{{$department->id}}">{{$department->office_name}}</option>
-			    	  	@endforeach
-		    	  	  </select>
+		    	  	  {{-- <select id="officeInput" class="custom-select custom-select-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" name="office" required> --}}
+										<input list="offices" id="office" class="form-control form-control-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" required>
+										<datalist id="offices">
+										@foreach($offices as $department)
+												<option data-value = "{{$department->id}}" value ="{{$department->office_code}}">{{$department->office_name}}</option>
+										@endforeach
+										</datalist>
+		    	  	  {{-- </select> --}}
 		    	  	  <div class="invalid-feedback">
 		    	  	  @if ($errors->has('office'))
 	                  	{{$errors->first('office')}}
 	                  @else
 	                    Select a valid office.
 	                  @endif
-		    	  	  </div>
+								</div>
+								
+								<input name="office" id="office-hidden" type="hidden" required>
 					</div>
+
+					<pre id="result"></pre>
 
 					<div id="supervisorCheck" class="col-md-12 form-group">
 							<div class="form-check">
@@ -195,4 +201,5 @@
 
 @section('script')
 <script src="{{asset('js/registration-script.js')}}"></script>
+<script src="{{asset('js/numeric-validation.js')}}"></script>
 @endsection

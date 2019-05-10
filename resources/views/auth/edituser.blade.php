@@ -19,7 +19,7 @@
 		  	  <h6 class="card-title">
 		  	  	<i class="fas fa-user-plus"></i> Edit User
 		  	  </h6>
-			  <form method="post" action="{{ route('update.user', $user_data->id) }}" id="needs-validation">
+			  <form method="post" action="{{ route('update.user', $user_data->id) }}" class="needs-validation">
 			  	{{csrf_field()}}
 			  	{{ method_field('put') }}
 				<div class="row">
@@ -80,7 +80,7 @@
 							<div class="form-check">
 								<label class="form-check-label">
 									<input type="checkbox" class="form-check-input" name="check_supervisor"
-									@if ($user_data->hasPermissionTo('gso supervisor'))
+									@if ($user_data->hasPermissionTo('Supervisor'))
 									checked	
 									@endif
 									> Is GSO Supervisor?

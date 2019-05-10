@@ -69,6 +69,7 @@ Route::post('/distributor/new', 'DistributorController@store')->name('add.dist')
 Route::get('/distributor/edit/{id}', 'DistributorController@edit')->name('edit.dist');
 Route::put('/distributor/update/{id}', 'DistributorController@update')->name('update.dist');
 Route::get('/distributor/delete/{id}', 'DistributorController@destroy')->name('delete.dist');
+Route::get('/distributor/show/{id}', 'DistributorController@show')->name('show.dist');
 
 //add ppmp
 Route::get('/ppmp', 'PpmpController@index')->name('view.ppmp');

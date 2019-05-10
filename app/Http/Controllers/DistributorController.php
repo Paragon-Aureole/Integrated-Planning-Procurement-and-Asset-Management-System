@@ -45,6 +45,19 @@ class DistributorController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $dist = Distributor::findorFail($id);
+        $pathToFile = storage_path('app\public\\' . $dist->distributor_certificate);
+        return response()->file($pathToFile);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

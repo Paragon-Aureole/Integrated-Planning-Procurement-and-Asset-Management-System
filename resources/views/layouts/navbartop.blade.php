@@ -85,12 +85,13 @@
           {{-- <li><a class="dropdown-item" href="#">Previous Inspection Reports</a></li> --}}
         </ul>
       </li>
-      @can('asset mgt', 'gso supervisor')
+      
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="irDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Assets
         </a>
         <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
+          @can('Asset Management', 'Supervisor')
           <li><a class="dropdown-item" href="/assets">Asset Procurement and Distribution</a></li>
           <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Print Reports</a>
             <ul class="dropdown-menu">
@@ -99,10 +100,12 @@
             </ul>
           </li>
           <li><a class="dropdown-item" href="/migrateAssets">Capture Exisiting Assets</a></li>
+          @endcan
           <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>
         </ul>
-      </li>
-      @endcan
+      </li>      
+    
+
       @can('full control')
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="settingsDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -120,7 +123,7 @@
           <li><a class="dropdown-item" href="{{route('view.signatories')}}">Signatories</a></li>
           <li><a class="dropdown-item" href="{{route('view.modes')}}">Modes of Procurement</a></li>
           <li><a class="dropdown-item" href="{{route('view.units')}}">Units of Measurement</a></li>
-          <li><a class="dropdown-item" href="{{route('view.dist')}}">Distributors</a></li>
+          <li><a class="dropdown-item" href="{{route('view.dist')}}">Sole Distributors</a></li>
         </ul>
       </li>
       @endcan
