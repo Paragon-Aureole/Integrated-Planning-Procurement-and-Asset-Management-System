@@ -18,7 +18,7 @@
 <div class="card">
  <div class="card-header pt-2 pb- 2"><b>Add Items</b></div>
  <div class="card-body">
-  <form action="{{route('add.ppmpitm', $ppmp->id)}}" method="post" id="needs-validation" novalidate>
+  <form action="{{route('add.ppmpitm', $ppmp->id)}}" method="post" name="ppmp_form" class="needs-validation" novalidate>
     {{csrf_field()}}
   <div class="row">
     <div class="col-md-6">
@@ -73,7 +73,7 @@
         <div class="form-group col-md-6">
           <label class="small">Quantity:</label>
           <input oninput="multiply();" id="itemQty" class="form-control form-control-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" value="{{ old('item_quantity') }}" value="{{ old('item_quantity') }}" name="item_quantity" required="required">
-          <div class="invalid-feedback">
+          <div class="invalid-feedback" id="qtyFeedback">
               @if ($errors->has('item_quantity'))
                 {{$errors->first('item_quantity')}}
               @else
@@ -92,29 +92,29 @@
               @if ($errors->has('item_unit'))
                 {{$errors->first('item_unit')}}
               @else
-                Code description is required.
+                Unit of measurement is required.
               @endif
           </div>
         </div>
         <div class="form-group col-md-6">
           <label class="small">Estimated Cost per Unit:</label>
-          <input oninput="multiply();" id="itemCost" class="form-control form-control-sm {{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost') }}" name="item_cost" required="required">
+          <input oninput="multiply();" id="itemCost" class="form-control form-control-sm money {{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost') }}" name="item_cost" required="required">
           <div class="invalid-feedback">
               @if ($errors->has('item_cost'))
                 {{$errors->first('item_cost')}}
               @else
-                Code description is required.
+                Cost per unit is required.
               @endif
           </div>
         </div>
         <div class="form-group col-md-6">
           <label class="small">Estimated Budget per Item:</label>
-          <input oninput="divide();" id="itemBudget" class="form-control form-control-sm {{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', number_format(0,2)) }}" name="item_budget" required="required">
+          <input oninput="divide();" id="itemBudget" class="form-control form-control-sm money{{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget') }}" name="item_budget" required="required">
           <div class="invalid-feedback">
               @if ($errors->has('item_budget'))
                 {{$errors->first('item_budget')}}
               @else
-                Code description is required.
+                Estimated budget is required.
               @endif
           </div>
         </div>
@@ -131,16 +131,17 @@
         @php $month_num = $s-1; @endphp
          <div class="form-group col-md-4">
           <label class="small">{{strtoupper(date('M', mktime(0, 0, 0, $s, 1)))}}</label>
-          <input class="form-control form-control-sm {{ $errors->has('item_schedule.'.$month_num) ? 'is-invalid' : '' }}" name="item_schedule[{{$month_num}}]" value="{{ old('item_schedule.'.$month_num, '0' ) }}">
-          <div class="invalid-feedback">
+          <input class="form-control form-control-sm {{ $errors->has('item_schedule.'.$month_num) ? 'is-invalid' : '' }}" name="item_schedule[{{$month_num}}]" value="{{ old('item_schedule.'.$month_num, '0' ) }}" required>
+          <div class="invalid-feedback" id="schedFeedback{{$month_num}}">
               @if ($errors->has('item_schedule.'.$month_num))
                 {{$errors->first('item_schedule.'.$month_num)}}
-              @else
-                Schedule required.
               @endif
           </div>
         </div>
         @endfor
+      </div>
+      <div id="feedback" class="invalid-feedback">
+          Incomplete or surplus entries, Please distribute scheduled items properly.
       </div>
     </div>
     </form>
@@ -165,22 +166,6 @@
   overflow-y: auto;
 }
 </style>
-{{-- <div class="modal fade" id="itemCodeModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-xl" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalCenterTitle">Asset Status</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <iframe src="{{route('view.ppmpitemcode', $ppmp->id)}}"></iframe>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div> --}}
 
 @include('ppmp.ppmp_item.itemcodeModal')
 
@@ -190,4 +175,5 @@
 <script src="{{asset('js/function-script.js')}}"></script>
 <script src="{{asset('js/ppmp_field_validation.js')}}"></script>
 <script src="{{asset('js/editPpmpItem-script.js')}}"></script>
+<script src="{{asset('js/numeric-validation.js')}}"></script>
 @endsection

@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-  @foreach($ppmp_itemDT as $codeKey => $group)
+  @forelse($ppmp_itemDT as $codeKey => $group)
     @php 
       $ppmp_itmcode = App\PpmpItemCode::findorFail($codeKey)
     @endphp
@@ -43,7 +43,11 @@
         </td>
       </tr>
     @endforeach
-  @endforeach   
+  @empty
+      <tr>
+        <td colspan="9" class="text-center">No data available in table</td>
+      </tr>
+  @endforelse
   </tbody>
   <tfoot class="thead-dark">
     <tr>

@@ -59,9 +59,10 @@ class PpmpItemController extends Controller
      */
     public function store(PpmpItemRequest $request, $id)
     {   
-            
+        
                
         $input = $request->all();
+        // dd($input);
         $ppmp = Ppmp::findorFail($id);
         $schedule = implode(",", $input['item_schedule']);
         $ppmp_item = $ppmp->ppmpItem()->create([

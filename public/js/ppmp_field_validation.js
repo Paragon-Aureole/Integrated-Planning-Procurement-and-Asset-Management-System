@@ -1,14 +1,10 @@
 $(document).ready(function () {
+  $('.money').simpleMoneyFormat();
+  
   $('#btn_submit').on('click', function (e) {
     e.preventDefault();
     displayBekkel(e);
   });
-  // var bekkel = $("name=[item_schedule[0]]");
-
-  // $("#itemQty").on("blur", function(){
-  //   var bekkel = $("#itemQty").val();
-  //   console.log("Hello, this thing is running." + bekkel + "is item quantity");
-  // });
 
   function displayBekkel(e) {
     var itemqtyCount = 0;
@@ -21,24 +17,42 @@ $(document).ready(function () {
       } else {
         itemqtyCount += schedule_total;
       }
-      // console.log(schedule_total + "is the schedule_total " + i);
     }
     if ($("[name=item_code] option:selected").attr('name') == 1) {
       if (itemqtyCount != itemqtyGoal) {
-        // console.log($("[name=item_code] option:selected").attr('name'));
-        alert("Incomplete or surplus entries, Please distribute scheduled items properly.");
-        // return false;
+        for (let index = 0; index < 12; index++) {
+          $("[name='item_schedule[" + index + "]']").addClass("is-invalid");
+          $("#schedFeedback" + index).html("");
+        }
+        $("#feedback").show();
+        $("#qtyFeedback").html("");
+        $("#itemQty").addClass("is-invalid");
+        
       } else {
-        // console.log('Ok for submimssion');
-        $("#needs-validation").submit();
-        // return true;
+        console.log('Ok for submimssion');
+       submitForm();
       }
     } else {
-      console.log($("[name=item_code] option:selected").attr('name'));
-      console.log(itemqtyCount + " total");
-      $("#needs-validation").submit();
-      // return true;
+      submitForm();
     }
   }
+
+  function submitForm(){
+    var a = $("#itemCost").val().replace(/\,/g,'');
+    var b = $("#itemBudget").val().replace(/\,/g,'');
+
+    $("#itemCost").val(a);
+    $("#itemBudget").val(b);
+
+
+    $("[name='ppmp_form']").submit();
+  }
+
+  $('input[name="item_quantity"]').inputFilter(function(value) {
+    var test_val = /^\d*$/.test(value);
+    return test_val;
+  });
+
+
 
 });

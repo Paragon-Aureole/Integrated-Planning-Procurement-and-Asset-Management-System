@@ -1,9 +1,12 @@
+
 function multiply(){
-    var totalBudget=parseFloat($('#itemQty').val())*parseFloat($('#itemCost').val());
+    var a = $("#itemCost").val().replace(/\,/g,'');
+
+    var totalBudget=parseFloat($('#itemQty').val())*parseFloat(a);
     if (isNaN(totalBudget) ) {
       $("#itemBudget").val('0.00');
     }else{
-      $("#itemBudget").val(totalBudget.toFixed(2));
+      $("#itemBudget").val(totalBudget).simpleMoneyFormat();
     }
     
 }
@@ -19,21 +22,10 @@ multiply2 = function(id) {
 }
 
 function divide(){
-    var bpercost=parseFloat($('#itemBudget').val())/parseFloat($('#itemQty').val());
-    $("#itemCost").val(bpercost.toFixed(2));
+    var b = $("#itemBudget").val().replace(/\,/g,'');
+    var bpercost=parseFloat(b)/parseFloat($('#itemQty').val());
+    $("#itemCost").val(bpercost).simpleMoneyFormat();
 }
 
 
-
-function addCommas(nStr){
-          nStr += '';
-          x = nStr.split('.');
-          x1 = x[0];
-          x2 = x.length > 1 ? '.' + x[1] : '';
-          var rgx = /(\d+)(\d{3})/;
-          while (rgx.test(x1)) {
-            x1 = x1.replace(rgx, '$1' + ',' + '$2');
-          }
-          return x1 + x2;
-}
 
