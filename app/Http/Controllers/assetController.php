@@ -29,7 +29,11 @@ class assetController extends Controller
     public function index()
     {
         
-        $asset = purchaseRequest::where('created_inspection', 1)->get();
+        // $asset = purchaseRequest::where('created_inspection', 1)->get();
+        $asset = asset::All();
+        $assetPar = assetPar::All();
+        $assetIcs = assetIcslip::All();
+        // dd($asset);
         // $pr = PurchaseRequest::findorFail(1);
         // $pr_code = explode("-", $pr->pr_code);
         
@@ -38,7 +42,7 @@ class assetController extends Controller
 
         // dd($ppmp_item);
         // dd($data);
-        return view('assets.index', compact('asset'));
+        return view('assets.index', compact('asset', 'assetPar', 'assetIcs'));
         // return $dummyData;
     }
 
@@ -51,7 +55,42 @@ class assetController extends Controller
         return response()->json(['ClassificationModalContent'=>$ClassificationModalContent]);
     }
 
+    public function getAssetData(Request $request)
+    {
+        $input = $request->all();
 
+        $assetData = asset::where('id', $input['asset_id'])->get();
+
+        return response()->json(['assetData'=>$assetData]);
+    }
+
+        public function getPARCount()
+    {
+        $assetParCount = assetPar::get()->count();
+        return ($assetParCount);
+    }
+
+        public function getICSCount()
+    {
+        $assetIcsCount = assetIcslip::get()->count();
+        return ($assetIcsCount);
+    }
+
+        public function getClassifiedItemQtyNo($id)
+    {
+        // dd($id);
+        $assetClassifiedItemQtyNo = asset::select('item_stock')->where('id', $id)->get();
+        return ($assetClassifiedItemQtyNo->first()->item_stock);
+    }
+
+        public function setAssetIsAssigned(Request $request)
+    {
+        asset::whereId($request->asset_id)->update([
+                'isAssigned' => 1
+            ]);
+
+        return response()->json(['response' => 'Assigning Successful. You may now print.', 'error' => false]);
+    }
     // public function getVoucherNo(Request $request)
     // {
     //     $poID = $request->get('searchPO');
@@ -108,7 +147,7 @@ class assetController extends Controller
     {
         // dd($request->all());
         DisbursementVoucher::create([
-                'purchase_order_id' => $request->purchase_order_id,
+                'purchase_order_id' => $request->po_id,
                 'disbursementNo' => $request->voucherNo
             ]);
 
@@ -117,7 +156,7 @@ class assetController extends Controller
         $sortedArray = [];
         $PAR = [];
         $ICS = [];
-        $assetCount = asset::where('purchase_order_id', $request->purchase_order_id)->get()->count() - 1;
+        $assetCount = asset::where('purchase_order_id', $request->po_id)->get()->count() - 1;
 
         $recordID = $request->get('id');
         $PARorICS = $request->get('PARorICS');
@@ -149,6 +188,55 @@ class assetController extends Controller
         return redirect()->back()->with('success', 'PO Items have been Registered, Go to Distribute Asset Module to Distribute Items');
     }
 
+    public function saveNewPar(Request $request)
+    {
+        $items = $request->input('data');
+        // dd($items);
+
+        assetPar::create([
+            'asset_id' => $items[0],
+            'quantity' => $items[1],
+            'description' => $items[2],
+            'assignedTo' => $items[3],
+            'position' => $items[4]
+        ]);
+
+        asset::find($items[0])->decrement('item_stock', $items[1]);
+
+
+        if ($request->isMethod('post')) {
+            // return response()->json(['response' => 'This is post method', 'error' => false]);
+            return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
+        } else {
+            return response()->json(['response' => 'failure']);
+        }
+
+    }
+    public function saveNewIcs(Request $request)
+    {
+        $items = $request->input('data');
+        // dd($items);
+
+        assetIcslip::create([
+            'asset_id' => $items[0],
+            'quantity' => $items[1],
+            'description' => $items[2],
+            'assignedTo' => $items[3],
+            'position' => $items[4],
+            'useful_life' => $items[5]
+        ]);
+
+        asset::find($items[0])->decrement('item_stock', $items[1]);
+
+
+        if ($request->isMethod('post')) {
+            // return response()->json(['response' => 'This is post method', 'error' => false]);
+            return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
+        } else {
+            return response()->json(['response' => 'failure']);
+        }
+
+    }
     /**
      * Display the specified resource.
      *
