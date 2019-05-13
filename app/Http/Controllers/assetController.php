@@ -157,7 +157,7 @@ class assetController extends Controller
         $PAR = [];
         $ICS = [];
         $assetCount = asset::where('purchase_order_id', $request->po_id)->get()->count() - 1;
-
+        // dd($assetCount);
         $recordID = $request->get('id');
         $PARorICS = $request->get('PARorICS');
         foreach ($PARorICS as $key => $value) {
@@ -339,7 +339,7 @@ class assetController extends Controller
 
         // dd($parData);
 
-        $pdf = PDF::loadView('assets.par.printPAR', compact('parData'))->setPaper('Folio', 'landscape');
+        $pdf = PDF::loadView('assets.par.printPAR', compact('parData'))->setPaper('Folio', 'portrait');
         return $pdf->stream('PAR.pdf');
     }
 
@@ -354,7 +354,7 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
         // dd($IcslipData);
-        $pdf = PDF::loadView('assets.ics.printICS', compact('IcslipData'))->setPaper('Folio', 'landscape');
+        $pdf = PDF::loadView('assets.ics.printICS', compact('IcslipData'))->setPaper('Folio', 'portrait');
         return $pdf->stream('ICS.pdf');
     }
 
@@ -368,7 +368,7 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.data_capturing.vehicle.printvehicle')->setPaper('Folio', 'landscape');
+        $pdf = PDF::loadView('assets.data_capturing.vehicle.printvehicle')->setPaper('Folio', 'portrait');
         return $pdf->stream('VEHICLE.pdf');
     }
 
@@ -388,7 +388,7 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets', compact('parData', 'IcslipData'))->setPaper('Folio', 'landscape');
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets', compact('parData', 'IcslipData'))->setPaper('Folio', 'portrait');
         return $pdf->stream('OFFICEASSETS.pdf');
     }
 

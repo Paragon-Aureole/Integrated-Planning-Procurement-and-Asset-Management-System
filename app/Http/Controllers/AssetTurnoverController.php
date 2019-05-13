@@ -23,16 +23,17 @@ class AssetTurnoverController extends Controller
      */
     public function index()
     {
+        // dd(Auth::user()->office_id);
         if (Auth::user()->hasRole('Admin')) {
             $office = Office::all();
             $to = assetPar::all();
 
         }else{
-            $to = assetPar::where('id', Auth::user()->id)->get();
-
+            $to = assetPar::all();
+            $currentOfficeId = Auth::user()->office_id;
         }
 
-        return view('assets.turnover.index', compact('to', 'office'));
+        return view('assets.turnover.index', compact('to', 'office', 'currentOfficeId'));
     }
 
     public function parSearchTurnover(Request $request)

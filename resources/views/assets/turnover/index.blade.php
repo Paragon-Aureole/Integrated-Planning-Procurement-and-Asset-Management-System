@@ -9,6 +9,7 @@
 @endsection
 
 @section('content')
+{{--  {{$to}}  --}}
 <div class="container-fluid">
     <div class="card">
         <div class="card-header pt-2 pb-2">List of PAR Item</div>
@@ -79,15 +80,17 @@
                         </thead>
                         <tbody id="parTbody">
                             @foreach ($to as $toItem)
-                                <tr>
-                                    <td>{{$toItem->id}}</td>
-                                    <td>{{$toItem->quantity}}</td>
-                                    <td>{{$toItem->assignedTo}}</td>
-                                    <td>{{$toItem->position}}</td>
-                                    <td>
-                                            <button type="button" id="turnoverButton" name="btn_assignItem" class="btn btn-info btn-xs"data-toggle="modal" data-target="#turnoverModal">Turnover</button>
-                                    </td>
-                                </tr>
+                            @if ($toItem->asset->purchaseOrder->purchaseRequest->office->id == $currentOfficeId)
+                            <tr>
+                                <td>{{$toItem->id}}</td>
+                                <td>{{$toItem->quantity}}</td>
+                                <td>{{$toItem->assignedTo}}</td>
+                                <td>{{$toItem->position}}</td>
+                                <td>
+                                <button type="button" id="turnoverButton" name="btn_assignItem" class="btn btn-info btn-xs"data-toggle="modal" data-target="#turnoverModal">Turnover</button>
+                                </td>
+                            </tr>
+                            @endif
                             @endforeach
                             <tr>
                                 <td>Sample #</td>
@@ -187,11 +190,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
         $('#parDatatable').DataTable({
-            responsive: true,
+            responsive: false,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });
         $('#datatableTurnover').DataTable({
-            responsive: true,
+            responsive: false,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });
     } );

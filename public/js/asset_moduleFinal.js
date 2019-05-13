@@ -433,17 +433,18 @@
       function populateClassificationModal(ClassificationModalContent) {
           // populate PO Id
           $('#po_id').empty();
-          console.log(ClassificationModalContent[0].id);
+          
+        //   console.log(ClassificationModalContent[0].purchase_order_id);
           console.log(ClassificationModalContent);
 
-          $('#po_id').text(ClassificationModalContent[0].id);
-          $('[name=po_id]').val(ClassificationModalContent[0].id);
+          $('#po_id').text(ClassificationModalContent[0].purchase_order_id);
+          $('[name=po_id]').val(ClassificationModalContent[0].purchase_order_id);
 
           var classificationModalContentSorted = new Array;
 
 
           for (let index = 0; index < ClassificationModalContent.length; index++) {
-              var details = "<input type='hidden' name='id[" + index + "]' value='" + index + "'>" + ClassificationModalContent[index].details;
+              var details = "<input type='hidden' name='id[" + index + "]' value='" + ClassificationModalContent[index].id + "'>" + ClassificationModalContent[index].details;
               var amount = ClassificationModalContent[index].amount;
               var item_stock = ClassificationModalContent[index].item_stock;
               var isPAR = "<input type='radio' name=PARorICS[" + index + "] value='PAR'>";
@@ -454,8 +455,8 @@
                   details,
                   amount,
                   item_stock,
-                  isPAR,
                   isICS,
+                  isPAR,
                   asset_type
               });
           }

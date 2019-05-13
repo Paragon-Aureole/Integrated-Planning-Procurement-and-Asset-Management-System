@@ -16,7 +16,7 @@ class CreateAssetTurnoversTable extends Migration
         Schema::create('asset_turnovers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('par_id')->unsigned()->nullable()->index();
-            $table->integer('ics_id')->unsigned()->nullable()->index();
+            $table->boolean('isApproved');
             $table->string('remarks');
             $table->string('assignedTo');
             $table->timestamps();
