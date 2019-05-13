@@ -165,15 +165,13 @@ Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.save
 Route::get('/assetClassification', 'assetController@assetClassification')->name('assets.assetClassification');
 Route::resource('assets', 'assetController');
 Route::get('getClassificationModalData', 'assetController@getClassificationModalData');
-
-//asset Par routes
-Route::resource('DistributeAssetsPAR', 'AssetParController');
-Route::post('/setIsAssignedPAR', 'AssetParController@setIsAssigned');
-Route::get('/getPARNo', 'AssetParController@getPARCount');
-
-Route::resource('DistributeAssetsICS', 'AssetIcslipController');
-Route::post('/setIsAssignedICS', 'AssetIcslipController@setIsAssigned');
-Route::get('/getICSNo', 'AssetIcslipController@getICSCount');
+Route::get('getAssetData', 'assetController@getAssetData');
+Route::get('/getPARNo', 'assetController@getPARCount');
+Route::get('/getICSNo', 'assetController@getICSCount');
+Route::get('getClassifiedItemQtyNo/{id}', 'assetController@getClassifiedItemQtyNo');
+Route::post('/saveNewPar', 'assetController@saveNewPar');
+Route::post('/saveNewIcs', 'assetController@saveNewIcs');
+Route::post('/setAssetIsAssigned', 'assetController@setAssetIsAssigned');
 
 //asset printing
 Route::get('/printPar/{id}', 'assetController@printPar');
@@ -193,7 +191,7 @@ Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsCon
 Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
 Route::get('migrateAssets/print/{id}', 'MigratedAssetsController@print')->name('migrateAssets.print');
 
-// TURNOVER
+// ASSET TURNOVER
 Route::resource('AssetTurnover', 'AssetTurnoverController');
 Route::get('parSearchTurnover', 'AssetTurnoverController@parSearchTurnover');
 Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');

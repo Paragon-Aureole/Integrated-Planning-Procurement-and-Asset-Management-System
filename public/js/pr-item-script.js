@@ -5,7 +5,7 @@ $(document).ready(function() {
             var itemId = $(this).val();
             if(itemId) {
                 $.ajax({
-                    url: '/pr/item/get/'+itemId,
+                    url: 'http://ipams.test/pr/item/get/'+itemId,
                     type:"GET",
                     dataType:"json",
                    
@@ -16,9 +16,9 @@ $(document).ready(function() {
                     	}
                     	$('#itemUnit').val(data[1]);
                     	$('input[name="item_unit"]').val(data[0]['measurement_unit_id']);
-                    	$('input[name="item_cpu"]').val(data[0]['item_cost']);
-                    	var budget = $('input[name="item_cpu"]').val() * $('select[name="item_quantity"]').val();
-                    	$('input[name="item_cpi"]').val(budget);
+                    	$('input[name="item_cpu"]').val(data[0]['item_cost']).simpleMoneyFormat();
+                    	var budget = $('input[name="item_cpu"]').val().replace(/\,/g,'') * $('select[name="item_quantity"]').val();
+                    	$('input[name="item_cpi"]').val(budget).simpleMoneyFormat();
                     },
                    
                 });
