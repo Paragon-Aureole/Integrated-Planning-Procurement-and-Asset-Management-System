@@ -9,45 +9,105 @@
 @endsection
 
 @section('content')
-{{--  {{$assetParData}} --}}
-{{--  {{$assetIcslipData}} --}}
-{{csrf_field()}}
 <div class="container-fluid">
     <div class="card">
         <div class="card-header pt-2 pb-2">List of PAR Item</div>
         <div class="card-body">
+
+            @can('full control')
+            <h6 class="card-title">
+                    Filter Items 
+                </h6>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group col-md-12">
+                            <label for="filterOption" class="small">Search For:</label>
+                            <select name="filterOption" id="filterOption" class="form-control form-control-sm">
+                                <option value="0">-Select option for Searching-</option>
+                                <option value="1">PAR Number</option>
+                                <option value="2">Office and Signatory Name</option>
+                            </select>
+                        </div>
+                    </div> 
+                </div>
+                <div id="showParInputs" style="display:none;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group container-fluid">
+                                <input type="text" id="par_id" class="form-control">
+                                <div class="input-group-prepend">
+                                    <button class="input-group-text" id="searchPar">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="showOfficeInputs" style="display:none;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group container-fluid">
+                                <select name="office_id" id="office_id" class="form-control">
+                                    @foreach ($office as $officeItem)
+                                        <option value="{{$officeItem->id}}">{{$officeItem->office_name}}</option>
+                                    @endforeach
+                                </select>
+                                <input type="text" id="signatory_name" placeholder="Signatory Name" class="form-control">
+                                <div class="input-group-prepend">
+                                    <button id="searchName" class="input-group-text">Search Office and Signatory</button>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <hr style="height:5px; background-color:grey">
+            @endcan
+
             <div class="row">
                 <div class="col-md-6">
+                    <h6 class="card-title">
+                        Available Distributed Assets
+                    </h6>
                     <table id="parDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                         <thead class="thead-dark">
                             <tr>
                                 <th>PAR No</th>
-                                <th>Description</th>
                                 <th>Item Qty</th>
                                 <th>Assigned To</th>
                                 <th>Position</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($assetParData as $key => $record)
-                            <tr>
-                                <td>{{$record['id']}}</td>
-                                <td>{{$record['description']}}</td>
-                                <td>{{$record['quantity']}}</td>
-                                <td>{{$record['assignedTo']}}</td>
-                                <td>{{$record['position']}}</td>
-                                <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs"
-                                        data-toggle="modal" data-target="#TurnoverModal">Turnover</button></td>
-                            </tr>
+                        <tbody id="parTbody">
+                            @foreach ($to as $toItem)
+                                <tr>
+                                    <td>{{$toItem->id}}</td>
+                                    <td>{{$toItem->quantity}}</td>
+                                    <td>{{$toItem->assignedTo}}</td>
+                                    <td>{{$toItem->position}}</td>
+                                    <td>
+                                            <button type="button" id="turnoverButton" name="btn_assignItem" class="btn btn-info btn-xs"data-toggle="modal" data-target="#turnoverModal">Turnover</button>
+                                    </td>
+                                </tr>
                             @endforeach
+                            <tr>
+                                <td>Sample #</td>
+                                <td>Sample Qty</td>
+                                <td>Sample Assigned to</td>
+                                <td>Sample Position</td>
+                                <td>
+                                        <button type="button" id="turnoverButton" name="btn_assignItem" class="btn btn-info btn-xs"data-toggle="modal" data-target="#turnoverModal">Turnover</button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
 
 
                 </div>
                 <div class="col-md-6">
-                    <table id="datatableTurnoverPar" class="table table-bordered table-hover table-sm display nowrap w-100">
+                    <h6 class="card-title">
+                        Turnover Assets
+                    </h6>
+                    <table id="datatableTurnover" class="table table-bordered table-hover table-sm display nowrap w-100">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Turnover PAR ID</th>
@@ -57,19 +117,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($assetTurnoverParData->get() as $record)
+                            {{-- @foreach ($assetTurnoverParData->get() as $record) --}}
                             <tr>
-                                <td>{{$record['par_id']}}</td>
-                                <td>{{$record['remarks']}}</td>
-                                <td>{{$record['assignedTo']}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>
-                                    <a href="http://ipams.test/printTurnover/{{$record['id']}}" target="_blank"
+                                    <a href="http://ipams.test/printTurnover/" target="_blank"
                                         class="btn btn-sm btn-secondary">
                                         <i class="fas fa-print"></i>
                                     </a>
                                 </td>
                             </tr>
-                            @endforeach
+                            {{-- @endforeach --}}
 
                         </tbody>
                     </table>
@@ -82,182 +142,41 @@
     </div>
 </div>
 
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-header pt-2 pb-2">List of ICS Item</div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <table id="icsDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>ICS No</th>
-                                <th>Description</th>
-                                <th>Item Qty</th>
-                                <th>Assigned To</th>
-                                <th>Position</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($assetIcslipData as $key => $record)
-                            <tr>
-                                <td>{{$record['id']}}</td>
-                                <td>{{$record['description']}}</td>
-                                <td>{{$record['quantity']}}</td>
-                                <td>{{$record['assignedTo']}}</td>
-                                <td>{{$record['position']}}</td>
-                                <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs"
-                                        data-toggle="modal" data-target="#TurnoverModal">Turnover</button></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-
-                </div>
-                <div class="col-md-6">
-                    <table id="datatableTurnoverIcs" class="table table-bordered table-hover table-sm display nowrap w-100">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Turnover ICS ID</th>
-                                <th>Remarks</th>
-                                <th>Assigned To</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($assetTurnoverIcsData->get() as $record)
-                            <tr>
-                                <td>{{$record['ics_id']}}</td>
-                                <td>{{$record['remarks']}}</td>
-                                <td>{{$record['assignedTo']}}</td>
-                                <td>
-                                    <a href="http://ipams.test/printTurnover/{{$record['id']}}" target="_blank"
-                                        class="btn btn-sm btn-secondary">
-                                        <i class="fas fa-print"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            {{-- <input type="submit" class="btn btn-primary"> --}}
-
-        </div>
-    </div>>
-</div>
-
-<!-- Modal for Turnover -->
-<div class="modal" id="TurnoverModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+<!-- The Modal -->
+<div class="modal" id="turnoverModal">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Turnover Assets</h3>
-                <button type="button" class="close" data-dismiss="modal">×</button>
+    
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h5>Turnover Item</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+    
+        <!-- Modal body -->
+        <div class="modal-body">
+        <form action="" method="POST">
+            {{ csrf_field() }}
+            <input type="hidden" name="pr_id" value="">
+            <div class="form-group">
+                <label>PAR Number:</label>
+                <input id="prCode" class="form-control" type="text" disabled>
+            <div>
+            <div class="form-group">
+                <label>Quantity:</label>
+                <select name="" id="quantity" class="form-control">
+                    <option value="">Total Quantity will append here</option>
+                </select>
+            <div>
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea name="turnover_description" class="form-control" required></textarea>
+            <div><br/>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Submit</button>
             </div>
-            <form id="TurnoverModalForm" action="{{route('AssetTurnover.store')}}" method="POST">
-                {{csrf_field()}}
-                <input type="hidden" name="ParOrIcs">
-                <div class="modal-body" id="assetTurnoverBody">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">Item</span>
-                                    </div>
-                                    {{-- SELECTED ITEM INPUT HERE  --}}
-                                    <input type="text" name="selectedItemName" class="form-control"
-                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                                        readonly>
-                                </div>
-                                <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
-                                    </div>
-                                    {{-- QUANTITY SELECITION HERE --}}
-                                    <input type="text" name="selectedItemQty" class="form-control"
-                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                                        readonly>
-                                </div>
-                                <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">Unit Cost</span>
-                                    </div>
-                                    {{-- UNIT COST INPUT HERE  --}}
-                                    <input type="text" name="selectedItemUnitCost" class="form-control"
-                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                                        readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">PAR/ICS No.</span>
-                                    </div>
-                                    {{-- PAR NUMBER INPUT HERE  --}}
-                                    <input type="text" name="selectedItemICS-PARNo" class="form-control"
-                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                                        readonly>
-                                </div>
-                                <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">Date Assigned</span>
-                                    </div>
-                                    {{-- ASSIGNED DATE HERE  --}}
-                                    <input type="date" name="selectedItemDateAssigned" class="form-control"
-                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                                        readonly>
-                                </div>
-                                <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">Total Amount</span>
-                                    </div>
-                                    {{-- TOTAL AMOUNT INPUT HERE  --}}
-                                    <input type="text" name="selectedItemTotalAmount" class="form-control"
-                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                                        readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">Signatory</span>
-                                    </div>
-                                    {{-- NAME AND POSITION OF EMPLOYEE INPUT HERE  --}}
-                                    <input type="text" name="selectedItemEmployeeName" class="form-control"
-                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                                        placeholder="Name" readonly>
-                                    <input type="text" name="selectedItemEmployeePosition" class="form-control"
-                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                                        placeholder="Position" readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Remarks:</label><br>
-                                <textarea name="selectedItemRemarks" cols="30" rows="10"
-                                    class="form-control form-control-sm"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button class="btn btn-warning">cancel</button>
-                </div>
             </form>
-
-
+        </div>
         </div>
     </div>
 </div>
@@ -265,6 +184,17 @@
 @endsection
 
 @section('script')
-
+<script type="text/javascript">
+$(document).ready(function() {
+        $('#parDatatable').DataTable({
+            responsive: true,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+        });
+        $('#datatableTurnover').DataTable({
+            responsive: true,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+        });
+    } );
+</script>
 <script src="{{asset('js/asset_TurnoverIndex.js')}}"></script>
 @endsection

@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\asset;
+use App\PurchaseOrder;
+use App\PurchaseRequest;
+use App\Office;
 use App\assetTurnover;
 use App\assetPar;
 use App\assetIcslip;
 use Carbon\Carbon;
+use Auth;
 
 use Illuminate\Http\Request;
 
@@ -19,59 +23,38 @@ class AssetTurnoverController extends Controller
      */
     public function index()
     {
-        $assetTurnoverParData = assetTurnover::where('par_id', '!=', null);
-        $assetTurnoverIcsData = assetTurnover::where('ics_id', '!=', null);
-        // dd($assetTurnoverParData);
-        $assetParData = assetPar::where('id', '!=', array($assetTurnoverParData->pluck('par_id')))->get();
-        // $assetParData = assetPar::whereId(1)->get();
-        $assetIcslipData = assetIcslip::where('id', '!=', array($assetTurnoverIcsData->pluck('ics_id')))->get();
-        // dd($assetParData);
-        // dd($assetIcslipData);
+        if (Auth::user()->hasRole('Admin')) {
+            $office = Office::all();
+            $to = assetPar::all();
 
-        return view('assets.turnover.index', compact('assetParData', 'assetIcslipData', 'assetTurnoverParData', 'assetTurnoverIcsData'));
-        // dd('you are now in Asset Turnover Section. Welcome~!');
+        }else{
+            $to = assetPar::where('id', Auth::user()->id)->get();
+
+        }
+
+        return view('assets.turnover.index', compact('to', 'office'));
     }
 
-    public function getParData(Request $id)
+    public function parSearchTurnover(Request $request)
     {
-        $finalParData = [];
-        // dd($id->par_id);
-        $rawParData = assetPar::findorFail($id->par_id);
-        // dd($rawParData->asset);
+        $par_id = $request->input('par_id');
 
-        $unitCost = (float) $rawParData->asset->amount / (int) $rawParData->asset->item_quantity;
-        $quantity = $rawParData->quantity;
+        if (Auth::user()->hasRole('Admin')) {
+            $assetPar = assetPar::where('id', $par_id)
+            ->get();
 
-        $finalParData['id'] = $rawParData->id;
-        $finalParData['name'] = $rawParData->asset->details;
-        $finalParData['quantity'] = $quantity;
-        $finalParData['assignedTo'] = $rawParData->assignedTo;
-        $finalParData['position'] = $rawParData->position;
-        $finalParData['unitCost'] = $unitCost;
-        $finalParData['dateAssigned'] = $rawParData->created_at->toDateString();
-        $finalParData['totalAmount'] = $unitCost * $quantity;
-        return $finalParData;
+        }else{
+            $assetPars = assetPar::find($par_id);
+            
+            $assetPar = $assetPars->asset->purchaseOrder->purchaseRequest->office->where('id', Auth::user()->office_id)->get();
+        }
+ 
+        return response()->json(['assetPar'=>$assetPar]);
     }
 
-    public function getIcsData(Request $id)
+    public function nameSearchTurnover(Request $request)
     {
-        $finalIcsData = [];
-        // dd($id->Ics_id);
-        $rawIcsData = assetIcslip::findorFail($id->ics_id);
-        // dd($rawIcsData->asset);
-
-        $unitCost = (float) $rawIcsData->asset->amount / (int) $rawIcsData->asset->item_quantity;
-        $quantity = $rawIcsData->quantity;
-
-        $finalIcsData['id'] = $rawIcsData->id;
-        $finalIcsData['name'] = $rawIcsData->asset->details;
-        $finalIcsData['quantity'] = $quantity;
-        $finalIcsData['assignedTo'] = $rawIcsData->assignedTo;
-        $finalIcsData['position'] = $rawIcsData->position;
-        $finalIcsData['unitCost'] = $unitCost;
-        $finalIcsData['dateAssigned'] = $rawIcsData->created_at->toDateString();
-        $finalIcsData['totalAmount'] = $unitCost * $quantity;
-        return $finalIcsData;
+        // CONTROLLER FOR NAME AND OFFICE SEARCHING
     }
 
     /**

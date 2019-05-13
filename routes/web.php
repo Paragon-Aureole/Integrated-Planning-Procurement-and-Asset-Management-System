@@ -191,10 +191,12 @@ Route::get('migrateIcsAssets/print/{id}', 'MigratedIcsAssetsController@print')->
 Route::get('migrateAssets/delete/{id}', 'MigratedAssetsController@destroy')->name('migrateAssets.destroy');
 Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsController@printMigratedAssets');
 Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
-
-Route::resource('AssetTurnover', 'AssetTurnoverController');
 Route::get('migrateAssets/print/{id}', 'MigratedAssetsController@print')->name('migrateAssets.print');
+
+// TURNOVER
 Route::resource('AssetTurnover', 'AssetTurnoverController');
+Route::get('parSearchTurnover', 'AssetTurnoverController@parSearchTurnover');
+Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
 
 //activity log
 Route::resource('logs', 'ActivityLogController');
