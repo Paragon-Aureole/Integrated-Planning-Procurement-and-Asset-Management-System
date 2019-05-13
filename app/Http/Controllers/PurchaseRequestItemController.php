@@ -25,7 +25,7 @@ class PurchaseRequestItemController extends Controller
 
         $ppmp_item = PpmpItem::whereHas('ppmp', function ($query) use ($pr_code, $pr){
             $query->where('ppmp_year', $pr_code[2])->where('office_id', $pr->office_id);
-        })->get(); 
+        })->where('item_stock', '>', 0)->get(); 
         return view('pr.pr_item.addpritem', compact('pr', 'ppmp_item'));
     }
 
