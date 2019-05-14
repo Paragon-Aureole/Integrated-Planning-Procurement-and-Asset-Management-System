@@ -213,12 +213,12 @@
 
 {{-- MODAL FOR ITEM CLASSIFICATION --}}
 <div class="modal fade" id="itemsProcured">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <!-- Modal Header -->
       <form action="{{route('assets.store')}}" id="assetClassificationForm" method="post">
         {{csrf_field()}}
-        Distribution Number:<input type="text" name="voucherNo"></input>
+        Distribution Number:<input type="text" name="voucherNo" />
         <div class="modal-header">
           <h5>Classify Items Procured</h5>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -233,8 +233,8 @@
                 <th>Item Name</th>
                 <th>Amount</th>
                 <th>Item Quantity</th>
-                <th>ICS</th>
                 <th>PAR</th>
+                <th>ICS</th>
                 <th>Asset Type</th>
               </tr>
             </thead>
@@ -251,7 +251,7 @@
 
 {{-- MODAL FOR ASSET DISTRIBUTION --}}
 <div class="modal fade" id="assetDistribution">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
@@ -272,6 +272,7 @@
                 <input type="text" name="selectedItemName" class="form-control" aria-label="Sizing example input"
                   aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
+              <input type="text" id="qtyValPar">
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
@@ -332,10 +333,8 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
-              <label>Specifications:</label><br>
-              <textarea name="selectedItemSpecifications" cols="30" rows="10"
-                class="form-control form-control-sm"></textarea>
+            <div class="col-md-12" id="descriptionPar">
+
             </div>
           </div>
         </div>
@@ -352,12 +351,13 @@
                 <input type="text" name="selectedItemName" class="form-control" aria-label="Sizing example input"
                   aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
+              <input type="text" id="qtyValIcs" hidden>
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
                 </div>
                 {{-- QUANTITY SELECITION HERE --}}
-                <select name="selectedItemQty" class="custom-select">
+                <select name="selectedItemQty" id="selectedItemQty" class="custom-select">
                   <option>None</option>
                 </select>
               </div>
@@ -396,10 +396,8 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
-              <label>Description:</label><br>
-              <textarea name="selectedItemDescription" cols="30" rows="10"
-                class="form-control form-control-sm"></textarea>
+            <div class="col-md-12" id="descriptionIcs">
+              
             </div>
           </div>
         </div>

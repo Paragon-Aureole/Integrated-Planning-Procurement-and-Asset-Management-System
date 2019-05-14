@@ -46,7 +46,7 @@ class PurchaseRequestController extends Controller
             $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
             ->whereMonth('created_at', date('m'))
             ->where('is_supplemental', 0)
-            ->orWhere('pr_status', 0)
+            // ->orWhere('pr_status', 0)
             ->where('office_id' , $user->office_id)
             ->get();
         }

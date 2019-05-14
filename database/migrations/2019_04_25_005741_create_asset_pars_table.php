@@ -18,7 +18,7 @@ class CreateAssetParsTable extends Migration
             // $table->integer('purchase_order_id')->unsigned()->nullable()->index();
             $table->integer('asset_id')->unsigned()->nullable()->index();
             $table->integer('quantity');
-            $table->string('description')->default('N/A');
+            // $table->string('description')->default('N/A');
             $table->string('property_no')->nullable()->default('');
             $table->string('assignedTo');
             $table->string('position');

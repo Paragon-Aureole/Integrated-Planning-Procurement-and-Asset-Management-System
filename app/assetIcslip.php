@@ -30,4 +30,9 @@ class assetIcslip extends Model
     {
         return $this->hasOne(editDistributedAsset::class);
     }
+
+    public function assetIcslipItem()
+    {
+        return $this->hasMany(AssetIcslipItem::class);
+    }
 }

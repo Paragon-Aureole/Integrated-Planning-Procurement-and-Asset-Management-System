@@ -27,6 +27,7 @@ class AssetTurnoverController extends Controller
         if (Auth::user()->hasRole('Admin')) {
             $office = Office::all();
             $to = assetPar::all();
+            $currentOfficeId = Auth::user()->office_id;
 
         }else{
             $to = assetPar::all();

@@ -16,6 +16,8 @@ use App\assetType;
 use App\assetPar;
 use App\assetIcslip;
 use App\assetTurnover;
+
+use App\AssetIcslipItem;
 use PDF;
 use App;
 
@@ -191,7 +193,7 @@ class assetController extends Controller
     public function saveNewPar(Request $request)
     {
         $items = $request->input('data');
-        // dd($items);
+        dd($items);
 
         assetPar::create([
             'asset_id' => $items[0],
@@ -215,16 +217,30 @@ class assetController extends Controller
     public function saveNewIcs(Request $request)
     {
         $items = $request->input('data');
-        // dd($items);
+        dd($items);
 
         assetIcslip::create([
             'asset_id' => $items[0],
             'quantity' => $items[1],
-            'description' => $items[2],
             'assignedTo' => $items[3],
             'position' => $items[4],
             'useful_life' => $items[5]
         ]);
+
+        // dd(print_r($items));
+
+        // $bekkel = [];
+        for ($i=0; $i < count($items[2]); $i++) { 
+            // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
+            
+                AssetIcslipItem::create([
+                    'asset_icslip_id' => $items[0],
+                    'description' => $items[2][$i]
+                ]);
+           
+        }
+
+        // dd($bekkel);
 
         asset::find($items[0])->decrement('item_stock', $items[1]);
 

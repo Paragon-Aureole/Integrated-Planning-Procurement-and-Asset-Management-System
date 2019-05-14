@@ -164,6 +164,16 @@
                   $('[name=selectedItemDateAssigned]').val(today);
 
                   getClassifiedItemQtyNo(itemData['id']).then(function (qtyData) {
+                        $('#qtyValPar').val('');
+                        $('#qtyValPar').val(qtyData);
+
+                        $('#descriptionPar').empty();
+                        for (var i = 1; i <= qtyData; i++) {
+                            
+                            $('#descriptionPar').append('<label>Description:'+ i +'</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
+                            
+                        }
+                    
                       fillQuantityDropdown(qtyData);
                       setTotalAmount();
                   })
@@ -187,7 +197,18 @@
                   $('[name=selectedItemDateAssigned]').val(today);
 
                   getClassifiedItemQtyNo(itemData['id']).then(function (qtyData) {
-                      fillQuantityDropdown(qtyData);
+                    $('#qtyValIcs').val('');
+                    $('#qtyValIcs').val(qtyData);
+
+                    $('#descriptionIcs').empty();
+                    for (var i = 1; i <= qtyData; i++) {
+                        
+                        $('#descriptionIcs').append('<label>Description:'+ i +'</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
+                        
+                    }
+                    console.log(qtyData);
+                    fillQuantityDropdown(qtyData);
+                      
                   })
 
                   $('[name=selectedItemICSNo]').val(parseInt(icsNo) + 1);
@@ -234,7 +255,9 @@
               var itemData = [];
 
               var itemQty = $('[name=selectedItemQty]').val();
-              var itemDescription = $('[name=selectedItemSpecifications]').val();
+              var itemDescription = $('textarea[name="selectedItemDescription[]"]').map(function () {
+                return $(this).val();
+            }).get();
               var itemEmployeeName = $('[name=selectedItemEmployeeName]:eq(0)').val();
               var itemEmployeePosition = $('[name=selectedItemEmployeePosition]:eq(0)').val();
               var itemID = $('[name=currentItemID]').val();
@@ -246,13 +269,15 @@
               itemData[4] = itemEmployeePosition;
 
               console.log(itemData);
-              saveClassifiedAssetAssign(itemData, 'par');
+            //   saveClassifiedAssetAssign(itemData, 'par');
           } else {
               var itemData = [];
 
-              var itemQty = $('[name=selectedItemQty]').val();
+              var itemQty = $('#qtyVal').val();
               var itemEstimatedUsefulLife = $('[name=selectedItemEstimatedUsefulLife]').val();
-              var itemDescription = $('[name=selectedItemDescription]').val();
+              var itemDescription = $('textarea[name="selectedItemDescription[]"]').map(function () {
+                    return $(this).val();
+                }).get();
               var itemEmployeeName = $('[name=selectedItemEmployeeName]:eq(1)').val();
               var itemEmployeePosition = $('[name=selectedItemEmployeePosition]:eq(1)').val();
               var itemID = $('[name=currentItemID').val();
@@ -455,8 +480,8 @@
                   details,
                   amount,
                   item_stock,
-                  isICS,
                   isPAR,
+                  isICS,
                   asset_type
               });
           }
@@ -493,5 +518,28 @@
               ]
           });
       }
+
+        $('#selectedItemQty').on('change', function () {
+            var qtyData = $('#selectedItemQty').val()
+            $('#descriptionIcs').empty();
+            $('#qtyValIcs').val('');
+            $('#qtyValIcs').val(qtyData);
+            for (var i = 1; i <= qtyData; i++) {
+                $('#descriptionIcs').append('<label>Description:'+ i +'</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
+                
+            }
+          });
+
+        $('#selectedItemQty').on('change', function () {
+            var qtyData = $('#selectedItemQty').val()
+            $('#descriptionPar').empty();
+            $('#qtyValPar').val('');
+            $('#qtyValPar').val(qtyData);
+            for (var i = 1; i <= qtyData; i++) {
+                $('#descriptionPar').append('<label>Description:'+ i +'</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
+                
+            }
+          });
+          
 
   });
