@@ -190,7 +190,11 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<button class="btn btn-primary" type="submit">Submit</button>
+												<button class="btn btn-danger" type="submit" data-popout="true"
+												data-toggle="confirmation" data-title="Are you sure?" 
+												data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
+												data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+												data-content="Delete User" data-placement="top">Deactivate User</button>
 											</div>
 										</form>
 									</div>

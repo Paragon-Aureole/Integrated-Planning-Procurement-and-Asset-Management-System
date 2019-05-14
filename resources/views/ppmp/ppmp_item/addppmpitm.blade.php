@@ -99,7 +99,7 @@
         <div class="form-group col-md-6">
           <label class="small">Estimated Cost per Unit:</label>
           <input oninput="multiply();" id="itemCost" class="form-control form-control-sm money {{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost' , 0.00)}}" name="item_cost" required="required">
-          <div class="invalid-feedback">
+          <div id="itemCost-Feedback" class="invalid-feedback">
               @if ($errors->has('item_cost'))
                 {{$errors->first('item_cost')}}
               @else
@@ -110,7 +110,7 @@
         <div class="form-group col-md-6">
           <label class="small">Estimated Budget per Item:</label>
           <input oninput="divide();" id="itemBudget" class="form-control form-control-sm money{{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', 0.00) }}" name="item_budget" required="required">
-          <div class="invalid-feedback">
+          <div id="itemBudget-Feedback" class="invalid-feedback">
               @if ($errors->has('item_budget'))
                 {{$errors->first('item_budget')}}
               @else
@@ -119,7 +119,7 @@
           </div>
         </div>
         <div class="form-group col-md-12 text-right">
-          <button type="submit" class="btn btn-sm btn-primary" id="btn_submit">Add PPMP Item</button>
+          <button class="btn btn-sm btn-primary" id="btn_submit">Add PPMP Item</button>
         </div>
       </div>
     </div>

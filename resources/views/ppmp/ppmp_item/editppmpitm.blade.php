@@ -23,6 +23,7 @@
         <div class="form-group col-md-12">
           <label class="small">Code:</label>
           <div class="input-group mb-3">
+              <input type="text" id="ppmp_id" value="{{$ppmp->id}}" hidden>
             <select class="custom-select custom-select-sm {{ $errors->has('item_code') ? 'is-invalid' : '' }}" name="item_code" required="required">
               @foreach($ppmp->office->ppmpItemCode as $codes) 
                 <option value="{{$codes->id}}" {{ old('item_code', $ppmp_item->ppmp_item_code_id) == $codes->id ? 'selected' : '' }}>{{$codes->code_description}}</option>

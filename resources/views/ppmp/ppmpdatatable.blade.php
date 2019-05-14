@@ -27,7 +27,7 @@
           </a>
         @else
           {{-- @if($ppmp->ppmpItem()->count() > 1) --}}
-          <a href="{{route('activate.ppmp', $ppmp->id)}}" title="Activate Signatory" class="btn btn-sm btn-secondary"
+          <a href="{{route('activate.ppmp', $ppmp->id)}}" class="btn btn-sm btn-secondary"
             data-popout="true"
             data-toggle="confirmation" data-title="Are you sure?" 
             data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
@@ -43,7 +43,11 @@
           <a href="{{route('print.ppmp', $ppmp->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
         @endif
         @can('full control')
-   	  	  <a href="{{route('delete.ppmp', $ppmp->id)}}" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
+   	  	  <a href="{{route('delete.ppmp', $ppmp->id)}}" class="btn btn-sm btn-danger" data-popout="true"
+              data-toggle="confirmation" data-title="Are you sure?" 
+              data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
+              data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+              data-content="Delete PPMP Form {{$ppmp->ppmp_year}}?" data-placement="top" ><i class="fas fa-minus"></i></a>
          </td>
         @endcan
    	  </tr>

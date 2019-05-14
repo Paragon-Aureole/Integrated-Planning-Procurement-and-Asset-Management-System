@@ -35,7 +35,9 @@
         {{-- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#reasonModal">
             <i class="fas fa-minus"></i>
         </button> --}}
-        <a href="{{route('pr.destroy', $pr->id)}}" class="btn btn-sm btn-danger">
+        <a href="{{route('destroy.pr', $pr->id)}}" class="btn btn-sm btn-danger"
+        
+        >
           <i class="fas fa-minus"></i>
         </a>
         @endcan

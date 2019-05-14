@@ -13,7 +13,7 @@
     <div class="card-header pt-2 pb-2">Acceptance & Inspection Report</div>
     <div class="card-body">
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-6">
           <h6 class="card-title">
             Available Acceptance & Inspection Reports
           </h6>
@@ -23,6 +23,7 @@
                 <tr>
                   <th>ID</th>
                   <th>PR Code</th>
+                  <th>Purpose</th>
                   <th>Date Created</th>
                   <th>Action</th>
                 </tr>
@@ -32,6 +33,7 @@
                 @if ($pr->created_inspection == 0)
                 <tr>
                   <td>{{$pr->id}}</td>
+                  <td>{{$pr->pr_purpose}}</td>
                   <td>{{$pr->pr_code}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                   <td>
@@ -53,7 +55,7 @@
         </div>
 
         <!-- table -->
-        <div class="col-md-7">
+        <div class="col-md-6">
           <h6 class="card-title">Registered Acceptance & Inspection Reports</h6>
           <div class="table-responsive">
             <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">

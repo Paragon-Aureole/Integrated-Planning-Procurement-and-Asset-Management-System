@@ -16,6 +16,9 @@
          <div class="card-body">
            <div class="row">
                 <div class="col-md-5">
+                        <h6 class="card-title">
+                                Edit Purchase Order
+                        </h6>
                     <form action="" method="" class="needs-validation" novalidate>
                         {{ csrf_field() }}
                         <div class="form-row">
@@ -46,6 +49,12 @@
                             <div class="form-group col-md-6">
                                 <label class="small">Payment Term:</label>
                                 <input class="form-control form-control-sm" type="text" value="{{$ind_po->payment_term}}" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label class="small">Reason:</label>
+                                <textarea class="form-control form-control-sm" name="edit_reason" required></textarea>
                             </div>
                         </div>
                         <div class="form-row">

@@ -11,9 +11,9 @@
             </tr>
           </thead>
           <tbody id="itemRow" name="items_dt">
-            @foreach($pr->prItem()->get() as $items)
+            @foreach($pr->prItem()->get() as $key => $items)
             <tr>
-              <td></td>
+              <td>{{$key+ 1}}</td>
               <td>{{$items->ppmpItem->item_description}}</td>
               <td>{{$items->item_quantity}}</td>
               <td>{{$items->ppmpItem->measurementUnit->unit_code}}</td>
