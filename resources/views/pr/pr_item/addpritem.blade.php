@@ -47,24 +47,27 @@
 			  <form action="{{route('add.pritm', $pr->id)}}" method="POST" class="needs-validation" novalidate>
 			  	{{csrf_field()}}
 			  	<div class="row">
-				  	<div class="form-group col-md-6">
-			          <label class="small">Item:</label>
-			          <select class="custom-select custom-select-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" id="itemDesc" name="item_description" required="required">
-			          	<option value="">Select Item</option>
-						@foreach($ppmp_item as $item)
-							<option value="{{$item->id}}">{{$item->item_description}}</option>
-						@endforeach
-			          </select>
-			          <div class="invalid-feedback">  
-			              @if ($errors->has('item_description'))
-			                {{$errors->first('item_description')}}
-			              @else
-			                Item Descripiton is required.
-			              @endif  
-			          </div>
-			        </div>
+							<div class="col-md-6 form-group">
+									<span class="text-danger">*</span> <label for="itemDesc" class="small">Item Description:</label>
+										
+								<input list="itemDescs" id="itemDesc" class="form-control form-control-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" required>
+									<datalist id="itemDescs">
+										@foreach($ppmp_item as $item)
+											<option data-value = "{{$item->id}}">{{$item->item_description}}</option>
+										@endforeach
+									</datalist>
+								<div class="invalid-feedback">
+									@if ($errors->has('item_description'))
+										{{$errors->first('item_description')}}
+									@else
+										Select a valid item.
+									@endif
+								</div>
+										
+								<input name="item_description" id="itemDesc-hidden" type="hidden" required>
+							</div>
 			        <div class="form-group col-md-3">
-			          <label class="small">Quantity:</label>
+									<span class="text-danger">*</span> <label class="small">Quantity:</label>
 			          <select oninput="multiply();" id="itemQty" class="custom-select custom-select-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" name="item_quantity" required="required">
 							
 			          </select>
@@ -77,7 +80,7 @@
 			          </div>
 			        </div>
 			        <div class="form-group col-md-3">
-			          <label class="small">Unit:</label>
+									<span class="text-danger">*</span> <label class="small">Unit:</label>
 			          <input class="form-control form-control-sm {{ $errors->has('item_unit') ? 'is-invalid' : '' }}" required="required" id="itemUnit" disabled>
 			          <input type="hidden" name="item_unit" value="{{old('item_unit')}}">
 			          <div class="invalid-feedback">  
@@ -89,7 +92,7 @@
 			          </div>
 			        </div>
 			        <div class="form-group col-md-6">
-			          <label class="small">Cost per Unit:</label>
+									<span class="text-danger">*</span> <label class="small">Cost per Unit:</label>
 			          <input oninput="multiply();" id="itemCost" type="text" class="form-control form-control-sm" name="item_cpu" required="">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_cpu'))
@@ -100,7 +103,7 @@
 			          </div>
 			        </div>
 			        <div class="form-group col-md-6">
-			          <label class="small">Cost per Item:</label>
+									<span class="text-danger">*</span> <label class="small">Cost per Item:</label>
 			          <input id="itemBudget" type="text" class="form-control form-control-sm" name="item_cpi" required="required" readonly="required">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_cpi'))

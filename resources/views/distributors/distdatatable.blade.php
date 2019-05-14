@@ -16,7 +16,13 @@
       <td>
         <a href="{{ route('show.dist', $dist->id) }}" target="_blank" class="btn btn-sm btn-secondary" title="View Certificate"><i class="far fa-file-pdf"></i></a>
         <a href="{{route('edit.dist', $dist->id)}}" class="btn btn-sm btn-warning" title="Edit"><i class="fas fa-edit"></i></a>
-        <a href="{{route('delete.dist', $dist->id)}}" class="btn btn-sm btn-danger" title="Delete"><i class="fas fa-minus"></i></a>
+        <a href="{{route('delete.dist', $dist->id)}}" class="btn btn-sm btn-danger" title="Delete"><i class="fas fa-minus"
+          data-popout="true"
+          data-toggle="confirmation" data-title="Are you sure?" 
+          data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
+          data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+          data-content="Delete Sole Distributor" data-placement="top"
+        ></i></a>
       </td>
     </tr>
   @endforeach

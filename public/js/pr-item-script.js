@@ -1,11 +1,31 @@
 $(document).ready(function() {
 
-		 $('#itemDesc').on('change', function(){
-            $('select[name="item_quantity"]').empty()
-            var itemId = $(this).val();
-            if(itemId) {
+		 $("#itemDesc").on('input', function(e){
+            
+                
+            var $input = $(e.target),
+            $options = $('#' + $input.attr('list') + ' option'),
+            $hiddenInput = $('#' + $input.attr('id') + '-hidden'),
+            label = $input.val();
+    
+            $hiddenInput.val(label);
+        
+            for(var i = 0; i < $options.length; i++) {
+                var $option = $options.eq(i);
+        
+                if($option.val() === label) {
+                    $hiddenInput.val( $option.attr('data-value') );
+                    break;
+                }
+            }
+
+            $('select[name="item_quantity"]').empty();
+            var idddd = $('[name="item_description"]').val();
+
+
+            if(idddd) {
                 $.ajax({
-                    url: 'http://ipams.test/pr/item/get/'+itemId,
+                    url: 'http://ipams.test/pr/item/get/'+idddd,
                     type:"GET",
                     dataType:"json",
                    
@@ -31,14 +51,6 @@ $(document).ready(function() {
             }
         });
 
-       
-   
-        var table = document.getElementsByName('items_dt')[0],
-            rows = table.getElementsByTagName('tr'),
-            text = 'innerText';
-        for (var i = 0, len = rows.length; i < len; i++){
-            rows[i].children[0][text] = i+1;
-        }
 
     });
 

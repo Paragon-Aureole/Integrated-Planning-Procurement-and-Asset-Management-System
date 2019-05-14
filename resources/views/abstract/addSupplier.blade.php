@@ -148,7 +148,7 @@
                         <tr class="text-center thead-light">
                   
                             @foreach ($querySupplier as $indexkey1 => $supplierNo)
-                                <th colspan="2" >Supplier {{$indexkey1+1}}</th> 
+                                <th colspan="2" >Supplier {{$indexkey1}}</th> 
                             @endforeach
                             @for ($i = $countSupplier; $i <= 2; $i++)
                                 <th colspan="2">Supplier {{$i+1}}</th>

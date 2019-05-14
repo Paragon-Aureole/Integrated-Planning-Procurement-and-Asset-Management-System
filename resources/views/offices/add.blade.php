@@ -21,7 +21,7 @@
 	  	{{csrf_field()}}
 	  	<div class="row">
         <div class="form-group col-md-12">
-          <label for="office_name" class="small">Office Name:</label>
+          <span class="text-danger">*</span><label for="office_name" class="small">Office Name:</label>
           <input class="form-control form-control-sm {{ $errors->has('office_name') ? 'is-invalid' : '' }}" type="text" name="office_name" value="{{ old('office_name') }}" required>
           <div class="invalid-feedback">  
             @if ($errors->has('office_name'))
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label for="office_code" class="small">Office Code:</label>
+            <span class="text-danger">*</span><label for="office_code" class="small">Office Code:</label>
           <input class="form-control form-control-sm {{ $errors->has('office_code') ? 'is-invalid' : '' }}" type="text" name="office_code" value="{{ old('office_code') }}" required>
           <div class="invalid-feedback">  
             @if ($errors->has('office_code'))
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="category" class="small">Category:</label>
+            <span class="text-danger">*</span><label for="category" class="small">Category:</label>
           <select class="custom-select custom-select-sm {{ $errors->has('category') ? 'is-invalid' : '' }}" name="category" required>
             <option value='1'>Department</option>
             <option value='2'>Section</option>

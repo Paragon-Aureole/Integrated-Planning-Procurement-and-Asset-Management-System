@@ -21,7 +21,7 @@
 			  	{{csrf_field()}}
 				<div class="row">
 					<div class="col-md-12 form-group">
-					  <label for="username" class="small">Username:</label>
+							<span class="text-danger">*</span><label for="username" class="small">Username:</label>
 		    		  <input type="text" class="form-control form-control-sm {{ $errors->has('username') ? 'is-invalid' : '' }}"
 		    		  name="username" id="username" value="{{old('username')}}" required>
 		    		  <div class="invalid-feedback"> 
@@ -34,7 +34,7 @@
 					</div>
 					<div class="col form-group">
 
-					  <label for="password" class="small">Password:</label>
+							<span class="text-danger">*</span><label for="password" class="small">Password:</label>
 		    		  <input type="password" class="form-control form-control-sm {{ $errors->has('password') ? 'is-invalid' : '' }}" 
 		    		  name="password" id="password" value="{{old('password')}}" required>
 		    		  <div class="invalid-feedback">  
@@ -47,7 +47,7 @@
 					</div>
 
 					<div class="col form-group">
-					  <label for="confirm" class="small">Confirm Password:</label>
+							<span class="text-danger">*</span><label for="confirm" class="small">Confirm Password:</label>
 		    		  <input type="password" class="form-control form-control-sm {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}" id="confirm" name="password_confirmation" required>
 		    		  <div class="invalid-feedback">  
 	                  @if ($errors->has('password_confirmation'))
@@ -59,7 +59,7 @@
 					</div>
 
 					<div class=" col-md-12 form-group">
-				  	  <label for="wholename" class="small">Wholeame:</label>
+				  	  <span class="text-danger">*</span><label for="wholename" class="small">Whole Name:</label>
 		    	  	  <input type="text" class="form-control form-control-sm {{ $errors->has('wholename') ? 'is-invalid' : '' }}"
 		    	  	  name="wholename" id="wholename" value="{{old('wholename')}}" required>
 		    	  	  <div class="invalid-feedback">  
@@ -72,24 +72,24 @@
 				  	</div>
 
 					<div class="col-md-12 form-group">
-				  	  <label for="officeInput" class="small">Office:</label>
+				  	  <span class="text-danger">*</span> <label for="officeInput" class="small">Office:</label>
 		    	  	  {{-- <select id="officeInput" class="custom-select custom-select-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" name="office" required> --}}
-										<input list="offices" id="office" class="form-control form-control-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" required>
-										<datalist id="offices">
-										@foreach($offices as $department)
-												<option data-value = "{{$department->id}}" value ="{{$department->office_code}}">{{$department->office_name}}</option>
-										@endforeach
-										</datalist>
-		    	  	  {{-- </select> --}}
-		    	  	  <div class="invalid-feedback">
-		    	  	  @if ($errors->has('office'))
-	                  	{{$errors->first('office')}}
-	                  @else
-	                    Select a valid office.
-	                  @endif
-								</div>
+						<input list="offices" id="office" class="form-control form-control-sm {{ $errors->has('office') ? 'is-invalid' : '' }}" required>
+							<datalist id="offices">
+								@foreach($offices as $department)
+									<option data-value = "{{$department->id}}" value ="{{$department->office_code}}">{{$department->office_name}}</option>
+								@endforeach
+							</datalist>
+		    	  	  	{{-- </select> --}}
+						<div class="invalid-feedback">
+						@if ($errors->has('office'))
+							{{$errors->first('office')}}
+						@else
+							Select a valid office.
+						@endif
+						</div>
 								
-								<input name="office" id="office-hidden" type="hidden" required>
+						<input name="office" id="office-hidden" type="hidden" required>
 					</div>
 
 					<pre id="result"></pre>
@@ -97,14 +97,14 @@
 					<div id="supervisorCheck" class="col-md-12 form-group">
 							<div class="form-check">
 								<label class="form-check-label">
-									<input type="checkbox" class="form-check-input" name="check_supervisor"> Is GSO Supervisor?
+									<input type="checkbox" class="form-check-input" name="check_supervisor"> <span class="text-danger">*</span> Is GSO Supervisor?
 								</label>
 								<input type="hidden" name="is_supervisor" value="0">
 							</div>
 					</div>
 
 					<div class="col-md-7 form-group">
-					  <label for="contacts" class="small">Contact Number:</label>
+							<span class="text-danger">*</span><label for="contacts" class="small">Contact Number:</label>
 			    	  <input type="text" class="form-control form-control-sm {{ $errors->has('contacts') ? 'is-invalid' : '' }}"
 			    	   id="contacts" name="contacts" required>
 			    	  <div class="invalid-feedback">
@@ -117,7 +117,7 @@
 					</div>
 
 					<div class="col-md-5 form-group">
-					  <label for="userRole" class="small">User Type:</label>
+							<span class="text-danger">*</span><label for="userRole" class="small">User Type:</label>
 			    	  <select id="userRole" class="custom-select custom-select-sm" name="user_role" required>
 			    	  	<option value = "">-Select One-</option>
 			    	  	@foreach($roles as $role)
@@ -152,7 +152,7 @@
 								
 								<!-- Modal Header -->
 								<div class="modal-header">
-									<h4 class="modal-title">Deactivate User Account</h4>
+									<h4 class="modal-title">Deactivate User Account </h4>
 									<button type="button" class="close" data-dismiss="modal">&times;</button>
 								</div>
 									
@@ -178,7 +178,11 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<button class="btn btn-primary" type="submit">Submit</button>
+												<button class="btn btn-danger" type="submit"  data-popout="true"
+												data-toggle="confirmation" data-title="Are you sure?" 
+												data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
+												data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+												data-content="Delete User" data-placement="top">Deactivate User</button>
 											</div>
 										</form>
 									</div>

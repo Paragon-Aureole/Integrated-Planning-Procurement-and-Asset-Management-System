@@ -94,7 +94,7 @@
     });
 
 
-    $("#submitPpmp").click(function(e){
+    $("#submitPpmp").on('click', function(e){
       
       var ppmp_year = $('input[name="ppmp_year"]').val();
       var current_year=new Date().getFullYear();
@@ -103,8 +103,6 @@
         e.preventDefault();
         $('input[name="ppmp_year"]').addClass('is-invalid');
         $('#feedback').html("Invalid PPMP Year.");
-      }else{
-        e.submit();
       }
     });
     

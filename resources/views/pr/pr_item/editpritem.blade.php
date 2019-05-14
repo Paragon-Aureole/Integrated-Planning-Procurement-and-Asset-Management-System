@@ -50,13 +50,13 @@
 			  	{{ method_field('put') }}
 			  	<div class="row">
 				  	<div class="form-group col-md-6">
-			          <label class="small">Item Description:</label>
+			          <span class="text-danger">*</span><label class="small">Item Description:</label>
 			          <input type="text" class="form-control form-control-sm" value="{{$pr_item->ppmpItem->item_description}}" readonly>
 			          <input type="hidden" name="item_description" value="{{$pr_item->ppmpItem->id}}">
 			        </div>
 			        <div class="form-group col-md-3">
 			          <label class="small">Quantity:</label>
-			          <select oninput="multiply();" id="itemQty" class="form-control form-control-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" name="item_quantity" required="required">
+			          <select oninput="multiply();" id="itemQty" class="qty form-control form-control-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" name="item_quantity" required="required">
 						@for($i=0; $i <= $pr_item->item_quantity; $i++)
 							<option value="{{$i+1}}">{{$i+1}}</option>
 						@endfor
@@ -70,12 +70,12 @@
 			          </div>
 			        </div>
 			        <div class="form-group col-md-3">
-			          <label class="small">Unit:</label>
+									<span class="text-danger">*</span> <label class="small">Unit:</label>
 			          <input class="form-control form-control-sm" value="{{$pr_item->ppmpItem->measurementUnit->unit_code}}" disabled>
 			        </div>
 			        <div class="form-group col-md-6">
-			          <label class="small">Cost per Unit:</label>
-			          <input oninput="multiply();" id="itemCost" type="text" class="form-control form-control-sm" name="item_cpu" required="" value="{{$pr_item->item_cost}}">
+									<span class="text-danger">*</span> <label class="small">Cost per Unit:</label>
+			          <input oninput="multiply();" id="itemCost" type="text" class="money form-control form-control-sm" name="item_cpu" required="" value="{{$pr_item->item_cost}}">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_cpu'))
 			                {{$errors->first('item_cpu')}}
@@ -85,8 +85,8 @@
 			          </div>
 			        </div>
 			        <div class="form-group col-md-6">
-			          <label class="small">Cost per Item:</label>
-			          <input id="itemBudget" type="text" class="form-control form-control-sm" name="item_cpi" required="required" readonly="required" value="{{$pr_item->item_budget}}">
+									<span class="text-danger">*</span> <label class="small">Cost per Item:</label>
+			          <input id="itemBudget" type="text" class="money form-control form-control-sm" name="item_cpi" required="required" readonly="required" value="{{$pr_item->item_budget}}">
 			          <div class="invalid-feedback">  
 			              @if ($errors->has('item_cpi'))
 			                {{$errors->first('item_cpi')}}
@@ -119,4 +119,10 @@
 	@section('script')
 	<script src="{{asset('js/function-script.js')}}"></script>
 	<script src="{{asset('js/pr-item-script.js')}}"></script>
+	<script>
+		$(document).ready(function() {
+			$('.money').number( true, 2 );
+			// $('.qty').number( true);
+		});
+	</script>
 	@endsection

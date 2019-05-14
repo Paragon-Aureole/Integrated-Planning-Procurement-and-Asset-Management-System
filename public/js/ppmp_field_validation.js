@@ -32,11 +32,39 @@ $(document).ready(function () {
         $("#itemQty").addClass("is-invalid");
         
       } else {
-        console.log('Ok for submimssion');
-       submitForm();
+          if($("#itemQty").val() < 1){
+            $("#qtyFeedback").html("Quantity should be greater than zero.");
+            $("#itemQty").addClass("is-invalid");
+            e.preventDefault();
+          }else if($("#itemCost").val() < 1){
+            $("#itemCost-Feedback").html("Cost per Unit should be greater than zero.");
+            $("#itemCost").addClass("is-invalid");
+            e.preventDefault();
+          }else if($("#itemBudget").val() < 1){
+            $("#itemBudget-Feedback").html("Cost per Unit should be greater than zero.");
+            $("#itemBudget").addClass("is-invalid");
+            e.preventDefault();
+          }else{
+            submitForm();
+          }
       }
     } else {
-      submitForm();
+      if($("#itemQty").val() < 1){
+        $("#qtyFeedback").html("Quantity should be greater than zero.");
+        $("#itemQty").addClass("is-invalid");
+        e.preventDefault();
+      }else if($("#itemCost").val() < 1){
+        $("#itemCost-Feedback").html("Cost per Unit should be greater than zero.");
+        $("#itemCost").addClass("is-invalid");
+        e.preventDefault();
+      }else if($("#itemBudget").val() < 1){
+        $("#itemBudget-Feedback").html("Cost per Unit should be greater than zero.");
+        $("#itemBudget").addClass("is-invalid");
+        e.preventDefault();
+      }else{
+        submitForm();
+      }
+      
     }
   }
 

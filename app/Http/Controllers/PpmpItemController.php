@@ -108,6 +108,7 @@ class PpmpItemController extends Controller
         $ppmp_itemDT = $ppmp->ppmpItem()->get()->groupBy('ppmp_item_code_id');
         $office = Office::findorFail($ppmp->office_id);
         $ppmp_codeDT = $office->ppmpItemCode()->get();
+        // $ppmp_codeDT = $office->with('ppmpItemCode');
         $total = $ppmp->ppmpBudget;
         $units = MeasurementUnit::all();
         $modes = ProcurementMode::all();

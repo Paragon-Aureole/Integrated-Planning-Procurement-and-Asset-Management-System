@@ -109,15 +109,15 @@ Route::get('/ppmp/{ppmp_id}/item/delete/{id}', 'PpmpItemController@destroy')->na
 
 
 //add purchase request
-Route::get('/pr/view', 'PurchaseRequestController@prView');
+Route::get('/pr/view', 'PurchaseRequestController@prView')->name('view.pr');
 Route::get('/pr/archive', 'PurchaseRequestController@archive')->name('archive.pr');
 Route::get('/pr/print/{id}', 'PurchaseRequestController@printPurchaseRequest')->name('print.pr');
 Route::get('/pr/close/{id}', 'PurchaseRequestController@closePurchaseRequest')->name('close.pr');
 Route::get('/pr/dist/get', 'PurchaseRequestController@getDistributorData')->name('get.dist');
+Route::get('/pr/cancel/{id}', 'PurchaseRequestController@destroy')->name('destroy.pr');
 
 Route::get('/pr/supplemental', 'PurchaseRequestController@viewSupplemental')->name('pr.supplemental');
 Route::get('/pr/supplemental/{id}', 'PurchaseRequestController@addSupplemental')->name('pr.addSupplemental');
-
 
 Route::resource('pr', 'PurchaseRequestController');
 

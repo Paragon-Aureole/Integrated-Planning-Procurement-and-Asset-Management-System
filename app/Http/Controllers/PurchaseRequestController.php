@@ -39,15 +39,15 @@ class PurchaseRequestController extends Controller
             $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
               ->whereMonth('created_at', date('m'))
               ->where('is_supplemental', 0)
-              ->orWhere('pr_status', 0)
+            //   ->orWhere('pr_status', 0)
               ->get();
             // $prDT = PurchaseRequest::all();
         } else {
             $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
             ->whereMonth('created_at', date('m'))
             ->where('is_supplemental', 0)
-            // ->orWhere('pr_status', 0)
             ->where('office_id' , $user->office_id)
+            // ->where('pr_status', 0)
             ->get();
         }
 
@@ -168,7 +168,20 @@ class PurchaseRequestController extends Controller
     {
         $pr = PurchaseRequest::findorFail($id);
         $pr->delete();
-        return redirect()->route('view.pr')->with('info', 'PR Cancelled');
+        return redirect()->route('pr.index')->with('info', 'PR Cancelled');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        // $pr = PurchaseRequest::findorFail($id);
+        // $pr->delete();
+        // return redirect()->route('view.pr')->with('info', 'PR Cancelled');
     }
     /**
      * Print the specified resource.
