@@ -12,7 +12,6 @@ class PurchaseOrder extends Model
         'user_id',
         'outline_supplier_id',
         'supplier_tin',
-        'procurement_mode_id',
         'delivery_place',
         'delivery_date',
         'delivery_term',
@@ -32,11 +31,6 @@ class PurchaseOrder extends Model
     public function outlineSupplier()
     {
         return $this->belongsTo(OutlineSupplier::class);
-    }
-
-    public function procurementMode()
-    {
-        return $this->belongsTo(ProcurementMode::class);
     }
 
     public function asset()

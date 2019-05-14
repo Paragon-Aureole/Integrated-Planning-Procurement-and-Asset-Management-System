@@ -35,7 +35,6 @@ class CreateOutlineItemPricesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('purchase_request_id')->references('id')->on('purchase_requests')->onDelete('cascade');
             $table->foreign('outline_supplier_id')->references('id')->on('outline_suppliers')->onDelete('cascade');
-            $table->foreign('procurement_mode_id')->references('id')->on('procurement_modes')->onDelete('cascade');
         });
     }
 

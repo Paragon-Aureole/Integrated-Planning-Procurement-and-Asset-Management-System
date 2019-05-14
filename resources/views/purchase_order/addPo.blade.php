@@ -83,14 +83,8 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text">Supplier</span>
                             </div>
-                            
-                                {{-- <input type="text" name="pr_id" value="">
-                                <input type="text" name="user_id" value="{{Auth::user()->id}}">
-                                <input type="text" name="outline_supplier_id" value=""> --}}
                                 <input type="text" name="pr_id" value="" hidden required>
-                                {{-- <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>  --}}
                                 <input type="text" name="outline_supplier_id" value="" hidden required>
-
                                 <input type="text" value="" name="supplierName" class="form-control" disabled required>
 
                             </div>
@@ -108,17 +102,6 @@
                                 </div>
                                 <input type="text" name="tinNumber" class="form-control">
                             </div>
-                            <br>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                  <label class="input-group-text">Procurement Mode</label>
-                                </div>
-                                <select class="custom-select" name="modeOfProcurement">
-                                  @foreach ($prMode as $modes)
-                                    <option value="{{$modes->id}}">{{$modes->method_name}}</option>
-                                  @endforeach
-                                </select>
-                              </div>
                           </div>
                           <div class="col-md-6">
                               <div class="input-group">

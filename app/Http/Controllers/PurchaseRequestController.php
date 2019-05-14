@@ -212,7 +212,7 @@ class PurchaseRequestController extends Controller
         // $prDT = PurchaseRequest::where('pr_status', 0)->whereHas('prItem')->get();      
         $prDT = PurchaseRequest::whereYear('created_at', date('Y'))
         ->whereMonth('created_at', date('m'))
-        ->where('is_supplemental', 0)
+        ->whereHas('prItem')
         ->get();     
 
         return view('pr.closepr', compact('prDT'));
@@ -260,7 +260,7 @@ class PurchaseRequestController extends Controller
             $add_supplier = $create_abstract->outlineSupplier()->create([
                 'supplier_name' => $pr->agency_name,
                 'supplier_address' => "-",
-                'canvasser_name' => "-",
+                'canvasser_name' => $pr->user->wholename,
                 'canvasser_office' => $pr->office_id,
             ]);
 

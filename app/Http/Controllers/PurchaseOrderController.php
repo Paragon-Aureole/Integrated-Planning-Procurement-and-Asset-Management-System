@@ -94,7 +94,6 @@ class PurchaseOrderController extends Controller
             'user_id' => Auth::user()->id,
             'outline_supplier_id' => $input['outline_supplier_id'],
             'supplier_tin' => $input['tinNumber'],
-            'procurement_mode_id' => $input['modeOfProcurement'],
             'delivery_place' => $input['placeOfDelivery'],
             'delivery_date' => $input['dateOfDelivery'],
             'delivery_term' => $input['deliveryTerm'],

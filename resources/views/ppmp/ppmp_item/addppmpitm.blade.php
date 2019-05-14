@@ -24,7 +24,7 @@
     <div class="col-md-6">
       <div class="row">
         <div class="form-group col-md-12">
-          <label class="small">Code:</label>
+            <span class="text-danger">*</span><label class="small">Code:</label>
           <div class="input-group mb-3">
             <input type="text" id="ppmp_id" value="{{$ppmp->id}}" hidden>
             <select class="custom-select custom-select-sm {{ $errors->has('item_code') ? 'is-invalid' : '' }}" name="item_code" required="required">
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="form-group col-md-12">
-          <label class="small">General Description:</label>
+            <span class="text-danger">*</span><label class="small">General Description:</label>
           <textarea class="form-control form-control-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" rows="3" required></textarea>
           <div class="invalid-feedback">
               @if ($errors->has('item_description'))
@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="form-group col-md-12">
-          <label class="small">Mode of Procurement:</label>
+            <span class="text-danger">*</span><label class="small">Mode of Procurement:</label>
           <select class="custom-select custom-select-sm {{ $errors->has('item_mode') ? 'is-invalid' : '' }}" name="item_mode" required="required">
             @foreach($modes as $mode)
             <option value="{{$mode->id}}" {{ old('item_unit') == $mode->id ? 'selected' : '' }}>{{$mode->method_name}}</option>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label class="small">Quantity:</label>
+            <span class="text-danger">*</span><label class="small">Quantity:</label>
           <input oninput="multiply();" id="itemQty" class="form-control form-control-sm qty{{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" value="{{ old('item_quantity', 0) }}" value="{{ old('item_quantity') }}" name="item_quantity" required="required">
           <div class="invalid-feedback" id="qtyFeedback">
               @if ($errors->has('item_quantity'))
@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label class="small">Unit:</label>
+            <span class="text-danger">*</span><label class="small">Unit:</label>
           <select class="custom-select custom-select-sm {{ $errors->has('item_unit') ? 'is-invalid' : '' }}" name="item_unit" required="required">
             @foreach($units as $unit)
             <option value="{{$unit->id}}" {{ old('item_unit') == $unit->id ? 'selected' : '' }}>{{$unit->unit_description}}</option>
@@ -97,7 +97,7 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label class="small">Estimated Cost per Unit:</label>
+            <span class="text-danger">*</span><label class="small">Estimated Cost per Unit:</label>
           <input oninput="multiply();" id="itemCost" class="form-control form-control-sm money {{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost' , 0.00)}}" name="item_cost" required="required">
           <div id="itemCost-Feedback" class="invalid-feedback">
               @if ($errors->has('item_cost'))
@@ -108,7 +108,7 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label class="small">Estimated Budget per Item:</label>
+            <span class="text-danger">*</span><label class="small">Estimated Budget per Item:</label>
           <input oninput="divide();" id="itemBudget" class="form-control form-control-sm money{{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', 0.00) }}" name="item_budget" required="required">
           <div id="itemBudget-Feedback" class="invalid-feedback">
               @if ($errors->has('item_budget'))
@@ -130,7 +130,7 @@
         @for($s=1; $s<=12; $s++)
         @php $month_num = $s-1; @endphp
          <div class="form-group col-md-4">
-          <label class="small">{{strtoupper(date('M', mktime(0, 0, 0, $s, 1)))}}</label>
+            <span class="text-danger">*</span><label class="small">{{strtoupper(date('M', mktime(0, 0, 0, $s, 1)))}}</label>
           <input class="form-control form-control-sm {{ $errors->has('item_schedule.'.$month_num) ? 'is-invalid' : '' }}" name="item_schedule[{{$month_num}}]" value="{{ old('item_schedule.'.$month_num, '0' ) }}" required>
           <div class="invalid-feedback" id="schedFeedback{{$month_num}}">
               @if ($errors->has('item_schedule.'.$month_num))
