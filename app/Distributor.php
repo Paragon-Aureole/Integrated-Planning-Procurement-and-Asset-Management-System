@@ -25,12 +25,12 @@ class Distributor extends Model
         'distributor_name', 'distributor_address', 'category', 'certificate',
     ];
 
-    public function purchaseRequest()
-    {
-        return $this->hasOne(PurchaseRequest::class);
-    }
     // public function purchaseRequest()
     // {
-    //     return $this->belongsTo('App\PurchaseRequest', 'supplier_id', 'id');
+    //     return $this->hasMany(PurchaseRequest::class);
     // }
+    public function purchaseRequest()
+    {
+        return $this->belongsTo('\App\PurchaseRequest', 'supplier_id', 'id');
+    }
 }

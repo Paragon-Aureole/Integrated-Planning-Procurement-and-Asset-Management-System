@@ -78,6 +78,7 @@ class PurchaseRequestController extends Controller
     public function store(PurchaseRequestRequest $request)
     {
         $input = $request->all();
+
         $add_pr = PurchaseRequest::create([
             'signatory_id' => $input['pr_requestor'],
             'user_id' => Auth::id(),
@@ -171,18 +172,7 @@ class PurchaseRequestController extends Controller
         return redirect()->route('pr.index')->with('info', 'PR Cancelled');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // $pr = PurchaseRequest::findorFail($id);
-        // $pr->delete();
-        // return redirect()->route('view.pr')->with('info', 'PR Cancelled');
-    }
+
     /**
      * Print the specified resource.
      *
@@ -257,7 +247,45 @@ class PurchaseRequestController extends Controller
     public function closePurchaseRequest($id)
     {
        $pr = PurchaseRequest::findorFail($id);
-       $pr->update(['pr_status' => 1]);
+
+       if($pr->supplier_type == 2){
+
+
+            $create_abstract = $pr->outlineQuotation()->create([
+                'user_id' => Auth::user()->id,
+                "outline_comment" => "Sole Distributor(Government Agency)",
+                "outline_detail" => "Items"
+            ]);
+
+            $add_supplier = $create_abstract->outlineSupplier()->create([
+                'supplier_name' => $pr->agency_name,
+                'supplier_address' => "-",
+                'canvasser_name' => "-",
+                'canvasser_office' => $pr->office_id,
+            ]);
+
+            $items = $pr->prItem()->get();
+            
+            foreach ($items as $key => $price) {
+                $add_prices = $add_supplier->outlinePrice()->create([
+                    'pr_item_id' => $price->id,
+                    'final_cpu' =>  0,
+                    'final_cpi' => 0
+                ]);
+            }
+             
+            
+            $update_pr = $pr->update([
+                'pr_status' => 1,
+                'created_rfq' => 1,
+                'created_abstract' => 1,
+            ]);
+
+        
+       }else{
+        $pr->update(['pr_status' => 1]);
+       }
+       
 
        activity('Purchase Request')
         ->performedOn($pr)
