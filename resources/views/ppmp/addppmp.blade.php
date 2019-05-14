@@ -21,7 +21,7 @@
         {{csrf_field()}}
         <div class="row">
           <div class="form-group col-md-12">
-            <label for="ppmpYear" class="small">PPMP Year:</label>
+            <span class="text-danger">*</span><label for="ppmpYear" class="small">PPMP Year:</label>
             <input class="form-control form-control-sm {{ $errors->has('ppmp_year') ? 'is-invalid' : '' }}" type="text" name="ppmp_year" value="{{ old('ppmp_year') }}" required>
             <div id="feedback" class="invalid-feedback">  
               @if ($errors->has('ppmp_year'))
@@ -34,7 +34,7 @@
 
           @role('Admin')
           <div class="col-md-12 form-group">
-              <label for="ppmpOffice" class="small">Office:</label>
+              <span class="text-danger">*</span><label for="ppmpOffice" class="small">Office:</label>
                 <select id="ppmpOffice" class="custom-select custom-select-sm {{ $errors->has('office_id') ? 'is-invalid' : '' }}" name="office_id" required>
                   <option value = "">-Select One-</option>
                 @foreach($offices as $department)

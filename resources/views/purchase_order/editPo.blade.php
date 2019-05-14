@@ -19,8 +19,9 @@
                         <h6 class="card-title">
                                 Edit Purchase Order
                         </h6>
-                    <form action="" method="" class="needs-validation" novalidate>
+                    <form action="{{route('po.update', $ind_po->id)}}" method="POST" class="needs-validation" novalidate>
                         {{ csrf_field() }}
+                        {{method_field('PUT')}}
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label class="small">Supplier Name:</label>
@@ -34,26 +35,30 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label class="small">TIN Number:</label>
-                                <input class="form-control form-control-sm" type="text" value="{{$ind_po->supplier_tin}}" required>
+                                <input class="form-control form-control-sm" name="supplier_tin" type="text" value="{{$ind_po->supplier_tin}}">
                             </div>  			
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label class="small">Place of Delivery:</label>
-                                <input class="form-control form-control-sm" type="text" value="{{$ind_po->delivery_place}}"  required>
+                                <input class="form-control form-control-sm" type="text" name="delivery_place" value="{{$ind_po->delivery_place}}"  required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="small">Date of Delivery:</label>
+                                <input class="form-control form-control-sm" type="date" name="delivery_date" value="{{$ind_po->delivery_date}}" >
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label class="small">Delivery Term:</label>
-                                <input class="form-control form-control-sm" type="text" value="{{$ind_po->delivery_term}}" required>
+                                <input class="form-control form-control-sm" type="text" name="delivery_term" value="{{$ind_po->delivery_term}}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="small">Payment Term:</label>
-                                <input class="form-control form-control-sm" type="text" value="{{$ind_po->payment_term}}" required>
+                                <input class="form-control form-control-sm" type="text" name="payment_term" value="{{$ind_po->payment_term}}" >
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label class="small">Reason:</label>
+                                <label class="small">Reason for Editing:</label>
                                 <textarea class="form-control form-control-sm" name="edit_reason" required></textarea>
                             </div>
                         </div>

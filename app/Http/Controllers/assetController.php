@@ -18,6 +18,7 @@ use App\assetIcslip;
 use App\assetTurnover;
 
 use App\AssetIcslipItem;
+use App\AssetParItem;
 use PDF;
 use App;
 
@@ -66,26 +67,26 @@ class assetController extends Controller
         return response()->json(['assetData'=>$assetData]);
     }
 
-        public function getPARCount()
+    public function getPARCount()
     {
         $assetParCount = assetPar::get()->count();
         return ($assetParCount);
     }
 
-        public function getICSCount()
+    public function getICSCount()
     {
         $assetIcsCount = assetIcslip::get()->count();
         return ($assetIcsCount);
     }
 
-        public function getClassifiedItemQtyNo($id)
+    public function getClassifiedItemQtyNo($id)
     {
         // dd($id);
         $assetClassifiedItemQtyNo = asset::select('item_stock')->where('id', $id)->get();
         return ($assetClassifiedItemQtyNo->first()->item_stock);
     }
 
-        public function setAssetIsAssigned(Request $request)
+    public function setAssetIsAssigned(Request $request)
     {
         asset::whereId($request->asset_id)->update([
                 'isAssigned' => 1
@@ -166,7 +167,7 @@ class assetController extends Controller
             if ($value == "ICS") {
                 $ICS[$key] = '1';
                 $PAR[$key] = '0';
-            }elseif ($value == "PAR") {
+            } elseif ($value == "PAR") {
                 $ICS[$key] = '0';
                 $PAR[$key] = '1';
             }
@@ -193,15 +194,24 @@ class assetController extends Controller
     public function saveNewPar(Request $request)
     {
         $items = $request->input('data');
-        dd($items);
+        // dd($items);
 
         assetPar::create([
             'asset_id' => $items[0],
             'quantity' => $items[1],
-            'description' => $items[2],
             'assignedTo' => $items[3],
             'position' => $items[4]
         ]);
+
+        for ($i=0; $i < count($items[2]); $i++) {
+            // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
+            
+            AssetParItem::create([
+                    'asset_par_id' => $items[5],
+                    'description' => $items[2][$i]
+                ]);
+        }
+
 
         asset::find($items[0])->decrement('item_stock', $items[1]);
 
@@ -212,12 +222,11 @@ class assetController extends Controller
         } else {
             return response()->json(['response' => 'failure']);
         }
-
     }
     public function saveNewIcs(Request $request)
     {
         $items = $request->input('data');
-        dd($items);
+        // dd($items);
 
         assetIcslip::create([
             'asset_id' => $items[0],
@@ -230,14 +239,13 @@ class assetController extends Controller
         // dd(print_r($items));
 
         // $bekkel = [];
-        for ($i=0; $i < count($items[2]); $i++) { 
+        for ($i=0; $i < count($items[2]); $i++) {
             // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
             
-                AssetIcslipItem::create([
-                    'asset_icslip_id' => $items[0],
+            AssetIcslipItem::create([
+                    'asset_icslip_id' => $items[6],
                     'description' => $items[2][$i]
                 ]);
-           
         }
 
         // dd($bekkel);
@@ -251,7 +259,6 @@ class assetController extends Controller
         } else {
             return response()->json(['response' => 'failure']);
         }
-
     }
     /**
      * Display the specified resource.
@@ -416,7 +423,7 @@ class assetController extends Controller
         if ($turnoverData->par_id != null) {
             $parData = assetPar::where('id', $turnoverData->par_id)->get();
             $turnoverAssetData = $parData;
-        }elseif ($turnoverData->ics_id != null) {
+        } elseif ($turnoverData->ics_id != null) {
             $icsData = assetIcslip::where('id', $turnoverData->ics_id)->get();
             $turnoverAssetData = $icsData;
         }

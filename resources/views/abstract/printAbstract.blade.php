@@ -45,7 +45,7 @@
 	<div class="row">
 		<div class="col-xs-3">
 			<div>
-				Total Estimated: <u> &#8369; {{$abstract->purchaseRequest->prItem()->sum('item_budget')}}</u>
+				Total Estimated: <u> &#8369; {{number_format($abstract->purchaseRequest->prItem()->sum('item_budget'), 2)}}</u>
 			</div>
 		</div>
 		<div class="col-xs-6">
@@ -87,7 +87,7 @@
                             @endforeach
                               
                             @for($h=$checksupplier->count(); $h < 3 ;$h++)
-									<th  colspan="2">SUPPLIER</th>	
+									<th  colspan="2">SUPPLIER {{$h + 1 + $key01}}</th>	
 							@endfor
 					  	
 						</tr>

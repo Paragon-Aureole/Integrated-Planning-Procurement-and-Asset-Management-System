@@ -95,11 +95,20 @@
 			<div class="col-xs-12 topped-border heading-sm">SUPPLIER</div>
 			<div class="col-xs-12 f-12-px">Name/Company:<br>
 
-					
+					@if($rfq->purchaseRequest->supplier_type == 3)
+						<b>{{$rfq->purchaseRequest->distributor->distributor_name}}</b>
+					@else
                <br> 
-                {{--  <br>  --}}
+          @endif
 				<hr></div>
-			<div class="col-xs-12 f-12-px">Address:<br><br><hr></div>
+			<div class="col-xs-12 f-12-px">Address:<br>
+					@if($rfq->purchaseRequest->supplier_type == 3)
+						<b>{{$rfq->purchaseRequest->distributor->distributor_address}}</b>
+					@else
+               <br> 
+          @endif
+				<hr>
+			</div>
 			<div class="col-xs-12 f-12-px" style="margin-bottom: 10px;">Contact No:<hr style="margin-left:80px;"></div>
 		</div>
 		<div class="col-xs-5"></div>
@@ -190,8 +199,6 @@
 		</div>
 	</div>
 </div>
-@if($rfq->purchaseRequest->supplier_type == "3")
-@else
 
 {{-- GSO Copy --}}
 <div class="container-fluid">
@@ -224,9 +231,23 @@
 
 	<div class="row topped">
 		<div class="col-xs-4 topped-border" style="padding: 0px;">
-			<div class="col-xs-12 topped-border heading-sm">SUPPLIER</div>
-			<div class="col-xs-12 f-12-px">Name/Company:<br><br><hr></div>
-			<div class="col-xs-12 f-12-px">Address:<br><br><hr></div>
+				<div class="col-xs-12 f-12-px">Name/Company:<br>
+
+					
+					@if($rfq->purchaseRequest->supplier_type == 3)
+						<b>{{$rfq->purchaseRequest->distributor->distributor_name}}</b>
+					@else
+               <br> 
+          @endif
+				<hr></div>
+			<div class="col-xs-12 f-12-px">Address:<br>
+					@if($rfq->purchaseRequest->supplier_type == 3)
+						<b>{{$rfq->purchaseRequest->distributor->distributor_address}}</b>
+					@else
+               <br> 
+          @endif
+				<hr>
+			</div>
 			<div class="col-xs-12 f-12-px" style="margin-bottom: 10px;">Contact No:<hr style="margin-left:80px;"></div>
 		</div>
 		<div class="col-xs-5"></div>
@@ -316,7 +337,6 @@
 		</div>
 	</div>
 </div>
-@endif
 @endforeach
 <span style="page-break-after:avoid;"></span>
 

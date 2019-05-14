@@ -17,7 +17,7 @@
     <div class="card">
         <div class="card-header pt-2 pb- 2"><b>Add Suppliers</b></div>
         <div class="card-body">
-            <form action="{{route('abstract.update', $abstract->id)}}" id="bekkelAbstract" method="POST">
+            <form action="{{route('abstract.update', $abstract->id)}}" id="bekkelAbstract" method="POST" class="needs-validation" novalidate>
                 {{ csrf_field() }}
                 {{ method_field('PATCH') }}
             <div class="form-row">  
@@ -72,15 +72,17 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Comments:</label>
-                    <textarea class="form-control form-control-sm" name="supplier_comments" required>{{$abstract->outline_comment}}</textarea>
+                    <textarea class="form-control form-control-sm" name="supplier_comments" required>@if($abstract->outline_comment != "None") {{$abstract->outline_comment}}@endif</textarea>
                 </div>
-                @if ($allSuppliers->where('supplier_status', 1)->count() == 1)
+                @if ($allSuppliers->where('supplier_status', 1)->count() >= 1)
                     @can('full control')
                         <div class="form-group col-md-4">
-                            <label>Reason:</label>
-                            <textarea class="form-control form-control-sm" name="supplier_comments" required>None</textarea>
+                            <label>Reason for Editing (Admin):</label>
+                            <textarea class="form-control form-control-sm" name="reason_editing" required></textarea>
                         </div>
-                    @endcan
+                    @else
+                        <input type="hidden" name="reason_editing" value="">
+                    @endcan     
                 @endif
                 
             </div>
@@ -137,21 +139,32 @@
                             @endforeach
                             @for ($i = $countSupplier; $i <= 2; $i++)
                             <th colspan="2" style="width:15%;">
-                                @if ($allSuppliers->where('supplier_status', 1)->count() < 1)
-                                <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                @endif
+                               
+                                    @if ($allSuppliers->where('supplier_status', 1)->count() < 1)
+                                    <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal"
+                                        @if($abstract->purchaseRequest->supplier_type == 2 OR $abstract->purchaseRequest->supplier_type == 3 )
+                                        disabled 
+                                        @endif
+                                    >
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    @endif
+                                
                             </th>
                             @endfor 
                         </tr>
                         <tr class="text-center thead-light">
                   
                             @foreach ($querySupplier as $indexkey1 => $supplierNo)
-                                <th colspan="2" >Supplier {{$indexkey1}}</th> 
+                                <th colspan="2" >Supplier {{$indexkey1 + $querySupplier->firstItem()}}</th> 
                             @endforeach
                             @for ($i = $countSupplier; $i <= 2; $i++)
-                                <th colspan="2">Supplier {{$i+1}}</th>
+                                @if($i == 0)
+                                    <th colspan="2">Supplier {{$i+ 1}}</th>
+                                @else
+                                    <th colspan="2">Supplier {{$i+ $querySupplier->firstItem()}}</th>
+                                @endif
+                                
                             @endfor
                         </tr>
                         <tr class="text-center">
@@ -318,7 +331,7 @@
                     <div class="form-row">
                         <div class="col">
                             <label class="small">Supplier Name</label>
-                            <input type="text" name="supplier_name2" class="form-control form-control-sm" required>
+                            <input type="text" name="supplier_name2" class="form-control form-control-sm" @if($abstract->purchaseRequest->supplier_type == 2 OR $abstract->purchaseRequest->supplier_type == 3) readonly @endif required>
                         </div>
                         <div class="col">
                             <label class="small">Supplier Address</label>

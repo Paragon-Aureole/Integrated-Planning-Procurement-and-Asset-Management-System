@@ -117,7 +117,7 @@
       <div class="col-xs-4">Date:</div>
       <div class="col-xs-8">{{$date->Format('F j, Y')}}<hr></div>
       <div class="col-xs-4">Mode of Procurement:</div>
-      <div class="col-xs-8">{{$purchase_order->procurementMode->method_name}}<hr></div>
+      <div class="col-xs-8">{{$purchase_order->purchaseRequest->prItem()->first()->ppmpItem->procurementMode->method_name}}<hr></div>
       <div class="col-xs-12">&nbsp;</div>
     </div>
   </div>
@@ -205,7 +205,7 @@
     </div>
     <div class="col-xs-5">
       <div class="col-xs-12 text-center">
-        &nbsp;<hr>{{$signatory->signatory_name}}<br>{{$signatory->signatory_position}}
+        &nbsp;<hr>{{strtoUpper($signatory->signatory_name)}}<br>{{$signatory->signatory_position}}
       </div>
     </div>
   </div>

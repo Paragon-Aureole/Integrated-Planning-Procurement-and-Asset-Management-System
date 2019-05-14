@@ -71,9 +71,12 @@
               <a href="{{route('supplier.show', $aoq->id)}}" class="btn btn-sm btn-primary">
                     <i class="fas fa-th-list"></i>
               </a>
+
+              @if($aoq->outlineSupplier()->count() > 0)
               <a href="{{route('abstract.print', $aoq->id)}}" target="_blank" class="btn btn-sm btn-success">
                   <i class="fas fa-print"></i>
               </a>
+              @endif
               @can('full control')
               <a href="#" class="btn btn-sm btn-danger">
                     <i class="fas fa-minus"></i>

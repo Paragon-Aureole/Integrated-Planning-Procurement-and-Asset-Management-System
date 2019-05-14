@@ -44,7 +44,7 @@
                 
                 <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-print"></i></a>
 
-                @if ($pr->pr_status == 0)
+                @if ($pr->pr_status == 0 && $pr->prItem()->count() > 0)
                 <a href="{{route('close.pr', $pr->id)}}" class="btn btn-sm btn-success"
                   data-popout="true"
                   data-toggle="confirmation" data-title="Are you sure?" 

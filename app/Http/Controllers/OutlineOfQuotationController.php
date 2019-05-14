@@ -63,18 +63,28 @@ class OutlineOfQuotationController extends Controller
             'outline_detail' => $input['outline_detail'],
         ]);
 
-        // if ($abstract->purchaseRequest->supplier_type == 3) {
-        //     $auto_add = $abstract->outlineSupplier()->create([
-        //         'supplier_name' => $abstract->purchaseRequest->distributor->distributor_name,
-        //         'supplier_address' => $abstract->purchaseRequest->distributor->distributor_address,
-        //         'canvasser_name'=>Auth::user()->wholename,
-        //         'canvasser_office' => Auth::user()->office_id,
-        //         'supplier_status' => 1,
-        //         'status_reason' => 1,
-        //     ]);
-        // }
-
         $pr->outlineQuotation()->save($abstract);
+
+        if ($abstract->purchaseRequest->supplier_type == 3) {
+            $add_supplier = $abstract->outlineSupplier()->create([
+                'supplier_name' => $pr->distributor->distributor_name,
+                'supplier_address' => $pr->distributor->distributor_address,
+                'canvasser_name'=> $pr->user->wholename,
+                'canvasser_office' => $pr->office_id,
+                'supplier_status' => 1,
+                'status_reason' => 1,
+            ]);
+
+            $items = $pr->prItem()->get();
+            
+            foreach ($items as $key => $price) {
+                $add_prices = $add_supplier->outlinePrice()->create([
+                    'pr_item_id' => $price->id,
+                    'final_cpu' =>  0,
+                    'final_cpi' => 0
+                ]);
+            }
+        }
         
         return redirect()->back()->with('success', 'Abstract of Quotation Created, add suppliers');
     }
@@ -131,6 +141,11 @@ class OutlineOfQuotationController extends Controller
             $pdf->setOption($margin, $value);
         }
 
+        activity('Abstract of Quotation')
+        ->performedOn($abstract)
+        ->causedBy(Auth::user())
+        ->log('Printed Abstract of Quotation on'. $abstract->purchaseRequest->pr_code);
+
         return $pdf->stream('AOQ-'.$abstract->purchaseRequest->pr_code.'.pdf');
     }
 
@@ -160,8 +175,14 @@ class OutlineOfQuotationController extends Controller
             "status_reason" => $input['status_reason'],
         ]);
 
+        activity('Abstract of Quotation')
+        ->performedOn($outlineOfQuotation)
+        ->withProperties(['Reason' => $input['reason_editing']])
+        ->causedBy(Auth::user())
+        ->log('Updated Abstract of Quotation '. $outlineOfQuotation->purchaseRequest->pr_code);
+
         // return "SUCCESS";
-        return redirect()->back()->with('success', 'PPMP Item Code successfully updated');
+        return redirect()->back()->with('success', 'Abstract of Quotation successfully updated');
     }
 
     /**

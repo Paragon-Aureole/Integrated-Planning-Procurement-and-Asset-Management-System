@@ -91,8 +91,6 @@ class OutlineSupplierController extends Controller
     {
         $supplier_data = OutlineSupplier::find($supplier);
         $items = $supplier_data->outlinePrice()->with('prItem.ppmpItem.measurementUnit')->get();
-
-        // dd([$supplier, $gso]);
         return response()->json([$supplier_data, $items]);
     }
 
