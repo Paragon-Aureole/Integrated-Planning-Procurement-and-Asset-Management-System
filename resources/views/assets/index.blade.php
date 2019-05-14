@@ -272,13 +272,13 @@
                 <input type="text" name="selectedItemName" class="form-control" aria-label="Sizing example input"
                   aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
-              <input type="text" id="qtyValPar">
+              <input type="hidden" id="qtyValPar">
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
                 </div>
                 {{-- QUANTITY SELECITION HERE --}}
-                <select name="selectedItemQty" class="custom-select">
+                <select name="selectedItemQty" id="selectedItemQtyPar" class="custom-select">
                   <option>None</option>
                 </select>
               </div>
@@ -357,7 +357,7 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
                 </div>
                 {{-- QUANTITY SELECITION HERE --}}
-                <select name="selectedItemQty" id="selectedItemQty" class="custom-select">
+                <select name="selectedItemQty" id="selectedItemQtyIcs" class="custom-select">
                   <option>None</option>
                 </select>
               </div>
@@ -404,7 +404,7 @@
       </div>
 
       <div class="modal-footer">
-        <button id='distributionFormSubmit' class="btn btn-primary">Save</button>
+        <button id='distributionFormSubmit' class="btn btn-primary">Assign Item</button>
         <button class="btn btn-warning" data-dismiss="modal">cancel</button>
       </div>
     </div>

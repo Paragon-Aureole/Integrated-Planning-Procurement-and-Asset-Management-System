@@ -164,16 +164,16 @@
                   $('[name=selectedItemDateAssigned]').val(today);
 
                   getClassifiedItemQtyNo(itemData['id']).then(function (qtyData) {
-                        $('#qtyValPar').val('');
-                        $('#qtyValPar').val(qtyData);
+                      $('#qtyValPar').val('');
+                      $('#qtyValPar').val(qtyData);
 
-                        $('#descriptionPar').empty();
-                        for (var i = 1; i <= qtyData; i++) {
-                            
-                            $('#descriptionPar').append('<label>Description:'+ i +'</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
-                            
-                        }
-                    
+                      $('#descriptionPar').empty();
+                      for (var i = 1; i <= qtyData; i++) {
+
+                          $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
+
+                      }
+
                       fillQuantityDropdown(qtyData);
                       setTotalAmount();
                   })
@@ -197,18 +197,18 @@
                   $('[name=selectedItemDateAssigned]').val(today);
 
                   getClassifiedItemQtyNo(itemData['id']).then(function (qtyData) {
-                    $('#qtyValIcs').val('');
-                    $('#qtyValIcs').val(qtyData);
+                      $('#qtyValIcs').val('');
+                      $('#qtyValIcs').val(qtyData);
 
-                    $('#descriptionIcs').empty();
-                    for (var i = 1; i <= qtyData; i++) {
-                        
-                        $('#descriptionIcs').append('<label>Description:'+ i +'</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
-                        
-                    }
-                    console.log(qtyData);
-                    fillQuantityDropdown(qtyData);
-                      
+                      $('#descriptionIcs').empty();
+                      for (var i = 1; i <= qtyData; i++) {
+
+                          $('#descriptionIcs').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
+
+                      }
+                      console.log(qtyData);
+                      fillQuantityDropdown(qtyData);
+
                   })
 
                   $('[name=selectedItemICSNo]').val(parseInt(icsNo) + 1);
@@ -217,10 +217,6 @@
               });
           }
       }
-
-      $('[name=selectedItemQty]').on('change', function () {
-          setTotalAmount();
-      });
 
       function setTotalAmount() {
 
@@ -254,33 +250,37 @@
           if (assetType == 'PAR') {
               var itemData = [];
 
-              var itemQty = $('[name=selectedItemQty]').val();
+              var itemQty = $('#qtyValPar').val();
               var itemDescription = $('textarea[name="selectedItemDescription[]"]').map(function () {
-                return $(this).val();
-            }).get();
+                  return $(this).val();
+              }).get();
               var itemEmployeeName = $('[name=selectedItemEmployeeName]:eq(0)').val();
               var itemEmployeePosition = $('[name=selectedItemEmployeePosition]:eq(0)').val();
               var itemID = $('[name=currentItemID]').val();
+              var currentPARNo = $('[name=selectedItemPARNo]').val();
 
               itemData[0] = itemID;
               itemData[1] = itemQty;
               itemData[2] = itemDescription;
               itemData[3] = itemEmployeeName;
               itemData[4] = itemEmployeePosition;
+              itemData[5] = currentPARNo;
 
               console.log(itemData);
-            //   saveClassifiedAssetAssign(itemData, 'par');
+                saveClassifiedAssetAssign(itemData, 'par');
           } else {
               var itemData = [];
 
-              var itemQty = $('#qtyVal').val();
+              var itemQty = $('#qtyValIcs').val();
               var itemEstimatedUsefulLife = $('[name=selectedItemEstimatedUsefulLife]').val();
               var itemDescription = $('textarea[name="selectedItemDescription[]"]').map(function () {
-                    return $(this).val();
-                }).get();
+                  return $(this).val();
+              }).get();
               var itemEmployeeName = $('[name=selectedItemEmployeeName]:eq(1)').val();
               var itemEmployeePosition = $('[name=selectedItemEmployeePosition]:eq(1)').val();
-              var itemID = $('[name=currentItemID').val();
+              var itemID = $('[name=currentItemID]').val();
+              var currentICSNo = $('[name=selectedItemICSNo]').val();
+
 
               itemData[0] = itemID;
               itemData[1] = itemQty;
@@ -288,6 +288,7 @@
               itemData[3] = itemEmployeeName;
               itemData[4] = itemEmployeePosition;
               itemData[5] = itemEstimatedUsefulLife;
+              itemData[6] = currentICSNo;
 
               console.log(itemData);
               saveClassifiedAssetAssign(itemData, 'ics');
@@ -330,7 +331,7 @@
                                   if (qtyData == 0) {
                                       setIsAssigned(formData[0]);
                                       console.log('fully assigned.');
-                                      
+
                                   } else {
                                       fillQuantityDropdown(qtyData);
                                       setTotalAmount();
@@ -458,8 +459,8 @@
       function populateClassificationModal(ClassificationModalContent) {
           // populate PO Id
           $('#po_id').empty();
-          
-        //   console.log(ClassificationModalContent[0].purchase_order_id);
+
+          //   console.log(ClassificationModalContent[0].purchase_order_id);
           console.log(ClassificationModalContent);
 
           $('#po_id').text(ClassificationModalContent[0].purchase_order_id);
@@ -519,27 +520,31 @@
           });
       }
 
-        $('#selectedItemQty').on('change', function () {
-            var qtyData = $('#selectedItemQty').val()
-            $('#descriptionIcs').empty();
-            $('#qtyValIcs').val('');
-            $('#qtyValIcs').val(qtyData);
-            for (var i = 1; i <= qtyData; i++) {
-                $('#descriptionIcs').append('<label>Description:'+ i +'</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
-                
-            }
-          });
+      $('#selectedItemQtyIcs').on('change', function () {
+          console.log('is changing ICS');
+          var qtyData = $('#selectedItemQtyIcs').val()
+          console.log(qtyData);
+          $('#descriptionIcs').empty();
+          $('#qtyValIcs').val('');
+          $('#qtyValIcs').val(qtyData);
+          for (var i = 1; i <= qtyData; i++) {
+              $('#descriptionIcs').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
+          }
 
-        $('#selectedItemQty').on('change', function () {
-            var qtyData = $('#selectedItemQty').val()
-            $('#descriptionPar').empty();
-            $('#qtyValPar').val('');
-            $('#qtyValPar').val(qtyData);
-            for (var i = 1; i <= qtyData; i++) {
-                $('#descriptionPar').append('<label>Description:'+ i +'</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
-                
-            }
-          });
-          
+          setTotalAmount();
+      });
+
+      $('#selectedItemQtyPar').on('change', function () {
+          console.log('is changing PAR');
+          var qtyData = $('#selectedItemQtyPar').val()
+          console.log(qtyData);
+          $('#descriptionPar').empty();
+          $('#qtyValPar').val('');
+          $('#qtyValPar').val(qtyData);
+          for (var i = 1; i <= qtyData; i++) {
+              $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
+          }
+          setTotalAmount();
+      });
 
   });
