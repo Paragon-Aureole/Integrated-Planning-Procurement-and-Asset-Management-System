@@ -126,7 +126,7 @@
                                         </button>
                                     @endcan
                                 @else
-                                    <button class="btn btn-sm btn-warning" name='update_supplier' data-toggle="modal" data-target="#editSupplier">
+                                    <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}" name='update_supplier' data-toggle="modal" data-target="#editSupplier">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <a href="{{route('destruct.supplier', $action->id)}}" class="btn btn-sm btn-danger">
@@ -227,7 +227,7 @@
       
             <!-- Modal body -->
             <div class="modal-body">
-            <form action="{{route('supplier.store')}}" name="s_store" method="POST" class="needs-validation">
+            <form action="{{route('supplier.store')}}" name="s_store" method="POST" class="needs-validation" novalidate>
                     {{ csrf_field() }}
                     <input type="hidden" name="abstract_id" value="{{$abstract->id}}">
                     <div class="form-row">
@@ -277,21 +277,21 @@
                                         <input type="hidden" name="pr_item_id[]" value="{{$pr->id}}" required>
                                     </td>
                                     <td>
-                                    <input id="itemQty{{$indexKey}}" value="{{$pr->item_quantity}}" class="form-control form-control-sm" disabled>
+                                    <input id="itemQty{{$indexKey}}" value="{{$pr->item_quantity}}" class="qty form-control form-control-sm" disabled>
                                     </td>
                                     <td>{{$pr->ppmpItem->measurementUnit->unit_code}}</td>
                                     <td>
-                                    <input oninput="multiply2({{$indexKey}});" id="itemCost{{$indexKey}}" name="unit_price[]" value="" class="form-control form-control-sm" required>
+                                    <input oninput="multiply2({{$indexKey}});" id="itemCost{{$indexKey}}" name="unit_price[]" value="" class="money form-control form-control-sm" required>
                                     </td>
                                     <td>
-                                    <input id="itemBudget{{$indexKey}}" name="item_price[]" value="" class="form-control form-control-sm" readonly>
+                                    <input id="itemBudget{{$indexKey}}" name="item_price[]" value="" class="money form-control form-control-sm" readonly>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Add Supplier</button>
             </form>
             </div>
           </div>
@@ -311,7 +311,7 @@
       
             <!-- Modal body -->
             <div class="modal-body">
-            <form name="s_update" method="POST" class="needs-validation">
+            <form name="s_update" method="POST" class="needs-validation" novalidate>
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
                     {{-- <input type="hidden" name="abstract_id" value="{{$abstract->id}}"> --}}
@@ -369,7 +369,7 @@
                         </tbody>
                     </table>
                 </div>
-                <button type="submit" class="btn btn-warning">Update</button>
+                <button type="submit" class="btn btn-warning">Update Supplier Details</button>
             </form>
             </div>
           </div>
@@ -409,7 +409,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<button class="btn btn-primary" type="submit">Submit</button>
+												<button class="btn btn-danger" type="submit">Delete Supplier</button>
 											</div>
 										</form>
 									</div>
@@ -421,38 +421,5 @@
 @section('script')
 
 <script src="{{asset('js/function-script.js')}}"></script>
-<script>
-    $("button[name='update_supplier']").click(function() {
-       var supplier_id = $(this).attr('data-supplierid');
-    //    console.log(supplier_id);
-    
-        $.get("http://ipams.test/supplier/"+supplier_id+"/edit", function(data, status){
-            console.log(supplier_id);
-            $( "input[name='supplier_name2']" ).val(data[0]['supplier_name']);
-            $( "input[name='supplier_address2']" ).val(data[0]['supplier_address']);
-            $( "input[name='canvasser_name2']" ).val(data[0]['canvasser_name']);
-            
-            var items = data[1];
-            var markup ='';
-            $('table[name="edit_table"] tbody tr').remove();
-                items.forEach(function(entry, index) {
-                    markup += '<tr> <td><input type="hidden" name="item_id[]" value="'+entry['id']+'" required> '+entry['pr_item']['ppmp_item']['item_description']+'</td> <td>'+entry['pr_item']['item_quantity']+'</td> <td>'+entry['pr_item']['ppmp_item']['measurement_unit']['unit_code']+'</td> <td><input name="unit_price2[]" value="'+entry['final_cpu']+'" class="form-control form-control-sm" required></td> <td><input name="item_price2[]" value="'+entry['final_cpi']+'" class="form-control form-control-sm" required></td> </tr>';
-                });
-                $(markup).appendTo('table[name="edit_table"] tbody');
-                
-            });
-
-        $( "form[name='s_update']" ).attr("action", "http://ipams.test/supplier/"+supplier_id+"");
-    });
-
-    $("button[name='delete_supplier']").click(function() {
-        var supplier_id = $(this).attr('data-supplierid');
-        var supplier_name = $(this).attr('data-suppliername');
-        // console.log(user_id);
-        $("[name='sId']").val(supplier_id);
-        $("[name='sName']").val(supplier_name);
-        $("form[name='deactivation_reason']").attr('action', 'http://ipams.test/supplier/delete/'+supplier_id);
-    });
-
-</script>
+<script src="{{asset('js/abstract_supplier.js')}}"></script>
 @endsection

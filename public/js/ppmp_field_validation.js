@@ -1,5 +1,8 @@
 $(document).ready(function () {
-  $('.money').simpleMoneyFormat();
+  $('.money').number( true, 2 );
+  $('.qty').number( true);
+
+
   
   $('#btn_submit').on('click', function (e) {
     e.preventDefault();
@@ -38,13 +41,6 @@ $(document).ready(function () {
   }
 
   function submitForm(){
-    var a = $("#itemCost").val().replace(/\,/g,'');
-    var b = $("#itemBudget").val().replace(/\,/g,'');
-
-    $("#itemCost").val(a);
-    $("#itemBudget").val(b);
-
-
     $("[name='ppmp_form']").submit();
   }
 

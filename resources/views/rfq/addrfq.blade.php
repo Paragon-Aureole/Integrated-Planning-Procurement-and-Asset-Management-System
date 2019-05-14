@@ -34,7 +34,13 @@
                   <td>{{$pr->pr_purpose}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                 <td>
-                  <a href="{{route('rfq.createone', $pr->id)}}" class="btn btn-sm btn-primary">
+                  <a href="{{route('rfq.createone', $pr->id)}}" class="btn btn-sm btn-primary"
+                    data-popout="true"
+                    data-toggle="confirmation" data-title="Are you sure?" 
+                    data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
+                    data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+                    data-content="Create RFQ under {{$pr->pr_code}}" data-placement="top"
+                  >
                     <i class="fas fa-plus"></i>
                   </a>
                 </td>

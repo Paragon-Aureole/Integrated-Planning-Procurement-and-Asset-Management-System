@@ -95,7 +95,7 @@
         </div>
         <div class="form-group col-md-6">
           <label class="small">Estimated Cost per Unit:</label>
-          <input oninput="multiply();" id="itemCost" class="form-control form-control-sm {{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost', $ppmp_item->item_cost) }}" name="item_cost" required="required">
+          <input oninput="multiply();" id="itemCost" class="form-control form-control-sm money{{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost', $ppmp_item->item_cost) }}" name="item_cost" required="required">
           <div class="invalid-feedback">  
               @if ($errors->has('item_cost'))
                 {{$errors->first('item_cost')}}
@@ -106,7 +106,7 @@
         </div>        
         <div class="form-group col-md-6">
           <label class="small">Estimated Budget per Item:</label>
-          <input id="itemBudget" class="form-control form-control-sm {{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', $ppmp_item->item_budget) }}" name="item_budget" readonly="readonly" required="required">
+          <input id="itemBudget" class="form-control form-control-sm money{{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', $ppmp_item->item_budget) }}" name="item_budget" readonly="readonly" required="required">
           <div class="invalid-feedback">  
               @if ($errors->has('item_budget'))
                 {{$errors->first('item_budget')}}

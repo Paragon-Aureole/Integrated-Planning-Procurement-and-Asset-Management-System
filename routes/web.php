@@ -148,6 +148,7 @@ Route::resource('supplier', 'OutlineSupplierController');
 Route::post('po/store', 'PurchaseOrderController@store')->name('po.store');
 Route::get('/getModalData', 'PurchaseOrderController@getModalData');
 Route::get('po/print/{id}', 'PurchaseOrderController@printPO')->name('po.print');
+
 Route::resource('po', 'PurchaseOrderController');
 
 

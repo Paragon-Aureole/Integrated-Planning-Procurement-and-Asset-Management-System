@@ -16,9 +16,9 @@ $(document).ready(function() {
                     	}
                     	$('#itemUnit').val(data[1]);
                     	$('input[name="item_unit"]').val(data[0]['measurement_unit_id']);
-                    	$('input[name="item_cpu"]').val(data[0]['item_cost']).simpleMoneyFormat();
+                    	$('input[name="item_cpu"]').val(data[0]['item_cost']).number(true, 2);
                     	var budget = $('input[name="item_cpu"]').val().replace(/\,/g,'') * $('select[name="item_quantity"]').val();
-                    	$('input[name="item_cpi"]').val(budget).simpleMoneyFormat();
+                    	$('input[name="item_cpi"]').val(budget).number(true, 2);
                     },
                    
                 });

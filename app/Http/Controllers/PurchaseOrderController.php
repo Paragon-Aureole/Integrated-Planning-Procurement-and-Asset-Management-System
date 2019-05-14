@@ -180,12 +180,28 @@ class PurchaseOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\PurchaseOrder  $purchaseOrder
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseOrder $purchaseOrder)
+    public function edit($id)
     {
-        //
+
+        $ind_po = PurchaseOrder::findorFail($id);
+
+        if (Auth::user()->hasRole('Admin')) {
+            $po = PurchaseOrder::all(); 
+
+        }else{
+            $po = PurchaseOrder::whereHas('purchaseRequest', function ($query){
+                $query->where('office_id',  Auth::user()->office_id );
+            })->get(); 
+        }
+
+        
+  
+        $prMode = ProcurementMode::all();
+
+        return view('purchase_order.editPo', compact('po', 'prMode', 'ind_po'));
     }
 
     /**

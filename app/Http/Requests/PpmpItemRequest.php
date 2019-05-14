@@ -27,10 +27,10 @@ class PpmpItemRequest extends FormRequest
             'item_code' => 'required',
             'item_description' => 'required|string|max:395',
             'item_mode' => 'required',
-            'item_quantity' => 'required|numeric',
+            'item_quantity' => 'required',
             'item_unit' => 'required',
-            'item_cost' => 'required|numeric',
-            'item_budget' => 'required|numeric',
+            'item_cost' => 'required',
+            'item_budget' => 'required',
         ];
 
         foreach($this->request->get('item_schedule') as $key => $val) { 

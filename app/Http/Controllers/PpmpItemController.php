@@ -70,12 +70,12 @@ class PpmpItemController extends Controller
             'procurement_mode_id' => $input['item_mode'],
             'ppmp_item_code_id' => $input['item_code'],
             'item_description' => $input['item_description'],
-            'item_quantity' => $input['item_quantity'],
-            'item_budget' => $input['item_budget'],
+            'item_quantity' => str_replace(",", "", $input['item_quantity']),
+            'item_budget' => str_replace(",", "", $input['item_budget']),
             'item_schedule' => $schedule,
-            'item_cost' => $input['item_cost'],
-            'item_stock' => $input['item_quantity'],
-            'item_rem_budget' => $input['item_budget'],
+            'item_cost' => str_replace(",", "", $input['item_cost']),
+            'item_stock' => str_replace(",", "", $input['item_quantity']),
+            'item_rem_budget' => str_replace(",", "", $input['item_budget']),
         ]);
 
         if($ppmp_item == true){
@@ -134,17 +134,18 @@ class PpmpItemController extends Controller
         $schedule = implode(",", $input['item_schedule']);
         $ppmp_item = PpmpItem::findorFail($item_id);
         $update_item = $ppmp_item->update([
+
             'measurement_unit_id' => $input['item_unit'],
             'procurement_mode_id' => $input['item_mode'],
             'ppmp_item_code_id' => $input['item_code'],
             'item_description' => $input['item_description'],
-            'item_quantity' => $input['item_quantity'],
-            'item_budget' => $input['item_budget'],
+            'item_quantity' => str_replace(",", "", $input['item_quantity']),
+            'item_budget' => str_replace(",", "", $input['item_budget']),
             'item_schedule' => $schedule,
 
-            'item_cost' => $input['item_cost'],
-            'item_stock' => $input['item_quantity'],
-            'item_rem_budget' => $input['item_budget'],
+            'item_cost' => str_replace(",", "", $input['item_cost']),
+            'item_stock' => str_replace(",", "", $input['item_quantity']),
+            'item_rem_budget' => str_replace(",", "", $input['item_budget']),
         ]);
 
         if($update_item == true){

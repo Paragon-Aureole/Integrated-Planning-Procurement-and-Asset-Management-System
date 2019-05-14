@@ -45,7 +45,13 @@
                 <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-print"></i></a>
 
                 @if ($pr->pr_status == 0)
-                <a href="{{route('close.pr', $pr->id)}}" class="btn btn-sm btn-success">
+                <a href="{{route('close.pr', $pr->id)}}" class="btn btn-sm btn-success"
+                  data-popout="true"
+                  data-toggle="confirmation" data-title="Are you sure?" 
+                  data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
+                  data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+                  data-content="Close PR # {{$pr->pr_code}}" data-placement="top"
+                >
                   <i class="fas fa-check"></i>
                 </a> 
                 @endif

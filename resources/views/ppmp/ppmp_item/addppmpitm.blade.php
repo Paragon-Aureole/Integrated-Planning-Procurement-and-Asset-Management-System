@@ -46,7 +46,7 @@
         </div>
         <div class="form-group col-md-12">
           <label class="small">General Description:</label>
-          <textarea class="form-control form-control-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" rows="3" required="required"></textarea>
+          <textarea class="form-control form-control-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" name="item_description" rows="3" required></textarea>
           <div class="invalid-feedback">
               @if ($errors->has('item_description'))
                 {{$errors->first('item_description')}}
@@ -72,7 +72,7 @@
         </div>
         <div class="form-group col-md-6">
           <label class="small">Quantity:</label>
-          <input oninput="multiply();" id="itemQty" class="form-control form-control-sm {{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" value="{{ old('item_quantity') }}" value="{{ old('item_quantity') }}" name="item_quantity" required="required">
+          <input oninput="multiply();" id="itemQty" class="form-control form-control-sm qty{{ $errors->has('item_quantity') ? 'is-invalid' : '' }}" value="{{ old('item_quantity', 0) }}" value="{{ old('item_quantity') }}" name="item_quantity" required="required">
           <div class="invalid-feedback" id="qtyFeedback">
               @if ($errors->has('item_quantity'))
                 {{$errors->first('item_quantity')}}
@@ -98,7 +98,7 @@
         </div>
         <div class="form-group col-md-6">
           <label class="small">Estimated Cost per Unit:</label>
-          <input oninput="multiply();" id="itemCost" class="form-control form-control-sm money {{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost') }}" name="item_cost" required="required">
+          <input oninput="multiply();" id="itemCost" class="form-control form-control-sm money {{ $errors->has('item_cost') ? 'is-invalid' : '' }}" value="{{ old('item_cost' , 0.00)}}" name="item_cost" required="required">
           <div class="invalid-feedback">
               @if ($errors->has('item_cost'))
                 {{$errors->first('item_cost')}}
@@ -109,7 +109,7 @@
         </div>
         <div class="form-group col-md-6">
           <label class="small">Estimated Budget per Item:</label>
-          <input oninput="divide();" id="itemBudget" class="form-control form-control-sm money{{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget') }}" name="item_budget" required="required">
+          <input oninput="divide();" id="itemBudget" class="form-control form-control-sm money{{ $errors->has('item_budget') ? 'is-invalid' : '' }}" value="{{ old('item_budget', 0.00) }}" name="item_budget" required="required">
           <div class="invalid-feedback">
               @if ($errors->has('item_budget'))
                 {{$errors->first('item_budget')}}
@@ -119,7 +119,7 @@
           </div>
         </div>
         <div class="form-group col-md-12 text-right">
-          <button type="submit" class="btn btn-sm btn-primary" id="btn_submit">Submit</button>
+          <button type="submit" class="btn btn-sm btn-primary" id="btn_submit">Add PPMP Item</button>
         </div>
       </div>
     </div>

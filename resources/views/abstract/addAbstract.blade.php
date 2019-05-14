@@ -116,7 +116,7 @@
                   <textarea name="outline_detail" class="form-control" required></textarea>
                 <div><br/>
                 <div class="form-group">
-                  <button class="btn btn-primary" type="submit">Submit</button>
+                  <button class="btn btn-primary" type="submit">Create Abstract of Quotation</button>
                 </div>
               </form>
             </div>

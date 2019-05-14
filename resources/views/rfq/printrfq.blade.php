@@ -128,17 +128,17 @@
 				</tr>
 			</thead>
 			<tbody>
-                @foreach($dos as $key01=>$items)
+        @foreach($dos as $key01=>$items)
                 {{--  @php var_dump($items); @endphp  --}}
-				<tr>
-					<td>{{$items->item_quantity}}</td>
-					<td>{{$items->ppmpItem->measurementUnit->unit_code}}</td>
-					<td>
-			      		{{$items->ppmpItem->item_description}}
-					</td>
-					<td></td>
-					<td></td>
-				</tr>
+					<tr>
+						<td>{{$items->item_quantity}}</td>
+						<td>{{$items->ppmpItem->measurementUnit->unit_code}}</td>
+						<td>
+									{{$items->ppmpItem->item_description}}
+						</td>
+						<td></td>
+						<td></td>
+					</tr>
 				@endforeach
 				@if($dos->count() < 15)
 					@for($i=$dos->count();$i < 15;$i++)
@@ -192,6 +192,8 @@
 </div>
 @if($rfq->purchaseRequest->supplier_type == "3")
 @else
+
+{{-- GSO Copy --}}
 <div class="container-fluid">
 	<!-- start of header -->
 	<div class="row">
@@ -253,7 +255,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($dos as $key02=>$item)
+				@foreach($dos as $key02=>$items)
 				<tr>
 					<td>{{$items->item_quantity}}</td>
 					<td>{{$items->ppmpItem->measurementUnit->unit_code}}</td>
@@ -319,7 +321,7 @@
 <span style="page-break-after:avoid;"></span>
 
 <!-- scripts -->
-<script src="{{ asset('js/datatables.js') }}"></script>
+{{-- <script src="{{ asset('js/datatables.js') }}"></script> --}}
 {{--  <script src="{{ asset('js/bootstrap.min.js') }}"></script>  --}}
 <!-- end scripts -->
 </body>

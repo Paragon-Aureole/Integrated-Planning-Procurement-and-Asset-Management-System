@@ -44,7 +44,7 @@
   <script src="{{asset('js/bootstrap4.min.js')}}"></script>
   <script src="{{asset('js/bootstrap-confirmation.js')}}"></script>
   <script src="{{asset('js/validation-form.js')}}"></script>
-  <script src="{{asset('js/simple.money.format.js')}}"></script>
+  <script src="{{asset('js/jquery.number.js')}}"></script>
   
   <script type="text/javascript">
     $(document).ready(function() {

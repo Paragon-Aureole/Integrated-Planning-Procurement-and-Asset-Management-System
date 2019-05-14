@@ -162,8 +162,8 @@
 			      <td>
 			      	{{$list->ppmpItem->item_description}}
 			      </td>
-			      <td style='text-align: right;'>{{$list->item_cost}}</td>
-			      <td style='text-align: right;'>{{$list->item_budget}}</td>
+			      <td style='text-align: right;'>{{number_format($list->item_cost, 2)}}</td>
+			      <td style='text-align: right;'>{{number_format($list->item_budget, 2)}}</td>
 			    </tr>
 			    
 			@endforeach

@@ -49,8 +49,8 @@
                                 </div>
                               </div>
                               <div class="form-group col">
-                                <button type="submit" class="btn btn-primary btn-sm" id="submitContent">Submit</button>
-                                <button class="btn btn-warning btn-sm" id="updateContent" style="display:none">Update</button>
+                                <button type="submit" class="btn btn-primary btn-sm" id="submitContent">Add Item Code</button>
+                                <button class="btn btn-warning btn-sm" id="updateContent" style="display:none">Update Item Code</button>
                                 <button class="btn btn-primary btn-sm" id="cancelUpdate" style="display:none">Cancel</button>
                               </div>
                             </div>

@@ -57,8 +57,8 @@ class OutlineSupplierController extends Controller
         foreach ($input['pr_item_id'] as $key => $prid) {
             $add_price = $supplier->outlinePrice()->create([
                 'pr_item_id' => $input['pr_item_id'][$key],
-                'final_cpu' => $input['unit_price'][$key],
-                'final_cpi' => $input['item_price'][$key]
+                'final_cpu' => str_replace(',', '', $input['unit_price'][$key]),
+                'final_cpi' => str_replace(',', '', $input['item_price'][$key])
             ]);
         }
 
@@ -120,8 +120,8 @@ class OutlineSupplierController extends Controller
         foreach ($input['item_id'] as $key => $id) {
             $price = OutlineItemPrice::find($input['item_id'][$key]);
             $update_price = $price->update([
-                'final_cpu' => $input['unit_price2'][$key],
-                'final_cpi' => $input['item_price2'][$key]
+                'final_cpu' => str_replace(',', '', $input['unit_price2'][$key]),
+                'final_cpi' => str_replace(',', '', $input['item_price2'][$key])
             ]);
         }
 

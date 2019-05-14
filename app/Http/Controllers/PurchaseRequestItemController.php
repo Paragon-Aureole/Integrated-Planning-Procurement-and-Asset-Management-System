@@ -24,7 +24,7 @@ class PurchaseRequestItemController extends Controller
         $pr_code = explode("-", $pr->pr_code);
 
         $ppmp_item = PpmpItem::whereHas('ppmp', function ($query) use ($pr_code, $pr){
-            $query->where('ppmp_year', $pr_code[2])->where('office_id', $pr->office_id);
+            $query->where('ppmp_year', $pr_code[2])->where('office_id', $pr->office_id)->where('is_active', 1);
         })->where('item_stock', '>', 0)->get(); 
         return view('pr.pr_item.addpritem', compact('pr', 'ppmp_item'));
     }
@@ -50,34 +50,41 @@ class PurchaseRequestItemController extends Controller
      */
     public function store(PurchaseRequestItemRequest $request, $id)
     {
+
+        
+
         $input = $request->all();
+
+        $costperitem = str_replace(',' , '' , $input['item_cpi']);
+        $costperunit = str_replace(',' , '' , $input['item_cpu']);
+        $quantity = str_replace(',' , '' , $input['item_quantity']);
+
         $pr = PurchaseRequest::findorFail($id);
-        $pr->pr_budget = $pr->pr_budget + $input['item_cpi'];
+        $pr->pr_budget = $pr->pr_budget + $costperitem;
         $pr->save();
 
-        // $ppmp_item = PpmpItem::findorFail($input['item_description']);
+
         $ppmp_item = PpmpItem::where('id', $input['item_description'])->get();
 
         foreach ($ppmp_item as $piKey => $piValue) {
-            $answer = $piValue->item_stock - $input['item_quantity'];
+            $answer = $piValue->item_stock - $quantity;
         }
 
         $stockUpdate = PpmpItem::where('id', $input['item_description'])->update([
             'item_stock' => $answer
         ]);
         
-        // $ppmp_item->item_stock = $ppmp_item->item_stock - $input['item_quantity'];
-        // $ppmp_item->save();
+
         
         $pr_item = PurchaseRequestItem::create([
             'purchase_request_id' => $id,
             'ppmp_item_id' => $input['item_description'],
-            'item_quantity' => $input['item_quantity'],
-            'item_cost' => $input['item_cpu'],
-            'item_budget' => $input['item_cpi']
+            'item_quantity' => $quantity,
+            'item_cost' => $costperunit,
+            'item_budget' => $costperitem
         ]);
 
-        // $pr->prItem()->save($pr_item);
+
 
         return redirect()->back()->with('success', 'PR Item Added');
     }

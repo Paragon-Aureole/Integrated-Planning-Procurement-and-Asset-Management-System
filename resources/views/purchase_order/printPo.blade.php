@@ -183,7 +183,7 @@
         @php
             $amt_word = new NumberFormatter("en", NumberFormatter::SPELLOUT);
         @endphp
-        <th colspan="2" style="text-align: left;">{{strtoUpper($amt_word->format($grand_total))}}</th>
+        <th colspan="2" style="text-align: left;">{{strtoUpper($amt_word->format($grand_total))}} PESOS ONLY</th>
         <th style="text-align: right;">GRAND TOTAL</th>
         <th style="text-align: right;">&#8369; {{number_format($grand_total,2)}}</th>
       </tfoot>

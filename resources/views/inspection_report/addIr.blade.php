@@ -72,7 +72,7 @@
                   <td>{{$ir->purchaseRequest->pr_code}}</td>
                   <td>{{Carbon\Carbon::parse($ir->created_at)->format('m-d-y')}}</td>
                   <td>
-                    <a href="{{route('ir.print', $ir->id)}}" target="_blank" class="btn btn-sm btn-secondary">
+                    <a href="{{route('ir.print', $ir->id)}}" target="_blank" class="btn btn-sm btn-success">
                       <i class="fas fa-print"></i>
                     </a>
                     <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#"
@@ -103,7 +103,7 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h5>Purchase Order Form Details</h5>
+        <h5>Inspection Report Form Details</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
@@ -176,7 +176,7 @@
             </div>
           </div>
           <br>
-          <input type="submit" value="Submit">
+          <button class="btn btn-primary btn-sm" type="submit">Add Inspection Report</button>
         </form>
       </div>
 
