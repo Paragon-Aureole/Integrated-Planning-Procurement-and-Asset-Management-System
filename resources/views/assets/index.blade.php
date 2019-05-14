@@ -21,91 +21,109 @@
   </div>
 </div>
 </form> --}}
+@can('Asset Management', 'Supervisor')
 <div class="container-fluid">
-  <div class="card">
-    <div class="card-header pt-2 pb-2">Asset Classification and Distribution</div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-6">
-          <h6 class="card-title">
-            Available Items Procured
-          </h6>
-          <div class="table-responsive">
-            <table id="availableDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
-                <tr>
-                  <th>PO Number</th>
-                  <th>Office</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($asset->where('isEditable', 0)->groupBy('purchase_order_id') as $record)
-                <tr>
-                  {{-- <td>00000001</td>
-                      <td>Office of the City Mayor</td> --}}
-                  <td>{{$record->first()->purchase_order_id}}</td>
-                  <td>{{$record->first()->purchaseOrder->purchaseRequest->office->office_name}}</td>
-                  <td>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#itemsProcured"
-                      id="classificationModalBtn">
-                      <i class="fas fa-plus"></i>
-                    </button>
-                  </td>
-                </tr>
-
-                @endforeach
-
-              </tbody>
-            </table>
+    <div class="card">
+      <div class="card-header pt-2 pb-2">Asset Classification and Distribution</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="card-title">
+              Available Items Procured
+            </h6>
+            <div class="table-responsive">
+              <table id="availableDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>PO Number</th>
+                    <th>Office</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($asset->where('isEditable', 0)->groupBy('purchase_order_id') as $record)
+                  <tr>
+                    {{-- <td>00000001</td>
+                        <td>Office of the City Mayor</td> --}}
+                    <td>{{$record->first()->purchase_order_id}}</td>
+                    <td>{{$record->first()->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#itemsProcured"
+                        id="classificationModalBtn">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </td>
+                  </tr>
+  
+                  @endforeach
+  
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-
-        <!-- table -->
-        <div class="col-md-6">
-          <h6 class="card-title">Classified Items</h6>
-          <div class="table-responsive">
-            <table id="classifiedDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
-                <tr>
-                  <th>ID</th>
-                  <th>Item Name</th>
-                  <th>Office</th>
-                  <th>Classification</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-
-                @foreach ($asset->where('isAssigned', 0)->where('isEditable', 1) as $key =>$record)
-                <tr>
-                  <td>{{$record->id}}</td>
-                  <td>{{$record->details}}</td>
-                  <td>{{$record->purchaseOrder->purchaseRequest->office->office_name}}</td>
-                  @if ($record->isICS == "1")
-                  <td>ICS</td>
-                  @else
-                  <td>PAR</td>
-                  @endif
-                  <td>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assetDistribution"
-                      id="distributeItems">
-                      <i class="fas fa-plus"></i>
-                    </button>
-                    @can('full control')
-                    <button class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></button>
-                    @endcan
-                </tr>
-                @endforeach
-
-              </tbody>
-            </table>
+  
+          <!-- table -->
+          <div class="col-md-6">
+            <h6 class="card-title">Classified Items</h6>
+            <div class="table-responsive">
+              <table id="classifiedDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Item Name</th>
+                    <th>Office</th>
+                    <th>Classification</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+  
+                  @foreach ($asset->where('isAssigned', 0)->where('isEditable', 1) as $key =>$record)
+                  <tr>
+                    <td>{{$record->id}}</td>
+                    <td>{{$record->details}}</td>
+                    <td>{{$record->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                    @if ($record->isICS == "1")
+                    <td>ICS</td>
+                    @else
+                    <td>PAR</td>
+                    @endif
+                    <td>
+                      <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assetDistribution"
+                        id="distributeItems">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                      @can('Asset Management')
+                        @if ($record->isRequested == 0)
+                          <button class="btn btn-sm btn-danger">
+                            Request to Edit
+                          </button>
+                        @else
+                            <button class="btn btn-sm btn-warning" disabled>
+                              Pending
+                            </button>
+                        @endif
+                      @endcan
+                      @can('Supervisor')
+                        @if ($record->isRequested == 0)
+                        @else
+                            <button class="btn btn-sm btn-info">
+                              Accept to Edit
+                            </button>
+                        @endif
+                      @endcan
+                  </tr>
+                  @endforeach
+  
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+@endcan
 
 <div class="col-md-12">&nbsp</div>
 
@@ -218,14 +236,21 @@
       <!-- Modal Header -->
       <form action="{{route('assets.store')}}" id="assetClassificationForm" method="post">
         {{csrf_field()}}
-        Distribution Number:<input type="text" name="voucherNo" />
         <div class="modal-header">
           <h5>Classify Items Procured</h5>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         {{-- body --}}
         <div class="modal-body">
-          <label style="color:tomato">PO Number: <p id="po_id"></p></label>
+          <div class="row">
+              <div class="col-md-4">
+                  <label style="color:tomato">PO Number: </label><input class="form-control" type="text" name="po_id" id="po_id" readonly/>
+              </div>
+              <div class="col-md-4">
+                  <label style="color:black">Disbursement Number: </label><input class="form-control" type="text" name="voucherNo" /><br>
+              </div>
+          </div>
+          <hr>
           <input type="hidden" name="po_id">
           <table id="itemClassification" class="table table-bordered table-hover table-sm display nowrap w-100">
             <thead class="thead-dark">
@@ -242,8 +267,9 @@
 
             </tbody>
           </table>
+          <hr>
+          <button id="btn_submit" class="btn btn-primary">Classify Items</button>
         </div>
-        <button id="btn_submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
   </div>
@@ -278,7 +304,7 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
                 </div>
                 {{-- QUANTITY SELECITION HERE --}}
-                <select name="selectedItemQty" class="custom-select">
+                <select name="selectedItemQty" id="selectedItemQtyPar" class="custom-select">
                   <option>None</option>
                 </select>
               </div>

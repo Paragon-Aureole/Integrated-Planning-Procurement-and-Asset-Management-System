@@ -91,8 +91,14 @@
           Assets
         </a>
         <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
+          <li>
+            @if (Auth::user()->hasRole('Department'))
+            <a class="dropdown-item" href="/assets">Procured Assets</a>
+            @else
+            <a class="dropdown-item" href="/assets">Asset Classification and Distribution</a>
+            @endif
+        </li>
           @can('Asset Management', 'Supervisor')
-          <li><a class="dropdown-item" href="/assets">Asset Procurement and Distribution</a></li>
           <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Print Reports</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/printOfficeAssets">REPORT OF THE PHYSICAL COUNT OF PROPERTY, PLANT AND EQUIPMENT</a></li>

@@ -26,6 +26,7 @@ class Asset extends Migration
             $table->integer('asset_type_id')->unsigned()->nullable()->index();
             $table->boolean('isAssigned')->nullable()->default(false);
             $table->boolean('isEditable')->nullable()->default(false);
+            $table->boolean('isRequested')->nullable()->default(false);
             $table->timestamps();
         });
     }

@@ -71,34 +71,19 @@
                     <table id="parDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                         <thead class="thead-dark">
                             <tr>
-                                <th>PAR No</th>
-                                <th>Item Qty</th>
                                 <th>Assigned To</th>
                                 <th>Position</th>
-                                <th>Action</th>
+                                <th>Office</th>
+                                <th>Items</th>
                             </tr>
                         </thead>
                         <tbody id="parTbody">
-                            @foreach ($to as $toItem)
-                            @if ($toItem->asset->purchaseOrder->purchaseRequest->office->id == $currentOfficeId)
                             <tr>
-                                <td>{{$toItem->id}}</td>
-                                <td>{{$toItem->quantity}}</td>
-                                <td>{{$toItem->assignedTo}}</td>
-                                <td>{{$toItem->position}}</td>
-                                <td>
-                                <button type="button" id="turnoverButton" name="btn_assignItem" class="btn btn-info btn-xs"data-toggle="modal" data-target="#turnoverModal">Turnover</button>
-                                </td>
-                            </tr>
-                            @endif
-                            @endforeach
-                            <tr>
-                                <td>Sample #</td>
-                                <td>Sample Qty</td>
-                                <td>Sample Assigned to</td>
+                                <td>Sample Signatory</td>
                                 <td>Sample Position</td>
+                                <td>Sample Office</td>
                                 <td>
-                                        <button type="button" id="turnoverButton" name="btn_assignItem" class="btn btn-info btn-xs"data-toggle="modal" data-target="#turnoverModal">Turnover</button>
+                                    <button type="button" id="turnoverButton" name="btn_assignItem" class="btn btn-info btn-xs" data-toggle="modal" data-target="#turnoverModal">View Items</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -113,23 +98,20 @@
                     <table id="datatableTurnover" class="table table-bordered table-hover table-sm display nowrap w-100">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Turnover PAR ID</th>
-                                <th>Remarks</th>
                                 <th>Assigned To</th>
-                                <th>Actions</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Turned Over Items</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{-- @foreach ($assetTurnoverParData->get() as $record) --}}
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>Sample Signatory</td>
+                                <td>Sample Position</td>
+                                <td>Sample Office</td>
                                 <td>
-                                    <a href="http://ipams.test/printTurnover/" target="_blank"
-                                        class="btn btn-sm btn-secondary">
-                                        <i class="fas fa-print"></i>
-                                    </a>
+                                    <button type="button" id="turnoverButton" name="btn_assignItem" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#turnedOverModal">View Items</button>
                                 </td>
                             </tr>
                             {{-- @endforeach --}}
@@ -147,39 +129,121 @@
 
 <!-- The Modal -->
 <div class="modal" id="turnoverModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
         <div class="modal-content">
-    
-        <!-- Modal Header -->
-        <div class="modal-header">
-            <h5>Turnover Item</h5>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-    
-        <!-- Modal body -->
-        <div class="modal-body">
-        <form action="" method="POST">
-            {{ csrf_field() }}
-            <input type="hidden" name="pr_id" value="">
-            <div class="form-group">
-                <label>PAR Number:</label>
-                <input id="prCode" class="form-control" type="text" disabled>
-            <div>
-            <div class="form-group">
-                <label>Quantity:</label>
-                <select name="" id="quantity" class="form-control">
-                    <option value="">Total Quantity will append here</option>
-                </select>
-            <div>
-            <div class="form-group">
-                <label>Description:</label>
-                <textarea name="turnover_description" class="form-control" required></textarea>
-            <div><br/>
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">Submit</button>
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5>Signatory's Current Assigned Items</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            </form>
+        
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Signatory Name:</label>
+                    <input id="prCode" class="form-control" type="text" disabled>
+                </div>
+                <div class="form-group">
+                        <hr style="height:5px; background-color:grey;">
+
+                        <table id="modalTurnoverDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+                            <thead class="thead-dark">
+                                <th>Item Name</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Laptop</td>
+                                    <td><textarea style="border:none;" name="" id="" cols="100" rows="2" readonly>A</textarea></td>
+                                    <td>Active</td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                                <tr>
+                                    <td>Laptop</td>
+                                    <td><textarea style="border:none;" name="" id="" cols="100" rows="2" readonly>B</textarea></td>
+                                    <td>Active</td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                                <tr>
+                                    <td>Laptop</td>
+                                    <td><textarea style="border:none;" name="" id="" cols="100" rows="2" readonly>C</textarea></td>
+                                    <td>Active</td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                            </tbody>
+                            </table>
+                            <div class="col-md-12">&nbsp</div>
+                            <button type="button" id="SubmitTurnover" name="btn_assignItem" class="btn btn-danger btn-xs float-right">Turnover Items</button>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="turnedOverModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5>Signatory's Current Turned Over Items</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+        
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>PAR Number:</label>
+                    <input id="prCode" class="form-control" type="text" disabled>
+                </div>
+                <div class="form-group">
+                        <hr style="height:5px; background-color:grey;">
+
+                        <table id="modalTurnoverDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+                            <thead class="thead-dark">
+                                <th>Item Name</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Laptop</td>
+                                    <td><textarea style="border:none;" name="" id="" cols="90" rows="2" readonly>A</textarea></td>
+                                    <td>
+                                        Unserviceable
+                                        @can('full control', 'Supervisor')
+                                            <button type="button" id="SubmitTurnover" name="btn_assignItem" class="btn btn-info btn-xs float-right">Remove</button>
+                                        @endcan
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Laptop</td>
+                                    <td><textarea style="border:none;" name="" id="" cols="90" rows="2" readonly>B</textarea></td>
+                                    <td>
+                                        Unserviceable
+                                        @can('full control', 'Supervisor')
+                                            <button type="button" id="SubmitTurnover" name="btn_assignItem" class="btn btn-info btn-xs float-right">Remove</button>
+                                        @endcan
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Laptop</td>
+                                    <td><textarea style="border:none;" name="" id="" cols="90" rows="2" readonly>C</textarea></td>
+                                    <td>
+                                        Unserviceable
+                                        @can('full control', 'Supervisor')
+                                            <button type="button" id="SubmitTurnover" name="btn_assignItem" class="btn btn-info btn-xs float-right">Remove</button>
+                                        @endcan
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                            <div class="col-md-12">&nbsp</div>
+                            <button type="button" id="SubmitTurnover" name="btn_assignItem" class="btn btn-danger btn-xs float-right">Print Turned Over Items</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -194,6 +258,11 @@ $(document).ready(function() {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });
         $('#datatableTurnover').DataTable({
+            responsive: false,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+        });
+
+        $('#modalTurnoverDatatable').DataTable({
             responsive: false,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });

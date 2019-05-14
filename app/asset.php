@@ -17,7 +17,8 @@ class asset extends Model
         'isPAR',
         'asset_type_id',
         'isAssigned',
-        'isEditable'
+        'isEditable',
+        'isRequested'
     ];
 
     // public function getRouteKeyName()
