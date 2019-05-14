@@ -135,13 +135,8 @@ class PurchaseOrderController extends Controller
     {
         $signatory = Signatory::where(['category' => 4, 'is_activated'=>TRUE])->firstorFail();
         $purchase_order = PurchaseOrder::findorFail($id);
-        if ($purchase_order->purchaseRequest->supplier_type == 2) {
-            $query = $purchase_order->purchaseRequest->prItem()->chunk(15);
-            $grand_total = 0;
-        }else {
             $query = $purchase_order->outlineSupplier->outlinePrice->chunk(15);
             $grand_total = $purchase_order->outlineSupplier->outlinePrice()->sum('final_cpi');
-        }
         $date   = Carbon::parse($purchase_order->created_at);
         $created_code = Auth::user()->office->office_code."/".Auth::user()->wholename."/".$date->Format('F j, Y')."/".$date->format("g:i:s A")."/"."BAC"."/".$purchase_order->purchaseRequest->pr_code;
         $options = [
@@ -210,9 +205,25 @@ class PurchaseOrderController extends Controller
      * @param  \App\PurchaseOrder  $purchaseOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PurchaseOrder $purchaseOrder)
+    public function update(Request $request, $po)
     {
-        //
+        $input = $request->all();
+        $purchase_order = PurchaseOrder::findorFail($po);
+        $update_po = $purchase_order->update([
+            'supplier_tin' => $input['supplier_tin'],
+            'delivery_place' => $input['delivery_place'],
+            'delivery_date' => $input['delivery_date'],
+            'delivery_term' => $input['delivery_term'],
+            'payment_term' => $input['payment_term']
+
+        ]);
+
+        activity('Purchase Order')
+        ->performedOn($purchase_order)
+        ->causedBy(Auth::user())
+        ->log('Updated PO Form on '. $purchase_order->purchaseRequest->pr_code);
+
+        return redirect()->route('po.index')->with('success', 'Purchase Order updated');
     }
 
     /**

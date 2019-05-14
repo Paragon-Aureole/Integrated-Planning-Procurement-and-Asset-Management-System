@@ -34,7 +34,7 @@
 
           @role('Admin')
           <div class="col-md-12 form-group">
-              <label for="ppmpOffice" class="small">Office:</label>
+              <span class="text-danger">*</span><label for="ppmpOffice" class="small">Office:</label>
                 <select id="ppmpOffice" class="custom-select custom-select-sm {{ $errors->has('office_id') ? 'is-invalid' : '' }}" name="office_id" required>
                   <option value = "">-Select One-</option>
                 @foreach($offices as $department)
