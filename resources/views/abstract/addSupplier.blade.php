@@ -66,24 +66,15 @@
                 
             </div>
             <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label>Procurement Of:</label>
                     <textarea class="form-control form-control-sm" name="outline_detail" required>{{$abstract->outline_detail}}</textarea>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label>Comments:</label>
-                    <textarea class="form-control form-control-sm" name="supplier_comments" required>@if($abstract->outline_comment != "None") {{$abstract->outline_comment}}@endif</textarea>
+                    <textarea class="form-control form-control-sm" name="supplier_comments" required>@if($abstract->outline_comment != "None") {{$abstract->outline_commnt}}@endif</textarea>
                 </div>
-                @if ($allSuppliers->where('supplier_status', 1)->count() >= 1)
-                    @can('full control')
-                        <div class="form-group col-md-4">
-                            <label>Reason for Editing (Admin):</label>
-                            <textarea class="form-control form-control-sm" name="reason_editing" required>-</textarea>
-                        </div>
-                    @else
-                        <input type="hidden" name="reason_editing" value="-">
-                    @endcan     
-                @endif
+                
                 
             </div>
             <div class="form-row">  
