@@ -8,7 +8,8 @@ class AssetParItem extends Model
 {
     protected $fillable = [
         'asset_par_id',
-        'description'
+        'description',
+        'itemStatus'
     ];
 
     public function assetPar()

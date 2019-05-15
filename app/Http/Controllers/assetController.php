@@ -208,7 +208,8 @@ class assetController extends Controller
             
             AssetParItem::create([
                     'asset_par_id' => $items[5],
-                    'description' => $items[2][$i]
+                    'description' => $items[2][$i],
+                    'itemStatus' => 0
                 ]);
         }
 

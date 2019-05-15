@@ -21,11 +21,6 @@ class assetIcslip extends Model
         return $this->belongsTo(asset::class);
     }
 
-    public function asset_turnover()
-    {
-        return $this->hasOne(assetTurnover::class);
-    }
-
     public function distributedAsset()
     {
         return $this->hasOne(editDistributedAsset::class);

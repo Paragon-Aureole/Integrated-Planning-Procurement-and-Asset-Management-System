@@ -8,9 +8,8 @@ class assetTurnover extends Model
 {
     protected $fillable = [
         'par_id',
-        'ics_id',
-        'remarks',
-        'assignedTo'
+        'isApproved',
+        'turnoverData'
     ];
 
     public function asset_par()
@@ -18,8 +17,4 @@ class assetTurnover extends Model
         return $this->belongsTo(assetPar::class);
     }
 
-    public function asset_ics()
-    {
-        return $this->belongsTo(assetIcslip::class);
-    }
 }

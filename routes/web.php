@@ -196,6 +196,7 @@ Route::get('migrateAssets/print/{id}', 'MigratedAssetsController@print')->name('
 Route::resource('AssetTurnover', 'AssetTurnoverController');
 Route::get('parSearchTurnover', 'AssetTurnoverController@parSearchTurnover');
 Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
+Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems');
 
 //activity log
 Route::resource('logs', 'ActivityLogController');

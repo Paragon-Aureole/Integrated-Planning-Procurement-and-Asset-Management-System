@@ -23,16 +23,27 @@ class AssetTurnoverController extends Controller
      */
     public function index()
     {
+
+        // $sampledata = assetPar::with('assetParItem')->where('id', 1)->get();
+        // $sampledata = assetTurnover::where('isApproved', 0)->get();
+        // $sampledata = assetPar::with('asset_turnover')->get();
+
+        // dd($sampledata);
+
         // dd(Auth::user()->office_id);
         if (Auth::user()->hasRole('Admin')) {
             $office = Office::all();
-            $to = assetPar::all();
+            $to = assetPar::with('assetParItem')->get();
             $currentOfficeId = Auth::user()->office_id;
+            $approvalAssets = assetTurnover::where('isApproved', 0)->get();
 
         }else{
-            $to = assetPar::all();
             $office = Office::all();
+            $to = assetPar::with('assetParItem')->get();
             $currentOfficeId = Auth::user()->office_id;
+
+
+           
         }
 
         return view('assets.turnover.index', compact('to', 'office', 'currentOfficeId'));
@@ -42,9 +53,13 @@ class AssetTurnoverController extends Controller
     {
         $par_id = $request->input('par_id');
 
+        $assetPar = [];
+
         if (Auth::user()->hasRole('Admin')) {
-            $assetPar = assetPar::where('id', $par_id)
+            $assetPar[] = assetPar::where('id', $par_id)
             ->get();
+            $assetPars = assetPar::find($par_id);
+            $assetPar[] = $assetPars->asset->purchaseOrder->purchaseRequest->office->where('id', Auth::user()->office_id)->get();
 
         }else{
             $assetPars = assetPar::find($par_id);
@@ -53,6 +68,16 @@ class AssetTurnoverController extends Controller
         }
  
         return response()->json(['assetPar'=>$assetPar]);
+    }
+
+    public function getParAssignedItems(Request $request)
+    {
+        $par_id = $request->input('par_id');
+        $beach = assetPar::with('assetParItem')->where('id', $par_id)->get();
+        $assetPar[] = $beach->first()->asset->details;
+        $assetPar[] = $beach->first()->assetParItem;
+
+        return response()->json(['assetParItems'=> $assetPar]);
     }
 
     public function nameSearchTurnover(Request $request)
@@ -79,26 +104,23 @@ class AssetTurnoverController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $items = $request->input('data');
-        // dd($items);
-        $par_id = null;
-        $ics_id = null;
-        if ($items[1] == "PAR") {
-            $par_id = $items[0];
-        } elseif ($items[1] == "ICS") {
-            $ics_id = $items[0];
-        }
+
+        $par_id = $request->input('turnoverParId');
+
+        $toTurnoverData = serialize($request->input('toTurnover'));
+
+        // dd(unserialize($toTurnoverData));
+        // $schedule = implode(",", $input['item_schedule']);
+
         assetTurnover::create([
             'par_id' => $par_id,
-            'ics_id' => $ics_id,
-            'remarks' => $items[4],
-            'assignedTo' => $items[2],
-            'position' => $items[3]
+            'isApproved' => 0,
+            'turnoverData' => $toTurnoverData
         ]);
 
         if ($request->isMethod('post')) {
             // return response()->json(['response' => 'This is post method', 'error' => false]);
-            return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
+            return response()->json(['response' => 'Save Success', 'error' => false]);
         } else {
             return response()->json(['response' => 'failure']);
         }
