@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-{{--  {{$to}} --}}
+{{--  {{$approvalAssets}}  --}}
 <div class="container-fluid">
     <div class="card">
         <div class="card-header pt-2 pb-2">List of PAR Item</div>
@@ -80,6 +80,8 @@
                         </thead>
                         <tbody id="parTbody">
                             @foreach ($to as $record)
+                            {{--  {{$record->asset_turnover['isApproved']}}  --}}
+                            @if ($record->asset_turnover['isApproved'] != '0')
                             <tr>
                                 <td>{{$record->id}}</td>
                                 <td>{{$record->assignedTo}}</td>
@@ -90,7 +92,7 @@
                                         data-toggle="modal" data-target="#turnoverModal">View Items</button>
                                 </td>
                             </tr>
-
+                            @endif
                             @endforeach
 
                             {{--  <tr>
@@ -115,25 +117,47 @@
                         class="table table-bordered table-hover table-sm display nowrap w-100">
                         <thead class="thead-dark">
                             <tr>
+                                <th>ID</th>
                                 <th>Assigned To</th>
                                 <th>Position</th>
                                 <th>Office</th>
-                                <th>Turned Over Items</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($assetTurnoverParData->get() as $record) --}}
+                            @foreach ($approvalAssets as $record)
+                            {{--  {{$record}}  --}}
                             <tr>
-                                <td>Sample Signatory</td>
-                                <td>Sample Position</td>
-                                <td>Sample Office</td>
+                                <td>{{$record->par_id}}</td>
+                                <td>{{$record->asset_par->assignedTo}}</td>
+                                <td>{{$record->asset_par->position}}</td>
+                                <td>{{$record->asset_par->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
                                 <td>
-                                    <button type="button" id="turnoverButton" name="btn_assignItem"
-                                        class="btn btn-warning btn-xs" data-toggle="modal"
-                                        data-target="#turnedOverModal">View Items</button>
+                                @if ($record->isApproved == 0)
+                                Pending
+                                @else
+                                Approved
+                                @endif
+                                </td>
+                                <td>
+                                        <button type="button" id="turnoverViewButton" name="btn_turnoverViewButton"
+                                            class="btn btn-warning btn-xs" data-toggle="modal"
+                                            data-target="#turnedOverModal">View Items</button>
                                 </td>
                             </tr>
-                            {{-- @endforeach --}}
+                            @endforeach
+                                {{--  <tr>
+                                    <td>Sample Signatory</td>
+                                    <td>Sample Position</td>
+                                    <td>Sample Office</td>
+                                    <td>Pending</td>
+                                    <td>
+                                        <button type="button" id="turnoverButton" name="btn_assignItem"
+                                            class="btn btn-warning btn-xs" data-toggle="modal"
+                                            data-target="#turnedOverModal">View Items</button>
+                                    </td>
+                                </tr>  --}}
 
                         </tbody>
                     </table>
@@ -223,12 +247,12 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>PAR Number:</label>
-                    <input id="prCode" class="form-control" type="text" disabled>
+                    <input id="turnoverPar_id" class="form-control" type="text" disabled>
                 </div>
                 <div class="form-group">
                     <hr style="height:5px; background-color:grey;">
 
-                    <table id="modalTurnoverDatatable"
+                    <table id="modalApprovalTurnoverDatatable"
                         class="table table-bordered table-hover table-sm display nowrap w-100">
                         <thead class="thead-dark">
                             <th>Item Name</th>
@@ -275,8 +299,10 @@
                         </tbody>
                     </table>
                     <div class="col-md-12">&nbsp</div>
-                    <button type="button" id="SubmitTurnover" name="btn_assignItem"
-                        class="btn btn-danger btn-xs float-right">Print Turned Over Items</button>
+                    <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
+                        class="btn btn-primary btn-xs float-right">Approve Turned Over Items</button>
+                    <button type="button" id="PrintTurnover" name="btn_PrintTurnover"
+                        class="btn btn-success btn-xs float-right">Print Turned Over Items</button>
                 </div>
             </div>
         </div>

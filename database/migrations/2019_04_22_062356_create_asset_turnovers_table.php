@@ -17,6 +17,7 @@ class CreateAssetTurnoversTable extends Migration
             $table->increments('id');
             $table->integer('par_id')->unsigned()->nullable()->index();
             $table->string('turnoverData');
+            $table->boolean('isApproved');
             $table->timestamps();
         });
 

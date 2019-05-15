@@ -153,7 +153,9 @@
                 </tr>
               </thead>
               <tbody>
+                
                 @foreach ($assetPar as $record)
+                  
                 <td>{{$record->id}}</td>
                 <td>{{$record->assignedTo}}</td>
                 <td>{{$record->position}}</td>
@@ -164,17 +166,19 @@
                 <td>{{$record->asset->asset_type->type_name}}</td>
                 <td>PAR</td>
                 <td>
-                    <a href="{{'/printPar/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
-                      <i class="fas fa-print"></i>
-                    </a>
-                    @can('full control')
-                    <button class="btn btn-sm btn-danger">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    @endcan
-                  </td>
-                </tr>
-                @endforeach
+                  <a href="{{'/printPar/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
+                    <i class="fas fa-print"></i>
+                  </a>
+                  @can('full control')
+                  <button class="btn btn-sm btn-danger">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  @endcan
+                </td>
+              </tr>
+              @endforeach
+              
+            
 
                 @foreach ($assetIcs as $record)
                 <td>{{$record->id}}</td>

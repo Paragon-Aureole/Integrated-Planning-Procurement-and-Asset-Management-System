@@ -22,7 +22,7 @@ class assetPar extends Model
 
     public function asset_turnover()
     {
-        return $this->hasMany(assetTurnover::class, 'par_id');
+        return $this->hasOne(assetTurnover::class, 'par_id');
     }
 
     public function distributedAsset()

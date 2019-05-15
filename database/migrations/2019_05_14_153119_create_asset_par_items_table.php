@@ -18,6 +18,7 @@ class CreateAssetParItemsTable extends Migration
             // $table->integer('asset_id')->unsigned()->nullable()->index();
             $table->integer('asset_par_id')->unsigned()->nullable()->index();
             $table->string('description');
+            $table->string('itemStatus');
             $table->timestamps();
         });
 

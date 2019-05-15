@@ -8,6 +8,7 @@ use App\PurchaseRequest;
 use App\Office;
 use App\assetTurnover;
 use App\assetPar;
+use App\AssetParItem;
 use App\assetIcslip;
 use Carbon\Carbon;
 use Auth;
@@ -23,30 +24,24 @@ class AssetTurnoverController extends Controller
      */
     public function index()
     {
-
+        
+        // dd(assetPar::with('assetParItem')->where('id', 3)->get());
         // $sampledata = assetPar::with('assetParItem')->where('id', 1)->get();
-        // $sampledata = assetTurnover::where('isApproved', 0)->get();
-        // $sampledata = assetPar::with('asset_turnover')->get();
+        // $sampledata = assetTurnover::with('asset_par')->where('isApproved', 0)->where('id', 1)->get();
 
-        // dd($sampledata);
+        // $sampledata = assetPar::with('assetParItem')->get();
 
-        // dd(Auth::user()->office_id);
-        if (Auth::user()->hasRole('Admin')) {
-            $office = Office::all();
-            $to = assetPar::with('assetParItem')->get();
-            $currentOfficeId = Auth::user()->office_id;
-            $approvalAssets = assetTurnover::where('isApproved', 0)->get();
+        // dd(unserialize($sampledata->first()->turnoverData));
+        
 
-        }else{
-            $office = Office::all();
-            $to = assetPar::with('assetParItem')->get();
-            $currentOfficeId = Auth::user()->office_id;
+        $to = assetPar::with('assetParItem')->get();
+        $office = Office::all();
+        $currentOfficeId = Auth::user()->office_id;
+        $approvalAssets = assetTurnover::all();
 
+        // dd($approvalAssets->first()->asset_par);
 
-           
-        }
-
-        return view('assets.turnover.index', compact('to', 'office', 'currentOfficeId'));
+        return view('assets.turnover.index', compact('to', 'office', 'currentOfficeId', 'approvalAssets'));
     }
 
     public function parSearchTurnover(Request $request)
@@ -60,8 +55,7 @@ class AssetTurnoverController extends Controller
             ->get();
             $assetPars = assetPar::find($par_id);
             $assetPar[] = $assetPars->asset->purchaseOrder->purchaseRequest->office->where('id', Auth::user()->office_id)->get();
-
-        }else{
+        } else {
             $assetPars = assetPar::find($par_id);
             
             $assetPar = $assetPars->asset->purchaseOrder->purchaseRequest->office->where('id', Auth::user()->office_id)->get();
@@ -78,6 +72,18 @@ class AssetTurnoverController extends Controller
         $assetPar[] = $beach->first()->assetParItem;
 
         return response()->json(['assetParItems'=> $assetPar]);
+    }
+    
+    public function getParTurnoverItems(Request $request)
+    {
+        // dd($request->all());
+        $par_id = $request->input('par_id');
+
+        $assetTurnoverData = assetTurnover::with('asset_par')->where('isApproved', 0)->where('par_id', $par_id)->get();
+
+        $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
+    
+        return response()->json(['assetParTurnoverItems'=> $unserializedTurnoverData]);
     }
 
     public function nameSearchTurnover(Request $request)
@@ -124,6 +130,31 @@ class AssetTurnoverController extends Controller
         } else {
             return response()->json(['response' => 'failure']);
         }
+    }
+
+    public function approveParTurnover(Request $request)
+    {
+        // dd($request->all());
+        $par_id = $request->input('par_id');
+
+        $assetTurnoverData = assetTurnover::with('asset_par')->where('isApproved', 0)->where('par_id', $par_id)->get();
+        $assetParItems = AssetParItem::where('asset_par_id', $par_id)->get();
+
+        $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
+
+        $assetTurnoverData[0]->isApproved = 1;
+        $assetTurnoverData[0]->save();
+        
+        foreach ($unserializedTurnoverData as $key => $value) {
+            for ($i=0; $i < count($assetParItems); $i++) {
+                if ($key == $assetParItems[$i]->id) {
+                    $assetParItems[$i]->itemStatus = $value;
+                    $assetParItems[$i]->save();
+                }
+            }
+        }
+
+            return response()->json(['response' => 'Save Success', 'error' => false]);
     }
 
     /**

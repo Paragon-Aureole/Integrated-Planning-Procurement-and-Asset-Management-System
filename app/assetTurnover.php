@@ -14,7 +14,7 @@ class assetTurnover extends Model
 
     public function asset_par()
     {
-        return $this->belongsTo(assetPar::class);
+        return $this->belongsTo(assetPar::class, 'id');
     }
 
 }

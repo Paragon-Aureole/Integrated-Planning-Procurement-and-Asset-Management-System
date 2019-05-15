@@ -267,7 +267,7 @@
               itemData[5] = currentPARNo;
 
               console.log(itemData);
-                saveClassifiedAssetAssign(itemData, 'par');
+              saveClassifiedAssetAssign(itemData, 'par');
           } else {
               var itemData = [];
 
@@ -303,9 +303,9 @@
 
           var formUrl;
           if (type == 'par') {
-              formUrl = 'http://ipams.test/saveNewPar';
+              formUrl = '/saveNewPar';
           } else {
-              formUrl = 'http://ipams.test/saveNewIcs';
+              formUrl = '/saveNewIcs';
           }
 
           return new Promise(function (resolve) {
@@ -329,12 +329,14 @@
 
                               getClassifiedItemQtyNo(formData[0]).then(function (qtyData) {
                                   if (qtyData == 0) {
+                                      alert('Asset Fully Assigned.');
                                       setIsAssigned(formData[0]);
                                       console.log('fully assigned.');
 
                                   } else {
                                       fillQuantityDropdown(qtyData);
                                       setTotalAmount();
+                                      alert('PAR Asset Assigned.');
                                   }
                               });
                           });
@@ -344,11 +346,13 @@
 
                               getClassifiedItemQtyNo(formData[0]).then(function (qtyData) {
                                   if (qtyData == 0) {
+                                      alert('Asset Fully Assigned.');
                                       setIsAssigned(formData[0]);
                                       console.log('fully assigned.');
 
                                   } else {
                                       fillQuantityDropdown(qtyData);
+                                      alert('ICS Asset Assigned.');
                                   }
                               });
                           });
@@ -378,7 +382,7 @@
                       asset_id: id
                   },
                   type: 'POST',
-                  url: 'http://ipams.test/setAssetIsAssigned',
+                  url: '/setAssetIsAssigned',
                   success: function (data) {
                       console.log(data);
                       window.location.reload();
