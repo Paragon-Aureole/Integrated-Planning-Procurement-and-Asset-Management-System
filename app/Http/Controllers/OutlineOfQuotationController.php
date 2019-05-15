@@ -177,7 +177,7 @@ class OutlineOfQuotationController extends Controller
 
         activity('Abstract of Quotation')
         ->performedOn($outlineOfQuotation)
-        ->withProperties(['Reason' => $input['reason_editing']])
+        // ->withProperties()
         ->causedBy(Auth::user())
         ->log('Updated Abstract of Quotation '. $outlineOfQuotation->purchaseRequest->pr_code);
 
