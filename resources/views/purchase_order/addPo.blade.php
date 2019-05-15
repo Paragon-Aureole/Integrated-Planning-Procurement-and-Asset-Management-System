@@ -178,7 +178,7 @@
                     var updateData = response.updateContent;
                     // console.log(response.abstract);
                     // console.log(response.pr);
-
+                    console.log(response.pr);
 
                     $('[name=pr_id]').empty();
                     $('[name=outline_supplier_id]').empty();

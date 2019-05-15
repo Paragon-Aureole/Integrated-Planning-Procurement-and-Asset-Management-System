@@ -121,6 +121,11 @@ class PurchaseOrderController extends Controller
         
         $pr->purchaseOrder()->save($po);
 
+        activity('Purchase Order')
+        ->performedOn($po)
+        ->causedBy(Auth::user())
+        ->log('Add Purchase Order'. $po->purchaseRequest->pr_code);
+
         
         return redirect()->back()->with('success', 'Purchase Order Created!');
     }
@@ -156,6 +161,12 @@ class PurchaseOrderController extends Controller
         foreach ($options as $margin => $value) {
             $pdf->setOption($margin, $value);
         }
+
+
+        activity('Purchase Order')
+        ->performedOn($purchase_order)
+        ->causedBy(Auth::user())
+        ->log('Print Purchase Order'. $purchase_order->purchaseRequest->pr_code);
 
         return $pdf->stream('PO-'.$purchase_order->purchaseRequest->pr_code.'.pdf');
     }

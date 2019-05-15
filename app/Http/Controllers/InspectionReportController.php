@@ -59,7 +59,7 @@ class InspectionReportController extends Controller
         $pr = PurchaseRequest::find($pr_id);
         $po = $pr->purchaseOrder;
         $user_id = Auth::user()->id;
-        return response()->json(['user_id'=>$user_id,'pr_id'=>$pr_id,'po'=>$po->id, 'supplier_name'=>$po->outlineSupplier->supplier_name, 'office'=>$pr->office->office_name]);
+        return response()->json(['pr' => $pr ,'user_id'=>$user_id,'pr_id'=>$pr_id,'po'=>$po->id, 'supplier_name'=>$po->outlineSupplier->supplier_name, 'office'=>$pr->office->office_name]);
     }
 
     /**
@@ -96,6 +96,12 @@ class InspectionReportController extends Controller
         $pr->created_inspection = 1;
         $pr->save();
 
+        activity('AIR/RIS')
+        ->performedOn($ir)
+        // ->withProperties(['Reason' => $input['s_reason']])
+        ->causedBy(Auth::user())
+        ->log('Add AIR/RIS '. $pr->pr_code);
+
         return redirect()->back()->with('success', 'Inspection Report Created!');
     }
 
@@ -113,12 +119,25 @@ class InspectionReportController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\InspectionReport  $inspectionReport
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(InspectionReport $inspectionReport)
+    public function edit($id)
     {
-        //
+        if (Auth::user()->hasRole('Admin')) {
+            $ir = InspectionReport::all();
+        }else{
+            $ir = InspectionReport::whereHas('purchaseRequest', function ($query){
+                $query->where('office_id',  Auth::user()->office_id );
+            })->get();
+        }
+
+        
+
+        $signatory = Signatory::all();
+        $air = InspectionReport::findorFail($id);
+
+        return view('inspection_report.editIr', compact('air', 'signatory', 'ir'));
     }
 
     /**
@@ -150,19 +169,39 @@ class InspectionReportController extends Controller
             $pdf->setOption($margin, $value);
         }
 
+        activity('AIR/RIS')
+        ->performedOn($ir)
+        // ->withProperties(['Reason' => $input['s_reason']])
+        ->causedBy(Auth::user())
+        ->log('Print AIR/RIS '. $ir->purchaseRequest->pr_code);
+
         return $pdf->stream('AIR-'.$ir->purchaseRequest->pr_code.'.pdf');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int $id
      * @param  \App\InspectionReport  $inspectionReport
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InspectionReport $inspectionReport)
+    public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        $air = InspectionReport::findorFail($id);
+        $update_air = $air->update([
+            'invoice_number' => $input['invoice_number'],
+            'property_officer' => $input['property_officer'],
+            'inspection_officer' => $input['inspection_officer']
+        ]);
+
+        activity('AIR/RIS')
+        ->performedOn($air)
+        ->withProperties(['Reason' => $input['edit_reason']])
+        ->causedBy(Auth::user())
+        ->log('Update AIR/RIS '. $air->purchaseRequest->pr_code);
+
+        return redirect()->route('ir.index')->with('success', 'AIR/RIS Details Updated!');
     }
 
     /**

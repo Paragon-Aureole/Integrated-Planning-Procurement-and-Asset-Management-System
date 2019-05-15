@@ -77,10 +77,9 @@
                     <a href="{{route('ir.print', $ir->id)}}" target="_blank" class="btn btn-sm btn-success">
                       <i class="fas fa-print"></i>
                     </a>
-                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#"
-                      id="#">
-                      <i class="fas fa-edit"></i>
-                    </button>
+                    <a href="{{route('ir.edit', $ir->id)}}" class="btn btn-sm btn-warning">
+                        <i class="fas fa-edit"></i>
+                    </a>
                     @can('full control')
                     <a href="#" class="btn btn-sm btn-danger">
                       <i class="fas fa-minus"></i>
@@ -116,6 +115,13 @@
 
           <div class="row">
             <div class="col-md-6">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">PR Code</span>
+                    </div>
+                    <input type="text" value="" name="pr_code" class="form-control" disabled>
+                  </div>
+                  <br>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Supplier</span>
@@ -221,12 +227,14 @@
           console.log(response);
 
           $('[name=purchase_request_id]').empty();
+          $('[name=pr_code]').empty();
           $('[name=user_id]').empty();
           $('[name=poNumber]').empty();
           $('[name=supplierName]').empty();
           $('[name=tinNumber]').empty();
 
           $('[name=purchase_request_id]').val(response['pr_id']);
+          $('[name=pr_code]').val(response['pr']['pr_code']);
           $('[name=user_id]').val(response['user_id']);
           $('[name=poNumber]').val(response['po']);
           $('[name=supplierName]').val(response['supplier_name']);
