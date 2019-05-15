@@ -200,3 +200,6 @@ Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems')
 
 //activity log
 Route::resource('logs', 'ActivityLogController');
+
+// printReport
+Route::resource('printReports', 'PrintReportController');

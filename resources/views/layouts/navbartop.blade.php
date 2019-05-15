@@ -99,12 +99,7 @@
             @endif
         </li>
           @can('Asset Management', 'Supervisor')
-          <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Print Reports</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/printOfficeAssets">REPORT OF THE PHYSICAL COUNT OF PROPERTY, PLANT AND EQUIPMENT</a></li>
-              <li><a class="dropdown-item" href="/printVehicle">UPDATED INVENTORY/ACCOUNTING OF ALL EXISTING MOTOR VEHICLES</a></li>
-            </ul>
-          </li>
+          <li><a class="dropdown-item dropdown-toggle" href="/printReports">Print Reports</a></li>
           <li><a class="dropdown-item" href="/migrateAssets">Capture Exisiting Assets</a></li>
           @endcan
           <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>
