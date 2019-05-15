@@ -87,10 +87,11 @@
                           <a href="{{route('ir.print', $ir->id)}}" target="_blank" class="btn btn-sm btn-success">
                             <i class="fas fa-print"></i>
                           </a>
+                          @can('full control')
                           <a href="{{route('ir.edit', $ir->id)}}" class="btn btn-sm btn-warning">
                               <i class="fas fa-edit"></i>
                           </a>
-                          @can('full control')
+                          
                           <a href="#" class="btn btn-sm btn-danger">
                             <i class="fas fa-minus"></i>
                           </a>
