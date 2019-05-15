@@ -40,19 +40,19 @@
                             <input class="form-control form-control-sm" value="{{$air->purchaseRequest->office->office_code}}" disabled>
                         </div>
                         <div class="form-group col-md-6">
-                            <label class="small">Invoice Number</label>
+                            <span class="text-danger">*</span><label class="small">Invoice Number</label>
                             <input class="form-control form-control-sm" value="{{$air->invoice_number}}" name="invoice_number" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label class="small">Property Officer</label>
+                            <span class="text-danger">*</span><label class="small">Property Officer</label>
                             <input class="form-control form-control-sm" value="{{$air->property_officer}}" name="property_officer" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label class="small">Inspection Officer</label>
+                            <span class="text-danger">*</span><label class="small">Inspection Officer</label>
                             <input class="form-control form-control-sm" value="{{$air->inspection_officer}}" name="inspection_officer" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label class="small">Reason for Editing</label>
+                            <span class="text-danger">*</span><label class="small">Reason for Editing</label>
                             <textarea class="form-control form-control-sm" name="edit_reason" required></textarea>
                         </div>
                     </div>

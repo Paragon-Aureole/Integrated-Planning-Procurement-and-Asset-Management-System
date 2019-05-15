@@ -73,7 +73,7 @@
         </div>
 
         <div class="modal-body">
-            <form action="{{route('po.store')}}" method="POST">
+            <form action="{{route('po.store')}}" method="POST" class="needs-validation" novalidate>
               {{ csrf_field() }}
               <div class="row">
                 <div class="col-md-6">
@@ -106,7 +106,7 @@
                           <div class="col-md-6">
                               <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text">Place of Delivery</span>
+                                      <span class="input-group-text"><span class="text-danger">*</span>Place of Delivery</span>
                                   </div>
                                   <input type="text" name="placeOfDelivery" class="form-control" required>
                               </div>

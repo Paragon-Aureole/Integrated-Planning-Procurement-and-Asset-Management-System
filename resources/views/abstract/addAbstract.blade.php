@@ -115,7 +115,7 @@
                     <input id="prPurpose" class="form-control" type="text" disabled>
                 <div>
                 <div class="form-group">
-                  <label>Procurement Of:</label>
+                    <span class="text-danger">*</span><label>Procurement Of:</label>
                   <textarea name="outline_detail" class="form-control" required></textarea>
                 <div><br/>
                 <div class="form-group">

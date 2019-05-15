@@ -78,10 +78,10 @@
                     @can('full control')
                         <div class="form-group col-md-4">
                             <label>Reason for Editing (Admin):</label>
-                            <textarea class="form-control form-control-sm" name="reason_editing" required></textarea>
+                            <textarea class="form-control form-control-sm" name="reason_editing" required>-</textarea>
                         </div>
                     @else
-                        <input type="hidden" name="reason_editing" value="">
+                        <input type="hidden" name="reason_editing" value="-">
                     @endcan     
                 @endif
                 
@@ -159,11 +159,11 @@
                                 <th colspan="2" >Supplier {{$indexkey1 + $querySupplier->firstItem()}}</th> 
                             @endforeach
                             @for ($i = $countSupplier; $i <= 2; $i++)
-                                @if($i == 0)
+                                {{-- @if($i == 0)
                                     <th colspan="2">Supplier {{$i+ 1}}</th>
-                                @else
+                                @else --}}
                                     <th colspan="2">Supplier {{$i+ $querySupplier->firstItem()}}</th>
-                                @endif
+                                {{-- @endif --}}
                                 
                             @endfor
                         </tr>

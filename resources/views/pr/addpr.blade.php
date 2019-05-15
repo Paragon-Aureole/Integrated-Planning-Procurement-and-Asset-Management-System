@@ -22,7 +22,7 @@
 	  	{{csrf_field()}}
 	  	<div class="row">
         <div class="form-group col-md-12">
-          <label for="prCode" class="small">PR Code:</label>
+          <span class="text-danger">*</span><label for="prCode" class="small">PR Code:</label>
           @can('full control')
             @php
               $has_ppmp = App\Office::whereHas('ppmp', function ($query) {
@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="form-group col-md-12">
-          <label for="deptId" class="small">Office:</label>
+            <span class="text-danger">*</span><label for="deptId" class="small">Office:</label>
           @can('full_control')
             <input id="deptName" class="form-control form-control-sm" value="" disabled>
             <input class="form-control form-control-sm"  type="hidden" name="pr_office" value="">
@@ -67,7 +67,7 @@
           
         </div>
         <div class="form-group col-md-12">
-          <label for="prPurpose" class="small">Purpose:</label>
+            <span class="text-danger">*</span><label for="prPurpose" class="small">Purpose:</label>
           <textarea id="prPurpose" name="pr_purpose" class="form-control form-control-sm {{ $errors->has('pr_purpose') ? 'is-invalid' : '' }}" rows="3" required>{{old('pr_purpose')}}</textarea>
           <div class="invalid-feedback">  
             @if ($errors->has('pr_purpose'))
@@ -78,7 +78,7 @@
           </div>
         </div> 
         <div class="form-group col-md-6">
-          <label for="supplierType" class="small">Supplier Type</label>
+            <span class="text-danger">*</span><label for="supplierType" class="small">Supplier Type</label>
           <select id="suppplierType" class="custom-select custom-select-sm {{ $errors->has('supplier_type') ? 'is-invalid' : '' }}" name="supplier_type" required>
               <option value="1" {{ old('supplier_type') == 1 ? 'selected' : '' }}>Canvass</option>
               <option value="2" {{ old('supplier_type') == 2 ? 'selected' : '' }}>Government Agency</option>
@@ -93,7 +93,7 @@
           </div>
         </div>
         <div class="form-group col-md-6" id="supplierId">
-          <label class="small">Supplier</label>
+            <span class="text-danger">*</span><label class="small">Supplier</label>
           <select class="custom-select custom-select-sm {{ $errors->has('supplier_id') ? 'is-invalid' : '' }}" name="supplier_id">
             <option value="">Select Supplier</option>
           </select>
@@ -106,7 +106,7 @@
           </div>
         </div>
         <div class="form-group col-md-6" id="agencyName">
-          <label class="small">Agency Name</label>
+            <span class="text-danger">*</span><label class="small">Agency Name</label>
           <input class="form-control form-control-sm {{ $errors->has('agency_name') ? 'is-invalid' : '' }}" name="agency_name" value="{{old('agency_name')}}">
           <div class="invalid-feedback">  
             @if ($errors->has('agency_name'))
@@ -117,7 +117,7 @@
           </div>
         </div>
         <div class="form-group col-md-12">
-          <label for="prRequestor" class="small">Requestor:</label>
+            <span class="text-danger">*</span><label for="prRequestor" class="small">Requestor:</label>
           @can('full_control')
             <input id="requestorName" class="form-control form-control-sm {{ $errors->has('pr_requestor') ? 'is-invalid' : '' }}" value="" disabled>
             <input type="hidden" name="pr_requestor" value="" required>
@@ -140,7 +140,7 @@
           </div>
         </div> 
         <div class="form-group col">
-          <button type="submit" id="prBtn" class="btn btn-primary btn-sm" @hasRole('Admin')disabled@endrole>Submit</button>
+          <button type="submit" id="prBtn" class="btn btn-primary btn-sm">Add Purchase Request</button>
         </div>
       </div>
 	  </form>

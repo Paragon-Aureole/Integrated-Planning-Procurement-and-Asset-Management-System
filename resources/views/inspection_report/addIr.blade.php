@@ -109,7 +109,7 @@
       </div>
 
       <div class="modal-body">
-        <form action="{{route('ir.store')}}" method="POST">
+        <form action="{{route('ir.store')}}" method="POST" class="needs-validation" novalidate>
           {{ csrf_field() }}
 
 
@@ -148,7 +148,7 @@
             <div class="col-md-6">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text">Invoice No.</span>
+                  <span class="input-group-text"><span class="text-danger">*</span>Invoice No.</span>
                 </div>
                 <input type="text" name="invoiceNo" class="form-control" required>
               </div>
@@ -156,9 +156,9 @@
               
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text">Property Officer</span>
+                  <span class="input-group-text"><span class="text-danger">*</span>Property Officer</span>
                 </div>
-                <input class="form-control" list="propOfficer" name="property_officer"/>
+                <input class="form-control" list="propOfficer" name="property_officer" required>
                 <datalist id="propOfficer">
                     @foreach ($signatory as $signatory1)
                     @if ($signatory1->category == 6 && $signatory1->is_activated == 1)
@@ -170,9 +170,9 @@
               <br>
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text">Inspection Officer</span>
+                  <span class="input-group-text"><span class="text-danger">*</span>Inspection Officer</span>
                 </div>
-                <input class="form-control" list="inspOfficer" name="inspection_officer"/>
+                <input class="form-control" list="inspOfficer" name="inspection_officer" required>
                 <datalist id="inspOfficer">
                     @foreach ($signatory as $signatory1)
                     @if ($signatory1->category == 7 && $signatory1->is_activated == 1)

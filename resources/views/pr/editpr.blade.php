@@ -112,7 +112,7 @@
               <textarea class="form-control form-control-sm" name="edit_reason" required></textarea>
             </div>
             <div class="form-group col">
-              <button type="Update" id="prBtn" class="btn btn-warning btn-sm" @hasRole('Admin')disabled@endrole>Submit</button>
+              <button type="Update" id="prBtn" class="btn btn-warning btn-sm">Update Purchase Request</button>
             </div>
           </div>
         </form>
