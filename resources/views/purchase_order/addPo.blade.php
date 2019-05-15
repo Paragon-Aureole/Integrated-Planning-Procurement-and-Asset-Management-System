@@ -15,7 +15,7 @@
    <div class="row">
    	<div class="col-md-6">
    	  <h6 class="card-title">
-  		Available Purchase Order
+  		Available Purchase Requests
   	  </h6>
       <div class="table-responsive">
         <table id="poDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">

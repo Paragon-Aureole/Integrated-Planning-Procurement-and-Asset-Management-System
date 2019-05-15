@@ -127,7 +127,7 @@ class PurchaseRequestItemController extends Controller
         $pr_item = PurchaseRequestItem::findorFail($item_id);
        
         $pr = PurchaseRequest::findorFail($pr_id);
-        $pr->pr_budget = ($pr->pr_budget - $pr_item->item_budget) + $input['item_cpi'];
+        $pr->pr_budget = ($pr->pr_budget - $pr_item->item_budget) + str_replace(',', '', $input['item_cpi']);
         $pr->save();
 
         $ppmp_item = PpmpItem::findorFail($input['item_description']);
@@ -136,14 +136,14 @@ class PurchaseRequestItemController extends Controller
 
         $pr_item->update([
             'ppmp_item_id' => $input['item_description'],
-            'item_quantity' => $input['item_quantity'],
-            'item_cost' => $input['item_cpu'],
-            'item_budget' => $input['item_cpi']
+            'item_quantity' => str_replace(',', '', $input['item_quantity']),
+            'item_cost' => str_replace(',', '', $input['item_cpu']),
+            'item_budget' => str_replace(',', '', $input['item_cpi'])
         ]);
 
         $pr->prItem()->save($pr_item);
 
-        return redirect()->back()->with('success', 'I have successfully shit this');
+        return redirect()->back()->with('success', 'Item Updated');
 
     }
 

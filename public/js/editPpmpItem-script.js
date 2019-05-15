@@ -33,22 +33,7 @@ $( document ).ready( function () {
         })
     }
 
-    // get the ppmp data
-    // function getPpmpData () {
-    //     $.ajax({
-    //         url: '/ppmpData',
-    //         method: 'get',
-    //         success: function ( response ) {
-    //             // console.log(response.ppmpData);
-    //             var users = response.ppmpData;
-    //             $(users).each(function (userIndex, userValue) {
-    //                 console.log(userValue.user_id);
-                    
-    //             })
-                                
-    //         }
-    //     })
-    // }
+
 
     // populate Dropdown
     function populateDropdown (tableContent) {
