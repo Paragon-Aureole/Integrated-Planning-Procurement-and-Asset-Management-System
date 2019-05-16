@@ -206,3 +206,6 @@ Route::resource('logs', 'ActivityLogController');
 
 // printReport
 Route::resource('printReports', 'PrintReportController');
+
+// PAR DISTRIBUTION
+Route::resource('parDistribution', 'AssetParItemController');

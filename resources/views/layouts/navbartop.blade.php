@@ -96,11 +96,12 @@
             @if (Auth::user()->hasRole('Department'))
             <a class="dropdown-item" href="/assets">Procured Assets</a>
             @else
-            <a class="dropdown-item" href="/assets">Asset Classification and Distribution</a>
+            <a class="dropdown-item" href="/assets">Asset Classification</a>
             @endif
         </li>
           @can('Asset Management', 'Supervisor')
-          <li><a class="dropdown-item dropdown-toggle" href="/printReports">Print Reports</a></li>
+          <li><a class="dropdown-item" href="/parDistribution">Asset Distribution (PAR)</a></li>
+          <li><a class="dropdown-item" href="/printReports">Print Reports</a></li>
           <li><a class="dropdown-item" href="/migrateAssets">Capture Exisiting Assets</a></li>
           @endcan
           <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>

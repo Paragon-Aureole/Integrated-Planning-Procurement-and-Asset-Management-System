@@ -14,7 +14,7 @@ class AssetParItemController extends Controller
      */
     public function index()
     {
-        //
+        return view('assets.par.index');
     }
 
     /**
