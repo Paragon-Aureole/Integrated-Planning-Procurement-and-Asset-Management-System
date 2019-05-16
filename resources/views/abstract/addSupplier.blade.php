@@ -82,13 +82,13 @@
            
             @if ($allSuppliers->where('supplier_status', 1)->count() == 1)
                 @can('full control')
-                <button type="submit" class="btn btn-sm btn-warning">Update</button>
+                <button type="submit" class="btn btn-sm btn-primary">Update Abstract</button>
                 @endcan
                 <a href="{{route('abstract.print', $abstract->id)}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i> Print
                 </a>
             @else
-                <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                <button type="submit" class="btn btn-sm btn-primary">Update Abstract</button>
                 @if ($countSupplier >= 3)
                 <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#supplierModal">
                     <i class="fas fa-plus"></i> Add Additional Suppliers

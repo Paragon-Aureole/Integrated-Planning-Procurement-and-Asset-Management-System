@@ -72,10 +72,7 @@ $(document).ready(function () {
     $("[name='ppmp_form']").submit();
   }
 
-  $('input[name="item_quantity"]').inputFilter(function(value) {
-    var test_val = /^\d*$/.test(value);
-    return test_val;
-  });
+
 
 
 

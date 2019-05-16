@@ -58,10 +58,9 @@ $( document ).ready( function () {
         table = $('#datatable').DataTable({
             destroy:true,
             data: tableContent,
-            responsive:true,
+            responsive:false,
             columns:[
                 {data:'code_description'},
-                {data:'code_type'},
                 {
                     'data': null,
                     'defaultContent': '<button id="btnUpdate" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>&nbsp<button id="btnDelete" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></button>'
