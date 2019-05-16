@@ -134,6 +134,7 @@ Route::get('/pr/{pr_id}/item/delete/{id}', 'PurchaseRequestItemController@destro
 //rfq
 Route::get('rfq/{id}', 'RequestForQuotationController@createRFQ')->name('rfq.createone');
 Route::get('rfq/print/{id}', 'RequestForQuotationController@printRFQ')->name('rfq.print');
+Route::get('rfq/cancel/{id}', 'RequestForQuotationController@cancelRfq')->name('rfq.cancel');
 Route::resource('rfq', 'RequestForQuotationController');
 
 // abstract

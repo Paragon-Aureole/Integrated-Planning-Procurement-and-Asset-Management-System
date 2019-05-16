@@ -32,12 +32,6 @@ class ProcurementMethodRequest extends FormRequest
                 'max:180',
                 Rule::unique('procurement_modes')->ignore($this->id),
             ],
-            'method_code' => [
-                'required',
-                'string',
-                'max:180',
-                Rule::unique('procurement_modes')->ignore($this->id),
-            ],
         ];
     }
 }

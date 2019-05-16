@@ -20,18 +20,7 @@
 	  <form action="{{route('add.modes')}}" method="post" id="needs-validation" novalidate>
 	  	{{csrf_field()}}
 	  	<div class="row">
-        <div class="form-group col-md-12">
-          <label for="method_code" class="small">Method Code:</label>
-          <input class="form-control form-control-sm {{ $errors->has('method_code') ? 'is-invalid' : '' }}"
-          value="{{ old('method_code') }}" type="text" name="method_code" required="">
-          <div class="invalid-feedback"> 
-          @if ($errors->has('method_code'))
-            {{$errors->first('method_code')}}
-          @else
-            Method name is required.
-          @endif   
-          </div>
-        </div>
+        
 		  	<div class="form-group col-md-12">
 		  	  <label for="method_name" class="small">Method Name:</label>
 		  	  <input class="form-control form-control-sm {{ $errors->has('method_name') ? 'is-invalid' : '' }}"

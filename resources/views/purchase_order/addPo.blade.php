@@ -135,7 +135,8 @@
                         </div>
         
 
-              <input type="submit" class="btn btn-primary" value="Add Purchase Order">
+              {{-- <input type="submit" class="btn btn-primary" datvalue="Add Purchase Order"> --}}
+              <button type="submit" class="btn btn-primary" data-toggle="confirmation">Add Purchase Order</button>
             </form>
         </div>
 

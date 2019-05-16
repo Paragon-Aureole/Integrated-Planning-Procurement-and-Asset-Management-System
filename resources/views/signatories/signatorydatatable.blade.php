@@ -19,24 +19,17 @@
         <a href="{{route('edit.signatories', $signatory->id)}}" class="btn btn-sm btn-warning">
           <i class="fas fa-edit"></i>
         </a>
-        <a href="{{route('delete.signatories', $signatory->id)}}" class="btn btn-sm btn-danger" data-popout="true"
-            data-toggle="confirmation" >
+        <a href="{{route('delete.signatories', $signatory->id)}}" class="btn btn-sm btn-danger" title="Delete Signatory" data-toggle="confirmation" data-content="{{$signatory->signatory_name}}">
           <i class="fas fa-minus"></i>
         </a>
       @if($signatory->is_activated == 1)
-        <a href="{{route('deactivate.signatories', $signatory->id)}}" data-popout="true"
-            data-toggle="confirmation" data-title="Are you sure?" 
-            data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
-            data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
-            data-content="Deactivate Signatory" data-placement="top" class="btn btn-sm btn-success">
+        <a href="{{route('deactivate.signatories', $signatory->id)}}" 
+            data-toggle="confirmation" title="Activate Signatory" data-content="{{$signatory->signatory_name}}" class="btn btn-sm btn-success">
           <i class="fas fa-check-circle"></i>
         </a>
       @else
-        <a href="{{route('activate.signatories', $signatory->id)}}" data-popout="true"
-            data-toggle="confirmation" data-title="Are you sure?" 
-            data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
-            data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
-            data-content="Activate Signatory" data-placement="top" class="btn btn-sm btn-secondary">
+        <a href="{{route('activate.signatories', $signatory->id)}}"
+            data-toggle="confirmation" title="Activate Signatory" data-content="{{$signatory->signatory_name}}" class="btn btn-sm btn-secondary">
           <i class="far fa-check-circle"></i>
         </a>
       @endif

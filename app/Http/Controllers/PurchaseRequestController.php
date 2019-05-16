@@ -24,6 +24,8 @@ class PurchaseRequestController extends Controller
 
     }
 
+    //status 0-pending, 1-approved, 2-cancel
+
     /**
      * Display a listing of the resource.
      *
@@ -168,7 +170,7 @@ class PurchaseRequestController extends Controller
     public function destroy($id)
     {
         $pr = PurchaseRequest::findorFail($id);
-        $pr->delete();
+        $pr->update(['pr_status' => 2]);
         return redirect()->route('pr.index')->with('info', 'PR Cancelled');
     }
 
@@ -203,6 +205,12 @@ class PurchaseRequestController extends Controller
         foreach ($options as $margin => $value) {
             $pdf->setOption($margin, $value);
         }
+
+        activity('Purchase Request')
+        ->performedOn($pr)
+        ->causedBy(Auth::user())
+        ->log('Print RFQ Form '. $pr->code);
+
         return $pdf->stream($pr->pr_code.'.pdf');
     }
 
@@ -290,7 +298,7 @@ class PurchaseRequestController extends Controller
        activity('Purchase Request')
         ->performedOn($pr)
         ->causedBy(Auth::user())
-        ->log('Closed Purchase Request '. $pr->code);
+        ->log('Closed Purchase Request '. $pr->pr_code);
        
        return redirect()->back()->with('success', 'Purchase Request Closed');
     }
@@ -361,7 +369,7 @@ class PurchaseRequestController extends Controller
        activity('Purchase Request')
         ->performedOn($supplemental)
         ->causedBy(Auth::user())
-        ->log('Created Supplemental Purchase Request '. $supplemental->code);
+        ->log('Created Supplemental Purchase Request '. $supplemental->pr_code);
        
        return redirect()->back()->with('success', 'Supplemental Purchase Request Added.');
     }

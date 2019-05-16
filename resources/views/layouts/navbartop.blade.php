@@ -23,6 +23,7 @@
 
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
+      @hasrole('Department|Admin')
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="ppmpDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           PPMP
@@ -85,7 +86,7 @@
           {{-- <li><a class="dropdown-item" href="#">Previous Inspection Reports</a></li> --}}
         </ul>
       </li>
-      
+      @endhasrole
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="irDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Assets

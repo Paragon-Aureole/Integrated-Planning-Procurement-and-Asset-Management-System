@@ -61,6 +61,11 @@ class RequestForQuotationController extends Controller
 
         $pr->rfq()->save($rfq);
 
+        activity('RFQ')
+        ->performedOn($rfq)
+        ->causedBy(Auth::user())
+        ->log('Create RFQ Form '. $pr->pr_code);
+
         return redirect()->back()->with('success', 'RFQ Created');
     }
 
@@ -94,6 +99,13 @@ class RequestForQuotationController extends Controller
         foreach ($options as $margin => $value) {
             $pdf->setOption($margin, $value);
         }
+
+        activity('RFQ')
+        ->performedOn($rfq)
+        ->causedBy(Auth::user())
+        ->log('Print RFQ Form '. $rfq->code);
+
+
         return $pdf->stream('RFQ-'.$rfq->purchaseRequest->pr_code.'.pdf');
     }
 
@@ -105,8 +117,18 @@ class RequestForQuotationController extends Controller
      * @param  int $rfq_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($rfq)
+    public function cancelRfq($rfq)
     {
-        //
+        $rfq = RequestForQuotation::findorFail($rfq);
+        $update_pr = $rfq->purchaseRequest->update(['created_rfq' => 0]);
+        $rfq->delete();
+
+        activity('RFQ')
+        ->performedOn($rfq)
+        ->causedBy(Auth::user())
+        ->log('Delete RFQ Form '. $rfq->purchaseRequest->code);
+
+        return redirect()->route('rfq.index')->with('info', 'Request for Quotation form cancelled');
+        // $delete_rfq = RequestForQuotation::destroy($id);
     }
 }

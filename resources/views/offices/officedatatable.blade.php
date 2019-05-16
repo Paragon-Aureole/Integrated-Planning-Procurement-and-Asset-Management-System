@@ -13,13 +13,7 @@
    	  	  	  <td>{{$dept->office_name}}</td>
    	  	  	  <td>
    	  	  	  	<a href="{{route('edit.office', $dept->id)}}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-								 <a href="{{route('delete.office', $dept->id)}}" class="btn btn-sm btn-danger"
-										data-popout="true"
-										data-toggle="confirmation" data-title="Are you sure?" 
-										data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
-										data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
-										data-content="Delete Office" data-placement="top"
-									><i class="fas fa-minus"></i></a>
+								 <a href="{{route('delete.office', $dept->id)}}" class="btn btn-sm btn-danger" title="Delete Office/Department" data-content="{{$dept->office_name}}" data-toggle="confirmation"><i class="fas fa-minus"></i></a>
    	  	  	  </td>
    	  	  	</tr>
    	  	  	@endforeach

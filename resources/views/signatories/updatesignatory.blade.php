@@ -94,7 +94,7 @@
 		    	  	  </div>
 					</div>
 					<div class="form-group col">
-				  		<button type="submit" class="btn btn-warning btn-sm">Update Signatory</button>
+				  		<button type="submit" class="btn btn-warning btn-sm" data-toggle="confirmation" title="Update Signatory" data-content="{{$edit_signatory->signatory_name}}">Update Signatory</button>
 				  	</div>
 			      </div>
 			    </form>

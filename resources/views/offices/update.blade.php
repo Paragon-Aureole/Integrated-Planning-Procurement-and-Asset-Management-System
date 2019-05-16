@@ -59,7 +59,7 @@
           </div>
 		  	</div>
 		  	<div class="form-group col">
-		  		<button type="submit" class="btn btn-warning btn-sm">Update Office</button>
+		  		<button type="submit" class="btn btn-warning btn-sm" data-toggle="confirmation">Update Office</button>
 		  	</div>
 	  	</div>
 	  </form>

@@ -159,7 +159,7 @@
 			      <td>{{$check++}}</td>
 			      <td>{{$list->item_quantity}}</td>
 			      <td>{{$list->ppmpItem->measurementUnit->unit_code}}</td>
-			      <td>
+			      <td style='text-align: left;'>
 			      	{{$list->ppmpItem->item_description}}
 			      </td>
 			      <td style='text-align: right;'>{{number_format($list->item_cost, 2)}}</td>

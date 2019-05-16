@@ -12,7 +12,7 @@ class ProcurementMode extends Model
      * @var array
      */
     protected $fillable = [
-        'method_name', 'method_code',
+        'method_name'
     ];
 
     public function ppmpItem()

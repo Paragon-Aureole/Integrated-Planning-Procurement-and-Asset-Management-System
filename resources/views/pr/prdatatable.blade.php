@@ -14,33 +14,32 @@
       <td>{{$pr->pr_code}}</td>
       <td>{{$pr->pr_purpose}}</td>
       <td>
-        @if($pr->pr_status == 1)
-          Approved
-        @else
+        @if($pr->pr_status == 0)
           Pending
+        @elseif($pr->pr_status == 1)
+          Approved
+        @else 
+          Cancelled
         @endif
       </td>
       <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
       <td>
-        <a href="{{route('view.pritm', $pr->id)}}" class="btn btn-sm btn-info" title="Add PR Items"><i class="fas fa-th-list"></i></a>
-        @can('full control')
-          <a href="{{route('pr.edit', $pr->id)}}" class="btn btn-sm btn-warning">
-              <i class="fas fa-edit"></i>
-          </a>
-        @endcan
-        @if ($pr->prItem->count() > 0)
-          <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
+        @if($pr->pr_status != 2)
+          <a href="{{route('view.pritm', $pr->id)}}" class="btn btn-sm btn-info" title="Add PR Items"><i class="fas fa-th-list"></i></a>
+          @can('full control')
+            <a href="{{route('pr.edit', $pr->id)}}" class="btn btn-sm btn-warning">
+                <i class="fas fa-edit"></i>
+            </a>
+            @if ($pr->prItem->count() > 0)
+              <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
+            @endif
+            @if($pr->pr_status == 0)
+            <a href="{{route('destroy.pr', $pr->id)}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel Purchase Request # {{$pr->pr_code}}">
+                <i class="fas fa-minus"></i>
+            </a>
+            @endif
+          @endcan
         @endif
-        @can(['full control', 'close'])
-        {{-- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#reasonModal">
-            <i class="fas fa-minus"></i>
-        </button> --}}
-        <a href="{{route('destroy.pr', $pr->id)}}" class="btn btn-sm btn-danger"
-        
-        >
-          <i class="fas fa-minus"></i>
-        </a>
-        @endcan
       </td>
     </tr>
   @endforeach
