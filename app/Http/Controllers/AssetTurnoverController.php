@@ -39,7 +39,7 @@ class AssetTurnoverController extends Controller
         $currentOfficeId = Auth::user()->office_id;
         $approvalAssets = assetTurnover::all();
 
-        // dd($approvalAssets->first()->asset_par);
+        // dd($to);
 
         return view('assets.turnover.index', compact('to', 'office', 'currentOfficeId', 'approvalAssets'));
     }

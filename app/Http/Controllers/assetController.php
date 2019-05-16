@@ -53,7 +53,11 @@ class assetController extends Controller
     {
         $input = $request->all();
 
-        $ClassificationModalContent = asset::where('purchase_order_id', $input['po_id'])->get();
+        $ClassificationModalContent = asset::where('purchase_order_id', $input['po_id'])
+        ->where('isICS', 0)
+        ->where('isPAR', 0)
+        ->where('isEditable', 0)
+        ->get();
 
         return response()->json(['ClassificationModalContent'=>$ClassificationModalContent]);
     }
@@ -148,18 +152,24 @@ class assetController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        DisbursementVoucher::create([
-                'purchase_order_id' => $request->po_id,
-                'disbursementNo' => $request->voucherNo
-            ]);
-
+        // $input = $request->except(['_token','_method']);
+        // dd($input);
+        // DisbursementVoucher::create([
+        //     'purchase_order_id' => $request->po_id,
+        //     'disbursementNo' => $request->voucherNo
+        // ]);
+        
 
         // dd($request->all());
         $sortedArray = [];
         $PAR = [];
         $ICS = [];
-        $assetCount = asset::where('purchase_order_id', $request->po_id)->get()->count() - 1;
+        $assetCount = asset::where('purchase_order_id', $request->po_id)
+        ->where('isICS', 0)
+        ->where('isPAR', 0)
+        ->where('isEditable', 0)
+        ->get()->count() - 1;
+
         // dd($assetCount);
         $recordID = $request->get('id');
         $PARorICS = $request->get('PARorICS');
@@ -441,5 +451,17 @@ class assetController extends Controller
 
         $pdf = PDF::loadView('assets.turnover.printTurnover', compact('turnoverData'))->setPaper('Folio', 'portrait');
         return $pdf->stream('TURNOVER.pdf');
+    }
+
+    public function requestEdit(Request $request)
+    {
+        $input = $request->all();
+        // dd($input['itemId']);
+        
+        $editRequest = asset::where('id', $input['itemId'])->update([
+            'isRequested' => 1
+        ]);
+
+        return redirect()->back()->with('succes', 'Requested, Pls Wait for the GSO Supervisor to Approved your Request');
     }
 }

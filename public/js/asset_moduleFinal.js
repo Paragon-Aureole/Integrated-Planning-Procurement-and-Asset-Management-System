@@ -1,6 +1,6 @@
   $(document).ready(function () {
       var classifiedDataTable = $('#classifiedDatatable').DataTable({
-          responsive: false,
+          responsive: true,
           "lengthMenu": [
               [5, 10, 25, 50, -1],
               [5, 10, 25, 50, "All"]
@@ -276,8 +276,8 @@
               var itemDescription = $('textarea[name="selectedItemDescription[]"]').map(function () {
                   return $(this).val();
               }).get();
-              var itemEmployeeName = $('[name=selectedItemEmployeeName]:eq(1)').val();
-              var itemEmployeePosition = $('[name=selectedItemEmployeePosition]:eq(1)').val();
+              var itemEmployeeName = $('[name=selectedItemEmployeeName]').val();
+              var itemEmployeePosition = $('[name=selectedItemEmployeePosition]').val();
               var itemID = $('[name=currentItemID]').val();
               var currentICSNo = $('[name=selectedItemICSNo]').val();
 
@@ -550,5 +550,16 @@
           }
           setTotalAmount();
       });
+
+      classifiedDataTable.on('click', 'button#requestBtn', function () {
+        var rowData = classifiedDataTable.row($(this).parents('tr')).data();
+        console.log(rowData);
+        
+        $('#itemId').val(rowData[0]);
+        $('#itemName').val(rowData[1]);
+        $('#classifiedIcs').val('ICS');
+        
+
+    });
 
   });
