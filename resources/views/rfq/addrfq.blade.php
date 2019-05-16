@@ -10,7 +10,7 @@
 @section('content')
 <div class="container-fluid">
 <div class="card">
- <div class="card-header pt-2 pb-2">Reqeust for Quotation</div>
+ <div class="card-header pt-2 pb-2">Request for Quotation</div>
  <div class="card-body">
    <div class="row">
    	<div class="col-md-6">
@@ -34,13 +34,7 @@
                   <td>{{$pr->pr_purpose}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                 <td>
-                  <a href="{{route('rfq.createone', $pr->id)}}" class="btn btn-sm btn-primary"
-                    data-popout="true"
-                    data-toggle="confirmation" data-title="Are you sure?" 
-                    data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
-                    data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
-                    data-content="Create RFQ under {{$pr->pr_code}}" data-placement="top"
-                  >
+                  <a href="{{route('rfq.createone', $pr->id)}}" class="btn btn-sm btn-primary" data-toggle="confirmation" data-content="Create RFQ under {{$pr->pr_code}}">
                     <i class="fas fa-plus"></i>
                   </a>
                 </td>
@@ -75,7 +69,7 @@
                       <i class="fas fa-print"></i>
                     </a>
                     @can('full control')
-                    <a href="#" class="btn btn-sm btn-danger">
+                    <a href="{{route('rfq.cancel', $rfq->id)}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Delete RFQ on {{$rfq->purchaseRequest->pr_code}}">
                       <i class="fas fa-minus"></i>
                     </a>
                     @endcan

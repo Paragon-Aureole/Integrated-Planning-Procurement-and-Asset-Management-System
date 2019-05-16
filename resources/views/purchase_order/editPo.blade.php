@@ -64,13 +64,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <button class="btn btn-warning btn-sm" type="submit"
-                                data-popout="true"
-                                data-toggle="confirmation" data-title="Are you sure?" 
-                                data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
-                                data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
-                                data-content="Update Purchase Order" data-placement="right"
-                                >Update Purchase Order</button>
+                                <button class="btn btn-warning btn-sm" type="submit" data-toggle="confirmation" >Update Purchase Order</button>
                             </div>
                         </div>
                     </form>

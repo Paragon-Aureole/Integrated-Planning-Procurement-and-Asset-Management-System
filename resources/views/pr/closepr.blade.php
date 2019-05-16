@@ -42,22 +42,18 @@
               <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
               <td>
                 
-                <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-print"></i></a>
+                @if($pr->pr_status != 2)
+                  <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-print"></i></a>
 
-                @if ($pr->pr_status == 0 && $pr->prItem()->count() > 0)
-                <a href="{{route('close.pr', $pr->id)}}" class="btn btn-sm btn-success"
-                  data-popout="true"
-                  data-toggle="confirmation" data-title="Are you sure?" 
-                  data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
-                  data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
-                  data-content="Close PR # {{$pr->pr_code}}" data-placement="top"
-                >
-                  <i class="fas fa-check"></i>
-                </a> 
+                  @if ($pr->pr_status == 0 && $pr->prItem()->count() > 0)
+                  <a href="{{route('close.pr', $pr->id)}}" class="btn btn-sm btn-success" data-toggle="confirmation" data-content="Close Purchase Request # {{$pr->pr_code}}">
+                    <i class="fas fa-check"></i>
+                  </a> 
+                  @endif
+                  <a href="{{route('destroy.pr', $pr->id)}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel Purchase Request # {{$pr->pr_code}}">
+                    <i class="fas fa-minus"></i>
+                  </a>
                 @endif
-                <a href="{{route('pr.destroy', $pr->id)}}" class="btn btn-sm btn-danger">
-                  <i class="fas fa-minus"></i>
-                </a>
 
                 
               </td>

@@ -35,7 +35,13 @@ multiply3 = function(id) {
 function divide(){
     var b = $("#itemBudget").val().replace(/\,/g,'');
     var bpercost=parseFloat(b)/parseFloat($('#itemQty').val());
-    $("#itemCost").val(bpercost).number( true, 2 );
+    if (isNaN(bpercost) ) {
+      $("#itemCost").val('0.00');
+    }else{
+      console.log(bpercost);
+      $("#itemCost").val(bpercost).number( true, 2 );
+    }
+    
 }
 
 

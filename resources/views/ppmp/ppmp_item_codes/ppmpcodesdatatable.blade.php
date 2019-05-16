@@ -2,7 +2,6 @@
   <thead class="thead-dark">
     <tr>
       <th>Code Description</th>
-      <th>Code Type</th>
       <th>Action</th>
     </tr>
   </thead>

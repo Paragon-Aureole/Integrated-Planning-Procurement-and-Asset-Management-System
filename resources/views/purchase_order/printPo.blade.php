@@ -164,7 +164,7 @@
         <tr>
           <td>{{$key01+1}}</td>
           <td>{{$items->prItem->ppmpItem->measurementUnit->unit_code}}</td>
-          <td>{{$items->prItem->ppmpItem->item_description}}</td>
+          <td style='text-align: left;'>{{$items->prItem->ppmpItem->item_description}}</td>
           <td>{{$items->prItem->item_quantity}}</td>
           <td style="text-align:right;">{{number_format($items->final_cpu,2)}}</td>
           <td style="text-align:right;">{{number_format($items->final_cpi,2)}}</td>

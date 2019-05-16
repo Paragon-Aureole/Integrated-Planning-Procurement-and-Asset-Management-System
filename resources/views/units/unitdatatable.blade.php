@@ -13,13 +13,7 @@
 			<td>{{$unit->unit_description}}</td>
 			<td>
 				<a href="{{route('edit.units', $unit->id)}}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-				<a href="{{route('delete.units', $unit->id)}}" class="btn btn-sm btn-danger"
-						data-popout="true"
-						data-toggle="confirmation" data-title="Are you sure?" 
-						data-btn-ok-label="Continue" data-btn-ok-class="btn-success"
-						data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
-						data-content="Delete Unit of Measurement" data-placement="top"
-				><i class="fas fa-minus"></i></a>
+				<a href="{{route('delete.units', $unit->id)}}" class="btn btn-sm btn-danger" title="Delete Unit of Measurement" data-content="{{$unit->unit_description}}" data-toggle="confirmation"><i class="fas fa-minus"></i></a>
 			</td>
 		</tr>
 		@endforeach

@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
                 [
                     'username' => "user1",
                     'password' => bcrypt('users1'),
-                    'office_id' => '2' ,
+                    'office_id' => '1' ,
                     'wholename' => "Depaertment User",
                     'contact_number' => "139",
                 ]
@@ -38,7 +38,7 @@ class UsersTableSeeder extends Seeder
                 [
                     'username' => "bac1",
                     'password' => bcrypt('bacbac'),
-                    'office_id' => '2' ,
+                    'office_id' => '1' ,
                     'wholename' => "BAC Secretariat User",
                     'contact_number' => "139",
                 ]

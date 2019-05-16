@@ -92,9 +92,7 @@
                               <i class="fas fa-edit"></i>
                           </a>
                           
-                          <a href="#" class="btn btn-sm btn-danger">
-                            <i class="fas fa-minus"></i>
-                          </a>
+                          
                           @endcan
                         </td>
                       </tr>

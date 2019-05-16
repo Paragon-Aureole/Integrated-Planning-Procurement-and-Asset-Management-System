@@ -31,6 +31,13 @@ $(document).ready(function(){
     setTimeout(function() {
         $(".alert").alert('close');
     }, 3000);
+
+    $('[data-toggle=confirmation]').confirmation({
+			rootSelector: '[data-toggle=confirmation]',
+				// other options
+      btnCancelClass: "btn btn-danger"
+    });
+  
 });
 
 

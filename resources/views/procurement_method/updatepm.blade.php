@@ -22,18 +22,6 @@
 	  	{{csrf_field()}}
       {{ method_field('put') }}
 	  	<div class="row">
-        <div class="form-group col-md-12">
-          <label for="method_code" class="small">Method Code:</label>
-          <input class="form-control form-control-sm {{ $errors->has('method_code') ? 'is-invalid' : '' }}"
-          value="{{ old('method_code', $pm_data->method_code) }}" type="text" name="method_code" required="">
-          <div class="invalid-feedback"> 
-          @if ($errors->has('method_code'))
-            {{$errors->first('method_code')}}
-          @else
-            Method name is required.
-          @endif   
-          </div>
-        </div>
 		  	<div class="form-group col-md-12">
 		  	  <label for="method_name" class="small">Method Name:</label>
 		  	  <input class="form-control form-control-sm {{ $errors->has('method_name') ? 'is-invalid' : '' }}"
@@ -48,7 +36,7 @@
 		  	</div>
 
 		  	<div class="form-group col">
-		  		<button type="submit" class="btn btn-warning btn-sm">Update Method</button>
+		  		<button type="submit" data-toggle="confirmation" class="btn btn-warning btn-sm">Update Method</button>
 		  	</div>
 
 	  	</div>

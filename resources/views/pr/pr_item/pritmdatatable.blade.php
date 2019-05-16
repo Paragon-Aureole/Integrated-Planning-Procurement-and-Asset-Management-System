@@ -22,7 +22,11 @@
               <td>
                 @if ($pr->pr_status != 2)
                   <a href="{{route('edit.pritm',[$pr->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                  <a href="{{route('delete.pritm',[$pr->id, $items->id])}}" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
+                  <a href="{{route('delete.pritm',[$pr->id, $items->id])}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Delete Item"><i class="fas fa-minus"></i></a>
+                @else 
+                  @hasrole('Admin')
+                    <a href="{{route('edit.pritm',[$pr->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                  @endhasrole
                 @endif
               </td>
             </tr>

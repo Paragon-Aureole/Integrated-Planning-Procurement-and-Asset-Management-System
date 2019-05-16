@@ -77,11 +77,11 @@
                   <i class="fas fa-print"></i>
               </a>
               @endif
-              @can('full control')
+              {{-- can('full control')
               <a href="#" class="btn btn-sm btn-danger">
                     <i class="fas fa-minus"></i>
               </a>
-              @endcan
+              endcan --}}
               </td>
               </tr>
           @endforeach

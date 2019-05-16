@@ -34,7 +34,7 @@
                   <td>{{$pr->pr_purpose}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                 <td>
-                  <a href="{{route('pr.addSupplemental', $pr->id)}}" class="btn btn-sm btn-primary">
+                  <a href="{{route('pr.addSupplemental', $pr->id)}}" class="btn btn-sm btn-primary" data-toggle="confirmation" data-content="Create Supplemental PR under {{$pr->pr_code}}">
                     <i class="fas fa-plus"></i>
                   </a>
                 </td>
@@ -68,6 +68,7 @@
                         {{$item->ppmpItem->item_description}} @if ($firstTwo->count() > 1) , @endif 
                     @endforeach
                 </td>
+                {{-- <td></td> --}}
             @endforeach
           </tbody>
         </table>
