@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-{{--  {{$approvalAssets}}  --}}
+{{--  {{$approvalAssets}} --}}
 <div class="container-fluid">
     <div class="card">
         <div class="card-header pt-2 pb-2">List of PAR Item</div>
@@ -75,12 +75,13 @@
                                 <th>Assigned To</th>
                                 <th>Position</th>
                                 <th>Office</th>
-                                <th>Items</th>
+                                <th data-priority='4'>Items</th>
                             </tr>
                         </thead>
                         <tbody id="parTbody">
+                            @if (!$to->isEmpty())
                             @foreach ($to as $record)
-                            {{--  {{$record->asset_turnover['isApproved']}}  --}}
+                            {{--  {{$record->asset_turnover['isApproved']}} --}}
                             @if ($record->asset_turnover['isApproved'] != '0')
                             <tr>
                                 <td>{{$record->id}}</td>
@@ -94,6 +95,9 @@
                             </tr>
                             @endif
                             @endforeach
+                            @endif
+
+
 
                             {{--  <tr>
                                 <td>Sample ID</td>
@@ -122,32 +126,36 @@
                                 <th>Position</th>
                                 <th>Office</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th data-priority='6'>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if (!$approvalAssets->isEmpty()))
                             @foreach ($approvalAssets as $record)
-                            {{--  {{$record}}  --}}
+                            {{--  {{$record}} --}}
                             <tr>
                                 <td>{{$record->par_id}}</td>
                                 <td>{{$record->asset_par->assignedTo}}</td>
                                 <td>{{$record->asset_par->position}}</td>
-                                <td>{{$record->asset_par->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
-                                <td>
-                                @if ($record->isApproved == 0)
-                                Pending
-                                @else
-                                Approved
-                                @endif
+                                <td>{{$record->asset_par->asset->purchaseOrder->purchaseRequest->office->office_name}}
                                 </td>
                                 <td>
-                                        <button type="button" id="turnoverViewButton" name="btn_turnoverViewButton"
-                                            class="btn btn-warning btn-xs" data-toggle="modal"
-                                            data-target="#turnedOverModal">View Items</button>
+                                    @if ($record->isApproved == 0)
+                                    Pending
+                                    @else
+                                    Approved
+                                    @endif
+                                </td>
+                                <td>
+                                    <button type="button" id="turnoverViewButton" name="btn_turnoverViewButton"
+                                        class="btn btn-warning btn-xs" data-toggle="modal"
+                                        data-target="#turnedOverModal">View Items</button>
                                 </td>
                             </tr>
                             @endforeach
-                                {{--  <tr>
+                                
+                            @endif
+                            {{--  <tr>
                                     <td>Sample Signatory</td>
                                     <td>Sample Position</td>
                                     <td>Sample Office</td>

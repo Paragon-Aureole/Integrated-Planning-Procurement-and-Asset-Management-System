@@ -39,8 +39,10 @@
       // console.log();
 
 
-      // var rowData = parDataTable.row($(this).parents('tr')).data();
-      var rowData = parDataTable.row($(this)).data();
+      var rowData = parDataTable.row($(this).parents('tr')).data();
+      // var rowData = $('#parDatatable').DataTable().row($(this)).data();
+      // console.log(rowData);
+
 
       fillForTurnoverModalForm(rowData);
 
@@ -52,8 +54,8 @@
       // console.log();
 
 
-      // var rowData = turnoverDataTable.row($(this).parents('tr')).data();
-      var rowData = turnoverDataTable.row($(this)).data();
+      var rowData = turnoverDataTable.row($(this).parents('tr')).data();
+      // var rowData = turnoverDataTable.row($(this)).data();
       console.log(rowData);
 
 
@@ -92,13 +94,31 @@
             status,
             '<input type="hidden" name="toTurnover[' + assetParItems[1][index].id + ']" value="0"><input type="checkbox" name="toTurnover[' + assetParItems[1][index].id + ']" value="1">'
           ]);
+
         }
+
+        var newArray = tableRowDataContent.filter(function (el) {
+          return el[2] != 'Unserviceable'
+        });
+
+        console.log(newArray);
+
+        // $.each(tableRowDataContent, function(i,v){
+        //   // console.log(i);
+
+        //   // console.log(v[2]);
+
+        //   if (v[2] == "Unserviceable") {
+        //     console.log('unserviceable po eto');
+        //     this.splice(i,1);
+        //   }
+        // });
 
         console.log(tableRowDataContent);
 
         modalTurnoverDataTable.clear();
-        for (let index = 0; index < tableRowDataContent.length; index++) {
-          modalTurnoverDataTable.row.add(tableRowDataContent[index]);
+        for (let index = 0; index < newArray.length; index++) {
+          modalTurnoverDataTable.row.add(newArray[index]);
         }
         modalTurnoverDataTable.draw();
 
@@ -120,7 +140,7 @@
             for (let index = 0; index < assetParItems[1].length; index++) {
               const description = assetParItems[1][index].description;
               var status;
-              $.each(assetParTurnoverItems, function(i,v){
+              $.each(assetParTurnoverItems, function (i, v) {
                 if (v == 0 && i == assetParItems[1][index].id) {
                   status = "Active";
                 } else if (v == 1 && i == assetParItems[1][index].id) {
@@ -140,11 +160,17 @@
               ]);
             }
 
+            var newArray = tableRowDataContent.filter(function (el) {
+              return el[2] != 'Active'
+            });
+
+            console.log(newArray);
+
             console.log(tableRowDataContent);
 
             modalApprovalTurnoverDatatable.clear();
-            for (let index = 0; index < tableRowDataContent.length; index++) {
-              modalApprovalTurnoverDatatable.row.add(tableRowDataContent[index]);
+            for (let index = 0; index < newArray.length; index++) {
+              modalApprovalTurnoverDatatable.row.add(newArray[index]);
             }
             modalApprovalTurnoverDatatable.draw();
           });
@@ -175,9 +201,15 @@
 
           console.log(tableRowDataContent);
 
+          var newArray = tableRowDataContent.filter(function (el) {
+            return el[2] != 'Unserviceable'
+          });
+
+          console.log(newArray);
+
           modalApprovalTurnoverDatatable.clear();
-          for (let index = 0; index < tableRowDataContent.length; index++) {
-            modalApprovalTurnoverDatatable.row.add(tableRowDataContent[index]);
+          for (let index = 0; index < newArray.length; index++) {
+            modalApprovalTurnoverDatatable.row.add(newArray[index]);
           }
           modalApprovalTurnoverDatatable.draw();
 

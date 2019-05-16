@@ -479,7 +479,7 @@
               var item_stock = ClassificationModalContent[index].item_stock;
               var isPAR = "<input type='radio' name=PARorICS[" + index + "] value='PAR'>";
               var isICS = "<input type='radio' name=PARorICS[" + index + "] value='ICS'>";
-              var asset_type = '<select name="asset_type[' + index + ']" class="custom-select"><option value="">None</option><option value="1">Vehicle</option><option value="2">Office Supplies</option><option value="3">Furniture and Fixture</option><option value="4">IT Equipments</option>'
+              var asset_type = '<select required name="asset_type[' + index + ']" class="custom-select"><option value="">None</option><option value="1">Vehicle</option><option value="2">Office Supplies</option><option value="3">Furniture and Fixture</option><option value="4">IT Equipments</option>'
 
               classificationModalContentSorted.push({
                   details,

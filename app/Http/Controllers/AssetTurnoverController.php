@@ -24,7 +24,7 @@ class AssetTurnoverController extends Controller
      */
     public function index()
     {
-        
+        // dd(assetPar::with('assetParItem')->where('id', 1)->get());
         // dd(assetPar::with('assetParItem')->where('id', 3)->get());
         // $sampledata = assetPar::with('assetParItem')->where('id', 1)->get();
         // $sampledata = assetTurnover::with('asset_par')->where('isApproved', 0)->where('id', 1)->get();
@@ -124,12 +124,8 @@ class AssetTurnoverController extends Controller
             'turnoverData' => $toTurnoverData
         ]);
 
-        if ($request->isMethod('post')) {
-            // return response()->json(['response' => 'This is post method', 'error' => false]);
-            return response()->json(['response' => 'Save Success', 'error' => false]);
-        } else {
-            return response()->json(['response' => 'failure']);
-        }
+        return redirect()->back()->with('success', 'Request for Turnover Submitted.');
+
     }
 
     public function approveParTurnover(Request $request)

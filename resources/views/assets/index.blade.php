@@ -251,7 +251,7 @@
                   <label style="color:tomato">PO Number: </label><input class="form-control" type="text" name="po_id" id="po_id" readonly/>
               </div>
               <div class="col-md-4">
-                  <label style="color:black">Disbursement Number: </label><input class="form-control" type="text" name="voucherNo" /><br>
+                  <label style="color:black">Disbursement Number: </label><input class="form-control" type="text" name="voucherNo" required/><br>
               </div>
           </div>
           <hr>
