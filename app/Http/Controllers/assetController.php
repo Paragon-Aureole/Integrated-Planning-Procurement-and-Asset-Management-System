@@ -420,17 +420,18 @@ class assetController extends Controller
     {
         // dd($id);
         // $turnoverData = assetTurnover::whereId($id)->get();
-        $turnoverData = assetTurnover::findorFail($id);
-        if ($turnoverData->par_id != null) {
-            $parData = assetPar::where('id', $turnoverData->par_id)->get();
-            $turnoverAssetData = $parData;
-        } elseif ($turnoverData->ics_id != null) {
-            $icsData = assetIcslip::where('id', $turnoverData->ics_id)->get();
-            $turnoverAssetData = $icsData;
-        }
-        // dd($parData);
+        // $turnoverData = assetPar::with('assetParItem')->where('id', $id)->get();
+        $turnoverData = assetParItem::with('assetPar')->where('asset_par_id', $id)->where('itemStatus', 1)->get();
+        
+        // $turnoverData->assetParItem->where('itemStatus', $id)->get();
+        // if ($turnoverData->assetParItem->itemStatus == 1) {
+        //     $parItem = 
+        // } elseif ($turnoverData->ics_id != null) {
+            
+        // }
+        // dd($turnoverData->first()->assetPar);
+        // dd($dsa);
 
-        // return view('assets.par.printPAR');
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,
@@ -438,7 +439,7 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.turnover.printTurnover', compact('turnoverData', 'turnoverAssetData'))->setPaper('Folio', 'portrait');
+        $pdf = PDF::loadView('assets.turnover.printTurnover', compact('turnoverData'))->setPaper('Folio', 'portrait');
         return $pdf->stream('TURNOVER.pdf');
     }
 }

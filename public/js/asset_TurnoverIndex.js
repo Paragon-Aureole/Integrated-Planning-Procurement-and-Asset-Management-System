@@ -380,4 +380,13 @@
 
     }
 
+    $('#PrintTurnover').on('click', function () {
+      var parId = $('#turnoverPar_id').val()
+      console.log(parId);
+
+      window.open('printTurnover/' + parId, '_blank');
+      
+      
+    })
+
   });

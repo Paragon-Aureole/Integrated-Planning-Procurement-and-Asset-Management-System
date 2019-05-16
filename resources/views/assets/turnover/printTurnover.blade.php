@@ -45,8 +45,12 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>"Sample Details"</td>
-                                        <td>{{$turnoverData->remarks}}</td>
+                                        <td>                                        
+                                            @foreach ($turnoverData as $turnoverDataItem)
+                                                {{$turnoverDataItem->assetPar->asset->details}}<br><br>
+                                            @endforeach</td>
+                                        <td>
+                                        </td>
                                     </tr>
 
                                     <tr>
@@ -58,7 +62,7 @@
                                                     Received by:
                                                 </div>  --}}
                                                 <div class="text-left">
-                                                    <div class="col-xs-12"><u>{{$turnoverData->assignedTo}}</u></div>
+                                                    <div class="col-xs-12"><u></u></div>
                                                     <div class="col-xs-12" style="font-size:15px;">Name and Signature</div><br>
                                                 </div>
                                                 <div class="row text-center header">
