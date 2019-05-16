@@ -202,7 +202,7 @@
           console.log(tableRowDataContent);
 
           var newArray = tableRowDataContent.filter(function (el) {
-            return el[2] != 'Unserviceable'
+            return el[2] == 'Unserviceable'
           });
 
           console.log(newArray);
@@ -386,5 +386,14 @@
       });
 
     }
+
+    $('#PrintTurnover').on('click', function () {
+      var parId = $('#turnoverPar_id').val()
+      console.log(parId);
+
+      window.open('printTurnover/' + parId, '_blank');
+      
+      
+    })
 
   });

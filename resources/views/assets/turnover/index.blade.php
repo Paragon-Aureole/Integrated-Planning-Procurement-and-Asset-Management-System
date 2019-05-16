@@ -126,11 +126,11 @@
                                 <th>Position</th>
                                 <th>Office</th>
                                 <th>Status</th>
-                                <th data-priority='6'>Actions</th>
+                                <th data-priority='5'>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (!$approvalAssets->isEmpty()))
+                            @if (!$approvalAssets->isEmpty())
                             @foreach ($approvalAssets as $record)
                             {{--  {{$record}} --}}
                             <tr>
@@ -268,42 +268,7 @@
                             <th>Status</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Laptop</td>
-                                <td><textarea style="border:none;" name="" id="" cols="90" rows="2"
-                                        readonly>A</textarea></td>
-                                <td>
-                                    Unserviceable
-                                    @can('full control', 'Supervisor')
-                                    <button type="button" id="SubmitTurnover" name="btn_assignItem"
-                                        class="btn btn-info btn-xs float-right">Remove</button>
-                                    @endcan
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Laptop</td>
-                                <td><textarea style="border:none;" name="" id="" cols="90" rows="2"
-                                        readonly>B</textarea></td>
-                                <td>
-                                    Unserviceable
-                                    @can('full control', 'Supervisor')
-                                    <button type="button" id="SubmitTurnover" name="btn_assignItem"
-                                        class="btn btn-info btn-xs float-right">Remove</button>
-                                    @endcan
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Laptop</td>
-                                <td><textarea style="border:none;" name="" id="" cols="90" rows="2"
-                                        readonly>C</textarea></td>
-                                <td>
-                                    Unserviceable
-                                    @can('full control', 'Supervisor')
-                                    <button type="button" id="SubmitTurnover" name="btn_assignItem"
-                                        class="btn btn-info btn-xs float-right">Remove</button>
-                                    @endcan
-                                </td>
-                            </tr>
+
                         </tbody>
                     </table>
                     <div class="col-md-12">&nbsp</div>
@@ -311,6 +276,7 @@
                         class="btn btn-primary btn-xs float-right">Approve Turned Over Items</button>
                     <button type="button" id="PrintTurnover" name="btn_PrintTurnover"
                         class="btn btn-success btn-xs float-right">Print Turned Over Items</button>
+                        {{-- <a href="/printIcs/ <script>document.write = 1</script>" target="_blank" class="btn btn-success btn-xs float-right">Print Turned Over Items</a> --}}
                 </div>
             </div>
         </div>
