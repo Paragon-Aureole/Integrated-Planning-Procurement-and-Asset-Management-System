@@ -361,7 +361,7 @@ class assetController extends Controller
 
     public function printPar($id)
     {
-        $parData = assetPar::findorFail($id);
+        $parData = assetPar::with('assetParItem')->findorFail($id);
         // dd($parData);
         // return view('assets.par.printPAR');
         $options = [
@@ -380,7 +380,7 @@ class assetController extends Controller
     public function printIcs($id)
     {
         // return view('assets.par.printPAR');
-        $IcslipData = assetIcslip::findorFail($id);
+        $IcslipData = assetIcslip::with('assetIcslipItem')->findorFail($id);
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,
