@@ -24,6 +24,7 @@ class AssetTurnoverController extends Controller
      */
     public function index()
     {
+
         // dd(assetPar::with('assetParItem')->where('id', 1)->get());
         // dd(assetPar::with('assetParItem')->where('id', 3)->get());
         // $sampledata = assetPar::with('assetParItem')->where('id', 1)->get();
@@ -81,7 +82,15 @@ class AssetTurnoverController extends Controller
 
         $assetTurnoverData = assetTurnover::with('asset_par')->where('isApproved', 0)->where('par_id', $par_id)->get();
 
-        $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
+        // $assetTurnoverData = assetTurnover::with('asset_par')->where('par_id', $par_id)->get();
+
+        if (!$assetTurnoverData->isEmpty()) {
+            $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
+        } else {
+            $unserializedTurnoverData = [];
+        }
+
+        // $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
     
         return response()->json(['assetParTurnoverItems'=> $unserializedTurnoverData]);
     }

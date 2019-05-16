@@ -407,7 +407,7 @@
                 </div>
                 {{-- ESTIMATED USEFUL LIFE DATE HERE  --}}
                 <input type="text" name="selectedItemEstimatedUsefulLife" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm required">
               </div>
             </div>
           </div>

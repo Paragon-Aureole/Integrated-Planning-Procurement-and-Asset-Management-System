@@ -45,6 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    
                     @php
                     $amount = $parData->asset->amount;
                     {{$parData->asset;}}
@@ -53,9 +54,9 @@
                     @endphp
                     <tr>
                         <td>{{$parData->quantity}}</td>
-                        <td>{{$parData->asset->measurementUnit->unit_code}}</td>
+                        <td>{{$parData->asset->measurementUnit->unit_description}}</td>
                         {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td><textarea cols="30" rows="20" style="border:none">{{$parData->description}}</textarea></td>
+                        <td><textarea cols="30" rows="{{($parData->assetParItem->count() * 2) + 3}}" style="border:none">@foreach ($parData->assetParItem as $record){{"&#13;&#10;" . $record->description . "&#13;&#10;**********"}}@endforeach</textarea></td>
                         {{--  <td>Sample Description</td>  --}}
                         <td></td>
                         <td>{{$parData->created_at}}</td>
@@ -67,7 +68,8 @@
                         @endphp
                         <td>{{$totalAmount}}</td>
                     </tr>
-                    @for ($i = 0; $i < 5; $i++)
+                    
+                    @for ($i = 0; $i < 15; $i++)
                         <tr>
                             @for ($j = 0; $j < 7; $j++)
                                 <td>&nbsp;</td>

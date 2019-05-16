@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\assetPar;
+use App\assetIcslip;
+
+use App\AssetIcslipItem;
+use App\AssetParItem;
+
 class PrintReportController extends Controller
 {
     /**

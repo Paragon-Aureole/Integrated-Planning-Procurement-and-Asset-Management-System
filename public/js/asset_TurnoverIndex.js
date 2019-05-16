@@ -76,51 +76,42 @@
       console.log(rowData);
       $('#signatoryName').val(rowData[1]);
       getParAssignedItems(rowData).then(function (assetParItems) {
-
-        console.log(assetParItems);
-        var tableRowDataContent = new Array;
-
-        $('[name=turnoverParId]').val(assetParItems[1][0].asset_par_id);
-        for (let index = 0; index < assetParItems[1].length; index++) {
-          const description = assetParItems[1][index].description;
-          if (assetParItems[1][index].itemStatus == 0) {
-            var status = "Active";
-          } else {
-            var status = "Unserviceable";
+        getParTurnoverItems(rowData).then(function(assetParTurnoverItems){
+          console.log(assetParTurnoverItems);
+          console.log(assetParItems);
+          var tableRowDataContent = new Array;
+  
+          $('[name=turnoverParId]').val(assetParItems[1][0].asset_par_id);
+          for (let index = 0; index < assetParItems[1].length; index++) {
+            const description = assetParItems[1][index].description;
+            if (assetParItems[1][index].itemStatus == 0) {
+              var status = "Active";
+            } else {
+              var status = "Unserviceable";
+            }
+            // console.log(element);
+            tableRowDataContent.push([assetParItems[0],
+              description,
+              status,
+              '<input type="hidden" name="toTurnover[' + assetParItems[1][index].id + ']" value="0"><input type="checkbox" name="toTurnover[' + assetParItems[1][index].id + ']" value="1">'
+            ]);
+  
           }
-          // console.log(element);
-          tableRowDataContent.push([assetParItems[0],
-            description,
-            status,
-            '<input type="hidden" name="toTurnover[' + assetParItems[1][index].id + ']" value="0"><input type="checkbox" name="toTurnover[' + assetParItems[1][index].id + ']" value="1">'
-          ]);
-
-        }
-
-        var newArray = tableRowDataContent.filter(function (el) {
-          return el[2] != 'Unserviceable'
+  
+          var newArray = tableRowDataContent.filter(function (el) {
+            return el[2] != 'Unserviceable'
+          });
+  
+          console.log(newArray);
+  
+          console.log(tableRowDataContent);
+  
+          modalTurnoverDataTable.clear();
+          for (let index = 0; index < newArray.length; index++) {
+            modalTurnoverDataTable.row.add(newArray[index]);
+          }
+          modalTurnoverDataTable.draw();
         });
-
-        console.log(newArray);
-
-        // $.each(tableRowDataContent, function(i,v){
-        //   // console.log(i);
-
-        //   // console.log(v[2]);
-
-        //   if (v[2] == "Unserviceable") {
-        //     console.log('unserviceable po eto');
-        //     this.splice(i,1);
-        //   }
-        // });
-
-        console.log(tableRowDataContent);
-
-        modalTurnoverDataTable.clear();
-        for (let index = 0; index < newArray.length; index++) {
-          modalTurnoverDataTable.row.add(newArray[index]);
-        }
-        modalTurnoverDataTable.draw();
 
       });
     }
@@ -202,7 +193,7 @@
           console.log(tableRowDataContent);
 
           var newArray = tableRowDataContent.filter(function (el) {
-            return el[2] != 'Unserviceable'
+            return el[2] == 'Unserviceable'
           });
 
           console.log(newArray);
@@ -312,7 +303,7 @@
     }
 
     function getParTurnoverItems(rowData) {
-      return new Promise(function (resolve) {
+      return new Promise(function (resolve, reject) {
 
         var values = {
           'par_id': rowData[0]
@@ -326,8 +317,10 @@
             var assetParTurnoverItems = response.assetParTurnoverItems;
             console.log(assetParTurnoverItems);
             resolve(assetParTurnoverItems)
-
-
+          },
+          error: function (response){
+            var assetParTurnoverItems = new Array; 
+            reject(assetParTurnoverItems)
           }
         });
       });

@@ -52,7 +52,7 @@
                         <td>{{$IcslipData->quantity}}</td>
                         <td>{{$IcslipData->asset->measurementUnit->unit_code}}</td>
                         {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td colspan="2"><textarea cols="30" rows="30" style="border:none">{{$IcslipData->description}}</textarea></td>
+                        <td colspan="2"><textarea cols="30" rows="{{($IcslipData->assetIcslipItem->count() * 2) + 3}}" style="border:none">@foreach ($IcslipData->assetIcslipItem as $record){{"&#13;&#10;" . $record->description . "&#13;&#10;**********"}}@endforeach</textarea></td>
                         {{--  <td>Sample Description</td>  --}}
                         <td></td>
                         <td>{{$IcslipData->useful_life}}</td>

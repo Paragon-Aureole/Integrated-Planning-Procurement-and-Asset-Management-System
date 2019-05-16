@@ -130,7 +130,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (!$approvalAssets->isEmpty()))
+                            @if (!$approvalAssets->isEmpty())
                             @foreach ($approvalAssets as $record)
                             {{--  {{$record}} --}}
                             <tr>
