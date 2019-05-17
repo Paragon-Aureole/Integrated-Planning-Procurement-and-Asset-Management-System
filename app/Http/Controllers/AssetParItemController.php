@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\AssetParItem;
+use App\assetPar;
+use App\asset;
 use Illuminate\Http\Request;
 
 class AssetParItemController extends Controller
@@ -14,7 +16,10 @@ class AssetParItemController extends Controller
      */
     public function index()
     {
-        return view('assets.par.index');
+        $asset = asset::where('isPAR', 1)->where('isAssigned', 0)->get();
+        $assetPar = assetPar::All();
+        // dd($asset);
+        return view('assets.par.index', compact('asset', 'assetPar'));
     }
 
     /**
@@ -81,5 +86,58 @@ class AssetParItemController extends Controller
     public function destroy(AssetParItem $assetParItem)
     {
         //
+    }
+
+        public function getPARCount()
+    {
+        $assetParCount = assetPar::get()->count();
+        return ($assetParCount);
+    }
+   public function getClassifiedItemQtyNo($id)
+    {
+        // dd($id);
+        $assetClassifiedItemQtyNo = asset::select('item_stock')->where('id', $id)->get();
+        return ($assetClassifiedItemQtyNo->first()->item_stock);
+    }
+    public function setAssetIsAssigned(Request $request)
+    {
+        asset::whereId($request->asset_id)->update([
+                'isAssigned' => 1
+            ]);
+
+        return response()->json(['response' => 'Assigning Successful. You may now print.', 'error' => false]);
+    }
+    public function saveNewPar(Request $request)
+    {
+        $items = $request->input('data');
+        // dd($items);
+
+        assetPar::create([
+            'asset_id' => $items[0],
+            'quantity' => $items[1],
+            'assignedTo' => $items[3],
+            'position' => $items[4]
+        ]);
+
+        for ($i=0; $i < count($items[2]); $i++) {
+            // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
+            
+            AssetParItem::create([
+                    'asset_par_id' => $items[5],
+                    'description' => $items[2][$i],
+                    'itemStatus' => 0
+                ]);
+        }
+
+
+        asset::find($items[0])->decrement('item_stock', $items[1]);
+
+
+        if ($request->isMethod('post')) {
+            // return response()->json(['response' => 'This is post method', 'error' => false]);
+            return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
+        } else {
+            return response()->json(['response' => 'failure']);
+        }
     }
 }

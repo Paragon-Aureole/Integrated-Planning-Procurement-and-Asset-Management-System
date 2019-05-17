@@ -270,7 +270,7 @@
                 </div>
                 {{-- ESTIMATED USEFUL LIFE DATE HERE  --}}
                 <input type="text" name="selectedItemEstimatedUsefulLife" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm required">
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm required" required>
               </div>
             </div>
           </div>
@@ -282,15 +282,17 @@
                 </div>
                 {{-- NAME AND POSITION OF EMPLOYEE INPUT HERE  --}}
                 <input type="text" name="selectedItemEmployeeName" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Name">
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Name" required>
                 <input type="text" name="selectedItemEmployeePosition" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Position">
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Position" required>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12" id="descriptionIcs">
-              
+            <div class="col-md-12" id="selectedItemDescription">
+              <label>Description:</label><br>
+              <textarea name="selectedItemDescription" cols="30" rows="10"
+                class="form-control form-control-sm"></textarea>
             </div>
           </div>
         </div>

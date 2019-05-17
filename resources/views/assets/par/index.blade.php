@@ -26,22 +26,25 @@
                 <tr>
                   <th>ID</th>
                   <th>Item Name</th>
-                  <th>Quantity</th>
+                  {{--  <th>Qty</th>
+                  <th>Qty Rem</th>  --}}
                   <th>Office</th>
                   <th data-priority="4">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {{-- @foreach ($parData as $key => $record) --}}
-                <tr>  
-                  <td>1</td>
-                  <td>Laptop</td>
-                  <td>12</td>
-                  <td>Information Technology Section</td>
-                  <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button></td>
-                  {{-- <td><a href="{{route('DistributeAssets.create')}}" target="_blank" class="btn btn-sm btn-secondary">Assign</a></td> --}}
-                </tr>
-                {{-- @endforeach --}}
+                {{--  {{$assetPar}}  --}}
+               @foreach ($asset as $record)
+                  <tr>
+                    <td>{{$record->id}}</td>
+                    <td>{{$record->details}}</td>
+                    {{--  <td>{{$record->item_quantity}}</td>
+                    <td>{{$record->item_stock}}</td>  --}}
+                    <td>{{$record->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                    <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button></td>
+                  </tr>
+                @endforeach
+                
               </tbody>
             </table>
           </div>
@@ -60,19 +63,24 @@
                 </tr>
               </thead>
               <tbody>                
-                {{-- @foreach ($assetParData as $record) --}}
-                <tr>
-                  <td>1</td>
-                  <td>Ramon Pacleb</td>
-                  <td>Information Technology Section</td>
-                  <td>1</td>
-                  <td>
-                    <a href="http://ipams.test/printPar/"  target="_blank" class="btn btn-sm btn-secondary">
-                      <i class="fas fa-print"></i>
-                    </a>
-                  </td>
-                </tr>
-                {{-- @endforeach --}}
+                @foreach ($assetPar as $record)
+                  
+                <td>{{$record->id}}</td>
+                <td>{{$record->assignedTo}}</td>
+                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                <td>{{$record->asset_id}}</td>
+                <td>
+                  <a href="{{'/printPar/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
+                    <i class="fas fa-print"></i>
+                  </a>
+                  @can('full control')
+                  <button class="btn btn-sm btn-danger">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  @endcan
+                </td>
+              </tr>
+              @endforeach
                 
               </tbody>
             </table>
@@ -95,11 +103,8 @@
         <h4 class="modal-title">Distribute Items Classified</h4>
         <button type="button" class="close" data-dismiss="modal">×</button>
       </div>
-<input name="remainingItems" type="hidden"></input>
-<input name="currentItemID" type="hidden"></input>
-<input name="totalItemQuantity" type="hidden"></input>
-<form id="itemAssignForm" action="" method="POST">
-  {{csrf_field()}}
+  <input type="hidden" name="currentItemID"></input>
+  <input type="hidden" name="currentPARNo"></input>
       <div class="modal-body" id="assetAssignBody">
         <div class="container-fluid">
           <div class="row">
@@ -135,7 +140,7 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">PAR No.</span>
                 </div>
                 {{-- PAR NUMBER INPUT HERE  --}}
-                <input type="text" name="selectedItemPARNo" class="form-control"
+                <input type="text" id="currentPARNo" name="selectedItemPARNo" class="form-control"
                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
               <div class="input-group input-group-sm mb-3">
@@ -172,20 +177,17 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
-              <label>Specifications:</label><br>
-              <textarea name="selectedItemSpecifications" cols="30" rows="10"
-                class="form-control form-control-sm"></textarea>
+            <div class="col-md-12" id="descriptionPar">
+
             </div>
           </div>
         </div>
       </div>
       
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button name="submitNewPar" class="btn btn-primary">Save New PAR</button>
         <button class="btn btn-warning">cancel</button>
       </div>
-</form>
 
 
     </div>

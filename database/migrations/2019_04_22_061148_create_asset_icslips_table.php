@@ -19,7 +19,7 @@ class CreateAssetIcslipsTable extends Migration
             $table->integer('asset_id')->unsigned()->nullable()->index();
             // $table->integer('asset_type_id')->unsigned()->nullable()->index();
             $table->integer('quantity');
-            // $table->string('description');
+            $table->string('description');
             $table->string('assignedTo');
             $table->string('position');
             $table->string('inventory_name_no')->nullable()->default('');
