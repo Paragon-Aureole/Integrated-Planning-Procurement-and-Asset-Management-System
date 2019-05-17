@@ -100,7 +100,7 @@
           @can('Asset Management', 'Supervisor')
           <li><a class="dropdown-item" href="/parDistribution">Asset Distribution (PAR)</a></li>
           <a class="dropdown-item" href="{{route('assets.distributed')}}">View all Distributed Assets</a>
-          <li><a class="dropdown-item" href="/printReports">Print Reports</a></li>
+          {{-- <li><a class="dropdown-item" href="/printReports">Print Reports</a></li> --}}
           <li><a class="dropdown-item" href="/migrateAssets">Capture Exisiting Assets</a></li>
           @endcan
           <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>
