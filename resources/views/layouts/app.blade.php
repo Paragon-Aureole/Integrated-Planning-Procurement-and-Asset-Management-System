@@ -47,7 +47,7 @@
   <script type="text/javascript">
     $(document).ready(function() {
 
-        $("form").attr("autocomplete", "off");
+        // $("form").attr("autocomplete", "off");
 
         
         $('#datatable').DataTable({

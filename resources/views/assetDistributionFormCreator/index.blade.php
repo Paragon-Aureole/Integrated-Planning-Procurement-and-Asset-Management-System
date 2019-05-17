@@ -10,7 +10,7 @@
 
 @section('content')
 
-<form action="{{route('distribution.create')}}" method="get">
+<form autocomplete="off" action="{{route('distribution.create')}}" method="get">
     {{csrf_field()}}
     {{-- <label>Select Form To Create:</label>
     <select name="selectedOption">

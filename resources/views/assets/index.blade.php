@@ -179,7 +179,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <!-- Modal Header -->
-      <form action="{{route('assets.store')}}" id="assetClassificationForm" method="post">
+      <form autocomplete="off" action="{{route('assets.store')}}" id="assetClassificationForm" method="post">
         {{csrf_field()}}
         <div class="modal-header">
           <h5>Classify Items Procured</h5>
@@ -320,7 +320,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-      <form action="{{route('asset.requestEdit')}}" method="GET" class="needs-validation" novalidate>
+      <form autocomplete="off" action="{{route('asset.requestEdit')}}" method="GET" class="needs-validation" novalidate>
           {{ csrf_field() }}
           <div class="row">
             <div class="col-md-12">

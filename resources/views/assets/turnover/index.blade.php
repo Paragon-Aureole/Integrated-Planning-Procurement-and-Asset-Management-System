@@ -194,7 +194,7 @@
                     <label>Signatory Name:</label>
                     <input id="signatoryName" class="form-control" type="text" disabled>
                 </div>
-                <form id="turnoverDataTableForm" action="{{route('AssetTurnover.store')}}" method="post">
+                <form autocomplete="off" id="turnoverDataTableForm" action="{{route('AssetTurnover.store')}}" method="post">
                     <input type="hidden" name="turnoverParId">
                     {{csrf_field()}}
                     <div class="form-group">

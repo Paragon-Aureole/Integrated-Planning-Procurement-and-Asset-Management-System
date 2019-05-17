@@ -17,7 +17,7 @@
    	  <h6 class="card-title">
 		Add Method
 	  </h6>
-	  <form action="{{route('add.modes')}}" method="post" id="needs-validation" novalidate>
+	  <form autocomplete="off" action="{{route('add.modes')}}" method="post" id="needs-validation" novalidate>
 	  	{{csrf_field()}}
 	  	<div class="row">
         

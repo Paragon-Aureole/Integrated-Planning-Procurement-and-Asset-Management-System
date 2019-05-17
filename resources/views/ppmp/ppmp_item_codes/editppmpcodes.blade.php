@@ -20,7 +20,7 @@
       Update PPMP Item Code
       </h6>
 
-      <form action="{{route('update.ppmpitemcode', $ppmp_key->id)}}" method="POST" id="needs-validation2" novalidate>
+      <form autocomplete="off" action="{{route('update.ppmpitemcode', $ppmp_key->id)}}" method="POST" id="needs-validation2" novalidate>
         {{csrf_field()}}
         {{ method_field('put') }}
         <div class="row">

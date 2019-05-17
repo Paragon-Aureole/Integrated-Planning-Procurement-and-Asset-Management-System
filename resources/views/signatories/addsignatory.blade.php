@@ -42,7 +42,7 @@
 	      <div class="row mt-3">
 		   	<div class="col-md-4">
 		   	<h6 class="card-title">Add Signatory</h6>
-				<form action="{{route('add.signatories')}}" method="post" id="needs-validation" novalidate>
+				<form autocomplete="off" action="{{route('add.signatories')}}" method="post" id="needs-validation" novalidate>
 				  {{csrf_field()}}
 				  <input type="hidden" name="category" value="1">
 				  <div class="row">

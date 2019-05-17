@@ -13,7 +13,7 @@
 {{-- {{$fetchedDataPAR}} --}}
 
 
-<form action="{{route('distribution.store')}}" method="post">
+<form autocomplete="off" action="{{route('distribution.store')}}" method="post">
     {{csrf_field()}}
     <input type="hidden" name="countPAR" value=@if ($countPAR == "")
     1    

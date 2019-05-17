@@ -10,7 +10,7 @@
 
 @section('content')
 
-<form action="" method="post">
+<form autocomplete="off" action="" method="post">
   {{csrf_field()}}
   <div class="container-fluid">
     <div class="card">

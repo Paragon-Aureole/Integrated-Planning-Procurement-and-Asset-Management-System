@@ -17,7 +17,7 @@
     <div class="card">
         <div class="card-header pt-2 pb- 2"><b>Add Suppliers</b></div>
         <div class="card-body">
-            <form action="{{route('abstract.update', $abstract->id)}}" id="bekkelAbstract" method="POST" class="needs-validation" novalidate>
+            <form autocomplete="off" action="{{route('abstract.update', $abstract->id)}}" id="bekkelAbstract" method="POST" class="needs-validation" novalidate>
                 {{ csrf_field() }}
                 {{ method_field('PATCH') }}
             <div class="form-row">  
@@ -231,7 +231,7 @@
       
             <!-- Modal body -->
             <div class="modal-body">
-            <form action="{{route('supplier.store')}}" name="s_store" method="POST" class="needs-validation" novalidate>
+            <form autocomplete="off" action="{{route('supplier.store')}}" name="s_store" method="POST" class="needs-validation" novalidate>
                     {{ csrf_field() }}
                     <input type="hidden" name="abstract_id" value="{{$abstract->id}}">
                     <div class="form-row">
@@ -315,7 +315,7 @@
       
             <!-- Modal body -->
             <div class="modal-body">
-            <form name="s_update" method="POST" class="needs-validation" novalidate>
+            <form autocomplete="off" name="s_update" method="POST" class="needs-validation" novalidate>
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
                     {{-- <input type="hidden" name="abstract_id" value="{{$abstract->id}}"> --}}
@@ -393,7 +393,7 @@
 									
 								<!-- Modal body -->
 								<div class="modal-body">
-										<form name="deactivation_reason">
+										<form autocomplete="off" name="deactivation_reason">
 										 {{ csrf_field() }}
 										 {{method_field("get")}}
 											<div class="form-row">

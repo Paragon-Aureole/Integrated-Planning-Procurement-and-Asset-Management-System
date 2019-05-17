@@ -42,7 +42,7 @@
                         
                         {{-- inputs for office assets --}}
                         <div id="office_assets" style="display:none">
-                            <form action="{{route('migrateAssets.store')}}" method="post">
+                            <form autocomplete="off" action="{{route('migrateAssets.store')}}" method="post">
                                     
                                 <div id="cloneInputs">
                                     <div class="row">
@@ -161,7 +161,7 @@
 
                         {{-- inputs for vehicle --}}
                         <div id="vehicle" style="display:none">
-                            <form action="{{route('migrateIcsAssets.store')}}" method="post">
+                            <form autocomplete="off" action="{{route('migrateIcsAssets.store')}}" method="post">
                                 <div id="cloneIcs">
                                     
                                     <div class="row">

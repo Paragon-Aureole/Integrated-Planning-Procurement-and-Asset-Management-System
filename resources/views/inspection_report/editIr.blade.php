@@ -19,7 +19,7 @@
                 <h6 class="card-title">
                   Edit Acceptance & Inspection Report
                 </h6>
-                <form method="POST" action="{{route('ir.update', $air->id)}}" class="needs-validation" novalidate>
+                <form autocomplete="off" method="POST" action="{{route('ir.update', $air->id)}}" class="needs-validation" novalidate>
                     {{ csrf_field() }}
                     {{method_field('PUT')}}
                     <div class="form-row">

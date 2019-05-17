@@ -103,7 +103,7 @@
       
             <!-- Modal body -->
             <div class="modal-body">
-            <form action="{{route('abstract.store')}}" method="POST" class="needs-validation" novalidate>
+            <form autocomplete="off" action="{{route('abstract.store')}}" method="POST" class="needs-validation" novalidate>
                 {{ csrf_field() }}
                 <input type="hidden" name="pr_id" value="">
                 <div class="form-group">

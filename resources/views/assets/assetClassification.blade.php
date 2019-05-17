@@ -12,7 +12,7 @@
 
 
 <input type="hidden" name="assetDataCount" value="{{count($assetData->where('isEditable', 0))}}">
-<form id="assetClassificationForm" action="{{route('assets.store')}}" method="post">
+<form autocomplete="off" id="assetClassificationForm" action="{{route('assets.store')}}" method="post">
     {{csrf_field()}}
     <input type="hidden" name="purchase_order_id" value={{$assetData[0]->purchase_order_id}}>
 

@@ -19,7 +19,7 @@
 
 {{-- {{$assetTypes}} --}}
 
-<form action="" method="post">
+<form autocomplete="off" action="" method="post">
   {{csrf_field()}}
   {{--  <input type="hidden" name="purchase_order_id" value={{$assetData[0]->purchase_order_id}}> --}}
   {{--  <input type="hidden" name="PO_id" value={{$id->searchPO}}></input> --}}
@@ -102,7 +102,7 @@
 <input name="remainingItems" type="hidden"></input>
 <input name="currentItemID" type="hidden"></input>
 <input name="totalItemQuantity" type="hidden"></input>
-<form id="itemAssignForm" action="{{route('DistributeAssetsPAR.store')}}" method="POST">
+<form autocomplete="off" id="itemAssignForm" action="{{route('DistributeAssetsPAR.store')}}" method="POST">
   {{csrf_field()}}
       <div class="modal-body" id="assetAssignBody">
         <div class="container-fluid">

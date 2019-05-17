@@ -107,7 +107,7 @@
       </div>
 
       <div class="modal-body">
-        <form action="{{route('ir.store')}}" method="POST" class="needs-validation" novalidate>
+        <form autocomplete="off" action="{{route('ir.store')}}" method="POST" class="needs-validation" novalidate>
           {{ csrf_field() }}
 
 

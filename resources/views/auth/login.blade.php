@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate>
+                    <form autocomplete="off" method="POST" action="{{ route('login') }}" class="needs-validation" novalidate>
                     {{ csrf_field() }}
                         <div class="form-group">
                             <div class="input-group">
