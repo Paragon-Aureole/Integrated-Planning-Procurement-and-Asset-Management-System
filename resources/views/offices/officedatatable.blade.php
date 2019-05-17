@@ -13,7 +13,7 @@
    	  	  	  <td>{{$dept->office_name}}</td>
    	  	  	  <td>
    	  	  	  	<a href="{{route('edit.office', $dept->id)}}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-								 <a href="{{route('delete.office', $dept->id)}}" class="btn btn-sm btn-danger" title="Delete Office/Department" data-content="{{$dept->office_name}}" data-toggle="confirmation"><i class="fas fa-minus"></i></a>
+								 {{-- <a href="{{route('delete.office', $dept->id)}}" class="btn btn-sm btn-danger" title="Delete Office/Department" data-content="{{$dept->office_name}}" data-toggle="confirmation"><i class="fas fa-minus"></i></a> --}}
    	  	  	  </td>
    	  	  	</tr>
    	  	  	@endforeach

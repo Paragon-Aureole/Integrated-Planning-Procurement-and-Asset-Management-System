@@ -22,7 +22,7 @@ class Ppmp extends Model
      * @var array
      */
     protected $fillable = [
-        'ppmp_year', 'office_id', 'user_id', 'ppmp_budget_id', 'is_active', 'is_supplemental', 'former_ppmp_id'
+        'ppmp_year', 'office_id', 'signatory_id', 'user_id', 'ppmp_budget_id', 'is_active', 'is_supplemental', 'former_ppmp_id', 'is_printed'
     ];
 
     public function user()
@@ -48,6 +48,11 @@ class Ppmp extends Model
     public function ppmpItemCode()
     {
         return $this->hasMany(PpmpItemCode::class);
+    }
+
+    public function signatory()
+    {
+        return $this->belongsTo(Signatory::class);
     }
 
 }

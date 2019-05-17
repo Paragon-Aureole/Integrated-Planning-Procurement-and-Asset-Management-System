@@ -86,10 +86,15 @@ class PurchaseOrderController extends Controller
         // dd($input);
         
         $pr = PurchaseRequest::findorFail($input['pr_id']);
+
+        // $ppmp = Ppmp::where('ppmp_year', Carbon::parse($pr->created_at)->Format('Y'))->where('office_id', Auth::user()->office_id)->get();
+
+        // dd($ppmp);
+
         $pr->created_po = 1;
         $pr->save();
 
-
+        
         $po = PurchaseOrder::create([
             'user_id' => Auth::user()->id,
             'outline_supplier_id' => $input['outline_supplier_id'],
@@ -100,11 +105,13 @@ class PurchaseOrderController extends Controller
             'payment_term' => $input['paymentTerm'],
         ]);
 
-        $ppmp = Ppmp::where('ppmp_year', Carbon::parse($po->created_at)->Format('Y'))->first();
-        $budget = $ppmp->ppmpBudget->ppmp_est_budget - $po->outlineSupplier->outlinePrice()->sum('final_cpi');
-        $update_budget = $ppmp->ppmpBudget->update([
-            'ppmp_rem_budget' => $budget
-        ]);
+        
+
+        // $ppmp = Ppmp::where('ppmp_year', Carbon::parse($po->created_at)->Format('Y'))->where('office_id', Auth::user()->office_id)->first();
+        // $budget = $ppmp->ppmpBudget->ppmp_est_budget - $po->outlineSupplier->outlinePrice()->sum('final_cpi');
+        // $update_budget = $ppmp->ppmpBudget->update([
+        //     'ppmp_rem_budget' => $budget
+        // ]);
 
         $items = $po->outlineSupplier->outlinePrice()->get();
         foreach ($items as $key => $poItems) {
@@ -117,6 +124,12 @@ class PurchaseOrderController extends Controller
 
             ]);
             $po->asset()->save($asset);
+
+            $ppmp = $poItems->prItem->ppmpItem->ppmp;
+            $budget = $ppmp->ppmpBudget->ppmp_est_budget - $poItems->final_cpi;
+            $update_budget = $ppmp->ppmpBudget->update([
+                'ppmp_rem_budget' => $budget
+            ]);
         }
         
         $pr->purchaseOrder()->save($po);

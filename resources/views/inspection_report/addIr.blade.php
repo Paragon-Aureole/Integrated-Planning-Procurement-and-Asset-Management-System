@@ -15,17 +15,17 @@
       <div class="row">
         <div class="col-md-6">
           <h6 class="card-title">
-            Available Acceptance & Inspection Reports
+            Available Purchase Request
           </h6>
           <div class="table-responsive">
             <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
               <thead class="thead-light">
                 <tr>
-                  <th>ID</th>
-                  <th>PR Code</th>
-                  <th>Purpose</th>
-                  <th>Date Created</th>
-                  <th>Action</th>
+                  <th data-priority="1">ID</th>
+                  <th data-priority="3">PR Code</th>
+                  <th data-priority="4">Purpose</th>
+                  <th data-priority="5">Date Created</th>
+                  <th data-priority="2">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -33,8 +33,8 @@
                 @if ($pr->created_inspection == 0)
                 <tr>
                   <td>{{$pr->id}}</td>
-                  <td>{{$pr->pr_purpose}}</td>
                   <td>{{$pr->pr_code}}</td>
+                  <td>{{$pr->pr_purpose}}</td>
                   <td>{{Carbon\Carbon::parse($pr->created_at)->format('m-d-y')}}</td>
                   <td>
                     <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal"
@@ -182,7 +182,7 @@
             </div>
           </div>
           <br>
-          <button class="btn btn-primary btn-sm" type="submit">Add Inspection Report</button>
+          <button class="btn btn-primary btn-sm" type="submit" data-toggle="confirmation">Add Inspection Report</button>
         </form>
       </div>
 
@@ -215,7 +215,7 @@
         pr_id: data[0]
       }
 
-      // console.log(data[0])
+      console.log(data[0])
 
       $.ajax({
         url: '/getModalPoData',

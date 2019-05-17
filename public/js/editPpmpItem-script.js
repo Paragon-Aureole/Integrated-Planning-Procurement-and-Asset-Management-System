@@ -26,7 +26,7 @@ $( document ).ready( function () {
             data: values,
             success: function ( response ) {
                 var tableContent = response.tableContent;
-                console.log(tableContent);
+                // console.log(tableContent[0].code_type);
                 populateTable(tableContent);                
                 populateDropdown(tableContent);                
             }
@@ -55,6 +55,7 @@ $( document ).ready( function () {
 
     // populate table using dataTable js
     function populateTable (tableContent) {
+        // console.log(tableContent)
         table = $('#datatable').DataTable({
             destroy:true,
             data: tableContent,

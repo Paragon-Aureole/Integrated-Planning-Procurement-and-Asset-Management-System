@@ -28,4 +28,13 @@ class PpmpRequest extends FormRequest
             'office_id' => 'required'
         ];
     }
+
+    public function messages() { 
+        $messages = [
+            'ppmp_year.date_format' => 'Invalid PPMP Year!',
+        ];
+
+        return $messages; 
+      
+  }
 }

@@ -83,7 +83,7 @@
 
 	<div class="row header-pr" style="border:1px solid #262626;margin-top: 10px;">
 		<div class="col-xs-12 heading2">
-			PURCHASE REQUEST
+			@if($pr->is_supplemental == 1) SUPPLEMENTAL @endif PURCHASE REQUEST
 		</div>
 	</div>
 	<div class="row topped topped-border">

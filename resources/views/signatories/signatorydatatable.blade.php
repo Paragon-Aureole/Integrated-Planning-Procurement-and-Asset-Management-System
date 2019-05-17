@@ -19,9 +19,9 @@
         <a href="{{route('edit.signatories', $signatory->id)}}" class="btn btn-sm btn-warning">
           <i class="fas fa-edit"></i>
         </a>
-        <a href="{{route('delete.signatories', $signatory->id)}}" class="btn btn-sm btn-danger" title="Delete Signatory" data-toggle="confirmation" data-content="{{$signatory->signatory_name}}">
+        {{-- <a href="{{route('delete.signatories', $signatory->id)}}" class="btn btn-sm btn-danger" title="Delete Signatory" data-toggle="confirmation" data-content="{{$signatory->signatory_name}}">
           <i class="fas fa-minus"></i>
-        </a>
+        </a> --}}
       @if($signatory->is_activated == 1)
         <a href="{{route('deactivate.signatories', $signatory->id)}}" 
             data-toggle="confirmation" title="Activate Signatory" data-content="{{$signatory->signatory_name}}" class="btn btn-sm btn-success">

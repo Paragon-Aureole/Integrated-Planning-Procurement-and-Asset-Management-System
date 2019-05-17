@@ -18,7 +18,7 @@
 <div class="card">
  <div class="card-header pt-2 pb- 2"><b>Add Items</b></div>
  <div class="card-body">
-  <form autocomplete="off" action="{{route('add.ppmpitm', $ppmp->id)}}" method="post" name="ppmp_form" class="needs-validation" novalidate>
+  <form autocomplete="off" action="{{route('add.ppmpitm', $ppmp->id)}}" method="post" name="ppmp_form" class="needs-validation">
     {{csrf_field()}}
   <div class="row">
     <div class="col-md-6">
@@ -28,6 +28,7 @@
           <div class="input-group mb-3">
             <input type="text" id="ppmp_id" value="{{$ppmp->id}}" hidden>
             <select class="custom-select custom-select-sm {{ $errors->has('item_code') ? 'is-invalid' : '' }}" name="item_code" required="required">
+              <option value="">Select Item Code</option>
               @foreach($ppmp_codeDT as $codes)
                 <option value="{{$codes->id}}" name="{{$codes->code_type}}" >{{$codes->code_description}}</option>
               @endforeach
@@ -119,7 +120,7 @@
           </div>
         </div>
         <div class="form-group col-md-12 text-right">
-          <button class="btn btn-sm btn-primary" id="btn_submit">Add PPMP Item</button>
+          <button class="btn btn-sm btn-primary" id="btn_submit" @can('full control') @else @if($ppmp->is_printed == true) disabled @endif @endcan>Add PPMP Item</button>
         </div>
       </div>
     </div>

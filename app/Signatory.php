@@ -34,4 +34,9 @@ class Signatory extends Model
     {
         return $this->hasOne(PurchaseRequest::class);
     }
+
+    public function ppmp()
+    {
+        return $this->hasOne(Ppmp::class);
+    }
 }

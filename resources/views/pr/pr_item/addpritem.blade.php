@@ -53,7 +53,13 @@
 								<input list="itemDescs" id="itemDesc" class="form-control form-control-sm {{ $errors->has('item_description') ? 'is-invalid' : '' }}" required>
 									<datalist id="itemDescs">
 										@foreach($ppmp_item as $item)
-											<option data-value = "{{$item->id}}">{{$item->item_description}}</option>
+											<option data-value = "@if($pr->is_supplemental == 1) {{$item->ppmp_item_id}} @else {{$item->id}} @endif">
+													@if($pr->is_supplemental == 1)
+														{{$item->ppmpItem->item_description}}
+													@else
+														{{$item->item_description}}
+													@endif
+											</option>
 										@endforeach
 									</datalist>
 								<div class="invalid-feedback">

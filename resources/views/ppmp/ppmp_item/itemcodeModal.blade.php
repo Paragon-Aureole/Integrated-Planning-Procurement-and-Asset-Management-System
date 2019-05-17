@@ -18,7 +18,7 @@
                                 <h6 class="card-title">
                           Add PPMP Item Code
                           </h6>
-                          <form autocomplete="off" action="{{route('add.ppmpitemcode', $ppmp->id)}}" method="POST" id="needs-validation2" novalidate>
+                          <form autocomplete="off" action="{{route('add.ppmpitemcode', $ppmp->id)}}" method="POST" class="needs-validation" novalidate>
                             {{csrf_field()}}
                             <div class="row">
                               <div class="form-group col-md-12">
@@ -49,8 +49,8 @@
                                 </div>
                               </div>
                               <div class="form-group col">
-                                <button type="submit" class="btn btn-primary btn-sm" id="submitContent">Add Item Code</button>
-                                <button class="btn btn-warning btn-sm" id="updateContent" style="display:none">Update Item Code</button>
+                                <button type="submit" class="btn btn-primary btn-sm" id="submitContent" data-toggle="confirmation">Add Item Code</button>
+                                <button class="btn btn-warning btn-sm" id="updateContent" data-toggle="confirmation" style="display:none">Update Item Code</button>
                                 <button class="btn btn-primary btn-sm" id="cancelUpdate" style="display:none">Cancel</button>
                               </div>
                             </div>

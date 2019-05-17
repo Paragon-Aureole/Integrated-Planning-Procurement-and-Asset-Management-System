@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Ppmp;
 use App\PpmpItemCode;
 use App\Office;
+use App\Signatory;
 use Auth;
 use App\Http\Requests\PpmpRequest;
 use PDF;
@@ -56,13 +57,27 @@ class PpmpController extends Controller
     public function store(PpmpRequest $request)
     {
 
-    	$input = $request->all();
+        
+        
+        $input = $request->all();
+        
+        if ($input['ppmp_year'] >= 2099) {
+            return redirect()->back()->with('error', 'PPMP Year not allowed');
+        }
 
-    	$user = Auth::user();
+        $user = Auth::user();
+        $query = Signatory::where('is_activated' , 1)->where('office_id', $input['office_id'])->first();
+
+        if(empty($query) == true){
+            $signatory = null;
+        }else{
+            $signatory = $query->id;
+        }
 
 		$add_ppmp = $user->ppmp()->create([
 		    "ppmp_year" => $input['ppmp_year'],
             "office_id" => $input['office_id'],
+            "signatory_id" => $signatory
         ]);
         
         activity('PPMP')
@@ -179,6 +194,8 @@ class PpmpController extends Controller
             $message = "-S";
         }
 
+        $update_ppmp = $ppmp->update([ 'is_printed' => 1]);
+
         activity('PPMP')
         ->performedOn($ppmp)
         ->causedBy(Auth::user())
@@ -223,10 +240,10 @@ class PpmpController extends Controller
         $user = Auth::user();
 
     	if ($user->hasRole('Admin')) {
-            $created_ppmp = Ppmp::get()->where('is_supplemental', 0)->where('is_active', 1);
+            $created_ppmp = Ppmp::where('is_supplemental', 0)->where('is_active', 1)->has('ppmpItem')->get();
     		$ppmp_DT = Ppmp::get()->where('is_supplemental', 1);
     	}else{
-            $created_ppmp = Ppmp::get()->where('is_supplemental', 0)->where('is_active', 1)->where('office_id', '=', $user->office_id);
+            $created_ppmp = Ppmp::get()->where('is_supplemental', 0)->where('is_active', 1)->where('office_id', '=', $user->office_id)->has('ppmpItem');
     		$ppmp_DT = Ppmp::get()->where('office_id', '=', $user->office_id)->where('is_supplemental', 1);
     	}
     	$offices = Office::all();
@@ -256,7 +273,7 @@ class PpmpController extends Controller
         activity('PPMP')
         ->performedOn($add_ppmp)
         ->causedBy($user)
-        ->log('Supplemental PPMP added for the year'. $add_ppmp->ppmp_year ."-". $add_ppmp->office->office_code);
+        ->log('Supplemental PPMP added for the year'. $add_ppmp->ppmp_year. "-" .$add_ppmp->count() ."-". $add_ppmp->office->office_code);
 
        return redirect()->route('add.ppmp.budget', $add_ppmp->id);
 

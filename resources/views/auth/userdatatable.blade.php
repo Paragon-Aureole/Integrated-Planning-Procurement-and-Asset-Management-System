@@ -11,10 +11,10 @@
 	  	  		  <tbody>
 	  	  		  	@foreach($user_DT as $indexKey => $user)
 	  	  		  	<tr>
-	  	  		  		<td>{{$user->id}}</td>
-	  	  		  		<td>{{$user->username}}</td>
-	  	  		  		<td>{{$user->office->office_code}}</td>
-	  	  		  		<td>
+	  	  		  		<td data-priority="5">{{$user->id}}</td>
+	  	  		  		<td data-priority="1">{{$user->username}}</td>
+	  	  		  		<td data-priority="3">{{$user->office->office_code}}</td>
+	  	  		  		<td data-priority="4">
 	  	  		  			@foreach($user->getRoleNames() as $role)
 	  	  		  				<span class="badge 
 	  	  		  				@if($role == 'Admin')badge-primary
@@ -22,7 +22,7 @@
 	  	  		  				@else badge-secondary @endif
 	  	  		  				">{{$role}}</span>
 	  	  		  			@endforeach
-	  	  		  		</td>
+	  	  		  		</td data-priority="2">
 	  	  		  		<td>
 	  	  		  			@if (is_null($user->deleted_at))
 	  	  		  			<a href="{{route('edit.user',$user->id)}}" class="btn btn-sm btn-warning">

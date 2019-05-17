@@ -49,7 +49,7 @@
    	<div class="col-md-6">
    	  <h6 class="card-title">Registered Supplemental Purchase Requests</h6>
    	  <div class="table-responsive">
-   	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+   	  	<table id="suppdatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-light">
             <tr>
               <th>Supplemental PR Code</th>
@@ -59,16 +59,21 @@
           </thead>
           <tbody>
             @foreach ($supplemental as $sup_pr)
-            @php
-                $firstTwo = $sup_pr->prItem->take(2);
-            @endphp
+              <tr>
+                  @php
+                      $firstTwo = $sup_pr->prItem->take(2);
+                  @endphp
                 <td>{{$sup_pr->pr_code}}</td>
                 <td>
                     @foreach ($firstTwo as $item)
                         {{$item->ppmpItem->item_description}} @if ($firstTwo->count() > 1) , @endif 
                     @endforeach
+                    {{-- Item 1, Item 2 --}}
                 </td>
-                {{-- <td></td> --}}
+                <td>
+                    <a href="{{route('view.pritm', $sup_pr->id)}}" class="btn btn-sm btn-info" title="Add PR Items"><i class="fas fa-th-list"></i></a>
+                </td>
+              </tr>
             @endforeach
           </tbody>
         </table>
@@ -86,6 +91,10 @@
 <script type="text/javascript">
   $(document).ready(function() {
         $('#prDatatable').DataTable({
+            responsive: true,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
+        });
+        $('#suppdatatable').DataTable({
             responsive: true,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
         });

@@ -11,7 +11,7 @@
       <th class="w-10" rowspan="2">Procurement Mode</th>
       <th>
         @if($ppmp->ppmpItem()->count() > 0)
-        <a href="{{route('print.ppmp', $ppmp->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
+        <a href="{{route('print.ppmp', $ppmp->id)}}" target="_blank" class="btn btn-sm btn-secondary" data-toggle="confirmation"><i class="fas fa-print"></i></a>
         @endif
       </th>
     </tr>
@@ -38,8 +38,16 @@
         <td class="text-center">{{$items->item_stock}}</td>
         <td>{{$items->procurementMode->method_name}}</td>
         <td>
-          <a href="{{route('edit.ppmpitm', [$ppmp->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-          <a href="{{route('delete.ppmpitm', [$ppmp->id, $items->id])}}" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
+          @if($items->ppmp->is_printed == true)
+            @can('full control')
+            <a href="{{route('edit.ppmpitm', [$ppmp->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+            <a href="{{route('delete.ppmpitm', [$ppmp->id, $items->id])}}" class="btn btn-sm btn-danger" data-toggle="confirmation"><i class="fas fa-minus"></i></a>
+            @endcan
+          @else
+            <a href="{{route('edit.ppmpitm', [$ppmp->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+            <a href="{{route('delete.ppmpitm', [$ppmp->id, $items->id])}}" class="btn btn-sm btn-danger" data-toggle="confirmation"><i class="fas fa-minus"></i></a>
+          @endif
+          
         </td>
       </tr>
     @endforeach
