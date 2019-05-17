@@ -16,6 +16,7 @@ use App\assetType;
 use App\assetPar;
 use App\assetIcslip;
 use App\assetTurnover;
+use App\assetTurnoverItem;
 
 use App\AssetParItem;
 use PDF;
@@ -30,7 +31,7 @@ class assetController extends Controller
      */
     public function index()
     {
-        
+
         // $asset = purchaseRequest::where('created_inspection', 1)->get();
         $asset = asset::All();
         // $assetPar = assetPar::All();
@@ -58,28 +59,20 @@ class assetController extends Controller
         $user = Auth::user();
         
         if ($user->can('Asset Management', 'Supervisor')) {
-
             $asset = asset::All();
             $assetPar = assetPar::All();
             $assetIcs = assetIcslip::All();
-            
-        }else{
-            $asset = asset::whereHas('purchaseOrder.purchaseRequest', function ($query){
-
-                $query->where('office_id',  Auth::user()->office_id );
-
+        } else {
+            $asset = asset::whereHas('purchaseOrder.purchaseRequest', function ($query) {
+                $query->where('office_id', Auth::user()->office_id);
             })->get();
 
-            $assetPar = assetPar::whereHas('asset.purchaseOrder.purchaseRequest', function ($query){
-
-                $query->where('office_id',  Auth::user()->office_id );
-
+            $assetPar = assetPar::whereHas('asset.purchaseOrder.purchaseRequest', function ($query) {
+                $query->where('office_id', Auth::user()->office_id);
             })->get();
 
-            $assetIcs = assetIcslip::whereHas('asset.purchaseOrder.purchaseRequest', function ($query){
-
-                $query->where('office_id',  Auth::user()->office_id );
-
+            $assetIcs = assetIcslip::whereHas('asset.purchaseOrder.purchaseRequest', function ($query) {
+                $query->where('office_id', Auth::user()->office_id);
             })->get();
         }
         
@@ -192,13 +185,18 @@ class assetController extends Controller
     {
         // $input = $request->except(['_token','_method']);
         // dd($input);
-        // DisbursementVoucher::create([
-        //     'purchase_order_id' => $request->po_id,
-        //     'disbursementNo' => $request->voucherNo
-        // ]);
-        
 
         // dd($request->all());
+        
+        if (count(DisbursementVoucher::where('disbursementNo', $request->voucherNo)->get()) > 0) {
+            return redirect()->back()->with('error', 'Disbursement Voucher Exists!');
+        }
+        DisbursementVoucher::create([
+            'purchase_order_id' => $request->po_id,
+            'disbursementNo' => $request->voucherNo
+        ]);
+        
+
         $sortedArray = [];
         $PAR = [];
         $ICS = [];
@@ -469,19 +467,9 @@ class assetController extends Controller
 
     public function printTurnover($id)
     {
-        // dd($id);
-        // $turnoverData = assetTurnover::whereId($id)->get();
-        // $turnoverData = assetPar::with('assetParItem')->where('id', $id)->get();
-        $turnoverData = assetParItem::with('assetPar')->where('id', $id)->where('itemStatus', 2)->get();
-        
-        // $turnoverData->assetParItem->where('itemStatus', $id)->get();
-        // if ($turnoverData->assetParItem->itemStatus == 1) {
-        //     $parItem = 
-        // } elseif ($turnoverData->ics_id != null) {
-            
-        // }
-        // dd($turnoverData->first()->assetPar);
-        // dd($dsa);
+        $turnoverData = assetTurnoverItem::where('asset_turnover_id', $id)->get();
+        // dd($turnoverData);
+        // dd($turnoverData->first()->assetTurnoverItem->first()->assetParItem);
 
         $options = [
             'margin-top'    => 10,
@@ -520,10 +508,11 @@ class assetController extends Controller
         return redirect()->back()->with('succes', 'Item Approved to edit');
     }
 
-    public function printIcsData(Request $request) {
+    public function printIcsData(Request $request)
+    {
         $input = $request->all();
-         $icsData = assetIcslip::where('asset_id', $input['item_ics'])->get();
+        $icsData = assetIcslip::where('asset_id', $input['item_ics'])->get();
 
-         return response()->json(['icsData'=>$icsData]);
+        return response()->json(['icsData'=>$icsData]);
     }
 }

@@ -33,10 +33,12 @@
                         <div class="text-right">
                             <div class="col-xs-12">Form No.:__________</div>
                             <div class="col-xs-12">Date:__________</div>
-                            <div class="text-center">I hereby turn-over the following item/items to the General Services Office.</div>
+                            <div class="text-center">I hereby turn-over the following item/items to the General Services
+                                Office.</div>
                         </div>
                         <div class="row text-center">
-                            <table class=" table table-bordered table-hover table-sm table-condensed display nowrap w-100">
+                            <table
+                                class=" table table-bordered table-hover table-sm table-condensed display nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th>Particulars</th>
@@ -45,12 +47,14 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-left">                                        
-                                            @foreach ($turnoverData as $turnoverDataItem)
-                                            <textarea cols="10" rows="25" style="border:none;">
-                                                {{$turnoverDataItem->assetPar->asset->details}}
+                                        <td class="text-center">
+                                            <textarea cols="50" rows="30"
+                                                style="border:none;">
+                                                    @foreach ($turnoverData as $turnoverDataItem)
+                                                {{"&#13;&#10;" . $turnoverDataItem->assetParItem->description . "&#13;&#10;"}}
+                                                @endforeach
                                             </textarea>
-                                            @endforeach</td>
+                                        </td>
                                         <td>
 
                                         </td>
@@ -66,16 +70,21 @@
                                                 </div>  --}}
                                                 <div class="text-left">
                                                     <div class="col-xs-12"><u></u></div>
-                                                    <div class="col-xs-12" style="font-size:15px;">Name and Signature</div><br>
+                                                    <div class="col-xs-12" style="font-size:15px;">&nbsp;&nbsp;&nbsp;&nbsp;<u>{{$turnoverData->first()->assetParItem->assetPar->assignedTo}}</u>
                                                 </div>
-                                                <div class="row text-center header">
-                                                    <div class="col-xs-12">I hereby acknowledge the receipt of said property / properties
-                                                        enumerated above from ______________ found out to be ______________ </div>
-                                                    <div class="col-xs-12">&nbsp;</div>
-                                                    <div class="col-xs-12">&nbsp;</div>
+                                                <div class="col-xs-12" style="font-size:15px;">Name and Signature</div>
+                                                <br>
+                                            </div>
+                                            <div class="row text-center header">
+                                                <div class="col-xs-12">I hereby acknowledge the receipt of said property
+                                                    / properties
+                                                    enumerated above from ______________ found out to be ______________
+                                                </div>
+                                                <div class="col-xs-12">&nbsp;</div>
+                                                <div class="col-xs-12">&nbsp;</div>
 
-                                                    <div class="text-left">
-                                                        <div class="container">
+                                                <div class="text-left">
+                                                    <div class="container">
                                                         <div class="col-xs-12">___________________</div>
                                                         <div class="col-xs-12">Property Inspector</div>
                                                         <div class="col-xs-12">&nbsp;</div>
@@ -87,21 +96,21 @@
                                                             <div class="col-xs-12"><b>TERESITA M. GACAYAN</b></div>
                                                             <div class="col-xs-12">OIC-City GSO</div>
                                                         </div>
-                                                        </div>
-
                                                     </div>
+
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
                         </div>
-                    </div>
-                </div>
             </td>
         </tr>
+        </tbody>
+    </table>
+
+    </div>
+    </div>
+    </div>
+    </td>
+    </tr>
     </table>
 
 </body>

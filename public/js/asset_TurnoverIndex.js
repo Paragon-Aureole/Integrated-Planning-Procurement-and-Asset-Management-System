@@ -49,7 +49,7 @@
 
     });
 
-    turnoverDataTable.on('click', 'tr button#ApproveTurnover', function () {
+    turnoverDataTable.on('click', 'tr button#turnoverButton', function () {
       console.log('You know I want you~☻');
       // console.log();
 
@@ -58,18 +58,21 @@
       // var rowData = turnoverDataTable.row($(this)).data();
       console.log(rowData);
 
-      approveParTurnover(rowData[0]);
-      // fillAssignedTurnoverModalForm(rowData);
+      // approveParTurnover(rowData[0]);
+      fillAssignedTurnoverModalForm(rowData);
 
 
     });
 
     //button click functions here
 
-    // $('#ApproveTurnover').on('click', function () {
-    //   console.log('baby hit me one more time~');
+    $('#ApproveTurnover').on('click', function () {
+      console.log('baby hit me one more time~');
+      console.log($('#turnover_id').val());
       
-    // });
+      approveParTurnover($('#turnover_id').val());
+      
+    });
 
     //datatable filling functions here
     function fillForTurnoverModalForm(rowData) {
@@ -114,52 +117,49 @@
 
     function fillAssignedTurnoverModalForm(rowData) {
       console.log(rowData);
-      if (rowData[1] == "Pending") {
+      if (rowData[4] == "Pending") {
         $('#PrintTurnover').hide();
         $('#ApproveTurnover').show();
-
-              getParTurnoverItems(rowData).then(function (assetParTurnoverItems) {
-                console.log(assetParTurnoverItems);
-                var tableRowDataContent = new Array;
-
-                // $('[name=turnoverParId]').val(assetParItems[1][0].asset_par_id);
-                // for (let index = 0; index < assetParItems[1].length; index++) {
-                //   const description = assetParItems[1][index].description;
-                //   if (assetParItems[1][index].itemStatus == 0) {
-                //     var status = "Active";
-                //     var checkbox = '<input type="hidden" name="toTurnover[' + assetParItems[1][index].id + ']" value="0"><input type="checkbox" name="toTurnover[' + assetParItems[1][index].id + ']" value="1">';
-                //   } else if (assetParItems[1][index].itemStatus == 1) {
-                //     var status = "Pending Turnover";
-                //     var checkbox = '<input type="checkbox" name="toTurnover[' + assetParItems[1][index].id + ']" value="1" readonly>'
-                //   } else {
-                //     var status = "Unserviceable";
-                //     var checkbox = '<input type="checkbox" name="toTurnover[' + assetParItems[1][index].id + ']" value="1" readonly>'
-                //   }
-                //   // console.log(element);
-                //   tableRowDataContent.push([assetParItems[0],
-                //     description,
-                //     status,
-                //     checkbox
-                //   ]);
-
-                //   console.log(tableRowDataContent);
-
-                //   modalTurnoverDataTable.clear();
-                //   for (let index = 0; index < tableRowDataContent.length; index++) {
-                //     modalTurnoverDataTable.row.add(tableRowDataContent[index]);
-                //   }
-                //   modalTurnoverDataTable.draw();
-              //   }
-
-              });
-            
       } else {
         $('#PrintTurnover').show();
         $('#ApproveTurnover').hide();
 
       }
 
-      $('#turnoverPar_id').val(rowData[0]);
+      getParTurnoverItems(rowData).then(function (assetParTurnoverItems) {
+        console.log(assetParTurnoverItems);
+        var tableRowDataContent = new Array;
+
+        $('#turnover_id').val(rowData[0]);
+        for (let index = 0; index < assetParTurnoverItems.length; index++) {
+          const description = assetParTurnoverItems[index].asset_par_item.description;
+          if (assetParTurnoverItems[index].asset_par_item.itemStatus == 0) {
+            var status = "Active";
+            // var checkbox = '<input type="hidden" name="toTurnover[' + assetParTurnoverItems[index].id + ']" value="0"><input type="checkbox" name="toTurnover[' + assetParTurnoverItems[index].id + ']" value="1">';
+          } else if (assetParTurnoverItems[index].asset_par_item.itemStatus == 1) {
+            var status = "Pending Turnover";
+            // var checkbox = '<input type="checkbox" name="toTurnover[' + assetParTurnoverItems[index].id + ']" value="1" readonly>';
+          } else {
+            var status = "Unserviceable";
+            // var checkbox = '<input type="checkbox" name="toTurnover[' + assetParTurnoverItems[index].id + ']" value="1" readonly>';
+          }
+          // console.log(element);
+          tableRowDataContent.push([description,
+            description,
+            status
+            // checkbox
+          ]);
+
+          console.log(tableRowDataContent);
+
+          modalApprovalTurnoverDatatable.clear();
+          for (let index = 0; index < tableRowDataContent.length; index++) {
+            modalApprovalTurnoverDatatable.row.add(tableRowDataContent[index]);
+          }
+          modalApprovalTurnoverDatatable.draw();
+        }
+
+      });
 
     }
 
@@ -236,7 +236,7 @@
           url: '/getCurrentTurnoverId',
           method: 'get',
           success: function (response) {
-            $('[name=currentTurnoverId]').val(parseInt(response.count) + 1 );
+            $('[name=currentTurnoverId]').val(parseInt(response.currentTurnoverId) + 1);
 
           }
         });
@@ -348,10 +348,10 @@
     }
 
     $('#PrintTurnover').on('click', function () {
-      var parId = $('#turnoverPar_id').val()
-      console.log(parId);
+      var turnoverId = $('#turnover_id').val()
+      console.log(turnoverId);
 
-      window.open('printTurnover/' + parId, '_blank');
+      window.open('printTurnover/' + turnoverId, '_blank');
 
 
     })

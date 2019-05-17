@@ -24,9 +24,15 @@ class assetPar extends Model
     {
         return $this->hasOne(editDistributedAsset::class);
     }
-
+    
     public function assetParItem()
     {
         return $this->hasMany(AssetParItem::class);
     }
+
+    public function AssetTurnover()
+    {
+        return $this->hasMany(AssetTurnover::class);
+    }
+
 }
