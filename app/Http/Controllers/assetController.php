@@ -34,7 +34,7 @@ class assetController extends Controller
         
         // $asset = purchaseRequest::where('created_inspection', 1)->get();
         $asset = asset::All();
-        $assetPar = assetPar::All();
+        // $assetPar = assetPar::All();
         $assetIcs = assetIcslip::All();
         // dd($asset);
         // $pr = PurchaseRequest::findorFail(1);
@@ -45,7 +45,7 @@ class assetController extends Controller
 
         // dd($ppmp_item);
         // dd($data);
-        return view('assets.index', compact('asset', 'assetPar', 'assetIcs'));
+        return view('assets.index', compact('asset', 'assetIcs'));
         // return $dummyData;
     }
 
@@ -92,7 +92,11 @@ class assetController extends Controller
     {
         $input = $request->all();
 
-        $ClassificationModalContent = asset::where('purchase_order_id', $input['po_id'])->get();
+        $ClassificationModalContent = asset::where('purchase_order_id', $input['po_id'])
+        ->where('isICS', 0)
+        ->where('isPAR', 0)
+        ->where('isEditable', 0)
+        ->get();
 
         return response()->json(['ClassificationModalContent'=>$ClassificationModalContent]);
     }
@@ -187,18 +191,24 @@ class assetController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        DisbursementVoucher::create([
-                'purchase_order_id' => $request->po_id,
-                'disbursementNo' => $request->voucherNo
-            ]);
-
+        // $input = $request->except(['_token','_method']);
+        // dd($input);
+        // DisbursementVoucher::create([
+        //     'purchase_order_id' => $request->po_id,
+        //     'disbursementNo' => $request->voucherNo
+        // ]);
+        
 
         // dd($request->all());
         $sortedArray = [];
         $PAR = [];
         $ICS = [];
-        $assetCount = asset::where('purchase_order_id', $request->po_id)->get()->count() - 1;
+        $assetCount = asset::where('purchase_order_id', $request->po_id)
+        ->where('isICS', 0)
+        ->where('isPAR', 0)
+        ->where('isEditable', 0)
+        ->get()->count() - 1;
+
         // dd($assetCount);
         $recordID = $request->get('id');
         $PARorICS = $request->get('PARorICS');
@@ -271,6 +281,7 @@ class assetController extends Controller
         assetIcslip::create([
             'asset_id' => $items[0],
             'quantity' => $items[1],
+            'description' => $items[2],
             'assignedTo' => $items[3],
             'position' => $items[4],
             'useful_life' => $items[5]
@@ -279,14 +290,14 @@ class assetController extends Controller
         // dd(print_r($items));
 
         // $bekkel = [];
-        for ($i=0; $i < count($items[2]); $i++) {
-            // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
+        // for ($i=0; $i < count($items[2]); $i++) {
+        //     // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
             
-            AssetIcslipItem::create([
-                    'asset_icslip_id' => $items[6],
-                    'description' => $items[2][$i]
-                ]);
-        }
+        //     AssetIcslipItem::create([
+        //             'asset_icslip_id' => $items[6],
+        //             'description' => $items[2][$i]
+        //         ]);
+        // }
 
         // dd($bekkel);
 
@@ -480,5 +491,17 @@ class assetController extends Controller
 
         $pdf = PDF::loadView('assets.turnover.printTurnover', compact('turnoverData'))->setPaper('Folio', 'portrait');
         return $pdf->stream('TURNOVER.pdf');
+    }
+
+    public function requestEdit(Request $request)
+    {
+        $input = $request->all();
+        // dd($input['itemId']);
+        
+        $editRequest = asset::where('id', $input['itemId'])->update([
+            'isRequested' => 1
+        ]);
+
+        return redirect()->back()->with('succes', 'Requested, Pls Wait for the GSO Supervisor to Approved your Request');
     }
 }

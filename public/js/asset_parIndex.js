@@ -1,6 +1,4 @@
   $(document).ready(function () {
-    getPARNo();
-    // getPARData();
     var table = $('#prDatatable').DataTable({
       responsive: true,
       "lengthMenu": [
@@ -15,40 +13,31 @@
       var selectedRow = table.row(tr).data();
       clearModalFields().done(function () {
         console.log(selectedRow);
-        $('[name=currentItemID]').val(selectedRow[0]);
-        $('[name=totalItemQuantity]').val(selectedRow[2]);
-        // console.log(selectedRow[4]);
-
-        // createModalForms(selectedRow[1]);
-        fillModalFields(selectedRow);
-
+        getAssetData(selectedRow[0]).then(function (itemData) {
+          fillModalFields(itemData.assetData[0]);
+        });
       });
 
       //$('[name=pr_id]').val(table.row(this).index()+1);
     });
 
-    function getPARNo() {
-      return new Promise(function (resolve) {
-        $.ajax({
-
-          type: 'GET',
-          url: '/getPARNo',
-          success: function (data) {
-            console.log(data);
-            resolve($('#currentPARNo').val(parseInt(data) + 1));
-          }
-        });
-      });
-    };
-
     //select item quantity calculates the total amount
     $('[name=selectedItemQty]').on('change', function () {
+      console.log('is changing PAR');
+      var qtyData = $('[name=selectedItemQty]').val()
+      // console.log(qtyData);
+      $('#descriptionPar').empty();
+      $('#qtyValPar').val('');
+      $('#qtyValPar').val(qtyData);
+      for (var i = 1; i <= qtyData; i++) {
+        $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
+      }
       setTotalAmount();
     });
 
     function setTotalAmount() {
       // console.log($('[name=selectedItemQty]').val());
-      
+
       var itemQty = parseInt($('[name=selectedItemQty]').val());
       var unitCost = parseFloat($('[name=selectedItemUnitCost]').val());
       var finalResult = calculateTotalAmount(itemQty, unitCost);
@@ -56,27 +45,36 @@
     }
 
     //save function
-    $('#itemAssignForm').on('submit', function (e) {
-      // console.log('clicking');
-      e.preventDefault();
+    $('[name=submitNewPar]').on('click', function () {
 
       var itemData = [];
 
       var itemQty = $('[name=selectedItemQty]').val();
-      var itemDescription = $('[name=selectedItemSpecifications]').val();
+      var itemDescription = $('textarea[name="selectedItemDescription[]"]').map(function () {
+        return $(this).val();
+      }).get();
       var itemEmployeeName = $('[name=selectedItemEmployeeName]').val();
       var itemEmployeePosition = $('[name=selectedItemEmployeePosition]').val();
-      var itemID = $('[name=currentItemID').val();
+      var itemID = $('[name=currentItemID]').val();
+      var currentPARNo = $('#currentPARNo').val();
 
       itemData[0] = itemID;
       itemData[1] = itemQty;
       itemData[2] = itemDescription;
       itemData[3] = itemEmployeeName;
       itemData[4] = itemEmployeePosition;
+      itemData[5] = currentPARNo;
 
-      // console.log(itemData);
+      console.log(itemData);
+      if (itemData[0] == "" || itemData[1] == "" || itemData[2] == "" || itemData[3] == "" || itemData[4] == "" || itemData[5] == "") {
+        console.log('fields missing');
+        alert('Some fields are incomplete, please recheck.');
+      } else {
+        console.log('fields complete');
+        savePARAssign(itemData);;
+      }
 
-      savePARAssign(itemData);
+      
 
     });
 
@@ -95,9 +93,12 @@
       return deferredObject.promise();
     }
 
-    function fillModalFields(selectedRow) {
-      $('[name=remainingItems]').val(selectedRow[3]);
-      getPARNo().then(function () {
+    function fillModalFields(itemData) {
+      getPARNo().then(function (parNo) {
+
+        $('[name=currentItemID]').val(itemData['id']);
+        $('[name=selectedItemPARNo]').val(parNo + 1);
+        // console.log(parNo);
 
         //setting Date to Now
         var now = new Date();
@@ -106,29 +107,32 @@
         var today = now.getFullYear() + "-" + (month) + "-" + (day);
         $('[name=selectedItemDateAssigned]').val(today);
 
-        fillQuantityDropdown($('[name=remainingItems]').val());
+        getClassifiedItemQtyNo(itemData['id']).then(function (qtyData) {
+          $('#qtyValPar').val('');
+          $('#qtyValPar').val(qtyData);
 
-        var unitCost = parseFloat(selectedRow[4]) / parseFloat(selectedRow[2]);
-        var currentPARNo = $('#currentPARNo').val();
-        $('[name=selectedItemName]').val(selectedRow[1]);
-        // console.log(parseFloat(selectedRow[1]));
-        // console.log(parseFloat(selectedRow[2]));
-        // $('#selectedItemName').val(selectedRow[0]);
-        // $('#selectedItemQty').val(selectedRow[1]);
+          $('#descriptionPar').empty();
+          for (var i = 1; i <= qtyData; i++) {
 
+            $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
+
+          }
+
+          fillQuantityDropdown(qtyData);
+          setTotalAmount();
+        })
+
+        var unitCost = parseFloat(itemData['amount']) / parseFloat(itemData['item_quantity']);
+        // $('[name=selectedItemPARNo]').val(parseInt(parNo) + 1);
+        $('[name=selectedItemName]').val(itemData['details']);
         $('[name=selectedItemUnitCost]').val(unitCost);
-        // $('#selectedItemEmployeeName').val();
-        // $('#selectedItemEmployeePosition').val();
-        $('[name=selectedItemPARNo]').val(currentPARNo);
-        // $('#selectedItemDateAssigned').val();
-        $('[name=selectedItemTotalAmount]').val(setTotalAmount());
-        // $('#selectedItemSpecifications').val();
+
       });
     }
 
     function fillQuantityDropdown(remainingItems) {
       console.log(remainingItems);
-      
+
       var dropdown = $('[name=selectedItemQty]');
       dropdown.empty();
       for (let index = remainingItems; index >= 1; index--) {
@@ -145,12 +149,7 @@
 
     function savePARAssign(formData) {
 
-      var minuend = parseInt($('[name=remainingItems]').val());
-      var subtrahend = parseInt(formData[1]);
-
-      $('[name=remainingItems]').val(minuend - subtrahend);
-
-      // console.log(minuend - subtrahend);
+      var formUrl = '/saveNewPar';
 
       return new Promise(function (resolve) {
         $.ajaxSetup({
@@ -163,20 +162,24 @@
             data: formData
           },
           type: 'POST',
-          url: 'http://ipams.test/DistributeAssetsPAR',
+          url: formUrl,
           success: function (data) {
             console.log(data);
 
-            getPARNo().then(function () {
-              var currentPARNo = $('#currentPARNo').val();
-              $('[name=selectedItemPARNo]').val(currentPARNo);
+            getPARNo().then(function (parNo) {
+              $('[name=selectedItemPARNo]').val(parNo + 1);
 
-              fillQuantityDropdown($('[name=remainingItems]').val());
-              setTotalAmount();
-              if ($('[name=remainingItems]').val() == 0) {
-                // console.log($('[name=currentItemID]').val());
-                setIsAssigned($('[name=currentItemID]').val());
-              }
+              getClassifiedItemQtyNo(formData[0]).then(function (qtyData) {
+                if (qtyData == 0) {
+                  alert('Asset Fully Assigned.');
+                  setIsAssigned(formData[0]);
+
+                } else {
+                  fillQuantityDropdown(qtyData);
+                  setTotalAmount();
+                  alert('PAR Asset Assigned.');
+                }
+              });
             });
 
             // resolve($('#currentPARNo').val(parseInt(data) + 1));
@@ -191,8 +194,7 @@
 
     }
 
-    function setIsAssigned(id)
-    {
+    function setIsAssigned(id) {
       return new Promise(function (resolve) {
         $.ajaxSetup({
           headers: {
@@ -204,12 +206,12 @@
             asset_id: id
           },
           type: 'POST',
-          url: 'http://ipams.test/setIsAssignedPAR',
+          url: '/setAssetIsAssigned',
           success: function (data) {
             console.log(data);
             window.location.reload();
 
-            // resolve($('#currentPARNo').val(parseInt(data) + 1));
+            // resolve($('#currentICSNo').val(parseInt(data) + 1));
           },
           error: function (data) {
             console.log(data);
@@ -219,5 +221,50 @@
         });
       });
     }
+
+    function getAssetData(asset_id) {
+      var values = {
+        asset_id: asset_id
+      }
+      return new Promise(function (resolve) {
+        $.ajax({
+          data: values,
+          type: 'GET',
+          url: '/getAssetData',
+          success: function (data) {
+            console.log(data);
+            resolve(data);
+          }
+        });
+      });
+    };
+
+    function getClassifiedItemQtyNo(id) {
+      return new Promise(function (resolve) {
+        $.ajax({
+
+          type: 'GET',
+          url: '/getClassifiedItemQtyNo/' + id,
+          success: function (data) {
+            console.log(data);
+            resolve(data);
+          }
+        });
+      });
+    };
+
+    function getPARNo() {
+      return new Promise(function (resolve) {
+        $.ajax({
+
+          type: 'GET',
+          url: '/getPARNo',
+          success: function (data) {
+            console.log(data);
+            resolve(parseInt(data));
+          }
+        });
+      });
+    };
 
   });

@@ -177,6 +177,7 @@ Route::get('getClassifiedItemQtyNo/{id}', 'assetController@getClassifiedItemQtyN
 Route::post('/saveNewPar', 'assetController@saveNewPar');
 Route::post('/saveNewIcs', 'assetController@saveNewIcs');
 Route::post('/setAssetIsAssigned', 'assetController@setAssetIsAssigned');
+Route::get('/requestEdit', 'assetController@requestEdit')->name('asset.requestEdit');
 
 //asset printing
 Route::get('/printPar/{id}', 'assetController@printPar');

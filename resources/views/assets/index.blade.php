@@ -9,18 +9,6 @@
 @endsection
 
 @section('content')
-{{-- <form action="{{route('assets.assetClassification')}}" method="get">
-{{csrf_field()}}
-
-<div class="container">
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Search for Purchase Order Number" name="purchase_order_id">
-    <div class="input-group-append">
-      <input class="btn btn-outline-secondary" type="submit" />
-    </div>
-  </div>
-</div>
-</form> --}}
 @can('Asset Management', 'Supervisor')
 <div class="container-fluid">
     <div class="card">
@@ -43,8 +31,6 @@
                 <tbody>
                   @foreach ($asset->where('isEditable', 0)->groupBy('purchase_order_id') as $record)
                   <tr>
-                    {{-- <td>00000001</td>
-                        <td>Office of the City Mayor</td> --}}
                     <td>{{$record->first()->purchase_order_id}}</td>
                     <td>{{$record->first()->purchaseOrder->purchaseRequest->office->office_name}}</td>
                     <td>
@@ -64,7 +50,7 @@
   
           <!-- table -->
           <div class="col-md-6">
-            <h6 class="card-title">Classified Items</h6>
+            <h6 class="card-title">Classified ICS Items</h6>
             <div class="table-responsive">
               <table id="classifiedDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                 <thead class="thead-dark">
@@ -73,21 +59,18 @@
                     <th>Item Name</th>
                     <th>Office</th>
                     <th>Classification</th>
-                    <th>Action</th>
+                    <th data-priority = '5'>Action</th>
                   </tr>
                 </thead>
                 <tbody>
   
                   @foreach ($asset->where('isAssigned', 0)->where('isEditable', 1) as $key =>$record)
+                  @if ($record->isICS == 1)
                   <tr>
                     <td>{{$record->id}}</td>
                     <td>{{$record->details}}</td>
-                    <td>{{$record->purchaseOrder->purchaseRequest->office->office_name}}</td>
-                    @if ($record->isICS == "1")
+                    <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>ICS</td>
-                    @else
-                    <td>PAR</td>
-                    @endif
                     <td>
                       <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assetDistribution"
                         id="distributeItems">
@@ -95,24 +78,31 @@
                       </button>
                       @can('Asset Management')
                         @if ($record->isRequested == 0)
-                          <button class="btn btn-sm btn-danger">
+                          <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#editRequestIcs" id="requestBtn">
                             Request to Edit
                           </button>
-                        @else
+                        @elseif ($record->isRequested == 1)
                             <button class="btn btn-sm btn-warning" disabled>
                               Pending
                             </button>
+                        @elseif ($record->isRequested == 1 && $record->isEditable == 1)
+                        <button class="btn btn-sm btn-warning" disabled>
+                            Approved
+                          </button>
                         @endif
                       @endcan
                       @can('Supervisor')
                         @if ($record->isRequested == 0)
                         @else
-                            <button class="btn btn-sm btn-info">
-                              Accept to Edit
-                            </button>
+                        <a href="{{route('rfq.createone', $record->id)}}" class="btn btn-sm btn-info" data-toggle="confirmation" data-content="Approved Item {{$record->id}} to Edit?">
+                            Accept to Edit
+                          </a>
                         @endif
                       @endcan
                   </tr>
+                  @else
+                      
+                  @endif
                   @endforeach
   
                 </tbody>
@@ -153,33 +143,6 @@
                 </tr>
               </thead>
               <tbody>
-                
-                @foreach ($assetPar as $record)
-                  
-                <td>{{$record->id}}</td>
-                <td>{{$record->assignedTo}}</td>
-                <td>{{$record->position}}</td>
-                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
-                <td>{{$record->asset->details}}</td>
-                <td>{{$record->quantity}}</td>
-                <td>{{$record->asset->amount}}</td>
-                <td>{{$record->asset->asset_type->type_name}}</td>
-                <td>PAR</td>
-                <td>
-                  <a href="{{'/printPar/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
-                    <i class="fas fa-print"></i>
-                  </a>
-                  @can('full control')
-                  <button class="btn btn-sm btn-danger">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  @endcan
-                </td>
-              </tr>
-              @endforeach
-              
-            
-
                 @foreach ($assetIcs as $record)
                 <td>{{$record->id}}</td>
                 <td>{{$record->assignedTo}}</td>
@@ -268,84 +231,6 @@
         <input type="hidden" name="currentItemID">
       </div>
       <div class="modal-body">
-        {{-- PAR INPUTS --}}
-        <div class="container-fluid" id="parInputs" style="display:none">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">Item</span>
-                </div>
-                {{-- SELECTED ITEM INPUT HERE  --}}
-                <input type="text" name="selectedItemName" class="form-control" aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-sm" readonly>
-              </div>
-              <input type="hidden" id="qtyValPar">
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
-                </div>
-                {{-- QUANTITY SELECITION HERE --}}
-                <select name="selectedItemQty" id="selectedItemQtyPar" class="custom-select">
-                  <option>None</option>
-                </select>
-              </div>
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">Unit Cost</span>
-                </div>
-                {{-- UNIT COST INPUT HERE  --}}
-                <input type="text" name="selectedItemUnitCost" class="form-control" aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-sm" readonly>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">PAR No.</span>
-                </div>
-                {{-- PAR NUMBER INPUT HERE  --}}
-                <input type="text" name="selectedItemPARNo" class="form-control" aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-sm" readonly>
-              </div>
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">Date Assigned</span>
-                </div>
-                {{-- ASSIGNED DATE HERE  --}}
-                <input type="date" name="selectedItemDateAssigned" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-              </div>
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">Total Amount</span>
-                </div>
-                {{-- TOTAL AMOUNT INPUT HERE  --}}
-                <input type="text" name="selectedItemTotalAmount" class="form-control" aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-sm" readonly>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">Signatory</span>
-                </div>
-                {{-- NAME AND POSITION OF EMPLOYEE INPUT HERE  --}}
-                <input type="text" name="selectedItemEmployeeName" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Name">
-                <input type="text" name="selectedItemEmployeePosition" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Position">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12" id="descriptionPar">
-
-            </div>
-          </div>
-        </div>
 
         {{-- ICS INPUTS --}}
         <div class="container-fluid" id="icsInputs" style="display:none">
@@ -385,7 +270,7 @@
                 </div>
                 {{-- ESTIMATED USEFUL LIFE DATE HERE  --}}
                 <input type="text" name="selectedItemEstimatedUsefulLife" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm required">
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm required" required>
               </div>
             </div>
           </div>
@@ -397,15 +282,17 @@
                 </div>
                 {{-- NAME AND POSITION OF EMPLOYEE INPUT HERE  --}}
                 <input type="text" name="selectedItemEmployeeName" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Name">
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Name" required>
                 <input type="text" name="selectedItemEmployeePosition" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Position">
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Position" required>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12" id="descriptionIcs">
-              
+            <div class="col-md-12" id="selectedItemDescription">
+              <label>Description:</label><br>
+              <textarea name="selectedItemDescription" cols="30" rows="10"
+                class="form-control form-control-sm"></textarea>
             </div>
           </div>
         </div>
@@ -418,6 +305,60 @@
     </div>
   </div>
 </div>
+</div>
+
+{{-- REQUEST TO EDIT MODAL --}}
+<div class="modal" id="editRequestIcs">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4>Item Edit Request</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+      <form action="{{route('asset.requestEdit')}}" method="GET" class="needs-validation" novalidate>
+          {{ csrf_field() }}
+          <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Item Id:</label>
+                    <input name="itemId" id="itemId" class="form-control" type="text" readonly>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Item name:</label>
+                <input id="itemName" class="form-control" type="text" disabled>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Item Classification:</label>
+                <input id="classifiedIcs" class="form-control" type="text" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Reason:</label>
+                  <textarea name="reason" class="form-control" id="reasob" cols="30" rows="5"></textarea>
+                </div>
+              </div>
+          </div>
+          <div class="=col-md-12">
+            <button class="btn btn-danger container-fluid" type="submit">Submit Request</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection
 
