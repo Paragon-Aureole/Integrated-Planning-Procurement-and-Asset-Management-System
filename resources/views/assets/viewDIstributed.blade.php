@@ -4,7 +4,7 @@
 <ol class="breadcrumb p-2">
   <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
   <li class="breadcrumb-item active"><a href="{{route('assets.index')}}">Assets</a></li>
-  <li class="breadcrumb-item active" aria-current="page">CLassification and Distribution</li>
+  <li class="breadcrumb-item active" aria-current="page">Distributed Assets</li>
 </ol>
 @endsection
 
@@ -21,7 +21,7 @@
           <div class="table-responsive">
             <table id="distributedItemsDatatable"
               class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Signatory Name</th>

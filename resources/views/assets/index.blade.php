@@ -21,7 +21,7 @@
             </h6>
             <div class="table-responsive">
               <table id="availableDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                <thead class="thead-dark">
+                <thead class="thead-light">
                   <tr>
                     <th>PO Number</th>
                     <th>Office</th>
@@ -53,7 +53,7 @@
             <h6 class="card-title">Classified ICS Items</h6>
             <div class="table-responsive">
               <table id="classifiedDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                <thead class="thead-dark">
+                <thead class="thead-light">
                   <tr>
                     <th>ID</th>
                     <th>Item Name</th>
@@ -128,7 +128,7 @@
           <div class="table-responsive">
             <table id="distributedItemsDatatable"
               class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Signatory Name</th>
@@ -198,7 +198,7 @@
           <hr>
           <input type="hidden" name="po_id">
           <table id="itemClassification" class="table table-bordered table-hover table-sm display nowrap w-100">
-            <thead class="thead-dark">
+            <thead class="thead-light">
               <tr>
                 <th>Item Name</th>
                 <th>Amount</th>

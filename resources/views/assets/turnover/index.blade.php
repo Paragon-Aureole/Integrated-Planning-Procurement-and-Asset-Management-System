@@ -69,7 +69,7 @@
                         Available Distributed Assets
                     </h6>
                     <table id="parDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Assigned To</th>
@@ -119,7 +119,7 @@
                     </h6>
                     <table id="datatableTurnover"
                         class="table table-bordered table-hover table-sm display nowrap w-100">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Assigned To</th>
@@ -202,7 +202,7 @@
 
                         <table id="modalTurnoverDatatable"
                             class="table table-bordered table-hover table-sm display nowrap w-100">
-                            <thead class="thead-dark">
+                            <thead class="thead-light">
                                 <th>Item Name</th>
                                 <th>Description</th>
                                 <th>Status</th>
@@ -262,7 +262,7 @@
 
                     <table id="modalApprovalTurnoverDatatable"
                         class="table table-bordered table-hover table-sm display nowrap w-100">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                             <th>Item Name</th>
                             <th>Description</th>
                             <th>Status</th>

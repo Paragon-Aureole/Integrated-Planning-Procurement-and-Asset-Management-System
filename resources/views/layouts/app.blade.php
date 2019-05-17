@@ -11,9 +11,7 @@
     <title>{{ config('app.name', 'IPPAMS') }}</title>
 
     <!-- Styles -->
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.4/awesomplete.css" /> --}}
     <link rel="stylesheet" href="{{asset('css/bootstrap4.min.css')}}">
-    {{-- <link rel="stylesheet" href="{{asset('css/app.css')}}"> --}}
     <link rel="stylesheet" type="text/css" href="{{asset('css/all.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/datatables.css')}}">
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
@@ -48,6 +46,10 @@
   
   <script type="text/javascript">
     $(document).ready(function() {
+
+        $("form").attr("autocomplete", "off");
+
+        
         $('#datatable').DataTable({
             responsive: true,
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
@@ -57,6 +59,8 @@
         rootSelector: '[data-toggle=confirmation]',
         // other options
         });
+
+        
         
     } );
   </script>

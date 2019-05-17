@@ -30,7 +30,7 @@
         <div class="row">
           <div class="col-md-6">
             <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Item</th>
@@ -57,7 +57,7 @@
           </div>
           <div class="col-md-6">
             <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ICS ID</th>
                   <th>Received By</th>
@@ -193,7 +193,7 @@
         <div class="row">
           <div class="col-md-12">
             <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>Item name</th>
                   <th>Quantity</th>

@@ -18,7 +18,7 @@
    	  <h6 class="card-title">Registered Purchase Request</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               <th data-priority="1">PR Code</th>
               <th data-priority="3">Purpose</th>

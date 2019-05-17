@@ -1,5 +1,5 @@
 <table class="table table-bordered table-hover table-sm display nowrap w-100">
-  <thead class="thead-dark text-center">
+  <thead class="thead-light text-center">
     <tr>
       <th rowspan="2">Code</th>
       <th class="w-25" rowspan="2">General Description</th>
@@ -49,7 +49,7 @@
       </tr>
   @endforelse
   </tbody>
-  <tfoot class="thead-dark">
+  <tfoot class="thead-light">
     <tr>
       <th colspan="5">Total Estimated Budget</th>
       <th class="text-right">&#8369; {{number_format($total->ppmp_est_budget, 2)}}</th>

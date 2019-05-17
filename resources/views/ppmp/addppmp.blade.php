@@ -83,7 +83,7 @@
 
     $('input[name="ppmp_year"]').inputFilter(function(value) {
       var test_val = /^\d*$/.test(value);
-      console.log(test_val);
+      // console.log(test_val);
 
       if(test_val == false){
         $('input[name="ppmp_year"]').addClass('is-invalid');

@@ -22,7 +22,7 @@
                   Available PAR
               </h6>
             <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Item Name</th>
@@ -53,7 +53,7 @@
                   Distributed Par
               </h6>
             <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Signatory Name</th>

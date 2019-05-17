@@ -26,7 +26,7 @@
             <div class="card-header pt-2 pb-2">List of PAR</div>
             <div class="card-body">
                 <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                    <thead class="thead-dark">
+                    <thead class="thead-light">
                             <th>ID</th>
                             <th>Details</th>
                             <th>Office</th>
