@@ -34,7 +34,7 @@ class assetController extends Controller
         
         // $asset = purchaseRequest::where('created_inspection', 1)->get();
         $asset = asset::All();
-        $assetPar = assetPar::All();
+        // $assetPar = assetPar::All();
         $assetIcs = assetIcslip::All();
         // dd($asset);
         // $pr = PurchaseRequest::findorFail(1);
@@ -45,8 +45,47 @@ class assetController extends Controller
 
         // dd($ppmp_item);
         // dd($data);
-        return view('assets.index', compact('asset', 'assetPar', 'assetIcs'));
+        return view('assets.index', compact('asset', 'assetIcs'));
         // return $dummyData;
+    }
+
+    /**
+     * View All Distributed Assets.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function viewAll()
+    {
+        $user = Auth::user();
+        
+        if ($user->can('Asset Management', 'Supervisor')) {
+
+            $asset = asset::All();
+            $assetPar = assetPar::All();
+            $assetIcs = assetIcslip::All();
+            
+        }else{
+            $asset = asset::whereHas('purchaseOrder', function ($query){
+
+                $query->where('office_id',  Auth::user()->office_id );
+
+            })->get();
+
+            $assetPar = assetPar::whereHas('asset.purchaseOrder', function ($query){
+
+                $query->where('office_id',  Auth::user()->office_id );
+
+            })->get();
+
+            $assetIcs = assetIcslip::whereHas('asset.purchaseOrder', function ($query){
+
+                $query->where('office_id',  Auth::user()->office_id );
+
+            })->get();
+        }
+        
+
+        return view('assets.viewDistributed', compact('asset', 'assetPar', 'assetIcs'));
     }
 
     public function getClassificationModalData(Request $request)
@@ -242,6 +281,7 @@ class assetController extends Controller
         assetIcslip::create([
             'asset_id' => $items[0],
             'quantity' => $items[1],
+            'description' => $items[2],
             'assignedTo' => $items[3],
             'position' => $items[4],
             'useful_life' => $items[5]
@@ -250,14 +290,14 @@ class assetController extends Controller
         // dd(print_r($items));
 
         // $bekkel = [];
-        for ($i=0; $i < count($items[2]); $i++) {
-            // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
+        // for ($i=0; $i < count($items[2]); $i++) {
+        //     // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
             
-            AssetIcslipItem::create([
-                    'asset_icslip_id' => $items[6],
-                    'description' => $items[2][$i]
-                ]);
-        }
+        //     AssetIcslipItem::create([
+        //             'asset_icslip_id' => $items[6],
+        //             'description' => $items[2][$i]
+        //         ]);
+        // }
 
         // dd($bekkel);
 

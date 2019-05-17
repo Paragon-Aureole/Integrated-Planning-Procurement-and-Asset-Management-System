@@ -93,11 +93,10 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="irDropdownMenuLink">
           <li>
-            @if (Auth::user()->hasRole('Department'))
-            <a class="dropdown-item" href="/assets">Procured Assets</a>
-            @else
+            <a class="dropdown-item" href="{{route('assets.distributed')}}">Distributed Assets</a>
+            @hasrole('General Services|Admin')
             <a class="dropdown-item" href="/assets">Asset Classification</a>
-            @endif
+            @endhasrole
         </li>
           @can('Asset Management', 'Supervisor')
           <li><a class="dropdown-item" href="/parDistribution">Asset Distribution (PAR)</a></li>
