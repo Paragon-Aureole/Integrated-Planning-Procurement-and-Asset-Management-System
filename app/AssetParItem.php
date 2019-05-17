@@ -18,9 +18,9 @@ class AssetParItem extends Model
         return $this->belongsTo(assetPar::class);
     }
 
-    public function assetTurnover()
+    public function assetTurnoverItem()
     {
-        return $this->hasMany(assetTurnover::class);
+        return $this->hasMany(AssetTurnoverItem::class);
     }
 
 }

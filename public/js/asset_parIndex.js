@@ -30,7 +30,7 @@
       $('#qtyValPar').val('');
       $('#qtyValPar').val(qtyData);
       for (var i = 1; i <= qtyData; i++) {
-        $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
+        $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea required name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
       }
       setTotalAmount();
     });

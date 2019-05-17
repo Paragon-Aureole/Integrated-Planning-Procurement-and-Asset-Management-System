@@ -56,7 +56,7 @@
                         <td>{{$parData->quantity}}</td>
                         <td>{{$parData->asset->measurementUnit->unit_description}}</td>
                         {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td><textarea cols="30" rows="{{($parData->assetParItem->count() * 2) + 3}}" style="border:none">@foreach ($parData->assetParItem as $record){{"&#13;&#10;" . $record->description . "&#13;&#10;**********"}}@endforeach</textarea></td>
+                        <td><textarea cols="30" rows="{{($parData->assetParItem->count() * 7) + 3}}" style="border:none">@foreach ($parData->assetParItem as $record){{"&#13;&#10;" . $record->description . "&#13;&#10;**********"}}@endforeach</textarea></td>
                         {{--  <td>Sample Description</td>  --}}
                         <td></td>
                         <td>{{$parData->created_at}}</td>
@@ -98,8 +98,9 @@
                                     <div class="col-xs-12" style="font-size:15px;">Signature over Printed Name of End
                                         User</div><br>
                                     <div class="col-xs-12">{{$parData->position}}</div>
-                                    <div class="col-xs-12" style="font-size:15px;">Position/Office</div><br>
-                                    <div class="col-xs-12" style="font-size:15px;">Date</div>
+                                    <div class="col-xs-12" style="font-size:15px;">Position/Office</div><br><br>
+                                    <div class="col-xs-12" style="font-size:15px;">@php echo date("Y-m-d H:i:s");
+                                    @endphp</div>
                                 </div>
                             </div>
                         </td>
@@ -118,7 +119,8 @@
                                         <strong><u>OIC-CITY-GSO</u></strong>
                                     </div>
                                     <div class="col-xs-12" style="font-size:15px;">Position/Office</div><br>
-                                    <div class="col-xs-12" style="font-size:15px;">Date</div>
+                                    <div class="col-xs-12" style="font-size:15px;">@php echo date("Y-m-d H:i:s");
+                                    @endphp</div>
                                 </div>
                             </div>
                         </td>

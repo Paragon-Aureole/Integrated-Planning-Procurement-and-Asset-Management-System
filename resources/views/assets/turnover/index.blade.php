@@ -15,54 +15,6 @@
         <div class="card-header pt-2 pb-2">List of PAR Item</div>
         <div class="card-body">
 
-            @can('full control')
-            <h6 class="card-title">
-                Filter Items
-            </h6>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group col-md-12">
-                        <label for="filterOption" class="small">Search For:</label>
-                        <select name="filterOption" id="filterOption" class="form-control form-control-sm">
-                            <option value="0">-Select option for Searching-</option>
-                            <option value="1">PAR Number</option>
-                            <option value="2">Office and Signatory Name</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div id="showParInputs" style="display:none;">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group container-fluid">
-                            <input type="text" id="par_id" class="form-control">
-                            <div class="input-group-prepend">
-                                <button class="input-group-text" id="searchPar">Search</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="showOfficeInputs" style="display:none;">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="input-group container-fluid">
-                            <select name="office_id" id="office_id" class="form-control">
-                                @foreach ($office as $officeItem)
-                                <option value="{{$officeItem->id}}">{{$officeItem->office_name}}</option>
-                                @endforeach
-                            </select>
-                            <input type="text" id="signatory_name" placeholder="Signatory Name" class="form-control">
-                            <div class="input-group-prepend">
-                                <button id="searchName" class="input-group-text">Search Office and Signatory</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr style="height:5px; background-color:grey">
-            @endcan
-
             <div class="row">
                 <div class="col-md-6">
                     <h6 class="card-title">
@@ -130,38 +82,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @if (!$approvalAssets->isEmpty()) --}}
+                            {{--  {{$approvalAssets->first()->assetPar}}  --}}
                             @foreach ($approvalAssets as $record)
                             <tr>
-                                <td>{{$record->assetParItem->id}}</td>
-                                <td>{{$record->assetParItem->assetPar->assignedTo}}</td>
-                                <td>{{$record->assetParItem->assetPar->asset->details}}</td>
-                                <td>{{$record->assetParItem->assetPar->asset->purchaseOrder->purchaseRequest->office->office_code}}
-                                </td>
+                                <td>{{$record->id}}</td>
+                                <td>{{$record->assetPar->assignedTo}}</td>
+                                <td>{{$record->assetPar->asset->details}}</td>
+                                <td>{{$record->assetPar->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
+                                @if ($record->isApproved == 0)
+                                <td>Pending</td>     
+                                @else
+                                <td>Approved</td>
+                                @endif
                                 <td>
-                                    @if ($record->isApproved == 0)
-                                    Pending
-                                    @else
-                                    Approved
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{'/printTurnover/' . $record->assetParItem->id}}" target="_blank"
-                                        class="btn btn-sm btn-success">
-                                        <i class="fas fa-print"></i>
-                                    </a>
-                                    @if ($record->isApproved == 0)
-                                    @can('Supervisor', 'Asset Management')
-                                    <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
-                                        class="btn btn-primary btn-xs" data-target="#turnedOverModal">Approve</button>
-                                        @endcan
-                                        @endif
-                                </td>
-                            </tr>                                
-                            {{-- {{$record->assetParItem->assetPar}} --}}
+                                        <button type="button" id="turnoverButton" name="btn_assignItem"
+                                            class="btn btn-warning btn-xs" data-toggle="modal"
+                                            data-target="#turnedOverModal">View Items</button>
+                                    </td>
+                            </tr>
                             @endforeach
+                            
 
-                            {{-- @endif --}}
                             {{--  <tr>
                                     <td>Sample Signatory</td>
                                     <td>Sample Position</td>
@@ -172,7 +113,7 @@
                                             class="btn btn-warning btn-xs" data-toggle="modal"
                                             data-target="#turnedOverModal">View Items</button>
                                     </td>
-                                </tr>  --}}
+                            </tr>  --}}
 
                         </tbody>
                     </table>
@@ -203,6 +144,7 @@
                 </div>
                 <form autocomplete="off" id="turnoverDataTableForm" action="{{route('AssetTurnover.store')}}" method="post">
                     <input type="hidden" name="turnoverParId">
+                    <input type="hidden" name="currentTurnoverId">
                     {{csrf_field()}}
                     <div class="form-group">
                         <hr style="height:5px; background-color:grey;">
@@ -261,8 +203,8 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="form-group">
-                    <label>PAR Number:</label>
-                    <input id="turnoverPar_id" class="form-control" type="text" disabled>
+                    <label>Turnover Number:</label>
+                    <input id="turnover_id" class="form-control" type="text" disabled>
                 </div>
                 <div class="form-group">
                     <hr style="height:5px; background-color:grey;">
@@ -275,12 +217,12 @@
                             <th>Status</th>
                         </thead>
                         <tbody>
-
+                            
                         </tbody>
                     </table>
                     <div class="col-md-12">&nbsp</div>
-                    {{-- <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
-                        class="btn btn-primary btn-xs float-right">Approve Turned Over Items</button> --}}
+                    <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
+                        class="btn btn-primary btn-xs float-right">Approve Turned Over Items</button>
                     <button type="button" id="PrintTurnover" name="btn_PrintTurnover"
                         class="btn btn-success btn-xs float-right">Print Turned Over Items</button>
                     {{-- <a href="/printIcs/ <script>document.write = 1</script>" target="_blank" class="btn btn-success btn-xs float-right">Print Turned Over Items</a> --}}
