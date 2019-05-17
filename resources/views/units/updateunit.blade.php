@@ -16,7 +16,7 @@
    <div class="row">
    	<div class="col-md-4">
    	<h6 class="card-title">Add Unit</h6>
-	  <form action="{{route('update.units', $unit_data->id)}}" method="post" id="needs-validation" novalidate>
+	  <form autocomplete="off" action="{{route('update.units', $unit_data->id)}}" method="post" id="needs-validation" novalidate>
 	  	{{csrf_field()}}
       {{method_field('put')}}
 	  	<div class="row">

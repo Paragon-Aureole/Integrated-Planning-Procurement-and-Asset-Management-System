@@ -10,7 +10,7 @@
 
 @section('content')
 
-{{--  <form action="{{route('assets.show')}}" method="get">
+{{--  <form autocomplete="off" action="{{route('assets.show')}}" method="get">
     {{csrf_field()}}
     <label>Search:</label>
     <input id="searchPO" type="text"></input>

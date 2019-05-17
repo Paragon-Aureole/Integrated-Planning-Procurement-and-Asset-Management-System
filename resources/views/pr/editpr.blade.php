@@ -19,7 +19,7 @@
   		Edit Purchase Request
   	  </h6>
       
-      <form action="{{route('pr.update', $pr->id)}}" method="post" id="needs-validation">
+      <form autocomplete="off" action="{{route('pr.update', $pr->id)}}" method="post" id="needs-validation">
           {{csrf_field()}}
           {{ method_field('put') }}
           <div class="row">

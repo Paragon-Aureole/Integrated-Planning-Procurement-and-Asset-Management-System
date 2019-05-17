@@ -44,7 +44,7 @@
 	  			</div>
 	  		</div>
 	  		<div class="col-md-7">
-			  <form action="{{route('add.pritm', $pr->id)}}" method="POST" class="needs-validation" novalidate>
+			  <form autocomplete="off" action="{{route('add.pritm', $pr->id)}}" method="POST" class="needs-validation" novalidate>
 			  	{{csrf_field()}}
 			  	<div class="row">
 							<div class="col-md-6 form-group">

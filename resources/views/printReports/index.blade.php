@@ -31,7 +31,7 @@
         <hr style="height:5px; background-color:grey">
       <div class="table-responsive">
         <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               <th>Signatory Name</th>
               <th>Position</th>
@@ -82,7 +82,7 @@
         <hr style="height:5px; background-color:grey">
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               <th>Acquisition Date</th>
               <th>Acquisition Cost</th>
@@ -130,7 +130,7 @@
 
                     <table id="modalTurnoverDatatable"
                         class="table table-bordered table-hover table-sm display nowrap w-100">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                             <th>Item Name</th>
                             <th>Description</th>
                             <th>Status</th>

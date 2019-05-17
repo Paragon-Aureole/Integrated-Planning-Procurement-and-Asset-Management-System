@@ -18,7 +18,7 @@
         <div class="col">
             <div class="table-responsive">
                 <table id="activityLogs" class="table table-bordered table-hover table-sm display nowrap w-100">
-                    <thead class="thead-dark">
+                    <thead class="thead-light">
                         <tr>
                             <th data-priority="1">Date/Time</th>
                             <th data-priority="4">Title</th>

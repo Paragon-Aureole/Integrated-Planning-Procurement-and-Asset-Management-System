@@ -17,7 +17,7 @@
 		  	  <h6 class="card-title">
 		  	  	<i class="fas fa-user-plus"></i> Register User
 		  	  </h6>
-				<form method="POST" id="myForm" action="{{ route('register') }}" class="needs-validation" novalidate>
+				<form autocomplete="off" method="POST" id="myForm" action="{{ route('register') }}" class="needs-validation" novalidate>
 			  	{{csrf_field()}}
 				<div class="row">
 					<div class="col-md-12 form-group">
@@ -158,7 +158,7 @@
 									
 								<!-- Modal body -->
 								<div class="modal-body">
-										<form name="deactivation_reason">
+										<form autocomplete="off" name="deactivation_reason">
 										 {{ csrf_field() }}
 										 {{method_field('GET')}}
 											<div class="form-row">

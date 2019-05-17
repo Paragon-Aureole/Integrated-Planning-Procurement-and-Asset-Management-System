@@ -18,7 +18,7 @@
    	  <h6 class="card-title">
 		Add Sole Distributor
 	  </h6>
-	  <form action="{{route('update.dist', $edit_dist->id)}}" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
+	  <form autocomplete="off" action="{{route('update.dist', $edit_dist->id)}}" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
 	  	{{csrf_field()}}
       {{ method_field('put') }}
       <input type="hidden" name="cert_old" value="{{$edit_dist->distributor_certificate}}">

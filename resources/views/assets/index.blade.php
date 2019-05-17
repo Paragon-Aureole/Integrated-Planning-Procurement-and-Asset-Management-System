@@ -21,7 +21,7 @@
             </h6>
             <div class="table-responsive">
               <table id="availableDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                <thead class="thead-dark">
+                <thead class="thead-light">
                   <tr>
                     <th>PO Number</th>
                     <th>Office</th>
@@ -53,7 +53,7 @@
             <h6 class="card-title">Classified ICS Items</h6>
             <div class="table-responsive">
               <table id="classifiedDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                <thead class="thead-dark">
+                <thead class="thead-light">
                   <tr>
                     <th>ID</th>
                     <th>Item Name</th>
@@ -64,7 +64,7 @@
                 </thead>
                 <tbody>
   
-                  @foreach ($asset->where('isAssigned', 0) as $key =>$record)
+                  @foreach ($asset as $key =>$record)
                   @if ($record->isICS == 1)
                   <tr>
                     <td>{{$record->id}}</td>
@@ -72,12 +72,19 @@
                     <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>ICS</td>
                     <td>
-                      <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assetDistribution"
-                        id="distributeItems">
-                        <i class="fas fa-plus"></i>
+                      <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#printIcs" id="printBtnIcs">
+                        <i class="fas fa-th-list"></i>
                       </button>
+                      @if ($record->item_stock == 0)
+                      @elseif ($record->item_stock != $record->item_quantity || $record->item_stock == $record->item_quantity)
+                          <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assetDistribution"
+                        id="distributeItems">
+                              <i class="fas fa-plus"></i>
+                          </button>
+                      @else
+                      @endif
                       @can('Asset Management')
-                        @if ($record->isRequested == 0)
+                        @if ($record->isRequested == 0 && $record->isAssigned == 0)
                           <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#editRequestIcs" id="requestBtn">
                             Request to Edit
                           </button>
@@ -118,64 +125,43 @@
 
 <div class="col-md-12">&nbsp</div>
 
-{{-- TABLE FOR DISTRIBUTED ASSETS --}}
-<div class="container-fluid">
-  <div class="card">
-    <div class="card-header pt-2 pb-2">Distributed Assets</div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-12">
-          <h6 class="card-title">Distributed Items</h6>
-          <div class="table-responsive">
-            <table id="distributedItemsDatatable"
-              class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+{{-- MODAL FOR ITEM CLASSIFICATION --}}
+<div class="modal fade" id="printIcs">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5>Print Distributed ICS</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="po_id">
+            <table id="itemIcs" class="table table-bordered table-hover table-sm display nowrap w-100">
+              <thead class="thead-light">
                 <tr>
-                  <th>ID</th>
                   <th>Signatory Name</th>
+                  <th>Description</th>
                   <th>Position</th>
-                  <th>Office</th>
-                  <th>Item Name</th>
-                  <th>Quantity</th>
-                  <th>Amount</th>
-                  <th>Classification</th>
-                  <th>Asset Type</th>
+                  <th>Quantity  </th>
+                  <th>Useful Life</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($assetIcs as $record)
-                <td>{{$record->id}}</td>
-                <td>{{$record->assignedTo}}</td>
-                <td>{{$record->position}}</td>
-                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
-                <td>{{$record->asset->details}}</td>
-                <td>{{$record->quantity}}</td>
-                <td>{{$record->asset->amount}}</td>
-                <td>{{$record->asset->asset_type->type_name}}</td>
-                <td>ICS</td>
-                <td>
-                    <a href="{{'/printIcs/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
-                      <i class="fas fa-print"></i>
-                    </a>
-                  </td>
-                </tr>
-                @endforeach
+  
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
+
 
 {{-- MODAL FOR ITEM CLASSIFICATION --}}
 <div class="modal fade" id="itemsProcured">
   <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <!-- Modal Header -->
-      <form action="{{route('assets.store')}}" id="assetClassificationForm" method="post">
+      <form action="{{route('assets.store')}}" id="assetClassificationForm" autocomplete="off" method="post" class="needs-validation" novalidate>
         {{csrf_field()}}
         <div class="modal-header">
           <h5>Classify Items Procured</h5>
@@ -194,7 +180,7 @@
           <hr>
           <input type="hidden" name="po_id">
           <table id="itemClassification" class="table table-bordered table-hover table-sm display nowrap w-100">
-            <thead class="thead-dark">
+            <thead class="thead-light">
               <tr>
                 <th>Item Name</th>
                 <th>Amount</th>
@@ -257,8 +243,7 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">ICS No.</span>
                 </div>
                 {{-- ICS NUMBER INPUT HERE  --}}
-                <input type="text" name="selectedItemICSNo" class="form-control" aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-sm" readonly>
+                <input type="text" name="selectedItemICSNo" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
               </div>
               <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
@@ -316,7 +301,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-      <form action="{{route('asset.requestEdit')}}" method="GET" class="needs-validation" novalidate>
+      <form action="{{route('asset.requestEdit')}}" autocomplete="off" method="GET" class="needs-validation" novalidate>
           {{ csrf_field() }}
           <div class="row">
             <div class="col-md-12">
@@ -344,7 +329,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Reason:</label>
-                  <textarea name="reason" class="form-control" id="reasob" cols="30" rows="5"></textarea>
+                  <textarea name="reason" class="form-control" id="reasob" cols="30" rows="5" required></textarea>
                 </div>
               </div>
           </div>

@@ -18,7 +18,7 @@
    	  <h6 class="card-title">
 		Edit Method
 	  </h6>
-	  <form action="{{route('update.modes', $pm_data->id)}}" method="post" id="needs-validation" novalidate>
+	  <form autocomplete="off" action="{{route('update.modes', $pm_data->id)}}" method="post" id="needs-validation" novalidate>
 	  	{{csrf_field()}}
       {{ method_field('put') }}
 	  	<div class="row">

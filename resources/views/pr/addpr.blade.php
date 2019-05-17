@@ -18,7 +18,7 @@
   		Add Purchase Request
   	  </h6>
 
-	  <form action="{{route('pr.store')}}" method="post" id="needs-validation" novalidate>
+	  <form autocomplete="off" action="{{route('pr.store')}}" method="post" id="needs-validation" novalidate>
 	  	{{csrf_field()}}
 	  	<div class="row">
         <div class="form-group col-md-12">

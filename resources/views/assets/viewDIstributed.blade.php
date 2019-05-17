@@ -4,7 +4,7 @@
 <ol class="breadcrumb p-2">
   <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
   <li class="breadcrumb-item active"><a href="{{route('assets.index')}}">Assets</a></li>
-  <li class="breadcrumb-item active" aria-current="page">Distributed Assets</li>
+  <li class="breadcrumb-item active" aria-current="page">List of All Assets</li>
 </ol>
 @endsection
 
@@ -13,15 +13,21 @@
 {{-- TABLE FOR DISTRIBUTED ASSETS --}}
 <div class="container-fluid">
   <div class="card">
-    <div class="card-header pt-2 pb-2">Distributed Assets</div>
+    <div class="card-header pt-2 pb-2">List of All Assets</div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-12">
-          <h6 class="card-title">Distributed Items</h6>
+          <h6 class="card-title">
+            @can("Asset Management", "full control")
+              All Departments
+            @else
+              {{Auth::user()->office->office_name}}
+            @endcan
+          </h6>
           <div class="table-responsive">
             <table id="distributedItemsDatatable"
               class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Signatory Name</th>

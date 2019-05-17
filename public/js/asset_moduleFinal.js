@@ -7,6 +7,14 @@
           ],
       });
 
+      var itemIcs = $('#itemIcs').DataTable({
+        responsive: true,
+        "lengthMenu": [
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, "All"]
+        ],
+    });
+
       $('#distributedItemsDatatable').DataTable({
           responsive: true,
           "lengthMenu": [
@@ -543,5 +551,69 @@
 
 
       });
+
+      classifiedDataTable.on('click', 'button#printBtnIcs', function () {
+          var rowData = classifiedDataTable.row($(this).parents('tr')).data();
+          console.log(rowData[0]);
+
+          populatePrintIcs(rowData);
+
+      });
+
+      function populatePrintIcs(rowData) {
+          console.log(rowData[0])
+        var id = rowData[0];
+          var values = {
+            item_ics : id
+        }
+        console.log(values);
+        
+
+        $.ajax({
+            url: '/printIcsData',
+            method: 'get',
+            data: values,
+            success: function (response) {
+               console.log(response.icsData);
+               var tableContent = response.icsData;
+               console.log(tableContent);
+               
+               populateTobePrinted(tableContent);
+               
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+        
+        function populateTobePrinted (tableContent) {
+            console.log(tableContent);
+            var table = $('#itemIcs').DataTable({
+                destroy:true,
+                data: tableContent,
+                responsive:false,
+                columns:[
+                    {data:'assignedTo'},
+                    {data:'description'},
+                    {data:'position'},
+                    {data:'quantity'},
+                    {data:'useful_life'},
+                    {
+                        'data': null,
+                        'defaultContent': '<button id="btnPrint" class="btn btn-sm btn-success"><i class="fas fa-print"></i></button>'
+                    }
+                ]
+            })
+    
+            // on click functions of every button from the table
+            table.on('click', 'button#btnPrint', function () {
+                console.log("button update clicked");
+                var data = table.row( $(this).parents('tr') ).data();
+                console.log(data.id);
+                
+                window.open('printIcs/'+data.id, 'blank');
+            })
+        }
+      }
 
   });

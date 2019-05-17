@@ -10,19 +10,19 @@
 
 @section('content')
 
-<form action="" method="post">
+<form autocomplete="off" action="" method="post">
   {{csrf_field()}}
   <div class="container-fluid">
     <div class="card">
-      <div class="card-header pt-2 pb-2">Distribution of PAR</div>
+      <div class="card-header pt-2 pb-2">Distribution of Assets</div>
       <div class="card-body">
         <div class="row">
           <div class="col-md-6">
               <h6 class="card-title">
-                  Available PAR
+                  Available Assets for Distribution (PAR) 
               </h6>
             <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Item Name</th>
@@ -50,10 +50,10 @@
           </div>
           <div class="col-md-6">
               <h6 class="card-title">
-                  Distributed Par
+                  Distributed Assets (PAR)
               </h6>
             <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Signatory Name</th>
@@ -73,11 +73,6 @@
                   <a href="{{'/printPar/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i>
                   </a>
-                  @can('full control')
-                  <button class="btn btn-sm btn-danger">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  @endcan
                 </td>
               </tr>
               @endforeach

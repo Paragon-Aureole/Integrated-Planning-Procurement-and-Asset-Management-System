@@ -1,5 +1,5 @@
 <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-   	  	  <thead class="thead-dark">
+   	  	  <thead class="thead-light">
    	  	  	<tr>
    	  	  	  <th>Code</th>
    	  	  	  <th>Office Name</th>

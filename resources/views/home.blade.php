@@ -8,6 +8,11 @@
 
 @section('content')
 <div class="container">
-    WELCOME {{$auth->wholename}}
+    <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">WELCOME</h4>
+          <p class="card-text">{{$auth->wholename}}</p>
+        </div>
+      </div>
 </div>
 @endsection
