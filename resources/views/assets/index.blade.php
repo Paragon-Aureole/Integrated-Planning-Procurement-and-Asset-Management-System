@@ -64,7 +64,7 @@
                 </thead>
                 <tbody>
   
-                  @foreach ($asset->where('isAssigned', 0)->where('isEditable', 1) as $key =>$record)
+                  @foreach ($asset->where('isAssigned', 0) as $key =>$record)
                   @if ($record->isICS == 1)
                   <tr>
                     <td>{{$record->id}}</td>
@@ -81,22 +81,23 @@
                           <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#editRequestIcs" id="requestBtn">
                             Request to Edit
                           </button>
-                        @elseif ($record->isRequested == 1)
-                            <button class="btn btn-sm btn-warning" disabled>
-                              Pending
-                            </button>
-                        @elseif ($record->isRequested == 1 && $record->isEditable == 1)
-                        <button class="btn btn-sm btn-warning" disabled>
+                          @elseif ($record->isRequested == 1 && $record->asset_type_id != null)
+                          <button class="btn btn-sm btn-warning" disabled>
                             Approved
+                          </button>
+                          @elseif ($record->isRequested == 1)
+                        <button class="btn btn-sm btn-warning" disabled>
+                            Pending
                           </button>
                         @endif
                       @endcan
                       @can('Supervisor')
                         @if ($record->isRequested == 0)
-                        @else
-                        <a href="{{route('rfq.createone', $record->id)}}" class="btn btn-sm btn-info" data-toggle="confirmation" data-content="Approved Item {{$record->id}} to Edit?">
+                        @elseif ($record->isRequested == 1 && $record->asset_type_id == null)
+                        <a href="/acceptEdit/{{$record->id}}" class="btn btn-sm btn-info" data-toggle="confirmation" data-content="Approved Item {{$record->id}} to Edit?">
                             Accept to Edit
-                          </a>
+                        </a>
+                        @else
                         @endif
                       @endcan
                   </tr>
@@ -157,11 +158,6 @@
                     <a href="{{'/printIcs/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
                       <i class="fas fa-print"></i>
                     </a>
-                    @can('full control')
-                    <button class="btn btn-sm btn-danger">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    @endcan
                   </td>
                 </tr>
                 @endforeach

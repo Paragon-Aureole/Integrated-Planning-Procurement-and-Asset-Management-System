@@ -498,9 +498,23 @@ class assetController extends Controller
         // dd($input['itemId']);
         
         $editRequest = asset::where('id', $input['itemId'])->update([
-            'isRequested' => 1
+            'isRequested' => 1,
+            'asset_type_id' => null
         ]);
 
         return redirect()->back()->with('succes', 'Requested, Pls Wait for the GSO Supervisor to Approved your Request');
+    }
+
+    public function acceptEdit($id)
+    {
+        // $input = $request->all();
+        
+        $editRequest = asset::where('id', $id)->update([
+            'isICS' => 0,
+            'isPAR' => 0,
+            'asset_type_id' => null,
+            'isEditable' => 0,
+        ]);
+        return redirect()->back()->with('succes', 'Item Approved to edit');
     }
 }
