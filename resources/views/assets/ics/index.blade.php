@@ -19,7 +19,7 @@
 
 {{-- {{$assetTypes}} --}}
 
-<form action="" method="post">
+<form autocomplete="off" action="" method="post">
   {{csrf_field()}}
   {{--  <input type="hidden" name="purchase_order_id" value={{$assetData[0]->purchase_order_id}}> --}}
   {{--  <input type="hidden" name="PO_id" value={{$id->searchPO}}></input> --}}
@@ -30,7 +30,7 @@
         <div class="row">
           <div class="col-md-6">
             <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ID</th>
                   <th>Item</th>
@@ -57,7 +57,7 @@
           </div>
           <div class="col-md-6">
             <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>ICS ID</th>
                   <th>Received By</th>
@@ -102,7 +102,7 @@
 <input name="remainingItems" type="hidden"></input>
 <input name="currentItemID" type="hidden"></input>
 <input name="totalItemQuantity" type="hidden"></input>
-<form id="itemAssignForm" action="{{route('DistributeAssetsPAR.store')}}" method="POST">
+<form autocomplete="off" id="itemAssignForm" action="{{route('DistributeAssetsPAR.store')}}" method="POST">
   {{csrf_field()}}
       <div class="modal-body" id="assetAssignBody">
         <div class="container-fluid">
@@ -193,7 +193,7 @@
         <div class="row">
           <div class="col-md-12">
             <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-              <thead class="thead-dark">
+              <thead class="thead-light">
                 <tr>
                   <th>Item name</th>
                   <th>Quantity</th>

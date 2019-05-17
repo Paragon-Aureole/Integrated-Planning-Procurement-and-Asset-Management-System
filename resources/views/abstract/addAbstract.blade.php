@@ -19,7 +19,7 @@
   	  </h6>
       <div class="table-responsive">
         <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               {{-- <th>ID</th> --}}
               <th>PR Code</th>
@@ -52,7 +52,7 @@
    	  <h6 class="card-title">Registered Abstract of Quotation</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               {{-- <th>ID</th> --}}
               <th>Code</th>
@@ -103,7 +103,7 @@
       
             <!-- Modal body -->
             <div class="modal-body">
-            <form action="{{route('abstract.store')}}" method="POST" class="needs-validation" novalidate>
+            <form autocomplete="off" action="{{route('abstract.store')}}" method="POST" class="needs-validation" novalidate>
                 {{ csrf_field() }}
                 <input type="hidden" name="pr_id" value="">
                 <div class="form-group">

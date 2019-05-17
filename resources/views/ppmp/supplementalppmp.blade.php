@@ -19,7 +19,7 @@
   	  </h6>
       <div class="table-responsive">
         <table id="ppmpDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               <th>PPMP Year</th>
               <th>Department</th>
@@ -48,7 +48,7 @@
    	  <h6 class="card-title">Registered Supplemental PPMP Forms</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               <th>Supplemental PPMP Year</th>
               <th>Office</th>

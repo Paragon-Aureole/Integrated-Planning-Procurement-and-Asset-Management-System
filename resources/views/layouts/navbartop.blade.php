@@ -142,16 +142,16 @@
           <i class="fas fa-user-tie"></i> {{Auth::user()->username}}
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="logoutDropdownMenuLink">
-          <li><a class="dropdown-item" href="#">Profile</a></li>
-          <li><a class="dropdown-item" href="#">Change Password</a></li>
-          <div class="dropdown-divider"></div>
+          {{-- <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Change Password</a></li> --}}
+          {{-- <div class="dropdown-divider"></div> --}}
           <li>
           	<a class="dropdown-item" href="#"
           		onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
                   Logout
           	</a>
-          	<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          	<form autocomplete="off" id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                   {{ csrf_field() }}
               </form>
       	</li>

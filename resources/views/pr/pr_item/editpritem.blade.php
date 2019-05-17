@@ -45,7 +45,7 @@
 	  			</div>
 	  		</div>
 	  		<div class="col-md-7">
-			  <form action="{{route('update.pritm', [$pr->id, $pr_item->id])}}" method="POST">
+			  <form autocomplete="off" action="{{route('update.pritm', [$pr->id, $pr_item->id])}}" method="POST">
 			  	{{csrf_field()}}
 			  	{{ method_field('put') }}
 			  	<div class="row">

@@ -18,7 +18,7 @@
                                 <h6 class="card-title">
                           Add PPMP Item Code
                           </h6>
-                          <form action="{{route('add.ppmpitemcode', $ppmp->id)}}" method="POST" id="needs-validation2" novalidate>
+                          <form autocomplete="off" action="{{route('add.ppmpitemcode', $ppmp->id)}}" method="POST" id="needs-validation2" novalidate>
                             {{csrf_field()}}
                             <div class="row">
                               <div class="form-group col-md-12">

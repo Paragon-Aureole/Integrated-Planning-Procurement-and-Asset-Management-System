@@ -12,7 +12,7 @@
 
 
 <input type="hidden" name="assetDataCount" value="{{count($assetData->where('isEditable', 0))}}">
-<form id="assetClassificationForm" action="{{route('assets.store')}}" method="post">
+<form autocomplete="off" id="assetClassificationForm" action="{{route('assets.store')}}" method="post">
     {{csrf_field()}}
     <input type="hidden" name="purchase_order_id" value={{$assetData[0]->purchase_order_id}}>
 
@@ -26,7 +26,7 @@
             <div class="card-header pt-2 pb-2">List of Item</div>
             <div class="card-body">
                 <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                    <thead class="thead-dark">
+                    <thead class="thead-light">
                         <tr>
                             <th>Details</th>
                             <th>Amount</th>

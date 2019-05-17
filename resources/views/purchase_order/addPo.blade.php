@@ -19,7 +19,7 @@
   	  </h6>
       <div class="table-responsive">
         <table id="poDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               <th>Id</th>
               <th>PR Code</th>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="modal-body">
-            <form action="{{route('po.store')}}" method="POST" class="needs-validation" novalidate>
+            <form autocomplete="off" action="{{route('po.store')}}" method="POST" class="needs-validation" novalidate>
               {{ csrf_field() }}
               <div class="row">
                 <div class="col-md-6">

@@ -19,7 +19,7 @@
   	  </h6>
       <div class="table-responsive">
         <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               <th>PR Code</th>
               <th>Purpose</th>
@@ -50,7 +50,7 @@
    	  <h6 class="card-title">Registered Supplemental Purchase Requests</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
               <th>Supplemental PR Code</th>
               <th>Supplemented Items</th>

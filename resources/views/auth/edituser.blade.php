@@ -19,7 +19,7 @@
 		  	  <h6 class="card-title">
 		  	  	<i class="fas fa-user-plus"></i> Edit User
 		  	  </h6>
-			  <form method="post" action="{{ route('update.user', $user_data->id) }}" class="needs-validation" novalidate>
+			  <form autocomplete="off" method="post" action="{{ route('update.user', $user_data->id) }}" class="needs-validation" novalidate>
 			  	{{csrf_field()}}
 			  	{{ method_field('put') }}
 				<div class="row">
@@ -170,7 +170,7 @@
 									
 								<!-- Modal body -->
 								<div class="modal-body">
-										<form name="deactivation_reason">
+										<form autocomplete="off" name="deactivation_reason">
 										 {{ csrf_field() }}
 										 {{method_field('GET')}}
 											<div class="form-row">

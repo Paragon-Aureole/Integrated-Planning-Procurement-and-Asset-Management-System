@@ -19,7 +19,7 @@
                         <h6 class="card-title">
                                 Edit Purchase Order
                         </h6>
-                    <form action="{{route('po.update', $ind_po->id)}}" method="POST" class="needs-validation" novalidate>
+                    <form autocomplete="off" action="{{route('po.update', $ind_po->id)}}" method="POST" class="needs-validation" novalidate>
                         {{ csrf_field() }}
                         {{method_field('PUT')}}
                         <div class="form-row">

@@ -18,7 +18,7 @@
 <div class="card">
  <div class="card-header pt-2 pb- 2"><b>Add Items</b></div>
  <div class="card-body">
-  <form action="{{route('add.ppmpitm', $ppmp->id)}}" method="post" name="ppmp_form" class="needs-validation" novalidate>
+  <form autocomplete="off" action="{{route('add.ppmpitm', $ppmp->id)}}" method="post" name="ppmp_form" class="needs-validation" novalidate>
     {{csrf_field()}}
   <div class="row">
     <div class="col-md-6">
