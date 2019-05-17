@@ -19,7 +19,9 @@
         <div class="col-md-12">
           <h6 class="card-title">
             @can("Asset Management", "full control")
-            Distributed Items
+              All Departments
+            @else
+              {{Auth::user()->office->office_name}}
             @endcan
           </h6>
           <div class="table-responsive">
@@ -46,7 +48,7 @@
                 <td>{{$record->id}}</td>
                 <td>{{$record->assignedTo}}</td>
                 <td>{{$record->position}}</td>
-                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
                 <td>{{$record->asset->details}}</td>
                 <td>{{$record->quantity}}</td>
                 <td>{{$record->asset->amount}}</td>
@@ -71,7 +73,7 @@
                 <td>{{$record->id}}</td>
                 <td>{{$record->assignedTo}}</td>
                 <td>{{$record->position}}</td>
-                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
                 <td>{{$record->asset->details}}</td>
                 <td>{{$record->quantity}}</td>
                 <td>{{$record->asset->amount}}</td>

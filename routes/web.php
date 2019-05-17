@@ -178,6 +178,7 @@ Route::post('/saveNewPar', 'assetController@saveNewPar');
 Route::post('/saveNewIcs', 'assetController@saveNewIcs');
 Route::post('/setAssetIsAssigned', 'assetController@setAssetIsAssigned');
 Route::get('/requestEdit', 'assetController@requestEdit')->name('asset.requestEdit');
+Route::get('/acceptEdit/{id}', 'assetController@acceptEdit');
 
 //asset printing
 Route::get('/printPar/{id}', 'assetController@printPar');
