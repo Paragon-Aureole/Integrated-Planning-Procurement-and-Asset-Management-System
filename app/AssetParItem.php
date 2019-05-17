@@ -8,6 +8,7 @@ class AssetParItem extends Model
 {
     protected $fillable = [
         'asset_par_id',
+        'asset_turnover_id',
         'description',
         'itemStatus'
     ];
@@ -16,4 +17,10 @@ class AssetParItem extends Model
     {
         return $this->belongsTo(assetPar::class);
     }
+
+    public function assetTurnover()
+    {
+        return $this->hasMany(assetTurnover::class);
+    }
+
 }

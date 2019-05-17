@@ -45,11 +45,14 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>                                        
+                                        <td class="text-left">                                        
                                             @foreach ($turnoverData as $turnoverDataItem)
-                                                {{$turnoverDataItem->assetPar->asset->details}}<br><br>
+                                            <textarea cols="10" rows="25" style="border:none;">
+                                                {{$turnoverDataItem->assetPar->asset->details}}
+                                            </textarea>
                                             @endforeach</td>
                                         <td>
+
                                         </td>
                                     </tr>
 

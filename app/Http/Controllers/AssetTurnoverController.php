@@ -24,10 +24,9 @@ class AssetTurnoverController extends Controller
      */
     public function index()
     {
-
-        // dd(assetPar::with('assetParItem')->where('id', 1)->get());
+        
         // dd(assetPar::with('assetParItem')->where('id', 3)->get());
-        // $sampledata = assetPar::with('assetParItem')->where('id', 1)->get();
+        // dd($sampledata);
         // $sampledata = assetTurnover::with('asset_par')->where('isApproved', 0)->where('id', 1)->get();
 
         // $sampledata = assetPar::with('assetParItem')->get();
@@ -38,7 +37,9 @@ class AssetTurnoverController extends Controller
         $to = assetPar::with('assetParItem')->get();
         $office = Office::all();
         $currentOfficeId = Auth::user()->office_id;
-        $approvalAssets = assetTurnover::all();
+        $approvalAssets = assetTurnover::with('assetParItem')->get();
+
+        // dd($approvalAssets);
 
         // dd($to);
 
@@ -78,17 +79,17 @@ class AssetTurnoverController extends Controller
     public function getParTurnoverItems(Request $request)
     {
         // dd($request->all());
-        $par_id = $request->input('par_id');
+        $par_id = $request->input('id');
 
         $assetTurnoverData = assetTurnover::with('asset_par')->where('isApproved', 0)->where('par_id', $par_id)->get();
 
         // $assetTurnoverData = assetTurnover::with('asset_par')->where('par_id', $par_id)->get();
 
-        if (!$assetTurnoverData->isEmpty()) {
-            $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
-        } else {
-            $unserializedTurnoverData = [];
-        }
+        // if (!$assetTurnoverData->isEmpty()) {
+        //     $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
+        // } else {
+        //     $unserializedTurnoverData = [];
+        // }
 
         // $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
     
@@ -120,46 +121,52 @@ class AssetTurnoverController extends Controller
     {
         // dd($request->all());
 
-        $par_id = $request->input('turnoverParId');
+        // $par_id = $request->input('turnoverParId');
 
-        $toTurnoverData = serialize($request->input('toTurnover'));
+        $toTurnoverData = $request->input('toTurnover');
 
+        $filteredTurnoverData = [];
         // dd(unserialize($toTurnoverData));
-        // $schedule = implode(",", $input['item_schedule']);
+        foreach ($toTurnoverData as $key => $value) {
+            if ($value != 0) {
+                $filteredTurnoverData[$key] = $value;
+            }
+        }
 
-        assetTurnover::create([
-            'par_id' => $par_id,
-            'isApproved' => 0,
-            'turnoverData' => $toTurnoverData
+        // dd($filteredTurnoverData);
+
+        foreach ($filteredTurnoverData as $key => $value) {
+
+            assetTurnover::create([
+                'asset_par_item_id' => $key,
+                'isApproved' => 0
+            ]);
+
+            AssetParItem::where('id', $key)->update([
+            'itemStatus' => $value
         ]);
+        }
 
         return redirect()->back()->with('success', 'Request for Turnover Submitted.');
-
     }
 
     public function approveParTurnover(Request $request)
     {
         // dd($request->all());
+
         $par_id = $request->input('par_id');
 
-        $assetTurnoverData = assetTurnover::with('asset_par')->where('isApproved', 0)->where('par_id', $par_id)->get();
-        $assetParItems = AssetParItem::where('asset_par_id', $par_id)->get();
+        $assetTurnoverData = assetTurnover::where('isApproved', 0)->where('asset_par_item_id', $par_id)->get();
+        $assetParItems = AssetParItem::where('id', $par_id)->get();
 
-        $unserializedTurnoverData = unserialize($assetTurnoverData->first()->turnoverData);
-
+        
         $assetTurnoverData[0]->isApproved = 1;
         $assetTurnoverData[0]->save();
         
-        foreach ($unserializedTurnoverData as $key => $value) {
-            for ($i=0; $i < count($assetParItems); $i++) {
-                if ($key == $assetParItems[$i]->id) {
-                    $assetParItems[$i]->itemStatus = $value;
-                    $assetParItems[$i]->save();
-                }
-            }
-        }
+        $assetParItems[0]->itemStatus = 2;
+        $assetParItems[0]->save();
 
-            return response()->json(['response' => 'Save Success', 'error' => false]);
+        return response()->json(['response' => 'Save Success', 'error' => false]);
     }
 
     /**

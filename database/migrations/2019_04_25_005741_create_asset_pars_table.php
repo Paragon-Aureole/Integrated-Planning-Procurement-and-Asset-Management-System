@@ -40,10 +40,6 @@ class CreateAssetParsTable extends Migration
             $table->foreign('asset_type_id')->references('id')->on('asset_types')->onDelete('cascade');
         });
 
-        Schema::table('asset_turnovers', function (Blueprint $table) {
-            $table->foreign('par_id')->references('id')->on('asset_pars')->onDelete('cascade');
-        });
-
         Schema::table('asset_icslips', function (Blueprint $table) {
             $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
         });

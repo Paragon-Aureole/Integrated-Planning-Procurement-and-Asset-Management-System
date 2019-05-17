@@ -123,21 +123,20 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Assigned To</th>
-                                <th>Position</th>
+                                <th>Item Name</th>
                                 <th>Office</th>
                                 <th>Status</th>
                                 <th data-priority='5'>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (!$approvalAssets->isEmpty())
+                            {{-- @if (!$approvalAssets->isEmpty()) --}}
                             @foreach ($approvalAssets as $record)
-                            {{--  {{$record}} --}}
                             <tr>
-                                <td>{{$record->par_id}}</td>
-                                <td>{{$record->asset_par->assignedTo}}</td>
-                                <td>{{$record->asset_par->position}}</td>
-                                <td>{{$record->asset_par->asset->purchaseOrder->purchaseRequest->office->office_name}}
+                                <td>{{$record->assetParItem->id}}</td>
+                                <td>{{$record->assetParItem->assetPar->assignedTo}}</td>
+                                <td>{{$record->assetParItem->assetPar->asset->details}}</td>
+                                <td>{{$record->assetParItem->assetPar->asset->purchaseOrder->purchaseRequest->office->office_code}}
                                 </td>
                                 <td>
                                     @if ($record->isApproved == 0)
@@ -147,14 +146,22 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button type="button" id="turnoverViewButton" name="btn_turnoverViewButton"
-                                        class="btn btn-warning btn-xs" data-toggle="modal"
-                                        data-target="#turnedOverModal">View Items</button>
+                                    <a href="{{'/printTurnover/' . $record->assetParItem->id}}" target="_blank"
+                                        class="btn btn-sm btn-success">
+                                        <i class="fas fa-print"></i>
+                                    </a>
+                                    @if ($record->isApproved == 0)
+                                    @can('Supervisor', 'Asset Management')
+                                    <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
+                                        class="btn btn-primary btn-xs" data-target="#turnedOverModal">Approve</button>
+                                        @endcan
+                                        @endif
                                 </td>
-                            </tr>
+                            </tr>                                
+                            {{-- {{$record->assetParItem->assetPar}} --}}
                             @endforeach
-                                
-                            @endif
+
+                            {{-- @endif --}}
                             {{--  <tr>
                                     <td>Sample Signatory</td>
                                     <td>Sample Position</td>
@@ -272,11 +279,11 @@
                         </tbody>
                     </table>
                     <div class="col-md-12">&nbsp</div>
-                    <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
-                        class="btn btn-primary btn-xs float-right">Approve Turned Over Items</button>
+                    {{-- <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
+                        class="btn btn-primary btn-xs float-right">Approve Turned Over Items</button> --}}
                     <button type="button" id="PrintTurnover" name="btn_PrintTurnover"
                         class="btn btn-success btn-xs float-right">Print Turned Over Items</button>
-                        {{-- <a href="/printIcs/ <script>document.write = 1</script>" target="_blank" class="btn btn-success btn-xs float-right">Print Turned Over Items</a> --}}
+                    {{-- <a href="/printIcs/ <script>document.write = 1</script>" target="_blank" class="btn btn-success btn-xs float-right">Print Turned Over Items</a> --}}
                 </div>
             </div>
         </div>

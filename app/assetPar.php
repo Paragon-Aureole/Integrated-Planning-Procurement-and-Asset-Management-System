@@ -20,11 +20,6 @@ class assetPar extends Model
         return $this->belongsTo(asset::class);
     }
 
-    public function asset_turnover()
-    {
-        return $this->hasOne(assetTurnover::class, 'par_id');
-    }
-
     public function distributedAsset()
     {
         return $this->hasOne(editDistributedAsset::class);

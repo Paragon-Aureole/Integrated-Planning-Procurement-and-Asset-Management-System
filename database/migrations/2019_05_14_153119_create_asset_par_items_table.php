@@ -25,6 +25,11 @@ class CreateAssetParItemsTable extends Migration
         Schema::table('asset_par_items', function (Blueprint $table) {
             // $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
             $table->foreign('asset_par_id')->references('id')->on('asset_pars')->onDelete('cascade');
+            // $table->foreign('asset_turnover_id')->references('id')->on('asset_turnover')->onDelete('cascade');
+        });
+
+        Schema::table('asset_turnovers', function (Blueprint $table) {
+            $table->foreign('asset_par_item_id')->references('id')->on('asset_par_items')->onDelete('cascade');
         });
     }
 

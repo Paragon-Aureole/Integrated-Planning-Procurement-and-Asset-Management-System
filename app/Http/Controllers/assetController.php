@@ -470,7 +470,7 @@ class assetController extends Controller
         // dd($id);
         // $turnoverData = assetTurnover::whereId($id)->get();
         // $turnoverData = assetPar::with('assetParItem')->where('id', $id)->get();
-        $turnoverData = assetParItem::with('assetPar')->where('asset_par_id', $id)->where('itemStatus', 1)->get();
+        $turnoverData = assetParItem::with('assetPar')->where('id', $id)->where('itemStatus', 2)->get();
         
         // $turnoverData->assetParItem->where('itemStatus', $id)->get();
         // if ($turnoverData->assetParItem->itemStatus == 1) {

@@ -52,7 +52,7 @@
                         <td>{{$IcslipData->quantity}}</td>
                         <td>{{$IcslipData->asset->measurementUnit->unit_code}}</td>
                         {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td colspan="2"><textarea cols="30" rows="10" style="border:none">{{$IcslipData->description}}</textarea></td>
+                        <td colspan="2"><textarea cols="30" rows="35" style="border:none">{{$IcslipData->description}}</textarea></td>
                         {{--  <td>Sample Description</td>  --}}
                         <td></td>
                         <td>{{$IcslipData->useful_life}}</td>

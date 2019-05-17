@@ -15,14 +15,14 @@ class CreateAssetTurnoversTable extends Migration
     {
         Schema::create('asset_turnovers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('par_id')->unsigned()->nullable()->index();
-            $table->string('turnoverData');
+            $table->integer('asset_par_item_id')->unsigned()->nullable()->index();
             $table->boolean('isApproved');
             $table->timestamps();
         });
 
     }
 
+    
     /**
      * Reverse the migrations.
      *

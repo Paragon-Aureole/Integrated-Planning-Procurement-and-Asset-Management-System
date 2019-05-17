@@ -204,6 +204,7 @@ Route::get('parSearchTurnover', 'AssetTurnoverController@parSearchTurnover');
 Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
 Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems');
 Route::get('getParTurnoverItems', 'AssetTurnoverController@getParTurnoverItems');
+Route::get('getCurrentTurnoverId', 'AssetTurnoverController@getCurrentTurnoverId');
 Route::post('/ApproveParTurnover', 'AssetTurnoverController@ApproveParTurnover');
 
 //activity log
