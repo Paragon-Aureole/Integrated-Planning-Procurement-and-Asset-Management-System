@@ -202,28 +202,6 @@
                   </td>
                 </tr>
                 @endforeach
-                
-
-                {{--  <tr>
-                  <td>Tedd Mamuyac</td>
-                  <td>System Admininstrator</td>
-                  <td>Office of the City Administration</td>
-                  <td>Laptop</td>
-                  <td>1</td>
-                  <td>50,000</td>
-                  <td>PAR</td>
-                  <td>IT Equipments</td>
-                  <td>
-                    <a href="/printPar" target="_blank" class="btn btn-sm btn-success">
-                      <i class="fas fa-print"></i>
-                    </a>
-                    @can('full control')
-                    <button class="btn btn-sm btn-danger">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    @endcan
-                  </td>
-                </tr>  --}}
               </tbody>
             </table>
           </div>

@@ -165,6 +165,9 @@ Route::resource('ir', 'InspectionReportController');
 Route::get('/getVoucherNo', 'assetController@getVoucherNo')->name('assets.getVoucherNo');
 Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.saveVoucherNo');
 Route::get('/assetClassification', 'assetController@assetClassification')->name('assets.assetClassification');
+
+Route::get('/asset/distributed', 'assetController@viewAll')->name('assets.distributed');
+
 Route::resource('assets', 'assetController');
 Route::get('getClassificationModalData', 'assetController@getClassificationModalData');
 Route::get('getAssetData', 'assetController@getAssetData');

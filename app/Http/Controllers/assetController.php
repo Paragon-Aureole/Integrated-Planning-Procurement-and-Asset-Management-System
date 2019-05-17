@@ -49,6 +49,45 @@ class assetController extends Controller
         // return $dummyData;
     }
 
+    /**
+     * View All Distributed Assets.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function viewAll()
+    {
+        $user = Auth::user();
+        
+        if ($user->can('Asset Management', 'Supervisor')) {
+
+            $asset = asset::All();
+            $assetPar = assetPar::All();
+            $assetIcs = assetIcslip::All();
+            
+        }else{
+            $asset = asset::whereHas('purchaseOrder', function ($query){
+
+                $query->where('office_id',  Auth::user()->office_id );
+
+            })->get();
+
+            $assetPar = assetPar::whereHas('asset.purchaseOrder', function ($query){
+
+                $query->where('office_id',  Auth::user()->office_id );
+
+            })->get();
+
+            $assetIcs = assetIcslip::whereHas('asset.purchaseOrder', function ($query){
+
+                $query->where('office_id',  Auth::user()->office_id );
+
+            })->get();
+        }
+        
+
+        return view('assets.viewDistributed', compact('asset', 'assetPar', 'assetIcs'));
+    }
+
     public function getClassificationModalData(Request $request)
     {
         $input = $request->all();
