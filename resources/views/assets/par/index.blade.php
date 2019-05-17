@@ -73,11 +73,6 @@
                   <a href="{{'/printPar/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i>
                   </a>
-                  @can('full control')
-                  <button class="btn btn-sm btn-danger">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  @endcan
                 </td>
               </tr>
               @endforeach

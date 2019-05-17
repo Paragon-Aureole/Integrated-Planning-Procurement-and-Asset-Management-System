@@ -419,7 +419,9 @@ class assetController extends Controller
     public function printIcs($id)
     {
         // return view('assets.par.printPAR');
+        // $ics = asset::find($id);
         $IcslipData = assetIcslip::findorFail($id);
+        // dd($IcslipData);
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,
@@ -516,5 +518,12 @@ class assetController extends Controller
             'isEditable' => 0,
         ]);
         return redirect()->back()->with('succes', 'Item Approved to edit');
+    }
+
+    public function printIcsData(Request $request) {
+        $input = $request->all();
+         $icsData = assetIcslip::where('asset_id', $input['item_ics'])->get();
+
+         return response()->json(['icsData'=>$icsData]);
     }
 }

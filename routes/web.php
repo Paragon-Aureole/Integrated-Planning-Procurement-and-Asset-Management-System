@@ -186,6 +186,8 @@ Route::get('/printIcs/{id}', 'assetController@printIcs');
 Route::get('/printTurnover/{id}', 'assetController@printTurnover');
 Route::get('/printVehicle', 'assetController@printVehicle');
 Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
+Route::get('/printIcsData', 'assetController@printIcsData');
+
 
 
 // assetMigrations

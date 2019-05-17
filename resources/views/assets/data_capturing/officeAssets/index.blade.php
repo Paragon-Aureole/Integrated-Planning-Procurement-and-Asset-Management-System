@@ -42,7 +42,7 @@
                         
                         {{-- inputs for office assets --}}
                         <div id="office_assets" style="display:none">
-                            <form action="{{route('migrateAssets.store')}}" method="post">
+                            <form action="{{route('migrateAssets.store')}}" method="post" class="needs-validation" novalidate>
                                     
                                 <div id="cloneInputs">
                                     <div class="row">
@@ -137,7 +137,7 @@
                                         <div class="col-sm-10">
                                             <div class="form-group col-sm-12">
                                                 <label class="small">Item Description:</label><br>
-                                                <textarea id="description" id="description" name="description[]" cols="180" rows="1" class="form-control form-control-sm"></textarea>
+                                                <textarea id="description" id="description" name="description[]" cols="180" rows="5" class="form-control form-control-sm" required></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
 
                         {{-- inputs for vehicle --}}
                         <div id="vehicle" style="display:none">
-                            <form action="{{route('migrateIcsAssets.store')}}" method="post">
+                            <form action="{{route('migrateIcsAssets.store')}}" method="post" class="needs-validation" novalidate>
                                 <div id="cloneIcs">
                                     
                                     <div class="row">
@@ -224,7 +224,7 @@
                                         <div class="col-sm-6">
                                             <div class="col-md-12">
                                                 <label class="small">Item Description:</label><br>
-                                                <textarea id="description_ics" name="description[]" cols="180" rows="1" class="form-control form-control-sm"></textarea>
+                                                <textarea id="description_ics" name="description[]" cols="180" rows="5" class="form-control form-control-sm" required></textarea>
                                             </div>
                                         </div>
                                     </div>
