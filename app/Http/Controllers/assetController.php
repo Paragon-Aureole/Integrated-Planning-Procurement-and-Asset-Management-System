@@ -17,7 +17,6 @@ use App\assetPar;
 use App\assetIcslip;
 use App\assetTurnover;
 
-use App\AssetIcslipItem;
 use App\AssetParItem;
 use PDF;
 use App;
@@ -65,19 +64,19 @@ class assetController extends Controller
             $assetIcs = assetIcslip::All();
             
         }else{
-            $asset = asset::whereHas('purchaseOrder', function ($query){
+            $asset = asset::whereHas('purchaseOrder.purchaseRequest', function ($query){
 
                 $query->where('office_id',  Auth::user()->office_id );
 
             })->get();
 
-            $assetPar = assetPar::whereHas('asset.purchaseOrder', function ($query){
+            $assetPar = assetPar::whereHas('asset.purchaseOrder.purchaseRequest', function ($query){
 
                 $query->where('office_id',  Auth::user()->office_id );
 
             })->get();
 
-            $assetIcs = assetIcslip::whereHas('asset.purchaseOrder', function ($query){
+            $assetIcs = assetIcslip::whereHas('asset.purchaseOrder.purchaseRequest', function ($query){
 
                 $query->where('office_id',  Auth::user()->office_id );
 
@@ -420,7 +419,7 @@ class assetController extends Controller
     public function printIcs($id)
     {
         // return view('assets.par.printPAR');
-        $IcslipData = assetIcslip::with('assetIcslipItem')->findorFail($id);
+        $IcslipData = assetIcslip::findorFail($id);
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,

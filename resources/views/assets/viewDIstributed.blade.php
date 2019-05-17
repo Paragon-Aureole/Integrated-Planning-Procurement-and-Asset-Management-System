@@ -4,7 +4,7 @@
 <ol class="breadcrumb p-2">
   <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
   <li class="breadcrumb-item active"><a href="{{route('assets.index')}}">Assets</a></li>
-  <li class="breadcrumb-item active" aria-current="page">CLassification and Distribution</li>
+  <li class="breadcrumb-item active" aria-current="page">Distributed Assets</li>
 </ol>
 @endsection
 
@@ -42,7 +42,7 @@
                 <td>{{$record->id}}</td>
                 <td>{{$record->assignedTo}}</td>
                 <td>{{$record->position}}</td>
-                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
                 <td>{{$record->asset->details}}</td>
                 <td>{{$record->quantity}}</td>
                 <td>{{$record->asset->amount}}</td>
@@ -67,7 +67,7 @@
                 <td>{{$record->id}}</td>
                 <td>{{$record->assignedTo}}</td>
                 <td>{{$record->position}}</td>
-                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
                 <td>{{$record->asset->details}}</td>
                 <td>{{$record->quantity}}</td>
                 <td>{{$record->asset->amount}}</td>
