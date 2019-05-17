@@ -4,7 +4,7 @@
 <ol class="breadcrumb p-2">
   <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
   <li class="breadcrumb-item active"><a href="{{route('assets.index')}}">Assets</a></li>
-  <li class="breadcrumb-item active" aria-current="page">CLassification and Distribution</li>
+  <li class="breadcrumb-item active" aria-current="page">Asset Classification and Distribution</li>
 </ol>
 @endsection
 
