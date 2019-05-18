@@ -433,6 +433,8 @@ class assetController extends Controller
 
     public function printVehicle()
     {
+        $assetData = asset::where('asset_type_id', 1)->get();
+        // dd($assetData);
         // return view('assets.par.printPAR');
         $options = [
             'margin-top'    => 10,
@@ -441,7 +443,7 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.data_capturing.vehicle.printvehicle')->setPaper('Folio', 'portrait');
+        $pdf = PDF::loadView('assets.data_capturing.vehicle.printvehicle', compact('assetData'))->setPaper('Folio', 'portrait');
         return $pdf->stream('VEHICLE.pdf');
     }
 

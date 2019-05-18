@@ -25,6 +25,7 @@
             <div class="col-xs-12">&nbsp;</div>
         </div>
         <div class="row text-center">
+            {{-- {{$assetData}} --}}
             <table class=" table table-bordered table-hover table-sm table-condensed display nowrap w-100">
                 <thead>
                     <tr>
@@ -40,7 +41,23 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($assetData as $record)
                     <tr>
+                        <td>{{$record->asset_par->first()->id}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        {{-- <td>{{$record->asset_par->created_at}}</td> --}}
+                        <td>{{($record->amount / $record->item_quantity) * $record->asset_par->first()->quantity}}</td>
+                        {{-- <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td> --}}
+                        <td>"ICT Office"</td>
+                        <td></td>
+                        <td>"Active"</td>
+                    </tr>
+                    @endforeach
+                    
+                    {{-- <tr>
                         <td>Sample No.</td>
                         <td>Sample Type of Vehicle</td>
                         <td>Sample Make</td>
@@ -50,7 +67,7 @@
                         <td>Sample Office</td>
                         <td>Sample Accoutable Office</td>
                         <td>Sample Status/Condition/Worthiness (Good/Fair/Repairable/Unserviceable)</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>

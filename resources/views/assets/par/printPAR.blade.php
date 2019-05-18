@@ -56,7 +56,7 @@
                         <td>{{$parData->quantity}}</td>
                         <td>{{$parData->asset->measurementUnit->unit_description}}</td>
                         {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td><textarea cols="30" rows="{{($parData->assetParItem->count() * 7) + 3}}" style="border:none">@foreach ($parData->assetParItem as $record){{"&#13;&#10;" . $record->description . "&#13;&#10;**********"}}@endforeach</textarea></td>
+                        <td><textarea cols="30" rows="{{($parData->assetParItem->count() * 2) + 3}}" style="border:none">@foreach ($parData->assetParItem as $record){{"&#13;&#10;" . $record->description . "&#13;&#10;**********"}}@endforeach</textarea></td>
                         {{--  <td>Sample Description</td>  --}}
                         <td></td>
                         <td>{{$parData->created_at}}</td>

@@ -25,7 +25,6 @@ class AssetTurnoverController extends Controller
      */
     public function index()
     {
-
         $user = Auth::user();
         
         if ($user->can('Asset Management', 'Supervisor')) {
@@ -39,7 +38,6 @@ class AssetTurnoverController extends Controller
             $approvalAssets = assetTurnover::whereHas('assetParItem.assetPar.asset.purchaseOrder.purchaseRequest', function ($query) {
                 $query->where('office_id', Auth::user()->office_id);
             })->get();
-            
         }
         // dd($approvalAssets->first()->assetTurnoverItem);
 
@@ -123,35 +121,44 @@ class AssetTurnoverController extends Controller
         $turnover_id = $request->input('currentTurnoverId');
 
         $toTurnoverData = $request->input('toTurnover');
+        // dd(count($toTurnoverData));
 
-        $filteredTurnoverData = [];
-        // dd(unserialize($toTurnoverData));
-        foreach ($toTurnoverData as $key => $value) {
-            if ($value != 0) {
-                $filteredTurnoverData[$key] = $value;
+        if (count($toTurnoverData) != 0) {
+            $filteredTurnoverData = [];
+            // dd(unserialize($toTurnoverData));
+            foreach ($toTurnoverData as $key => $value) {
+                if ($value != 0) {
+                    $filteredTurnoverData[$key] = $value;
+                }
             }
+
+            // dd(count($filteredTurnoverData));
+            if (count($filteredTurnoverData) != 0) {
+                assetTurnover::create([
+                   'asset_par_id' => $par_id,
+                   'isApproved' => 0
+               ]);
+       
+                foreach ($filteredTurnoverData as $key => $value) {
+                    AssetTurnoverItem::create([
+                       'asset_turnover_id' => $turnover_id,
+                       'asset_par_item_id' => $key
+                   ]);
+       
+                    AssetParItem::where('id', $key)->update([
+                   'itemStatus' => $value
+               ]);
+               
+       
+                    return redirect()->back()->with('success', 'Request for Turnover Submitted.');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Invalid Request. Check the items.');
+
+            }
+        } else {
+            return redirect()->back()->with('error', 'Invalid Request. Check the items.');
         }
-
-        // dd($filteredTurnoverData);
-
-        assetTurnover::create([
-            'asset_par_id' => $par_id,
-            'isApproved' => 0
-        ]);
-
-        foreach ($filteredTurnoverData as $key => $value) {
-
-            AssetTurnoverItem::create([
-                'asset_turnover_id' => $turnover_id,
-                'asset_par_item_id' => $key
-            ]);
-
-            AssetParItem::where('id', $key)->update([
-            'itemStatus' => $value
-        ]);
-        }
-
-        return redirect()->back()->with('success', 'Request for Turnover Submitted.');
     }
 
     public function approveParTurnover(Request $request)
