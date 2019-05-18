@@ -23,8 +23,8 @@
     <div class="container-fluid">
         <div class="row text-center header">
             <div class="col-xs-12">REPORT OF THE PHYSICAL COUNT OF PROPERTY, PLANT AND EQUIPMENT</div>
-            <div class="col-xs-12">As of date here</div>
-            <div class="col-xs-12"><strong><u>Type of Asset Here (sample: OFFICE EQUIPMENT)</u></strong></div>
+        <div class="col-xs-12">As of {{Carbon\Carbon::now('+08:00')->format('F Y')}}</div>
+            <div class="col-xs-12"><strong><u>{{$asset_type->type_name}}</u></strong></div>
             <div class="col-xs-12">(Type of Property, Plant and Equipment)</div>
             <div class="col-xs-12">&nbsp;</div>
         </div>
@@ -33,9 +33,11 @@
                 <table class="text-center">
                     <tr>
                         <td>For Which &nbsp</td>
-                        <td>__________________________, &nbsp</td>
-                        <td>_____________________, &nbsp</td>
-                        <td>_____________________</td>
+                        {{-- @foreach ($parData as $parDataItem) --}}
+                        <td><u>&nbsp;&nbsp;{{$parData->first()->assetPar->assignedTo}}&nbsp;&nbsp;</u>, &nbsp;</td>
+                        <td><u>&nbsp;&nbsp;{{$parData->first()->assetPar->position}}&nbsp;&nbsp;</u>, &nbsp;</td>
+                        <td><u>&nbsp;&nbsp;CSF&nbsp;&nbsp;</u>, &nbsp;</td>
+                        {{-- @endforeach --}}
                         <td>&nbsp is accontable having assumed such accountability on</td>
                     </tr>
                     <tr>
@@ -62,8 +64,6 @@
                         <th>ON HAND</th>
                         <th rowspan="2">SHORTAGE/ OVERAGE</th>
                         <th rowspan="2">Date of Purchase</th>
-                        <th rowspan="2">PAR Number</th>
-                        <th rowspan="2">Status</th>
                         <th rowspan="2">REMARKS</th>
                     </tr>
                     <tr>
@@ -77,57 +77,41 @@
                 <tbody>
                     <tr>
                         <td style="background-color:yellow">
-                            {{$parData->first()->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                            {{$parData->first()->assetPar->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
-                    @foreach ($parData as $record)
+                    {{-- {{$parData->asset}} --}}
+                    @foreach ($parData as $assetItem)
                     <tr>
-                        <td>{{$record->asset->details}}</td>
-                        <td>{{$record->description}}</td>
-                        <td>Sample Property</td>
-                        <td>{{$record->asset->measurementUnit->unit_code}}</td>
-                        <td>{{$record->asset->amount}}</td>
-                        <td>{{$record->asset->item_quantity}}</td>
-                        <td>{{$record->asset->item_stock}}</td>
+                        @if ($assetItem->assetPar->asset->asset_type_id == $asset_type->id)
+                        <td>{{$assetItem->assetPar->asset->details}}</td>
+                        <td>{{$assetItem->description}}</td>
+                        <td>&nbsp;</td>
+                        <td>{{$assetItem->assetPar->asset->measurementUnit->unit_code}}</td>
+                        <td>{{$assetItem->assetPar->asset->amount}}</td>
+                        <td>{{$assetItem->assetPar->asset->item_quantity}}</td>
+                        <td>{{$assetItem->assetPar->asset->item_stock}}</td>
+                        <td>&nbsp;</td>
+                        <td>{{$assetItem->assetPar->asset->created_at}}</td>
+                        <td>Assigned To: {{$assetItem->assetPar->assignedTo}}</td>
                         <td></td>
-                        <td>{{$record->asset->created_at}}</td>
-                        <td>{{$record->id}}</td>
-                        <td>Assigned To: {{$record->assignedTo}}</td>
-                        <td></td>
-                    </tr>
+                        @endif
+                    </tr> 
                     @endforeach
-
-                    {{--  @foreach ($IcslipData as $record)
-                    <tr>
-                        <td>{{$record->asset->details}}</td>
-                        <td>{{$record->description}}</td>
-                        <td>Sample Property</td>
-                        <td>{{$record->asset->measurementUnit->unit_code}}</td>
-                        <td>{{$record->asset->amount}}</td>
-                        <td>{{$record->asset->item_quantity}}</td>
-                        <td>{{$record->asset->item_stock}}</td>
-                        <td></td>
-                        <td>{{$record->asset->created_at}}</td>
-                        <td>{{$record->id}}</td>
-                        <td>Assigned To: {{$record->assignedTo}}</td>
-                        <td></td>
-                    </tr>
-                    @endforeach  --}}
 
                 </tbody>
             </table>
         </div>
     </div>
+    <span style="page-break-after:avoid;"></span>
 </body>
 
 </html>

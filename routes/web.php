@@ -191,11 +191,14 @@ Route::get('/printIcsData', 'assetController@printIcsData');
 
 
 // assetMigrations
+// Route::post('migrateAssets/{id}', 'MigratedAssetsController@update')
 Route::resource('migrateAssets', 'MigratedAssetsController');
 Route::resource('migrateIcsAssets', 'MigratedIcsAssetsController');
 Route::get('migrateIcsAssets/delete/{id}', 'MigratedIcsAssetsController@destroy')->name('migrateIcsAssets.destroy');
 Route::get('migrateIcsAssets/print/{id}', 'MigratedIcsAssetsController@print')->name('migrateIcsAssets.print');
 Route::get('migrateAssets/delete/{id}', 'MigratedAssetsController@destroy')->name('migrateAssets.destroy');
+Route::get('migrateAssets/edit/{id}', 'MigratedAssetsController@edit')->name('migrateAssets.edit');
+Route::get('migrateIcsAssets/edit/{id}', 'MigratedIcsAssetsController@edit')->name('migrateIcsAssets.edit');
 Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsController@printMigratedAssets');
 Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
 Route::get('migrateAssets/print/{id}', 'MigratedAssetsController@print')->name('migrateAssets.print');
@@ -206,7 +209,6 @@ Route::get('parSearchTurnover', 'AssetTurnoverController@parSearchTurnover');
 Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
 Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems');
 Route::get('getParTurnoverItems', 'AssetTurnoverController@getParTurnoverItems');
-Route::get('getCurrentTurnoverId', 'AssetTurnoverController@getCurrentTurnoverId');
 Route::post('/ApproveParTurnover', 'AssetTurnoverController@ApproveParTurnover');
 
 //activity log
@@ -217,3 +219,7 @@ Route::resource('printReports', 'PrintReportController');
 
 // PAR DISTRIBUTION
 Route::resource('parDistribution', 'AssetParItemController');
+
+// PRINT OF PHYSICAL COUNT
+Route::get('/getPrintPhysicalData', 'PrintReportController@getPrintPhysicalData');
+Route::get('/printPhysicalForm/{id}/{asset_type_id}', 'PrintReportController@printPhysicalForm');

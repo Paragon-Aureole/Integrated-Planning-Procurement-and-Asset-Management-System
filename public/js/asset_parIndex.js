@@ -8,9 +8,10 @@
     });
 
     //datatable shitshits
-    $('#prDatatable tbody').on('click', 'tr button', function () {
-      var tr = $(this).closest('tr');
-      var selectedRow = table.row(tr).data();
+    $('#prDatatable').on('click', 'button#btn_assignItem', function () {
+      // var tr = $(this).closest('tr');
+      // var selectedRow = table.row(tr).data();
+      var selectedRow = table.row($(this).parents('tr')).data();
       clearModalFields().done(function () {
         console.log(selectedRow);
         getAssetData(selectedRow[0]).then(function (itemData) {
@@ -30,7 +31,7 @@
       $('#qtyValPar').val('');
       $('#qtyValPar').val(qtyData);
       for (var i = 1; i <= qtyData; i++) {
-        $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea required name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
+        $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea><br>')
       }
       setTotalAmount();
     });
@@ -175,6 +176,14 @@
                   setIsAssigned(formData[0]);
 
                 } else {
+                  $('[name=selectedItemEmployeeName]').val('');
+                  $('[name=selectedItemEmployeePosition]').val('');
+                  $('#descriptionPar').empty();
+                  for (var i = 1; i <= qtyData; i++) {
+
+                    $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
+        
+                  }
                   fillQuantityDropdown(qtyData);
                   setTotalAmount();
                   alert('PAR Asset Assigned.');
@@ -266,5 +275,15 @@
         });
       });
     };
+
+    table.on('click', 'button#requestBtn', function () {
+      var rowData = table.row($(this).parents('tr')).data();
+      console.log(rowData);
+
+      $('#itemId').val(rowData[0]);
+      $('#itemName').val(rowData[1]);
+      $('#classifiedIcs').val('ICS');
+
+    });
 
   });

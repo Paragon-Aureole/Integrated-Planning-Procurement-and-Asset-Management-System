@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 
 use App\assetPar;
 use App\assetIcslip;
-
+use App\asset;
 use App\AssetIcslipItem;
 use App\AssetParItem;
+use App\assetType;
+use PDF;
 
 class PrintReportController extends Controller
 {
@@ -19,7 +21,37 @@ class PrintReportController extends Controller
      */
     public function index()
     {
-        return view('printReports.index');
+        $assetPar = assetPar::all();
+        return view('printReports.index', compact('assetPar'));
+    }
+    public function getPrintPhysicalData(Request $request)
+    {
+        $input = $request->all();
+        $findName = assetPar::find($input['asset_par_id']);
+
+        $getName = $findName->asset->all();
+
+        $reportData = AssetParItem::where('asset_par_id', $input['asset_par_id'])->get();
+
+        return response()->json(['reportData'=>$reportData, 'getName'=>$getName]);
+    }
+
+    public function printPhysicalForm($id,$asset_type_id)
+    {
+        $asset_type = assetType::find($asset_type_id);
+        $parData = AssetParItem::where('asset_par_id', $id)->get();
+        // $parData = $parItem->assetPar->asset->where('asset_type_id', $asset_type_id)->get();
+        // dd($asset_type);
+        // dd($parData->first()->assetParItem);
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets', compact('parData', 'asset_type'))->setPaper('folio', 'landscape');
+        return $pdf->stream('Print Report of the Physical Count of Property, Plant and Equipment.pdf');
     }
 
     /**

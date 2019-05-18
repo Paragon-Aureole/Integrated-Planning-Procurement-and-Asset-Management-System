@@ -40,8 +40,36 @@
                     <td>{{$record->details}}</td>
                     {{--  <td>{{$record->item_quantity}}</td>
                     <td>{{$record->item_stock}}</td>  --}}
-                    <td>{{$record->purchaseOrder->purchaseRequest->office->office_name}}</td>
-                    <td><button type="button" name="btn_assignItem" class="btn btn-info btn-xs" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button></td>
+                    <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
+                    <td>
+                      <button type="button" id="btn_assignItem" name="btn_assignItem" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button>
+
+                      @can('Asset Management')
+                        @if ($record->isRequested == 0 && $record->isAssigned == 0 && $record->item_stock == $record->item_quantity)
+                          <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#editRequestPar" id="requestBtn">
+                            Request to Edit
+                          </button>
+                          @elseif ($record->isRequested == 1 && $record->asset_type_id != null)
+                          <button class="btn btn-sm btn-warning" disabled>
+                            Approved
+                          </button>
+                          @elseif ($record->isRequested == 1)
+                          <button class="btn btn-sm btn-warning" disabled>
+                            Pending
+                          </button>
+                        @endif
+                      @endcan
+
+                      @can('Supervisor')
+                        @if ($record->isRequested == 0)
+                        @elseif ($record->isRequested == 1 && $record->asset_type_id == null)
+                        <a href="/acceptEdit/{{$record->id}}" class="btn btn-sm btn-info" data-toggle="confirmation" data-content="Approved Item {{$record->id}} to Edit?">
+                            Accept to Edit
+                        </a>
+                        @else
+                        @endif
+                      @endcan
+                    </td>
                   </tr>
                 @endforeach
                 
@@ -67,7 +95,7 @@
                   
                 <td>{{$record->id}}</td>
                 <td>{{$record->assignedTo}}</td>
-                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
                 <td>{{$record->asset_id}}</td>
                 <td>
                   <a href="{{'/printPar/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
@@ -185,6 +213,60 @@
       </div>
 
 
+    </div>
+  </div>
+</div>
+
+{{-- REQUEST TO EDIT MODAL --}}
+<div class="modal" id="editRequestPar">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4>Item Edit Request</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+      <form action="{{route('asset.requestEdit')}}" autocomplete="off" method="GET" class="needs-validation" novalidate>
+          {{ csrf_field() }}
+          <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Item Id:</label>
+                    <input name="itemId" id="itemId" class="form-control" type="text" readonly>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Item name:</label>
+                <input id="itemName" class="form-control" type="text" disabled>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Item Classification:</label>
+                <input id="classifiedIcs" class="form-control" type="text" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Reason:</label>
+                  <textarea name="reason" class="form-control" id="reasob" cols="30" rows="5" required></textarea>
+                </div>
+              </div>
+          </div>
+          <div class="=col-md-12">
+            <button class="btn btn-danger container-fluid" type="submit">Submit Request</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

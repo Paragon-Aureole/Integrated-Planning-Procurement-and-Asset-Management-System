@@ -23,16 +23,6 @@
 
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-      @hasrole('Secretariat')
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="closeDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Purchase Request
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="closeDropdownMenuLink">
-                <li><a class="dropdown-item" href="{{ url('/pr/view') }}">Close Purchase Request</a></li>
-              </ul>
-            </li>
-      @endhasrole
       @hasrole('Department|Admin')
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="ppmpDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,8 +87,6 @@
         </ul>
       </li>
       @endhasrole
-
-      @hasrole('Department|Admin|General Services')
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="irDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Assets
@@ -111,14 +99,13 @@
         </li>
           @can('Asset Management', 'Supervisor')
           <li><a class="dropdown-item" href="/parDistribution">Asset Distribution (PAR)</a></li>
-          {{-- <li><a class="dropdown-item" href="/printReports">Print Reports</a></li> --}}
+          <a class="dropdown-item" href="{{route('assets.distributed')}}">View all Distributed Assets</a>
+          <li><a class="dropdown-item" href="/printReports">Print Reports</a></li>
           <li><a class="dropdown-item" href="/migrateAssets">Capture Exisiting Assets</a></li>
           @endcan
-          <li><a class="dropdown-item" href="{{route('assets.distributed')}}">View Distributed Assets</a></li>
           <li><a class="dropdown-item" href="/AssetTurnover">Turnover Assets</a></li>
         </ul>
       </li>      
-      @endhasrole
     
 
       @can('full control')

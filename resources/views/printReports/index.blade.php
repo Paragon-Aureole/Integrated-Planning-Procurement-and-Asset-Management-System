@@ -30,42 +30,28 @@
         </div>
         <hr style="height:5px; background-color:grey">
       <div class="table-responsive">
-        <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+        <table id="phyisicalReportsDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-light">
             <tr>
+              <th>ID</th>
               <th>Signatory Name</th>
               <th>Position</th>
-              <th>Items</th>
-              <th>Action</th>
+              <th data-priority = "4">Items</th>
             </tr>
           </thead>
           <tbody>
-            {{-- @foreach ($pr as $pr) --}}
+            @foreach ($assetPar as $assetParItem)
                 <tr>
-                    <td>Ramon Pacleb</td>
-                    <td>Admin Aide XIVII</td>
+                    <td>{{$assetParItem->id}}</td>
+                    <td>{{$assetParItem->assignedTo}}</td>
+                    <td>{{$assetParItem->position}}</td>
                     <td>
-                        <button type="button" id="turnoverButton" name="btn_assignItem"
+                        <button type="button" id="printPhysicalBtn" name="btn_assignItem"
                         class="btn btn-info btn-xs" data-toggle="modal"
                         data-target="#printReportsModal">View Items</button>
                     </td>
-                    <td>
-                    <a href="#" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
-                    </td>
                 </tr>
-                <tr>
-                    <td>Tedd Mamuyac</td>
-                    <td>Admin Aide XIVIXXI</td>
-                    <td>
-                        <button type="button" id="turnoverButton" name="btn_assignItem"
-                        class="btn btn-info btn-xs" data-toggle="modal"
-                        data-target="#printReportsModal">View Items</button>
-                    </td>
-                    <td>
-                    <a href="#" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
-                    </td>
-                </tr>
-            {{-- @endforeach --}}
+            @endforeach
           </tbody>
         </table>
       </div> 
@@ -123,7 +109,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>Signatory Name:</label>
-                    <input id="prCode" class="form-control" type="text" disabled>
+                    <input id="signatoryName" class="form-control" type="text" disabled>
                 </div>
                 <div class="form-group">
                     <hr style="height:5px; background-color:grey;">
@@ -131,40 +117,31 @@
                     <table id="modalTurnoverDatatable"
                         class="table table-bordered table-hover table-sm display nowrap w-100">
                         <thead class="thead-light">
-                            <th>Item Name</th>
                             <th>Description</th>
                             <th>Status</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Laptop</td>
-                                <td><textarea style="border:none;" name="" id="" cols="90" rows="2"
-                                        readonly>A</textarea></td>
-                                <td>
-                                    Active
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Laptop</td>
-                                <td><textarea style="border:none;" name="" id="" cols="90" rows="2"
-                                        readonly>B</textarea></td>
-                                <td>
-                                    Unserviceable
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Laptop</td>
-                                <td><textarea style="border:none;" name="" id="" cols="90" rows="2"
-                                        readonly>C</textarea></td>
-                                <td>
-                                    Unserviceable
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <div class="col-md-12">&nbsp</div>
-                    <button type="button" id="SubmitTurnover" name="btn_assignItem"
-                        class="btn btn-success btn-xs float-right">Print Report of the Phyisacal Count of Property, Plant and Equipment</button>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <select class="form-control form-control-sm float-right" id="asset_type_id">
+                            <option value="">Select Type to Print</option>
+                            <option value="2">Office Supplies   </option>
+                            <option value="3">Furniture and Fixtures</option>
+                            <option value="4">IT Equipmets</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                            <button type="button" id="SubmitPrintPhysical" name="btn_assignItem"
+                            class="btn btn-success btn-sm">Print Report of the Physical Count of Property, Plant and Equipment
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -173,14 +150,7 @@
 @endsection
 
 @section('script')
-<script type="text/javascript">
-  $(document).ready(function() {
-        $('#prDatatable').DataTable({
-            responsive: true,
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
-        });
-    } );
-</script>
+    <script src="{{asset('js/printReports.js')}}"></script>
 @endsection
 
 

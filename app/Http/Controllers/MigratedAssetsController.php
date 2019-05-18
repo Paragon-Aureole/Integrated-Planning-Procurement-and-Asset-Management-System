@@ -70,7 +70,7 @@ class MigratedAssetsController extends Controller
         migratedAssets::create($data);
         }
 
-        return redirect()->back()->with('success', 'Item Successfully Migrated');
+        return redirect()->route('migrateAssets.index')->with('success', 'Item Successfully Migrated');
     }
 
     /**
@@ -90,9 +90,17 @@ class MigratedAssetsController extends Controller
      * @param  \App\migratedAssets  $migratedAssets
      * @return \Illuminate\Http\Response
      */
-    public function edit(migratedAssets $migratedAssets)
+    public function edit($id)
     {
-        //
+        $data = migratedAssets::findorFail($id);
+        $migratedAssets = migratedAssets::all();
+        $migratedIcsAssets = migratedIcsAssets::all();
+        $office = Office::all();
+        $assetType = assetType::all();
+
+        // dd($data->id);
+
+        return view('assets.data_capturing.officeAssets.editCapturedAssets', compact('data', 'migratedAssets', 'migratedIcsAssets', 'office', 'assetType'));
     }
 
     /**
@@ -102,9 +110,36 @@ class MigratedAssetsController extends Controller
      * @param  \App\migratedAssets  $migratedAssets
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, migratedAssets $migratedAssets)
+    public function update(Request $request, $id)
     {
-        //
+        // dd($input['asset_type_id']);
+        //    dd($request->all());
+    $input = $request->all();
+        // dd($input);
+        // for($i=0; $i < count($input['amount']); $i++) {
+            $update = migratedAssets::findorFail($id);
+            
+           $update_all =  $update->update([ 
+                'asset_type_id' => $input['asset_type_id'],
+                'classification' => $input['classification'],
+                'entity_name' => $input['entity_name'],
+                'fund_cluster' => $input['fund_cluster'],
+                'receiver_name' => $input['receiver_name'],
+                'receiver_position' => $input['receiver_position'],
+                'issuer_name' => $input['issuer_name'],
+                'issuer_position' => $input['issuer_position'],
+                'item_quantity' => $input['item_quantity'],
+                'item_unit' => $input['item_unit'],
+                'property_number' => $input['property_number'],
+                'date_acquired' => $input['date_acquired'],
+                'unit_cost' => $input['unit_cost'],
+                'amount' => $input['amount'],
+                'description' => $input['description'],
+                'par_number' => $input['par_number'],
+            ]);
+        // };
+
+         return redirect()->route('migrateAssets.index')->with('success', 'Item Successfully Updated');
     }
 
     /**

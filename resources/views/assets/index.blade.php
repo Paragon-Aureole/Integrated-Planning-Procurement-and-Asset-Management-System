@@ -84,7 +84,7 @@
                       @else
                       @endif
                       @can('Asset Management')
-                        @if ($record->isRequested == 0 && $record->isAssigned == 0)
+                        @if ($record->isRequested == 0 && $record->isAssigned == 0 && $record->item_stock == $record->item_quantity)
                           <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#editRequestIcs" id="requestBtn">
                             Request to Edit
                           </button>

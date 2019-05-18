@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\MigratedIcsAssets;
+use App\migratedAssets;
+use App\Office;
+use App\assetType;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -59,7 +62,7 @@ class MigratedIcsAssetsController extends Controller
             MigratedIcsAssets::create($data);
         }
 
-        return redirect()->back()->with('success', 'Item Successfully Migrated');
+        return redirect()->route('migrateAssets.index')->with('success', 'Item Successfully Migrated');
     }
 
     /**
@@ -79,9 +82,17 @@ class MigratedIcsAssetsController extends Controller
      * @param  \App\MigratedIcsAssets  $migratedIcsAssets
      * @return \Illuminate\Http\Response
      */
-    public function edit(MigratedIcsAssets $migratedIcsAssets)
+    public function edit($id)
     {
-        //
+        $data = migratedIcsAssets::findorFail($id);
+        $migratedAssets = migratedAssets::all();
+        $migratedIcsAssets = migratedIcsAssets::all();
+        $office = Office::all();
+        $assetType = assetType::all();
+
+        // dd($data->id);
+
+        return view('assets.data_capturing.officeAssets.editCapturedIcsAssets', compact('data', 'migratedAssets', 'migratedIcsAssets', 'office', 'assetType'));
     }
 
     /**
@@ -91,9 +102,32 @@ class MigratedIcsAssetsController extends Controller
      * @param  \App\MigratedIcsAssets  $migratedIcsAssets
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MigratedIcsAssets $migratedIcsAssets)
+    public function update(Request $request, $id)
     {
-        //
+        //    dd($request->all());
+        $input = $request->all();
+        // dd($input);
+    // dd($input);
+    // for($i=0; $i < count($input['amount']); $i++) {
+        $update = migratedIcsAssets::findorFail($id);
+        
+       $update_all =  $update->update([ 
+            'classification' => $input['classification_ics'],
+            'asset_type_id' => $input['asset_type_id_ics'],
+            'receiver_name' => $input['receiver_name'],
+            'receiver_position' => $input['receiver_position'],
+            'issuer_name' => $input['issuer_name'],
+            'issuer_position' => $input['issuer_position'],
+            'item_quantity' => $input['item_quantity'],
+            'item_unit' => $input['item_unit'],
+            'inventory_item_number' => $input['inventory_item_number'],
+            'estimated_useful_life' => $input['estimated_useful_life'],
+            'ics_number' => $input['ics_number'],
+            'description' => $input['description'],
+        ]);
+    // };
+
+     return redirect()->route('migrateAssets.index')->with('success', 'Item Successfully Updated');
     }
 
     /**

@@ -21,37 +21,38 @@
                             <div class="row">
                                 <div class="form-group col-md-9">
                                     <label for="classification" class="small">Classification:</label>
-                                    <select name="assetType" id="classification" class="form-control form-control-sm">
+                                    <select name="assetType" id="classification" class="form-control form-control-sm" readonly>
                                         <option value="0">-Select Asset Type-</option>
-                                        <option value="ICS">Inventory Custodian Slip</option>
-                                        <option value="PAR">Property Acknowledgement Receipt</option>
+                                        <option value="ICS" @if ($data->classification == 'ICS')Selected @endif>Inventory Custodian Slip</option>
+                                        <option value="PAR" @if ($data->classification == 'PAR')Selected @endif>Property Acknowledgement Receipt</option>
                                     </select>
                                 </div>
+                                {{-- {{$data->asset_type_id}} --}}
                                 <div class="form-group col-md-3">
                                     <label for="asset_type" class="small">Type of Asset:</label>
                                     <select name="assetType" id="asset_type" class="form-control form-control-sm">
-                                        {{-- <option value="0">-Select Asset Type-</option> --}}
-                                        <option value="1">Vehicle</option>
-                                        <option value="2">Office Supplies</option>
-                                        <option value="3">Furnitures and Fixtures</option>
-                                        <option value="4">IT Equipments</option>
+                                        <option value="0">-Select Asset Type-</option> --}}
+                                        <option value="1" @if ($data->asset_type_id == '1')Selected @endif>Vehicle</option>
+                                        <option value="2" @if ($data->asset_type_id == '2')Selected @endif>Office Supplies</option>
+                                        <option value="3" @if ($data->asset_type_id == '3')Selected @endif>Furnitures and Fixtures</option>
+                                        <option value="4" @if ($data->asset_type_id == '4')Selected @endif>IT Equipments</option> 
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        
+                        {{-- {{$data}} --}}
                         {{-- inputs for office assets --}}
-                        <div id="office_assets" style="display:none">
-                            <form action="{{route('migrateAssets.store')}}" method="post" class="needs-validation" novalidate>
-                                    
+                        <div id="office_assets">
+                            <form action="{{route('migrateAssets.update', $data->id)}}" method="POST" class="needs-validation" novalidate>
+                                {{method_field('PUT')}}
                                 <div id="cloneInputs">
                                     <div class="row">
-                                        <input type="text" id="classification_id" name="classification[]" hidden>
-                                        <input type="text" id="asset_type_id" name="asset_type_id[]" hidden>
+                                        <input type="text" value="{{$data->classification}}" id="classification_id" name="classification" hidden>
+                                        <input type="text" value="{{$data->asset_type_id}}"  id="asset_type_id" name="asset_type_id" hidden>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Entity Name:</label>
-                                                <select id="entity_name" name="entity_name[]" class="form-control form-control-sm">
+                                                <select id="entity_name" name="entity_name" class="form-control form-control-sm">
                                                     @foreach ($office as $officeValue)
                                                         <option value="{{$officeValue->id}}">{{$officeValue->office_code}}</option>
                                                     @endforeach
@@ -61,31 +62,31 @@
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Fund Cluster:</label>
-                                                <input type="text" id="fund_cluster" name="fund_cluster[]" class="form-control form-control-sm" required>
+                                                <input type="text" id="fund_cluster" name="fund_cluster" class="form-control form-control-sm" value="{{$data->fund_cluster}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Receiver name:</label>
-                                                <input type="text" id="receiver_name" name="receiver_name[]" class="form-control form-control-sm" required>
+                                                <input type="text" id="receiver_name" name="receiver_name" class="form-control form-control-sm" value="{{$data->receiver_name}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Receiver Position:</label>
-                                                <input type="text" id="receiver_position" name="receiver_position[]" class="form-control form-control-sm" required>
+                                                <input type="text" id="receiver_position" name="receiver_position" class="form-control form-control-sm" value="{{$data->receiver_position}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Issuer Name:</label>
-                                                <input type="text" id="issuer_name" name="issuer_name[]" class="form-control form-control-sm" required>
+                                                <input type="text" id="issuer_name" name="issuer_name" class="form-control form-control-sm" value="{{$data->issuer_name}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Issuer Position:</label>
-                                                <input type="text" id="issuer_position" name="issuer_position[]" class="form-control form-control-sm" required>
+                                                <input type="text" id="issuer_position" name="issuer_position" class="form-control form-control-sm" value="{{$data->issuer_position}}" required>
                                             </div> 
                                         </div>
                                     </div>
@@ -93,37 +94,37 @@
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Item Quantity:</label>
-                                                <input type="number" id="item_quantity" name="item_quantity[]" class="form-control form-control-sm" required>
+                                                <input type="number" id="item_quantity" name="item_quantity" class="form-control form-control-sm" value="{{$data->item_quantity}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Item Unit:</label>
-                                                <input type="text" id="item_unit" name="item_unit[]" class="form-control form-control-sm" required>
+                                                <input type="text" id="item_unit" name="item_unit" class="form-control form-control-sm" value="{{$data->item_unit}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Property Number:</label>
-                                                <input type="text" id="property_number" name="property_number[]" class="form-control form-control-sm" required>
+                                                <input type="text" id="property_number" name="property_number" class="form-control form-control-sm" value="{{$data->property_number}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Date Acquired:</label>
-                                                <input type="date" id="date_acquired" name="date_acquired[]" class="form-control form-control-sm" required>
+                                                <input type="date" id="date_acquired" name="date_acquired" class="form-control form-control-sm" value="{{$data->date_acquired}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Unit Cost:</label>
-                                                <input type="number" id="unit_cost" name="unit_cost[]" class="form-control form-control-sm" required>
+                                                <input type="number" id="unit_cost" name="unit_cost" class="form-control form-control-sm" value="{{$data->unit_cost}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Amount:</label>
-                                                <input type="number" id="amount" name="amount[]" class="form-control form-control-sm" required>
+                                                <input type="number" id="amount" name="amount" class="form-control form-control-sm" value="{{$data->amount}}" required>
                                             </div> 
                                         </div>
                                     </div>
@@ -131,13 +132,13 @@
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">PAR Number:</label>
-                                                <input type="text" id="par_number" name="par_number[]" class="form-control form-control-sm" required>
+                                                <input type="text" id="par_number" name="par_number" class="form-control form-control-sm" value="{{$data->par_number}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-10">
                                             <div class="form-group col-sm-12">
                                                 <label class="small">Item Description:</label><br>
-                                                <textarea id="description" id="description" name="description[]" cols="180" rows="5" class="form-control form-control-sm" required></textarea>
+                                                <textarea id="description" id="description" name="description" cols="180" rows="5" class="form-control form-control-sm" required>{{$data->description}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -150,8 +151,8 @@
                                <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group col-md-6">
-                                            <button title="Capture New Data" id="cloneData" class="btn btn-warning"> <i class="fas fa-plus"></i></button>  
-                                            <button title="Save Information Inputted" type="submit" class="btn btn-primary">Capture Data</button>
+                                            <a href="/migrateAssets" class="btn btn-info"> Cancel</a>
+                                            <button title="Save Information Inputted" type="submit" class="btn btn-warning">Update Data</button>
                                         </div>
                                     </div>
                                </div>
@@ -237,8 +238,8 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group col-md-6">
-                                            <button title="Capture New Data" id="buttonCloneIcs" class="btn btn-warning"> <i class="fas fa-plus"></i></button>  
-                                            <button title="Save Information Inputted" type="submit" class="btn btn-primary">Capture Data</button>
+                                            <a href="/migrateAssets" class="btn btn-info"> Cancel</a>
+                                            <button title="Save Information Inputted" type="submit" class="btn btn-warning">Update Data</button>
                                         </div>
                                     </div>
                                 </div>
@@ -250,95 +251,6 @@
         </div>
     </div>
     <div class="col-md-12">&nbsp</div>
-
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-header pt-2 pb-2">List of Captured Assets</div>
-        <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <h6 class="card-title">
-                Captured Property Acknowledgement Receipt
-            </h6>
-            <div class="table-responsive">
-            <table id="parDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                <thead class="thead-dark">
-                <tr>
-                    <th>Receiver</th>
-                    <th>Position</th>
-                    <th>PAR Number</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($migratedAssets as $migratedAssetsValue)
-                    <tr>
-                        <td>{{$migratedAssetsValue->receiver_name}}</td>
-                        <td>{{$migratedAssetsValue->receiver_position}}</td>
-                        <td>{{$migratedAssetsValue->par_number}}</td>
-                        <td>
-                            <a href="{{route('migrateAssets.print', $migratedAssetsValue->id)}}" target="_blank" class="btn btn-sm btn-success">
-                                <i class="fas fa-print"></i>
-                            </a>
-                            <a href="{{route('migrateAssets.edit', $migratedAssetsValue->id)}}" class="btn btn-sm btn-warning">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            @can('full control')
-                            <a id="deletePar" href="{{route('migrateAssets.destroy', $migratedAssetsValue->id)}}" class="btn btn-sm btn-danger">
-                                <i class="fas fa-minus"></i>
-                            </a>
-                            @endcan
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-            </div> 
-        </div>
-    
-            <!-- table -->
-            <div class="col-md-6">
-                <h6 class="card-title">Inventory Custodian Slip</h6>
-                <div class="table-responsive">
-                    <table id="icsDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                <thead class="thead-dark">
-                <tr>
-                    <th>Receiver</th>
-                    <th>Position</th>
-                    <th>ICS Number</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($migratedIcsAssets as $migratedIcsAssetsValue)
-                    <tr>
-                        <td>{{$migratedIcsAssetsValue->receiver_name}}</td>
-                        <td>{{$migratedIcsAssetsValue->receiver_position}}</td>
-                        <td>{{$migratedIcsAssetsValue->ics_number}}</td>
-                        <td>
-                            <a href="{{route('migrateIcsAssets.print', $migratedIcsAssetsValue->id)}}" target="_blank" class="btn btn-sm btn-success">
-                                <i class="fas fa-print"></i>
-                            </a>
-                            <a href="{{route('migrateIcsAssets.edit', $migratedIcsAssetsValue->id)}}" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            @can('full control')
-                            <a id="deleteIcs" href="{{route('migrateIcsAssets.destroy', $migratedIcsAssetsValue->id)}}" class="btn btn-sm btn-danger">
-                                <i class="fas fa-minus"></i>
-                            </a>
-                            @endcan
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-                </div>	
-            </div>
-        </div>
-        </div>
-    </div>
-    
-    </div>
 @endsection
 
 @section('script')
@@ -562,6 +474,7 @@
           }
         
     });
+
 
 
     

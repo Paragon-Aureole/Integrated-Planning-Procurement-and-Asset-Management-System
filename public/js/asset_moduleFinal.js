@@ -355,6 +355,14 @@
                                       console.log('fully assigned.');
 
                                   } else {
+                                    $('[name=selectedItemEmployeeName]').val('');
+                                    $('[name=selectedItemEmployeePosition]').val('');
+                                    $('#descriptionPar').empty();
+                                    for (var i = 1; i <= qtyData; i++) {
+                  
+                                      $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
+                          
+                                    }
                                       fillQuantityDropdown(qtyData);
                                       alert('ICS Asset Assigned.');
                                   }
