@@ -42,18 +42,21 @@
                     <td>{{$record->item_stock}}</td>  --}}
                     <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>
-                      <button type="button" id="btn_assignItem" name="btn_assignItem" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button>
+                      @if ($record->isRequested == 0 || ($record->isRequested == 1 && $record->isEditable == 1  && $record->asset_type_id != null))
+                        <button type="button" id="btn_assignItem" name="btn_assignItem" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inputSignatoryModal">Assign</button>
+                      @else
+                      @endif
 
                       @can('Asset Management')
-                        @if ($record->isRequested == 0 && $record->isAssigned == 0 && $record->item_stock == $record->item_quantity)
+                        @if ($record->isRequested == 0)
                           <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#editRequestPar" id="requestBtn">
                             Request to Edit
                           </button>
-                          @elseif ($record->isRequested == 1 && $record->asset_type_id != null)
+                          @elseif ($record->isRequested == 1 && $record->isEditable == 1)
                           <button class="btn btn-sm btn-warning" disabled>
                             Approved
                           </button>
-                          @elseif ($record->isRequested == 1)
+                          @elseif ($record->isEditable == 0)
                           <button class="btn btn-sm btn-warning" disabled>
                             Pending
                           </button>
@@ -62,10 +65,13 @@
 
                       @can('Supervisor')
                         @if ($record->isRequested == 0)
-                        @elseif ($record->isRequested == 1 && $record->asset_type_id == null)
+                        @elseif ($record->isRequested == 1 && $record->isEditable == 0)
                         <a href="/acceptEdit/{{$record->id}}" class="btn btn-sm btn-info" data-toggle="confirmation" data-content="Approved Item {{$record->id}} to Edit?">
                             Accept to Edit
                         </a>
+                        <a href="/cancelEdit/{{$record->id}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel {{$record->id}} to Edit?">
+                          Cancel Request
+                      </a>
                         @else
                         @endif
                       @endcan
@@ -261,6 +267,7 @@
                   <textarea name="reason" class="form-control" id="reasob" cols="30" rows="5" required></textarea>
                 </div>
               </div>
+              <input type="text" name="classificationNo" value="1" hidden>
           </div>
           <div class="=col-md-12">
             <button class="btn btn-danger container-fluid" type="submit">Submit Request</button>
