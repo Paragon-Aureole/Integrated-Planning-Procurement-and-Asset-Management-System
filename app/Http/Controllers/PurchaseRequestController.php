@@ -322,7 +322,6 @@ class PurchaseRequestController extends Controller
         } else {
             $pr = PurchaseRequest::where('office_id', $user->office_id)
                 ->where('pr_status', 1)
-                ->where('created_rfq', 0)
                 ->where('created_supplemental', 0)
                 ->get();
 
