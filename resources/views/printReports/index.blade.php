@@ -48,11 +48,6 @@
    	<!-- table -->
    	<div class="col-md-6">
          <h6 class="card-title">Available Existing Motor Vehicle</h6>
-         <div class="row">
-            <div class="col-md-12">
-                    <a href="/printVehicle" target="_blank"  id="SubmitPrintPhysical" name="btn_assignItem" class="btn btn-success container-fluid">Print Updated Inventory/Accounting of All Existing Motor Vehicles</a> 
-            </div>
-        </div>
         <hr style="height:5px; background-color:grey">
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
@@ -65,15 +60,22 @@
             </tr>
           </thead>
           <tbody>
-          {{-- @foreach ($rfq as $rfq) --}}
-          {{-- @endforeach --}}
+          @foreach ($asset as $assetItem)
+          {{-- {{$assetItem->asset_par->first()->created_at}} --}}
+            <tr>
+              <td>{{$assetItem->asset_par->first()->created_at}}</td>
+              <td>{{$assetItem->amount}}</td>
+              <td>{{$assetItem->purchaseOrder->purchaseRequest->office->office_code}}</td>
+              <td>{{$assetItem->asset_type->type_name}}</td>
+            </tr>
+          @endforeach
           </tbody>
         </table>
          </div>
          <div class="col-md-12">&nbsp;</div>
          <div class="row">
                 <div class="col-md-12">
-                        <button id="searchName" class="btn btn-success float-right">Print Updated Inventory/Accounting of All Existing Motor Vehicles</button> 
+                  <a href="/printVehicle" target="_blank"  id="SubmitPrintPhysicalVehicle" name="btn_assignItem" class="btn btn-success float-right">Print Updated Inventory/Accounting of All Existing Motor Vehicles</a> 
                 </div>
             </div>
             {{-- <hr style="height:5px; background-color:grey">	 --}}
@@ -99,7 +101,7 @@
                 <div class="form-group">
                     <label>Signatory Name:</label>
                     <input id="signatoryName" class="form-control" type="text" disabled>
-                    <input id="signatoryId" class="form-control" type="text" disabled>
+                    <input id="signatoryId" class="form-control" type="text" hidden>
                 </div>
                 <div class="form-group">
                     <hr style="height:5px; background-color:grey;">

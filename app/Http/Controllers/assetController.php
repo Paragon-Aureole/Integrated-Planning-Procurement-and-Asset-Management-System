@@ -458,7 +458,7 @@ class assetController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.data_capturing.vehicle.printvehicle', compact('assetData'))->setPaper('Folio', 'portrait');
+        $pdf = PDF::loadView('assets.data_capturing.vehicle.printvehicle', compact('assetData'))->setPaper('Folio', 'landscape');
         return $pdf->stream('VEHICLE.pdf');
     }
 

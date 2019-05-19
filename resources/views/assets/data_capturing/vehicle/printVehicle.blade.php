@@ -47,7 +47,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <td>{{$record->asset_par->first()->created_at}}</td>
                         {{-- <td>{{$record->asset_par->created_at}}</td> --}}
                         <td>{{($record->amount / $record->item_quantity) * $record->asset_par->first()->quantity}}</td>
                         {{-- <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td> --}}

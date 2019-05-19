@@ -28,7 +28,8 @@ class PrintReportController extends Controller
         // dd($findName);
 
         $assetPar = assetPar::all();
-        return view('printReports.index', compact('assetPar'));
+        $asset = asset::where('asset_type_id', 1)->get();
+        return view('printReports.index', compact('assetPar','asset'));
     }
     public function getPrintPhysicalData(Request $request)
     {
