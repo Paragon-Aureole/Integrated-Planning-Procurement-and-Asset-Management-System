@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="form-group col-md-9">
                                     <label for="classification" class="small">Classification:</label>
-                                    <select name="assetType" id="classification" class="form-control form-control-sm" readonly>
+                                    <select name="assetType" id="classification" class="form-control form-control-sm" disabled>
                                         <option value="0">-Select Asset Type-</option>
                                         <option value="ICS" @if ($data->classification == 'ICS')Selected @endif>Inventory Custodian Slip</option>
                                         <option value="PAR" @if ($data->classification == 'PAR')Selected @endif>Property Acknowledgement Receipt</option>

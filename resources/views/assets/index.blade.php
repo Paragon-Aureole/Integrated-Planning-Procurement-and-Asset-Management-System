@@ -72,9 +72,9 @@
                     <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>ICS</td>
                     <td>
-                      <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#printIcs" id="printBtnIcs">
-                        <i class="fas fa-th-list"></i>
-                      </button>
+                      @if ($record->item_stock == 0)
+                         <a href="printIcs/{{$record->id}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
+                      @endif
                       @if ($record->item_stock == 0)
                       @elseif ($record->item_stock != $record->item_quantity || $record->item_stock == $record->item_quantity)
                           <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assetDistribution"
@@ -232,7 +232,7 @@
                   <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
                 </div>
                 {{-- QUANTITY SELECITION HERE --}}
-                <select name="selectedItemQty" id="selectedItemQtyIcs" class="custom-select">
+                <select name="selectedItemQty" id="selectedItemQtyIcs" class="custom-select" disabled>
                   <option>None</option>
                 </select>
               </div>
@@ -263,9 +263,9 @@
                 </div>
                 {{-- NAME AND POSITION OF EMPLOYEE INPUT HERE  --}}
                 <input type="text" name="selectedItemEmployeeName" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Name" required>
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="asdasd" placeholder="Name" readonly>
                 <input type="text" name="selectedItemEmployeePosition" class="form-control"
-                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Position" required>
+                  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="asdasdi" placeholder="Position" readonly>
               </div>
             </div>
           </div>
@@ -273,7 +273,7 @@
             <div class="col-md-12" id="selectedItemDescription">
               <label>Description:</label><br>
               <textarea name="selectedItemDescription" cols="30" rows="10"
-                class="form-control form-control-sm"></textarea>
+                class="form-control form-control-sm" required></textarea>
             </div>
           </div>
         </div>
