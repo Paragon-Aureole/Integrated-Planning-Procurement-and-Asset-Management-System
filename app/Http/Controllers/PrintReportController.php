@@ -10,6 +10,7 @@ use App\asset;
 use App\AssetIcslipItem;
 use App\AssetParItem;
 use App\assetType;
+use App\migratedAssets;
 use PDF;
 
 class PrintReportController extends Controller
@@ -51,6 +52,12 @@ class PrintReportController extends Controller
     {
         $asset_type = assetType::find($asset_type_id);
         $parData = AssetParItem::where('asset_par_id', $id)->get();
+        // dd($parData->first()->assetPar);
+        $name = $parData->first()->assetPar->assignedTo;
+        $position = $parData->first()->assetPar->position;
+        $parMigrationData = migratedAssets::where('receiver_name', $name)->where('receiver_position', $position)->where('asset_type_id', $asset_type_id)->get();
+        // dd($parMigrationData);
+
         // $parData = $parItem->assetPar->asset->where('asset_type_id', $asset_type_id)->get();
         // dd($asset_type);
         // dd($parData->first()->assetParItem);
@@ -61,7 +68,7 @@ class PrintReportController extends Controller
             'margin-left'   => 10,
         ];
 
-        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets', compact('parData', 'asset_type'))->setPaper('folio', 'landscape');
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets', compact('parData', 'asset_type', 'parMigrationData'))->setPaper('folio', 'landscape');
         return $pdf->stream('Print Report of the Physical Count of Property, Plant and Equipment.pdf');
     }
 

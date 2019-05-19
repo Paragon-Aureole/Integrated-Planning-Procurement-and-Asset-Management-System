@@ -107,6 +107,23 @@
                     </tr> 
                     @endforeach
 
+                    @foreach ($parMigrationData as $assetItem)
+                    <tr>
+                        <td>☺</td>
+                        <td>{{$assetItem->description}}</td>
+                        <td>&nbsp;</td>
+                        <td>{{$assetItem->item_unit}}</td>
+                        <td>{{$assetItem->amount}}</td>
+                        <td>{{$assetItem->item_quantity}}</td>
+                        <td></td>
+                        <td>&nbsp;</td>
+                        <td>{{$assetItem->date_acquired}}</td>
+                        <td>Assigned To: {{$assetItem->receiver_name}}</td>
+                        <td></td>
+                    </tr> 
+                    @endforeach
+
+
                 </tbody>
             </table>
         </div>
