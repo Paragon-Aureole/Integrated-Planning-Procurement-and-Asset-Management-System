@@ -62,7 +62,7 @@
          <h6 class="card-title">Available Existing Motor Vehicle</h6>
          <div class="row">
             <div class="col-md-12">
-                    <button id="searchName" class="btn btn-success container-fluid">Print Updated Inventory/Accounting of All Existing Motor Vehicles</button> 
+                    <a href="/printVehicle" target="_blank"  id="SubmitPrintPhysical" name="btn_assignItem" class="btn btn-success container-fluid">Print Updated Inventory/Accounting of All Existing Motor Vehicles</a> 
             </div>
         </div>
         <hr style="height:5px; background-color:grey">
@@ -110,6 +110,7 @@
                 <div class="form-group">
                     <label>Signatory Name:</label>
                     <input id="signatoryName" class="form-control" type="text" disabled>
+                    <input id="signatoryId" class="form-control" type="text" disabled>
                 </div>
                 <div class="form-group">
                     <hr style="height:5px; background-color:grey;">
@@ -117,6 +118,7 @@
                     <table id="modalTurnoverDatatable"
                         class="table table-bordered table-hover table-sm display nowrap w-100">
                         <thead class="thead-light">
+                            <th>Item Name</th>
                             <th>Description</th>
                             <th>Status</th>
                         </thead>
@@ -138,8 +140,8 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                            <button type="button" id="SubmitPrintPhysical" name="btn_assignItem"
-                            class="btn btn-success btn-sm">Print Report of the Physical Count of Property, Plant and Equipment
+                        <button type="button" id="SubmitPrintPhysical" name="btn_assignItem"
+                        class="btn btn-success btn-sm">Print Report of the Physical Count of Property, Plant and Equipment
                         </button>
                     </div>
                 </div>

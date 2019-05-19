@@ -39,7 +39,7 @@ class AssetTurnoverController extends Controller
                 $query->where('office_id', Auth::user()->office_id);
             })->get();
 
-            $approvalAssets = assetTurnover::whereHas('assetParItem.assetPar.asset.purchaseOrder.purchaseRequest', function ($query) {
+            $approvalAssets = assetTurnover::whereHas('assetPar.asset.purchaseOrder.purchaseRequest', function ($query) {
                 $query->where('office_id', Auth::user()->office_id);
             })->get();
         }

@@ -97,7 +97,8 @@
             var checkbox = '<input type="checkbox" name="toTurnover[' + assetParItems[1][index].id + ']" value="1" disabled checked>'
           }
           // console.log(element);
-          tableRowDataContent.push([assetParItems[0],
+          tableRowDataContent.push([
+            assetParItems[0],
             description,
             status,
             checkbox

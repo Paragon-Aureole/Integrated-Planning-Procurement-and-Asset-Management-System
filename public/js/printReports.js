@@ -9,7 +9,8 @@ $(document).ready(function () {
         var data = physicalReport.row($(this).parents('tr')).data();
         getData(data);
 
-        $('#signatoryName').val(data[0])
+        $('#signatoryName').val(data[1]);
+        $('#signatoryId').val(data[0]);
 
 
 
@@ -25,23 +26,31 @@ $(document).ready(function () {
             type: 'GET',
             url: '/getPrintPhysicalData',
             success: function ( response ) {
-                console.log(response.getName);
+                // console.log(response.getName);
+                // var parItem = response.reportData;
+                // var nameData = response.getName;
+                var findName = response.findName;
+                // console.log(parItem);
+                // console.log(nameData);
+                console.log(findName.asset_id);
                 
-                var tableData = response.reportData;
-                $('#asset_id').val(tableData.asset_id)
-                populateTableData(tableData);
+                $('#asset_id').val(findName.asset_id)
+                populateTableData(findName);
             }
         });
         
-        function populateTableData(tableData) {
-            var putData = new Array;
+        function populateTableData(findName) {
 
-            for (let index = 0; index < tableData.length; index++) {
-                var description = tableData[index].description;
-                // var description = tableData[index].Description;
-               if (tableData[index].itemStatus == 0) {
+            var putData = new Array;
+            var asset_par_item = findName.asset_par_item;
+            var asset = findName.asset;
+            
+            for (let index = 0; index < asset_par_item.length; index++) {
+                var description = asset_par_item[index].description;
+                var Name = asset.details;
+               if (asset_par_item[index].itemStatus == 0) {
                    var status = 'Active'
-                } else if (tableData[index].itemStatus == 1) {
+                } else if (asset_par_item[index].itemStatus == 1) {
                     var status = 'Turnover Pending'
                     
                 } else {
@@ -50,6 +59,7 @@ $(document).ready(function () {
                 } 
                 
                putData.push({
+                    Name,
                     description,
                     status
                });
@@ -64,6 +74,7 @@ $(document).ready(function () {
                 responsive:false,
                 "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50,"All"]],
                 columns:[
+                    {data: 'Name'},
                     {data:'description'},
                     {data:'status'},
                 ]
@@ -84,7 +95,7 @@ $(document).ready(function () {
                     alert('Please Select an Asset Type to Print')
                 }else {
 
-                    window.open('/printPhysicalForm/'+$('#signatoryName').val()+'/'+asset_type_id, 'blank');
+                    window.open('/printPhysicalForm/'+$('#signatoryId').val()+'/'+asset_type_id, 'blank');
                 }
             })
 
