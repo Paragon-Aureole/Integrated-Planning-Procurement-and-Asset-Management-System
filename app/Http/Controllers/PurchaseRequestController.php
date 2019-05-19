@@ -171,7 +171,18 @@ class PurchaseRequestController extends Controller
     {
         $pr = PurchaseRequest::findorFail($id);
         $pr->update(['pr_status' => 2]);
-        return redirect()->route('pr.index')->with('info', 'PR Cancelled');
+
+        $items = $pr->prItem()->get();
+
+        foreach ($items as $key => $prItems) {
+            $ppmp = $prItems->ppmpItem;
+            $item_stock = $ppmp->item_stock + $prItems->item_quantity;
+            $update_stock = $ppmp->update([
+                "item_stock" => $item_stock
+            ]);
+        }
+
+        return redirect()->back()->with('info', 'PR Cancelled');
     }
 
 
