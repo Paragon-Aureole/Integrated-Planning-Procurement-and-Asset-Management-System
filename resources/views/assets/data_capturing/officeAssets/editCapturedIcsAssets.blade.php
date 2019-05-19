@@ -43,7 +43,7 @@
                         {{-- {{$data}} --}}
                         {{-- inputs for office assets --}}
                         <div id="office_assets" style="display:none">
-                            <form action="{{route('migrateAssets.store')}}" method="POST" class="needs-validation" novalidate>
+                            <form autocomplete="off" action="{{route('migrateAssets.store')}}" method="POST" class="needs-validation" novalidate>
                                 {{method_field('PUT')}}
                                 <div id="cloneInputs">
                                     <div class="row">
@@ -163,7 +163,7 @@
                         {{-- inputs for vehicle --}}
                         {{-- {{$data}} --}}
                         <div id="vehicle" >
-                            <form action="{{route('migrateIcsAssets.update', $data->id)}}" method="POST" class="needs-validation" novalidate>
+                            <form autocomplete="off" action="{{route('migrateIcsAssets.update', $data->id)}}" method="POST" class="needs-validation" novalidate>
                                 <div id="cloneIcs">
                                     {{method_field('PUT')}}
                                     <div class="row">

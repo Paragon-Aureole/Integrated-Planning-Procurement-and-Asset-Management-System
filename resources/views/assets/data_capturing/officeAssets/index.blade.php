@@ -42,7 +42,7 @@
                         
                         {{-- inputs for office assets --}}
                         <div id="office_assets" style="display:none">
-                            <form action="{{route('migrateAssets.store')}}" method="post" class="needs-validation" novalidate>
+                            <form autocomplete="off" action="{{route('migrateAssets.store')}}" method="post" class="needs-validation" novalidate>
                                     
                                 <div id="cloneInputs">
                                     <div class="row">
@@ -134,7 +134,21 @@
                                                 <input type="text" id="par_number" name="par_number[]" class="form-control form-control-sm" required>
                                             </div> 
                                         </div>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-2">
+                                            <div class="form-group col-md-12">
+                                                <label class="small">Item Name:</label>
+                                                <input type="text" id="item_name" name="item_name[]" class="form-control form-control-sm" required>
+                                            </div> 
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="status" class="small">Status:</label>
+                                            <select name="status[]" id="status" class="form-control form-control-sm" required>
+                                                {{-- <option value="0">-Select Asset Type-</option> --}}
+                                                <option value="Active">Active</option>
+                                                <option value="Unserviceable">Unserviceable</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
                                             <div class="form-group col-sm-12">
                                                 <label class="small">Item Description:</label><br>
                                                 <textarea id="description" id="description" name="description[]" cols="180" rows="5" class="form-control form-control-sm" required></textarea>
@@ -161,7 +175,7 @@
 
                         {{-- inputs for vehicle --}}
                         <div id="vehicle" style="display:none">
-                            <form action="{{route('migrateIcsAssets.store')}}" method="post" class="needs-validation" novalidate>
+                            <form autocomplete="off" action="{{route('migrateIcsAssets.store')}}" method="post" class="needs-validation" novalidate>
                                 <div id="cloneIcs">
                                     
                                     <div class="row">
