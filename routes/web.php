@@ -206,6 +206,7 @@ Route::get('migrateAssets/print/{id}', 'MigratedAssetsController@print')->name('
 // ASSET TURNOVER
 Route::resource('AssetTurnover', 'AssetTurnoverController');
 Route::get('parSearchTurnover', 'AssetTurnoverController@parSearchTurnover');
+Route::get('getCurrentTurnoverId', 'AssetTurnoverController@getCurrentTurnoverId');
 Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
 Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems');
 Route::get('getParTurnoverItems', 'AssetTurnoverController@getParTurnoverItems');

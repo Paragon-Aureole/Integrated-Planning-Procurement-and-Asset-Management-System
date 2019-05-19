@@ -132,30 +132,32 @@ class AssetTurnoverController extends Controller
                 }
             }
 
+            // dd($filteredTurnoverData);
+
             // dd(count($filteredTurnoverData));
-            if (count($filteredTurnoverData) != 0) {
-                assetTurnover::create([
+        } else {
+            return redirect()->back()->with('error', 'Invalid Request. Check the items.');
+        }
+
+        if (count($filteredTurnoverData) != 0) {
+            assetTurnover::create([
                    'asset_par_id' => $par_id,
                    'isApproved' => 0
                ]);
        
-                foreach ($filteredTurnoverData as $key => $value) {
-                    AssetTurnoverItem::create([
+            foreach ($filteredTurnoverData as $key => $value) {
+                AssetTurnoverItem::create([
                        'asset_turnover_id' => $turnover_id,
                        'asset_par_item_id' => $key
                    ]);
        
-                    AssetParItem::where('id', $key)->update([
+                AssetParItem::where('id', $key)->update([
                    'itemStatus' => $value
                ]);
                
        
-                    return redirect()->back()->with('success', 'Request for Turnover Submitted.');
-                }
-            } else {
-                return redirect()->back()->with('error', 'Invalid Request. Check the items.');
-
             }
+            return redirect()->back()->with('success', 'Request for Turnover Submitted.');
         } else {
             return redirect()->back()->with('error', 'Invalid Request. Check the items.');
         }
