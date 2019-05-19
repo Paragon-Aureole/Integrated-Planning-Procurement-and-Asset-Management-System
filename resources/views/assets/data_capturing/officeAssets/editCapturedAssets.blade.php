@@ -138,12 +138,12 @@
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Item Name:</label>
-                                                <input type="text" id="item_name" name="item_name[]" class="form-control form-control-sm" value="{{$data->item_name}}" required>
+                                                <input type="text" id="item_name" name="item_name" class="form-control form-control-sm" value="{{$data->item_name}}" required>
                                             </div> 
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="status" class="small">Status:</label>
-                                            <select name="status[]" id="status" class="form-control form-control-sm" required>
+                                            <select name="status" id="status" class="form-control form-control-sm" required>
                                                 {{-- <option value="0">-Select Asset Type-</option> --}}
                                                 <option value="Active" @if ($data->asset_type_id == 'Active')Selected @endif>Active</option>
                                                 <option value="Unserviceable" @if ($data->asset_type_id == 'Unserviceable')Selected @endif>Unserviceable</option>
