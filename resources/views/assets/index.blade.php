@@ -9,6 +9,7 @@
 @endsection
 
 @section('content')
+
 @can('Asset Management', 'Supervisor')
 <div class="container-fluid">
     <div class="card">
@@ -210,7 +211,7 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h5>Classify Items Procured: <b id='assetType'></b></h5>
+        <h5>Confirm <b id='assetType'></b> Details:</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <input type="hidden" name="currentItemID">
       </div>

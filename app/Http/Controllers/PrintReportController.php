@@ -21,19 +21,29 @@ class PrintReportController extends Controller
      */
     public function index()
     {
+        // $getName = $findName->asset->all();
+
+        // $reportData = AssetParItem::where('asset_par_id', 1)->get();
+
+        // dd($findName);
+
         $assetPar = assetPar::all();
         return view('printReports.index', compact('assetPar'));
     }
     public function getPrintPhysicalData(Request $request)
     {
         $input = $request->all();
-        $findName = assetPar::find($input['asset_par_id']);
 
-        $getName = $findName->asset->all();
+        $findName = assetPar::with('AssetParItem')->with('asset')->find($input['asset_par_id']);
+        // dd($findName);
+        // $findName = assetPar::with('AssetParItem')->find(1);
 
-        $reportData = AssetParItem::where('asset_par_id', $input['asset_par_id'])->get();
+        // $getName = $findName->asset->all();
 
-        return response()->json(['reportData'=>$reportData, 'getName'=>$getName]);
+        // $reportData = AssetParItem::where('asset_par_id', $input['asset_par_id'])->get();
+
+        // return response()->json(['reportData'=>$reportData, 'getName'=>$getName, 'findName'=>$findName]);
+        return response()->json(['findName'=>$findName]);
     }
 
     public function printPhysicalForm($id,$asset_type_id)

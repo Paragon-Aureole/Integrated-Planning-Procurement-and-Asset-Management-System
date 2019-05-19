@@ -31,11 +31,20 @@ class assetController extends Controller
      */
     public function index()
     {
+        $assetData = asset::where('id', 4)->get();
+        // dd($assetData->first()->purchaseOrder->purchaseRequest->office->id);
 
+        
+        // dd($icsSignatory);
+        
         // $asset = purchaseRequest::where('created_inspection', 1)->get();
-        $asset = asset::All();
         // $assetPar = assetPar::All();
+        $asset = asset::All();
         $assetIcs = assetIcslip::All();
+
+        // $prOfficeId = $asset->first()->purchaseOrder->purchaseRequest->office->id;
+        // // dd($prOfficeId);
+        // $icsSignatory = App\Signatory::where(['office_id' => 1, 'is_activated' => 1])->first();
         // dd($asset);
         // $pr = PurchaseRequest::findorFail(1);
         // $pr_code = explode("-", $pr->pr_code);
@@ -98,8 +107,12 @@ class assetController extends Controller
         $input = $request->all();
 
         $assetData = asset::where('id', $input['asset_id'])->get();
+        $office_id = $assetData->first()->purchaseOrder->purchaseRequest->office->id;
+        $icsSignatory = App\Signatory::where(['office_id' => $office_id, 'is_activated' => 1])->first();
+        $icsSignatoryName = $icsSignatory->signatory_name;
+        $icsSignatoryPosition = $icsSignatory->signatory_position;
 
-        return response()->json(['assetData'=>$assetData]);
+        return response()->json(['assetData' => $assetData, 'signatoryName' => $icsSignatoryName, 'signatoryPosition' => $icsSignatoryPosition]);
     }
 
     public function getPARCount()
