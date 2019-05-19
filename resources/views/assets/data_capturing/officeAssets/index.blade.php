@@ -262,7 +262,7 @@
             </h6>
             <div class="table-responsive">
             <table id="parDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                <thead class="thead-dark">
+                <thead class="thead-light">
                 <tr>
                     <th>Receiver</th>
                     <th>Position</th>
@@ -301,7 +301,7 @@
                 <h6 class="card-title">Inventory Custodian Slip</h6>
                 <div class="table-responsive">
                     <table id="icsDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                <thead class="thead-dark">
+                <thead class="thead-light">
                 <tr>
                     <th>Receiver</th>
                     <th>Position</th>
