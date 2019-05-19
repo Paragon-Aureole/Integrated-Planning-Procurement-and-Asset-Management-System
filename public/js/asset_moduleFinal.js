@@ -8,12 +8,12 @@
       });
 
       var itemIcs = $('#itemIcs').DataTable({
-        responsive: true,
-        "lengthMenu": [
-            [5, 10, 25, 50, -1],
-            [5, 10, 25, 50, "All"]
-        ],
-    });
+          responsive: true,
+          "lengthMenu": [
+              [5, 10, 25, 50, -1],
+              [5, 10, 25, 50, "All"]
+          ],
+      });
 
       $('#distributedItemsDatatable').DataTable({
           responsive: true,
@@ -69,8 +69,9 @@
                   console.log(selectedRow);
                   getAssetData(selectedRow[0]).then(function (itemData) {
                       //  console.log(itemData.assetData[0]);
-
-                      fillModalFields(itemData.assetData[0], "ics");
+                    // console.log(itemData);
+                    
+                      fillModalFields(itemData.assetData[0], itemData.signatoryName, itemData.signatoryPosition);
 
                   });
                   //  var itemData = assetData.find(function (v) {
@@ -158,41 +159,7 @@
           return deferredObject.promise();
       }
 
-      function fillModalFields(itemData, type) {
-          if (type == 'par') {
-              getPARNo().then(function (parNo) {
-                  $('[name=currentItemID').val(itemData['id']);
-                  // console.log(parNo);
-
-                  //setting Date to Now
-                  var now = new Date();
-                  var day = ("0" + now.getDate()).slice(-2);
-                  var month = ("0" + (now.getMonth() + 1)).slice(-2);
-                  var today = now.getFullYear() + "-" + (month) + "-" + (day);
-                  $('[name=selectedItemDateAssigned]').val(today);
-
-                  getClassifiedItemQtyNo(itemData['id']).then(function (qtyData) {
-                      $('#qtyValPar').val('');
-                      $('#qtyValPar').val(qtyData);
-
-                      $('#descriptionPar').empty();
-                      for (var i = 1; i <= qtyData; i++) {
-
-                          $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
-
-                      }
-
-                      fillQuantityDropdown(qtyData);
-                      setTotalAmount();
-                  })
-
-                  var unitCost = parseFloat(itemData['amount']) / parseFloat(itemData['item_quantity']);
-                  $('[name=selectedItemPARNo]').val(parseInt(parNo) + 1);
-                  $('[name=selectedItemName]').val(itemData['details']);
-                  $('[name=selectedItemUnitCost]').val(unitCost);
-
-              });
-          } else if (type == 'ics') {
+      function fillModalFields(itemData, signatoryName, signatoryPosition) {
               getICSNo().then(function (icsNo) {
                   $('[name=currentItemID').val(itemData['id']);
                   // console.log(parNo);
@@ -213,9 +180,13 @@
 
                   $('[name=selectedItemICSNo]').val(parseInt(icsNo) + 1);
                   $('[name=selectedItemName]').val(itemData['details']);
+                //   var signatoryName = $('[name=signatoryName]').val();
+                //   var signatoryPosition = $('[name=signatoryPosition]').val();
+                  $('[name=selectedItemEmployeeName]').val(signatoryName);
+                  $('[name=selectedItemEmployeePosition]').val(signatoryPosition);
 
               });
-          }
+          
       }
 
       function setTotalAmount() {
@@ -299,7 +270,7 @@
           }
 
 
-           
+
 
       });
 
@@ -355,14 +326,14 @@
                                       console.log('fully assigned.');
 
                                   } else {
-                                    $('[name=selectedItemEmployeeName]').val('');
-                                    $('[name=selectedItemEmployeePosition]').val('');
-                                    $('#descriptionPar').empty();
-                                    for (var i = 1; i <= qtyData; i++) {
-                  
-                                      $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
-                          
-                                    }
+                                      $('[name=selectedItemEmployeeName]').val('');
+                                      $('[name=selectedItemEmployeePosition]').val('');
+                                      $('#descriptionPar').empty();
+                                      for (var i = 1; i <= qtyData; i++) {
+
+                                          $('#descriptionPar').append('<label>Description:' + i + '</label><br><textarea name="selectedItemDescription[]" cols="30" rows="10"class="form-control form-control-sm"></textarea>')
+
+                                      }
                                       fillQuantityDropdown(qtyData);
                                       alert('ICS Asset Assigned.');
                                   }
@@ -570,58 +541,67 @@
 
       function populatePrintIcs(rowData) {
           console.log(rowData[0])
-        var id = rowData[0];
+          var id = rowData[0];
           var values = {
-            item_ics : id
-        }
-        console.log(values);
-        
+              item_ics: id
+          }
+          console.log(values);
 
-        $.ajax({
-            url: '/printIcsData',
-            method: 'get',
-            data: values,
-            success: function (response) {
-               console.log(response.icsData);
-               var tableContent = response.icsData;
-               console.log(tableContent);
-               
-               populateTobePrinted(tableContent);
-               
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        });
-        
-        function populateTobePrinted (tableContent) {
-            console.log(tableContent);
-            var table = $('#itemIcs').DataTable({
-                destroy:true,
-                data: tableContent,
-                responsive:false,
-                columns:[
-                    {data:'assignedTo'},
-                    {data:'description'},
-                    {data:'position'},
-                    {data:'quantity'},
-                    {data:'useful_life'},
-                    {
-                        'data': null,
-                        'defaultContent': '<button id="btnPrint" class="btn btn-sm btn-success"><i class="fas fa-print"></i></button>'
-                    }
-                ]
-            })
-    
-            // on click functions of every button from the table
-            table.on('click', 'button#btnPrint', function () {
-                console.log("button update clicked");
-                var data = table.row( $(this).parents('tr') ).data();
-                console.log(data.id);
-                
-                window.open('printIcs/'+data.id, 'blank');
-            })
-        }
+
+          $.ajax({
+              url: '/printIcsData',
+              method: 'get',
+              data: values,
+              success: function (response) {
+                  console.log(response.icsData);
+                  var tableContent = response.icsData;
+                  console.log(tableContent);
+
+                  populateTobePrinted(tableContent);
+
+              },
+              error: function (response) {
+                  console.log(response);
+              }
+          });
+
+          function populateTobePrinted(tableContent) {
+              console.log(tableContent);
+              var table = $('#itemIcs').DataTable({
+                  destroy: true,
+                  data: tableContent,
+                  responsive: false,
+                  columns: [{
+                          data: 'assignedTo'
+                      },
+                      {
+                          data: 'description'
+                      },
+                      {
+                          data: 'position'
+                      },
+                      {
+                          data: 'quantity'
+                      },
+                      {
+                          data: 'useful_life'
+                      },
+                      {
+                          'data': null,
+                          'defaultContent': '<button id="btnPrint" class="btn btn-sm btn-success"><i class="fas fa-print"></i></button>'
+                      }
+                  ]
+              })
+
+              // on click functions of every button from the table
+              table.on('click', 'button#btnPrint', function () {
+                  console.log("button update clicked");
+                  var data = table.row($(this).parents('tr')).data();
+                  console.log(data.id);
+
+                  window.open('printIcs/' + data.id, 'blank');
+              })
+          }
       }
 
   });
