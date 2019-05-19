@@ -119,10 +119,10 @@
     function fillAssignedTurnoverModalForm(rowData) {
       console.log(rowData);
       if (rowData[4] == "Pending") {
-        $('#PrintTurnover').hide();
-        $('#ApproveTurnover').show();
+        // $('#PrintTurnover').hide();
+        // $('#ApproveTurnover').show();
       } else {
-        $('#PrintTurnover').show();
+        // $('#PrintTurnover').show();
         $('#ApproveTurnover').hide();
 
       }

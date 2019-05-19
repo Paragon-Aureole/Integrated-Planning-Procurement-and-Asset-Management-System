@@ -243,7 +243,7 @@ class PpmpController extends Controller
             $created_ppmp = Ppmp::where('is_supplemental', 0)->where('is_active', 1)->has('ppmpItem')->get();
     		$ppmp_DT = Ppmp::get()->where('is_supplemental', 1);
     	}else{
-            $created_ppmp = Ppmp::get()->where('is_supplemental', 0)->where('is_active', 1)->where('office_id', '=', $user->office_id)->has('ppmpItem');
+            $created_ppmp = Ppmp::where('is_supplemental', 0)->where('is_active', 1)->where('office_id', '=', $user->office_id)->has('ppmpItem')->get();
     		$ppmp_DT = Ppmp::get()->where('office_id', '=', $user->office_id)->where('is_supplemental', 1);
     	}
     	$offices = Office::all();
@@ -260,11 +260,20 @@ class PpmpController extends Controller
     {
         $ppmp = Ppmp::findorFail($id);
 
-    	$user = Auth::user();
+        $user = Auth::user();
+        
+        $query = $ppmp->signatory_id;
+
+        if(empty($query) == true){
+            $signatory = null;
+        }else{
+            $signatory = $query;
+        }
 
 		$add_ppmp = $user->ppmp()->create([
 		    "ppmp_year" => $ppmp->ppmp_year,
             "office_id" => $ppmp->office_id,
+            "signatory_id" => $signatory,
             "is_supplemental" => 1,
             "former_ppmp_id" => $ppmp->id,
             "is_active" => 1

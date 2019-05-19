@@ -76,7 +76,7 @@
                       @if ($record->item_stock == 0)
                          <a href="printIcs/{{$record->id}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
                       @endif
-                      @if ($record->item_stock != 0)
+                      @if ($record->isEditable == 1 && $record->item_stock != 0)
                           <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assetDistribution"
                         id="distributeItems">
                               <i class="fas fa-plus"></i>

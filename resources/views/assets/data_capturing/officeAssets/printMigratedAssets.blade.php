@@ -49,7 +49,7 @@
                         <td>{{$parData->item_quantity}}</td>
                         <td>{{$parData->item_unit}}</td>
                         {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td><textarea cols="30" rows="20" style="border:none">{{$parData->description}}</textarea></td>
+                        <td><textarea cols="43" rows="20" style="border:none">{{$parData->description}}</textarea></td>
                         {{--  <td>Sample Description</td>  --}}
                         <td>{{$parData->property_number}}</td>
                         <td>{{$parData->created_at}}</td>

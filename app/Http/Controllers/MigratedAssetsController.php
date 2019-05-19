@@ -64,6 +64,8 @@ class MigratedAssetsController extends Controller
                 'amount' => $input['amount'][$i],
                 'description' => $input['description'][$i],
                 'par_number' => $input['par_number'][$i],
+                'item_name' => $input['item_name'][$i],
+                'status' => $input['status'][$i],
             ];
             
             // dd($data);
@@ -136,6 +138,8 @@ class MigratedAssetsController extends Controller
                 'amount' => $input['amount'],
                 'description' => $input['description'],
                 'par_number' => $input['par_number'],
+                'item_name' => $input['item_name'],
+                'status' => $input['status'],
             ]);
         // };
 

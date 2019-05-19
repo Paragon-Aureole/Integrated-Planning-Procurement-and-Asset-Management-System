@@ -25,5 +25,7 @@ class migratedAssets extends Model
     'amount',
     'description',
     'par_number',
+    'item_name',
+    'status'
     ];
 }

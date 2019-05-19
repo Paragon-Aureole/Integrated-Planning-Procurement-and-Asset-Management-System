@@ -51,11 +51,12 @@
                   </a> 
                   @endif
 
-                  @can('full control')
+                  @if($pr->created_rfq == 0 || $pr->created_abstract == 0 || $pr->created_po == 0 || $pr->created_inspection == 0)
                   <a href="{{route('destroy.pr', $pr->id)}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel Purchase Request # {{$pr->pr_code}}">
                     <i class="fas fa-minus"></i>
                   </a>
-                  @endcan
+                  @endif
+
                 @endif
 
                 

@@ -31,6 +31,8 @@ class CreateMigratedAssetsTable extends Migration
             $table->Double('amount');
             $table->string('description');
             $table->string('par_number');
+            $table->string('item_name');
+            $table->string('status');
             $table->timestamps();
         });
 

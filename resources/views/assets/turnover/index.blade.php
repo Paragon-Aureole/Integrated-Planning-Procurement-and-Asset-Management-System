@@ -221,11 +221,20 @@
                         </tbody>
                     </table>
                     <div class="col-md-12">&nbsp</div>
-                    <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
-                        class="btn btn-primary btn-xs float-right">Approve Turned Over Items</button>
-                    <button type="button" id="PrintTurnover" name="btn_PrintTurnover"
-                        class="btn btn-success btn-xs float-right">Print Turned Over Items</button>
-                    {{-- <a href="/printIcs/ <script>document.write = 1</script>" target="_blank" class="btn btn-success btn-xs float-right">Print Turned Over Items</a> --}}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                <button type="button" id="PrintTurnover" name="btn_PrintTurnover"
+                                class="btn btn-success btn-md container-fluid">Print Turned Over Items</button>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
+                                class="btn btn-primary btn-md container-fluid">Approve Turned Over Items</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
