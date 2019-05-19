@@ -17,18 +17,6 @@
    	  <h6 class="card-title">
   		Available Existing Assets per Signatory
         </h6>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="input-group">
-                    <input type="text" id="signatory_name" placeholder="Signatory Name" class="form-control">
-                    <input type="text" id="signatory_name" placeholder="Position" class="form-control">
-                    <div class="input-group-prepend">
-                        <button id="searchName" class="input-group-text">Search Signatory and Position</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr style="height:5px; background-color:grey">
       <div class="table-responsive">
         <table id="phyisicalReportsDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-light">
@@ -59,13 +47,7 @@
 
    	<!-- table -->
    	<div class="col-md-6">
-         <h6 class="card-title">Available Existing Motor Vehicle</h6>
-         <div class="row">
-            <div class="col-md-12">
-                    <button id="searchName" class="btn btn-success container-fluid">Print Updated Inventory/Accounting of All Existing Motor Vehicles</button> 
-            </div>
-        </div>
-        <hr style="height:5px; background-color:grey">
+         <h6 class="card-title">Available Existing Motor Vehicles</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-light">
@@ -78,16 +60,17 @@
           </thead>
           <tbody>
           {{-- @foreach ($rfq as $rfq) --}}
-              <tr>
-                <td>08-26-2010</td>
-                <td>5,000,000.00</td>
-                <td>ADM</td>
-                <td>Active</td>
-              </tr>
           {{-- @endforeach --}}
           </tbody>
         </table>
-   	  </div>	
+         </div>
+         <div class="col-md-12">&nbsp;</div>
+         <div class="row">
+                <div class="col-md-12">
+                        <button id="searchName" class="btn btn-success float-right">Print Updated Inventory/Accounting of All Existing Motor Vehicles</button> 
+                </div>
+            </div>
+            {{-- <hr style="height:5px; background-color:grey">	 --}}
    	</div>
    </div>
  </div>
