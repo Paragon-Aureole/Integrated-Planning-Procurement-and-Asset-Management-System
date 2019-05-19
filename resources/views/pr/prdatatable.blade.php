@@ -34,9 +34,11 @@
               <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
             @endif
             @if($pr->pr_status == 0)
-            <a href="{{route('destroy.pr', $pr->id)}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel Purchase Request # {{$pr->pr_code}}">
-                <i class="fas fa-minus"></i>
-            </a>
+              @if($pr->created_rfq == 0 || $pr->created_abstract == 0 || $pr->created_po == 0 || $pr->created_inspection == 0)
+              <a href="{{route('destroy.pr', $pr->id)}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel Purchase Request # {{$pr->pr_code}}">
+                  <i class="fas fa-minus"></i>
+              </a>
+              @endif
             @endif
           @endcan
         @endif
