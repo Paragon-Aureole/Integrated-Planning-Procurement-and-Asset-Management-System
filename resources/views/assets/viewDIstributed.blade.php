@@ -65,7 +65,7 @@
             
 
                 @foreach ($assetIcs as $record)
-                <td>{{$record->id}}</td>
+                <td>{{$record->asset_id}}</td>
                 <td>{{$record->assignedTo}}</td>
                 <td>{{$record->position}}</td>
                 <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
@@ -75,7 +75,7 @@
                 <td>{{$record->asset->asset_type->type_name}}</td>
                 <td>ICS</td>
                 <td>
-                    <a href="{{'/printIcs/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
+                    <a href="{{'/printIcs/' . $record->asset_id}}" target="_blank" class="btn btn-sm btn-success">
                       <i class="fas fa-print"></i>
                     </a>
                   </td>

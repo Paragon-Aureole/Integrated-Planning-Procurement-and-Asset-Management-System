@@ -418,7 +418,9 @@ class assetController extends Controller
     {
         // return view('assets.par.printPAR');
         // $ics = asset::find($id);
-        $IcslipData = assetIcslip::findorFail($id);
+        $IcslipDatas = assetIcslip::where('asset_id', $id)->get();
+        foreach ($IcslipDatas as $key => $IcslipData) {
+        }
         // dd($IcslipData);
         $options = [
             'margin-top'    => 10,
@@ -487,12 +489,25 @@ class assetController extends Controller
     public function requestEdit(Request $request)
     {
         $input = $request->all();
-        // dd($input['itemId']);
+        $user = asset::findorFail($input['itemId']);
+        // dd($input['classificationNo']);
         
         $editRequest = asset::where('id', $input['itemId'])->update([
             'isRequested' => 1,
-            'asset_type_id' => null
+            'isEditable' => 0
         ]);
+
+        if ($input['classificationNo'] == 0) {
+            activity('ICS Edit Request')
+            ->performedOn($user)
+            ->withProperties(['Reason' => $input['reason']])
+            ->log('Request to Edit an Item');
+        } elseif ($input['classificationNo'] == 1) {
+            activity('PAR Edit Request')
+            ->performedOn($user)
+            ->withProperties(['Reason' => $input['reason']])
+            ->log('Request to Edit an Item');
+        }
 
         return redirect()->back()->with('succes', 'Requested, Pls Wait for the GSO Supervisor to Approved your Request');
     }
@@ -507,6 +522,17 @@ class assetController extends Controller
             'asset_type_id' => null,
             'isEditable' => 0,
         ]);
+        return redirect()->back()->with('succes', 'Item Approved to edit');
+    }
+
+    public function cancelEdit($id)
+    {
+        // dd($id);
+        
+        $editRequest = asset::where('id', $id)->update([
+            'isRequested' => 0,
+        ]);
+
         return redirect()->back()->with('succes', 'Item Approved to edit');
     }
 
