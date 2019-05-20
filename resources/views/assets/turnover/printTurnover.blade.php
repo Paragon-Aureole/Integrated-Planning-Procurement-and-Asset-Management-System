@@ -51,7 +51,7 @@
                                             <textarea cols="50" rows="30"
                                                 style="border:none;">
                                                     @foreach ($turnoverData as $turnoverDataItem)
-                                                {{"&#13;&#10;" . $turnoverDataItem->assetParItem->description . "&#13;&#10;"}}
+                                                {{"&#13;&#10;" .$turnoverDataItem->assetParItem->asset->details ." &#13;". $turnoverDataItem->assetParItem->description . "&#13;&#10;"}}
                                                 @endforeach
                                             </textarea>
                                         </td>

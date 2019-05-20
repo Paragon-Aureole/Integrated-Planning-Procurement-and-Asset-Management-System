@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AssetIcslipItem extends Model
 {
     protected $fillable = [
-        'asset_icslips_id',
+        'asset_icslip_id',
         'asset_id',
         'quantity',
         'description',

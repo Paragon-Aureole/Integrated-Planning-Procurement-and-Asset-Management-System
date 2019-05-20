@@ -29,7 +29,7 @@
         <div class="text-left">
             <div class="col-xs-12">Entity Name:</div>
             <div class="col-xs-12">fund Cluster:</div>
-            <div class="text-right">PAR No.: {{$parData->id}}</div>
+            <div class="text-right">PAR No.: {{$parData->first()->assetPar->id}}</div>
         </div>
         <div class="row text-center">
             <table class=" table table-bordered table-hover table-sm table-condensed display nowrap w-100">
@@ -46,34 +46,38 @@
                 </thead>
                 <tbody>
                     
-                    @php
-                    $amount = $parData->asset->amount;
-                    {{$parData->asset;}}
-                    $item_quantity = $parData->asset->item_quantity;
-                    $unitCost = $amount / $item_quantity;
-                    @endphp
-                    <tr>
-                        <td>{{$parData->quantity}}</td>
-                        <td>{{$parData->asset->measurementUnit->unit_description}}</td>
-                        {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td><textarea cols="30" rows="{{($parData->assetParItem->count() * 3) + 3}}" style="border:none">@foreach ($parData->assetParItem as $record){{"&#13;&#10;" . $record->description . "&#13;&#10;**********"}}@endforeach</textarea></td>
-                        {{--  <td>Sample Description</td>  --}}
-                        <td></td>
-                        <td>{{$parData->created_at}}</td>
-                        {{--  <td>Sample Date Acquired</td>  --}}
-                        <td>{{$unitCost}}</td>
-                        {{--  <td>SampleUnit Cost</td>  --}}
-                        @php
-                        $totalAmount = $parData->quantity * $unitCost;
-                        @endphp
-                        <td>{{$totalAmount}}</td>
-                    </tr>
                     
-                    @for ($i = 0; $i < 15; $i++)
+                    
+                    @foreach ($parData as $record)
+                    <tr>
+                    @php
+                     $unitCost = $record->asset->amount / $record->asset->item_quantity;
+                     $quantity = $record->quantity;   
+                    @endphp
+                    
+                    <td>{{$record->quantity}}</td>
+                    <td>{{$record->asset->measurementUnit->unit_code}}</td>
+                    <td>
+                        <div class="text-left">{{$record->asset->details}}</div>
+                        <div class="text-left">{{$record->description}}</div>
+                    </td>
+                    <td>{{$record->property_no}}</td>
+                    <td>{{$record->date_acquired}}</td>
+                    <td>{{number_format($unitCost, 2)}}</td>
+                    <td>{{number_format(($unitCost * $quantity),2)}}</td>
+                    </tr>
+                    @endforeach
+                    
+                    
+                     @for ($i = $parData->count(); $i <= 20; $i++)
                         <tr>
-                            @for ($j = 0; $j < 7; $j++)
-                                <td>&nbsp;</td>
-                            @endfor
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                         </tr>
                     @endfor
                     {{--  <tr>
@@ -94,10 +98,10 @@
                                     Received by:
                                 </div>
                                 <div class="text-center">
-                                    <div class="col-xs-12">{{$parData->assignedTo}}</div>
+                                    <div class="col-xs-12">{{$parData->first()->assetPar->assignedTo}}</div>
                                     <div class="col-xs-12" style="font-size:15px;">Signature over Printed Name of End
                                         User</div><br>
-                                    <div class="col-xs-12">{{$parData->position}}</div>
+                                    <div class="col-xs-12">{{$parData->first()->assetPar->position}}</div>
                                     <div class="col-xs-12" style="font-size:15px;">Position/Office</div><br><br>
                                     <div class="col-xs-12" style="font-size:15px;">@php echo date("Y-m-d H:i:s");
                                     @endphp</div>

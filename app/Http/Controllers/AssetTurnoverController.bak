@@ -35,11 +35,11 @@ class AssetTurnoverController extends Controller
             // $to = assetPar::All();
             // $approvalAssets = assetTurnover::All();
 
-            $to = assetPar::whereHas('purchaseOrder.purchaseRequest', function ($query) {
+            $to = assetPar::whereHas('asset.purchaseOrder.purchaseRequest', function ($query) {
                 $query->where('office_id', Auth::user()->office_id);
             })->get();
 
-            $approvalAssets = assetTurnover::whereHas('assetPar.purchaseOrder.purchaseRequest', function ($query) {
+            $approvalAssets = assetTurnover::whereHas('assetPar.asset.purchaseOrder.purchaseRequest', function ($query) {
                 $query->where('office_id', Auth::user()->office_id);
             })->get();
         }
@@ -49,19 +49,67 @@ class AssetTurnoverController extends Controller
         return view('assets.turnover.index', compact('to', 'approvalAssets'));
     }
 
+    
+
+    public function parSearchTurnover(Request $request)
+    {
+        $par_id = $request->input('par_id');
+
+        $assetPar = [];
+
+        if (Auth::user()->hasRole('Admin')) {
+            $assetPar[] = assetPar::where('id', $par_id)
+            ->get();
+            $assetPars = assetPar::find($par_id);
+            $assetPar[] = $assetPars->asset->purchaseOrder->purchaseRequest->office->where('id', Auth::user()->office_id)->get();
+        } else {
+            $assetPars = assetPar::find($par_id);
+            
+            $assetPar = $assetPars->asset->purchaseOrder->purchaseRequest->office->where('id', Auth::user()->office_id)->get();
+        }
+ 
+        return response()->json(['assetPar'=>$assetPar]);
+    }
+
+    public function getParAssignedItems(Request $request)
+    {
+        $par_id = $request->input('par_id');
+        $beach = assetPar::with('assetParItem')->where('id', $par_id)->get();
+        $assetPar[] = $beach->first()->asset->details;
+        $assetPar[] = $beach->first()->assetParItem;
+
+        return response()->json(['assetParItems'=> $assetPar]);
+    }
+
+    public function getCurrentTurnoverId()
+    {
+        $currentTurnoverId = assetTurnover::count();
+        return response()->json(['currentTurnoverId'=> $currentTurnoverId]);
+    }
+    
+    public function getParTurnoverItems(Request $request)
+    {
+        // dd($request->all());
+        $par_id = $request->input('id');
+
+        $assetTurnoverData = assetTurnoverItem::with('assetParItem')->where('asset_turnover_id', $par_id)->get();
+    
+        return response()->json(['assetParTurnoverItems'=> $assetTurnoverData]);
+    }
+
+    public function nameSearchTurnover(Request $request)
+    {
+        // CONTROLLER FOR NAME AND OFFICE SEARCHING
+    }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $id)
+    public function create()
     {
-        // dd($id->all());
-        $par_id = $id->id;
-        $parData = assetPar::with('AssetParItem')->findorFail($par_id);
-        $turnoverCount = (int) assetTurnover::count() + 1;
-        // dd($turnoverCount);
-        return view('assets.turnover.create', compact('parData', 'par_id'));
+        //
     }
 
     /**
@@ -74,10 +122,10 @@ class AssetTurnoverController extends Controller
     {
         // dd($request->all());
 
-        $par_id = $request->input('par_id');
-        // $turnover_id = $request->input('currentTurnoverId');
+        $par_id = $request->input('turnoverParId');
+        $turnover_id = $request->input('currentTurnoverId');
 
-        $toTurnoverData = $request->input('itemStatus');
+        $toTurnoverData = $request->input('toTurnover');
         // dd(count($toTurnoverData));
 
         if ($toTurnoverData == null) {
@@ -102,14 +150,14 @@ class AssetTurnoverController extends Controller
 
 
         if (count($filteredTurnoverData) != 0) {
-            $newAssetTurnover = assetTurnover::create([
+            assetTurnover::create([
                    'asset_par_id' => $par_id,
                    'isApproved' => 0
                ]);
        
             foreach ($filteredTurnoverData as $key => $value) {
                 AssetTurnoverItem::create([
-                       'asset_turnover_id' => $newAssetTurnover->id,
+                       'asset_turnover_id' => $turnover_id,
                        'asset_par_item_id' => $key
                    ]);
        
@@ -117,7 +165,7 @@ class AssetTurnoverController extends Controller
                    'itemStatus' => $value
                ]);
             }
-            return redirect()->route('AssetTurnover.index')->with('success', 'Request for Turnover Submitted.');
+            return redirect()->back()->with('success', 'Request for Turnover Submitted.');
         } else {
             return redirect()->back()->with('error', 'Invalid Request. Check the items.');
         }
@@ -159,17 +207,9 @@ class AssetTurnoverController extends Controller
      * @param  \App\assetTurnover  $assetTurnover
      * @return \Illuminate\Http\Response
      */
-    // public function show(assetTurnover $assetTurnover)
-    // {
-    //     dd($assetTurnover);
-    // }
-    public function show($id)
+    public function show(assetTurnover $assetTurnover)
     {
-        $assetTurnoverData = assetTurnover::findorFail($id);
-        $turnover_id = $id;
-        // dd($assetTurnoverData);
-
-        return view('assets.turnover.show', compact('assetTurnoverData', 'turnover_id'));
+        //
     }
 
     /**
@@ -190,29 +230,9 @@ class AssetTurnoverController extends Controller
      * @param  \App\assetTurnover  $assetTurnover
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, assetTurnover $assetTurnover)
     {
-        // print_r($request->all());
-        // print_r(assetTurnover::findorFail($id));
-        // die();
-
-        $turnover_id = $request->input('turnover_id');
-
-        $assetTurnover = assetTurnover::where('id', $turnover_id)->get();
-        $assetTurnoverItems = AssetTurnoverItem::where('asset_turnover_id', $turnover_id)->get();
-
-        // dd($assetTurnover[0]->isApproved);
-
-        $assetTurnover[0]->isApproved = 1;
-        $assetTurnover[0]->save();
-
-        foreach ($assetTurnoverItems as $key => $value) {
-            // dd($value->assetParItem->itemStatus);
-            $value->assetParItem->itemStatus = 2;
-            $value->assetParItem->save();
-        }
-
-        return redirect()->route('AssetTurnover.index')->with('success', 'Request for Turnover Approved.');
+        //
     }
 
     /**

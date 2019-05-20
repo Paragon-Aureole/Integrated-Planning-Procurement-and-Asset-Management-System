@@ -43,7 +43,7 @@
                         <th>Estimated Useful Life</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="border:1px solid #FFF; !important">
                     @foreach ($IcslipData as $item)
                     @php
                     $amount = $item->asset->amount;

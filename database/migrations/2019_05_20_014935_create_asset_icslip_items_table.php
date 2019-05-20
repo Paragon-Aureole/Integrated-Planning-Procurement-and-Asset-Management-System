@@ -27,9 +27,16 @@ class CreateAssetIcslipItemsTable extends Migration
         });
 
         Schema::table('asset_pars', function (Blueprint $table) {
-            // $table->foreign('purchase_order_id')->references('purchase_order_id')->on('assets')->onDelete('cascade');
-            $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
+            $table->foreign('purchase_order_id')->references('id')->on('purchase_orders')->onDelete('cascade');
+            // $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
         });
+
+        Schema::table('asset_par_items', function (Blueprint $table) {
+            $table->foreign('asset_par_id')->references('id')->on('asset_pars')->onDelete('cascade');
+            $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
+            $table->foreign('asset_turnover_id')->references('id')->on('asset_turnovers')->onDelete('cascade');
+        });
+
 
         Schema::table('disbursement_vouchers', function (Blueprint $table) {
             $table->foreign('purchase_order_id')->references('id')->on('purchase_orders')->onDelete('cascade');

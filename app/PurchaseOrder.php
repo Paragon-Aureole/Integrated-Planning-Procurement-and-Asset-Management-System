@@ -38,6 +38,11 @@ class PurchaseOrder extends Model
         return $this->hasMany(asset::class);
     }
 
+    public function assetPar()
+    {
+        return $this->hasMany(assetPar::class);
+    }
+
     public function disbursementVoucher()
     {
         return $this->hasOne(PurchaseOrder::class);

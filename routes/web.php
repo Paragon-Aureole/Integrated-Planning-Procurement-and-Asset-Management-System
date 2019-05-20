@@ -174,7 +174,7 @@ Route::get('getAssetData', 'assetController@getAssetData');
 Route::get('/getPARNo', 'assetController@getPARCount');
 Route::get('/getICSNo', 'assetController@getICSCount');
 Route::get('getClassifiedItemQtyNo/{id}', 'assetController@getClassifiedItemQtyNo');
-Route::post('/saveNewPar', 'assetController@saveNewPar');
+Route::post('/saveNewPar/{id}', 'assetController@saveNewPar')->name('assets.saveNewPar');
 Route::post('/saveNewIcs', 'assetController@saveNewIcs')->name('assets.saveNewIcs');
 Route::post('/setAssetIsAssigned', 'assetController@setAssetIsAssigned');
 Route::get('/requestEdit', 'assetController@requestEdit')->name('asset.requestEdit');
@@ -182,9 +182,9 @@ Route::get('/acceptEdit/{id}', 'assetController@acceptEdit');
 Route::get('/cancelEdit/{id}', 'assetController@cancelEdit');
 
 //asset printing
-Route::get('/printPar/{id}', 'assetController@printPar');
-Route::get('/printIcs/{id}', 'assetController@printIcs');
-Route::get('/printTurnover/{id}', 'assetController@printTurnover');
+Route::get('/printPar/{id}', 'assetController@printPar')->name('assets.printPar');
+Route::get('/printIcs/{id}', 'assetController@printIcs')->name('assets.printIcs');
+Route::get('/printTurnover/{id}', 'assetController@printTurnover')->name('asset.printTurnover');
 Route::get('/printVehicle', 'assetController@printVehicle');
 Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 Route::get('/printIcsData', 'assetController@printIcsData');
@@ -231,5 +231,7 @@ Route::get('/printPhysicalFormCaptured/{id}/{asset_type_id}', 'PrintReportContro
 
 
 // NEW LIST OF WEB
+Route::get('/parTransaction/{id}', 'assetController@parTransaction')->name('assets.parTransaction');
+Route::get('/displayParTransactions/{id}', 'assetController@displayParTransactions')->name('assets.displayParTransactions');
 Route::get('/icsTransaction/{id}', 'assetController@icsTransaction')->name('assets.icsTransaction');
 Route::get('/displayIcsTransactions/{id}', 'assetController@displayIcsTransactions')->name('assets.displayIcsTransactions');
