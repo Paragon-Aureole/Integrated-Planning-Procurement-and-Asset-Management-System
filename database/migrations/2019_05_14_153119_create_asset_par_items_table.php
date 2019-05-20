@@ -15,17 +15,15 @@ class CreateAssetParItemsTable extends Migration
     {
         Schema::create('asset_par_items', function (Blueprint $table) {
             $table->increments('id');
-            // $table->integer('asset_id')->unsigned()->nullable()->index();
             $table->integer('asset_par_id')->unsigned()->nullable()->index();
+            $table->integer('asset_id')->unsigned()->nullable()->index();
+            $table->integer('asset_turnover_id')->unsigned()->nullable()->index();
             $table->string('description');
             $table->string('itemStatus');
+            $table->integer('quantity');
+            $table->date('date_acquired');
+            $table->string('property_no')->nullable()->default('');
             $table->timestamps();
-        });
-
-        Schema::table('asset_par_items', function (Blueprint $table) {
-            // $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
-            $table->foreign('asset_par_id')->references('id')->on('asset_pars')->onDelete('cascade');
-            // $table->foreign('asset_turnover_id')->references('id')->on('asset_turnover')->onDelete('cascade');
         });
 
     }

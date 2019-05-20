@@ -31,21 +31,23 @@
                             </tr>
                         </thead>
                         <tbody id="parTbody">
-
+                            @if (!$to->isEmpty())
                             @foreach ($to as $record)
-                            {{--  {{$record}} --}}
+                            {{--  {{$record->asset_turnover['isApproved']}} --}}
+                            @if ($record->asset_turnover['isApproved'] != '0')
                             <tr>
                                 <td>{{$record->id}}</td>
                                 <td>{{$record->assignedTo}}</td>
                                 <td>{{$record->position}}</td>
-                                <td>{{$record->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
                                 <td>
-                                    <a href="{{route('AssetTurnover.create', 'id='.$record->id)}}">View Items</a>
-                                    {{--  <button type="button" id="turnoverButton" class="btn btn-info btn-xs"
-                                        data-toggle="modal" data-target="#turnoverModal">View Items</button>  --}}
+                                    <button type="button" id="turnoverButton" class="btn btn-info btn-xs"
+                                        data-toggle="modal" data-target="#turnoverModal">View Items</button>
                                 </td>
                             </tr>
+                            @endif
                             @endforeach
+                            @endif
 
 
 
@@ -80,42 +82,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{--  {{$approvalAssets->first()->assetPar}} --}}
-
+                            {{--  {{$approvalAssets->first()->assetPar}}  --}}
                             @foreach ($approvalAssets as $record)
                             <tr>
                                 <td>{{$record->id}}</td>
-                                
-                                <td>{{$record->assetTurnoverItem->first()->AssetParItem->assetPar->assignedTo}}</td>
-                                <td>
-                                    @php
-                                    $firstTwo = $record->assetTurnoverItem->take(2)    
-                                    @endphp
-                                    
-                                    @foreach ($firstTwo as $item)
-                                    |{{$item->AssetParItem->asset->details}}|
-                                    @endforeach
-                                    
-                                </td>
-                                <td>{{$record->assetTurnoverItem->first()->AssetParItem->assetPar->purchaseOrder->purchaseRequest->office->office_code}}
-                                </td> 
-                                {{--  {{$item->AssetParItem->assetPar}}  --}}
-                                
+                                <td>{{$record->assetPar->assignedTo}}</td>
+                                <td>{{$record->assetPar->asset->details}}</td>
+                                <td>{{$record->assetPar->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
                                 @if ($record->isApproved == 0)
-                                <td>Pending</td>
+                                <td>Pending</td>     
                                 @else
                                 <td>Approved</td>
                                 @endif
                                 <td>
-                                    <a href="{{route('AssetTurnover.show', $record->id)}}">View Items</a>
-                                    <a href="{{route('asset.printTurnover', $record->id)}}">Print</a>
-                                    {{--  <button type="button" id="turnoverButton" name="btn_assignItem"
-                                        class="btn btn-warning btn-xs" data-toggle="modal"
-                                        data-target="#turnedOverModal">View Items</button>  --}}
-                                </td>
-
+                                        <button type="button" id="turnoverButton" name="btn_assignItem"
+                                            class="btn btn-warning btn-xs" data-toggle="modal"
+                                            data-target="#turnedOverModal">View Items</button>
+                                    </td>
                             </tr>
                             @endforeach
+                            
 
                             {{--  <tr>
                                     <td>Sample Signatory</td>
@@ -156,8 +142,7 @@
                     <label>Signatory Name:</label>
                     <input id="signatoryName" class="form-control" type="text" disabled>
                 </div>
-                <form autocomplete="off" id="turnoverDataTableForm" action="{{route('AssetTurnover.store')}}"
-                    method="post">
+                <form autocomplete="off" id="turnoverDataTableForm" action="{{route('AssetTurnover.store')}}" method="post">
                     <input type="hidden" name="turnoverParId">
                     <input type="hidden" name="currentTurnoverId">
                     {{csrf_field()}}
@@ -232,7 +217,7 @@
                             <th>Status</th>
                         </thead>
                         <tbody>
-
+                            
                         </tbody>
                     </table>
                     <div class="col-md-12">&nbsp</div>
@@ -240,13 +225,13 @@
                         <div class="col-md-3">
                             <div class="form-group ">
                                 <button type="button" id="PrintTurnover" name="btn_PrintTurnover"
-                                    class="btn btn-success btn-md container-fluid">Print Turned Over Items</button>
+                                class="btn btn-success btn-md container-fluid">Print Turned Over Items</button>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group ">
                                 <button type="button" id="ApproveTurnover" name="btn_ApproveTurnover"
-                                    class="btn btn-primary btn-md container-fluid">Approve Turned Over Items</button>
+                                class="btn btn-primary btn-md container-fluid">Approve Turned Over Items</button>
                             </div>
                         </div>
                     </div>
@@ -259,24 +244,5 @@
 @endsection
 
 @section('script')
-<script>
-    $(document).ready(function () {
-        var parDataTable = $('#parDatatable').DataTable({
-            responsive: true,
-            "lengthMenu": [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "All"]
-            ],
-
-        });
-
-        var turnoverDataTable = $('#datatableTurnover').DataTable({
-            responsive: true,
-            "lengthMenu": [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "All"]
-            ],
-        });
-    });
-</script>
+<script src="{{asset('js/asset_TurnoverIndex.js')}}"></script>
 @endsection

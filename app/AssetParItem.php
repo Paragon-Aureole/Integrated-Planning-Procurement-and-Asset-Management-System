@@ -7,11 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class AssetParItem extends Model
 {
     protected $fillable = [
+        'asset_id',
         'asset_par_id',
         'asset_turnover_id',
+        'quantity',
         'description',
-        'itemStatus'
+        'property_no',
+        'assignedTo',
+        'position',
+        'itemStatus',
+        'date_acquired'
     ];
+
+    public function asset()
+    {
+        return $this->belongsTo(asset::class);
+    }
 
     public function assetPar()
     {

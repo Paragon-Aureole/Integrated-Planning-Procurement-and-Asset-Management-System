@@ -17,19 +17,20 @@ class AssetParController extends Controller
     public function index(Request $id)
     {
 
-        $assetParData = assetPar::all();
+        // $assetParData = assetPar::all();
         
         // dd($assetParRemainingQuantity);
 
         // $assetParData = assetPar::select('asset_id')->groupBy('asset_id')->get();
         // $assetParData = assetPar::where('asset_id', 3)->sum('quantity');
-        $parData = asset::where('purchase_order_id', $id->id)->where('isPAR', 1)->where('isAssigned', 0)->get();
-        $purchase_order_id = $id->id;
+        // $parData = asset::where('purchase_order_id', $id->id)->where('isPAR', 1)->where('isAssigned', 0)->get();
+        // $purchase_order_id = $id->id;
 
         // dd($parData[0]->item_quantity);
 
         // return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id', 'assetTypes'));
-        return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id'));
+        // return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id'));
+        return view('assets.par.index', compact('assetPar'));
     }
 
     /**
@@ -138,5 +139,32 @@ class AssetParController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    // NEW FUNCTIONS
+
+    public function parTransaction($id)
+    {
+        // dd('wew');
+        $parCount = (int) assetPar::count() + 1;
+        // dd($parCount);
+        $assetParItems = asset::where('isPAR', 1)->where('item_stock', "<>", 0)->where('purchase_order_id', $id)->get();
+        // dd($assetParItems);
+        if ($assetParItems->isEmpty()) {
+            return redirect()->route('assets.index')->with('error', 'No PAR items left in this PO!');
+        }
+
+        // dd($signatoryData);
+        
+        return view('assets.par.parTransaction', compact('assetParItems', 'id', 'parCount'));
+    }
+
+    public function displayParTransactions($id)
+    {
+        // dd($id);
+        // $assetIcsItem = assetIcslipItem::where('asset_icslip_id', $id)->get();
+        // // dd($assetIcs->first()->AssetIcslipItem);
+        
+        // return view('assets.ics.index', compact('assetIcsItem', 'id'));
     }
 }

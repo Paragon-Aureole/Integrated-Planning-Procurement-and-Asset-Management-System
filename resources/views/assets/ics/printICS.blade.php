@@ -31,7 +31,7 @@
                             <div class="container" style="font-size:20px;">
                                 INVENTORY CUSTODIAN SLIP
                                 <div class="col-xs-12">&nbsp;</div>
-                                <div class="text-right">ICS No.: {{$IcslipData->id}}</div>
+                                <div class="text-right">ICS No.: {{$IcslipData->first()->id}}</div>
                             </div>
                         </th>
                     </tr>
@@ -43,21 +43,34 @@
                         <th>Estimated Useful Life</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="border:1px solid #FFF; !important">
+                    @foreach ($IcslipData as $item)
                     @php
-                    $amount = $IcslipData->asset->amount;
-                    $item_quantity = $IcslipData->asset->item_quantity;
+                    $amount = $item->asset->amount;
+                    $item_quantity = $item->quantity;
                     @endphp
                     <tr>
-                        <td>{{$IcslipData->quantity}}</td>
-                        <td>{{$IcslipData->asset->measurementUnit->unit_code}}</td>
+                        <td>{{$item->quantity}}</td>
+                        <td>{{$item->asset->measurementUnit->unit_code}}</td>
                         {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td colspan="2"><textarea cols="30" rows="35" style="border:none">{{$IcslipData->description}}</textarea></td>
+                        <td colspan="2">{{$item->asset->details}}<br>
+                            {{$item->description}}</td>
                         {{--  <td>Sample Description</td>  --}}
-                        <td></td>
-                        <td>{{$IcslipData->useful_life}}</td>
+                        <td>{{$item->inventory_name_no}}</td>
+                        <td>{{$item->useful_life}}</td>
                         {{--  <td>Sample Date Acquired</td>  --}}
                     </tr>
+                    @endforeach
+                    @for ($i = $IcslipData->count(); $i <= 25; $i++)
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td colspan="2">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    @endfor
+                    
                     <tr>       
                         <td colspan="3">
                             <div class="container">
@@ -67,9 +80,9 @@
                                     Received by:
                                 </div>
                                 <div class="text-center">
-                                    <div class="col-xs-12">{{$IcslipData->assignedTo}}</div>
+                                    <div class="col-xs-12">{{$IcslipData->first()->assignedTo}}</div>
                                     <div class="col-xs-12" style="font-size:15px;">Signature over Printed Name</div><br>
-                                    <div class="col-xs-12">{{$IcslipData->position}}</div>
+                                    <div class="col-xs-12">{{$IcslipData->first()->position}}</div>
                                     <div class="col-xs-12" style="font-size:15px;">Position/Office</div><br>
                                     <div class="col-xs-12" style="font-size:15px;">Date</div>
                                 </div>

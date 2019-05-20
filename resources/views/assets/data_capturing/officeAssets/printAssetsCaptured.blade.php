@@ -34,8 +34,8 @@
                     <tr>
                         <td>For Which &nbsp</td>
                         {{-- @foreach ($parData as $parDataItem) --}}
-                        <td><u>&nbsp;&nbsp;{{$parData->first()->assetPar->assignedTo}}&nbsp;&nbsp;</u>, &nbsp;</td>
-                        <td><u>&nbsp;&nbsp;{{$parData->first()->assetPar->position}}&nbsp;&nbsp;</u>, &nbsp;</td>
+                        <td><u>&nbsp;&nbsp;{{$parData->first()->receiver_name}}&nbsp;&nbsp;</u>, &nbsp;</td>
+                        <td><u>&nbsp;&nbsp;{{$parData->first()->receiver_position}}&nbsp;&nbsp;</u>, &nbsp;</td>
                         <td><u>&nbsp;&nbsp;CSF&nbsp;&nbsp;</u>, &nbsp;</td>
                         {{-- @endforeach --}}
                         <td>&nbsp is accontable having assumed such accountability on</td>
@@ -77,7 +77,7 @@
                 <tbody>
                     <tr>
                         <td style="background-color:yellow">
-                            {{$parData->first()->assetPar->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                            {{$parData->first()->entity_name}}</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -89,25 +89,8 @@
                         <td>&nbsp;</td>
                     </tr>
                     {{-- {{$parData->asset}} --}}
-                    @foreach ($parData as $assetItem)
-                    <tr>
-                        @if ($assetItem->assetPar->asset->asset_type_id == $asset_type->id)
-                        <td>{{$assetItem->assetPar->asset->details}}</td>
-                        <td>{{$assetItem->description}}</td>
-                        <td>&nbsp;</td>
-                        <td>{{$assetItem->assetPar->asset->measurementUnit->unit_code}}</td>
-                        <td>{{$assetItem->assetPar->asset->amount}}</td>
-                        <td>{{$assetItem->assetPar->asset->item_quantity}}</td>
-                        <td>{{$assetItem->assetPar->asset->item_stock}}</td>
-                        <td>&nbsp;</td>
-                        <td>{{$assetItem->assetPar->asset->created_at}}</td>
-                        <td>Assigned To: {{$assetItem->assetPar->assignedTo}}</td>
-                        <td></td>
-                        @endif
-                    </tr> 
-                    @endforeach
 
-                    @foreach ($parMigrationData as $assetItem)
+                    @foreach ($parData as $assetItem)
                     <tr>
                         <td>{{$assetItem->item_name}}</td>
                         <td>{{$assetItem->description}}</td>

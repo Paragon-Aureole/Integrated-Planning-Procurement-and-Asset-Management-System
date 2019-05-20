@@ -7,23 +7,32 @@ use Illuminate\Database\Eloquent\Model;
 class assetIcslip extends Model
 {
     protected $fillable = [
-        'asset_id',
-        'quantity',
-        'description',
-        'assignedTo',
-        'position',
-        'inventory_name_no',
-        'useful_life'
+        'purchase_order_id'
+        // 'quantity',
+        // 'description',
+        // 'assignedTo',
+        // 'position',
+        // 'inventory_name_no',
+        // 'useful_life'
     ];
 
-    public function asset()
+    // public function asset()
+    // {
+    //     return $this->belongsTo(asset::class);
+    // }
+
+    public function purchaseOrder()
     {
-        return $this->belongsTo(asset::class);
+        return $this->belongsTo(PurchaseOrder::class);
+    }
+
+    public function AssetIcslipItem()
+    {
+        return $this->hasMany(AssetIcslipItem::class);
     }
 
     public function distributedAsset()
     {
         return $this->hasOne(editDistributedAsset::class);
     }
-
 }

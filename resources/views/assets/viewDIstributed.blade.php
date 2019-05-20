@@ -29,7 +29,7 @@
               class="table table-bordered table-hover table-sm display nowrap w-100">
               <thead class="thead-light">
                 <tr>
-                  <th>ID</th>
+                  {{--  <th>ID</th>
                   <th>Signatory Name</th>
                   <th>Position</th>
                   <th>Office</th>
@@ -38,33 +38,75 @@
                   <th>Amount</th>
                   <th>Classification</th>
                   <th>Asset Type</th>
-                  <th>Action</th>
+                  <th>Action</th>  --}}
+                  <th>PO No.</th>
+                  <th>Signatory Name</th>
+                  <th>Position</th>
+                  <th>Office</th>
+                  <th>Details</th>
+                  <th>Classification</th>
+                  <th>Actions</th>
+
                 </tr>
               </thead>
               <tbody>
-                
                 @foreach ($assetPar as $record)
                   
                 <td>{{$record->id}}</td>
                 <td>{{$record->assignedTo}}</td>
                 <td>{{$record->position}}</td>
-                <td>{{$record->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
-                <td>{{$record->asset->details}}</td>
-                <td>{{$record->quantity}}</td>
-                <td>{{$record->asset->amount}}</td>
-                <td>{{$record->asset->asset_type->type_name}}</td>
-                <td>PAR</td>
+                <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
                 <td>
-                  <a href="{{'/printPar/' . $record->id}}" target="_blank" class="btn btn-sm btn-success">
+                  @php
+                      $firstTwo = $record->assetParItem->take(2);
+                      {{}}
+                  @endphp
+                  @foreach ($firstTwo as $item)
+                    {{$item->description}}
+                  @endforeach
+                </td>
+                {{--  <td>{{$record->quantity}}</td>  --}}
+                  <td>
+                  PAR
+                  </td>
+                  
+                  <td>
+                    <a href="{{route('assets.printPar', $record->id)}}" target="_blank" class="btn btn-sm btn-success">
                     <i class="fas fa-print"></i>
                   </a>
-                </td>
+                  </td>
+              </tr>
+              @endforeach
+
+              @foreach ($assetIcs as $record)
+                
+                <td>{{$record->id}}</td>
+                <td>Name Here</td>
+                <td>Position Here</td>
+                <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
+                <td>
+                  @php
+                      $firstTwo = $record->assetIcslipItem->take(2);
+                      {{}}
+                  @endphp
+                  @foreach ($firstTwo as $item)
+                   || {{$item->description}} ||
+                  @endforeach
+                <td>
+                  ICS
+                  </td>
+
+                  <td>
+                    
+                    <a href="{{route('assets.printIcs', $record->id)}}" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
+                  
+                  </td>
               </tr>
               @endforeach
               
             
 
-                @foreach ($assetIcs as $record)
+                {{--  @foreach ($assetIcs as $record)
                 <td>{{$record->asset_id}}</td>
                 <td>{{$record->assignedTo}}</td>
                 <td>{{$record->position}}</td>
@@ -80,7 +122,8 @@
                     </a>
                   </td>
                 </tr>
-                @endforeach
+                @endforeach  --}}
+                
               </tbody>
             </table>
           </div>

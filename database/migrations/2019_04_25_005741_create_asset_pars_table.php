@@ -15,11 +15,7 @@ class CreateAssetParsTable extends Migration
     {
         Schema::create('asset_pars', function (Blueprint $table) {
             $table->increments('id');
-            // $table->integer('purchase_order_id')->unsigned()->nullable()->index();
-            $table->integer('asset_id')->unsigned()->nullable()->index();
-            $table->integer('quantity');
-            // $table->string('description')->default('N/A');
-            $table->string('property_no')->nullable()->default('');
+            $table->integer('purchase_order_id')->unsigned()->nullable()->index();
             $table->string('assignedTo');
             $table->string('position');
             $table->timestamps();

@@ -16,10 +16,15 @@ class AssetParItemController extends Controller
      */
     public function index()
     {
-        $asset = asset::where('isPAR', 1)->where('isAssigned', 0)->get();
-        $assetPar = assetPar::All();
+        $assetPar = asset::select('purchase_order_id')->where('isPAR', 1)->groupBy('purchase_order_id')->get();
+        $distributedAssetPar = assetPar::all();
+        // dd($assetPar);
+
+        // $asset = asset::where('isPAR', 1)->where('isAssigned', 0)->get();
+        // $assetPar = assetPar::All();
         // dd($asset);
-        return view('assets.par.index', compact('asset', 'assetPar'));
+        // return view('assets.par.index', compact('asset', 'assetPar'));
+        return view('assets.par.index', compact('assetPar', 'distributedAssetPar'));
     }
 
     /**
@@ -88,12 +93,12 @@ class AssetParItemController extends Controller
         //
     }
 
-        public function getPARCount()
+    public function getPARCount()
     {
         $assetParCount = assetPar::get()->count();
         return ($assetParCount);
     }
-   public function getClassifiedItemQtyNo($id)
+    public function getClassifiedItemQtyNo($id)
     {
         // dd($id);
         $assetClassifiedItemQtyNo = asset::select('item_stock')->where('id', $id)->get();
@@ -107,6 +112,7 @@ class AssetParItemController extends Controller
 
         return response()->json(['response' => 'Assigning Successful. You may now print.', 'error' => false]);
     }
+    
     public function saveNewPar(Request $request)
     {
         $items = $request->input('data');
