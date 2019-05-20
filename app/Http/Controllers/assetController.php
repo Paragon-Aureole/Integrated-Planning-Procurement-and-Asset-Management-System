@@ -15,6 +15,7 @@ use App\DisbursementVoucher;
 use App\assetType;
 use App\assetPar;
 use App\assetIcslip;
+use App\AssetIcslipItem;
 use App\assetTurnover;
 use App\assetTurnoverItem;
 
@@ -34,13 +35,16 @@ class assetController extends Controller
         $assetData = asset::where('id', 4)->get();
         // dd($assetData->first()->purchaseOrder->purchaseRequest->office->id);
 
+        // $assetIcsItems = asset::where('isICS', 1)->where('item_stock', "<>", 0)->where('purchase_order_id', 1)->get();
+        // dd($assetIcsItems);
         
         // dd($icsSignatory);
         
         // $asset = purchaseRequest::where('created_inspection', 1)->get();
         // $assetPar = assetPar::All();
         $asset = asset::All();
-        $assetIcs = assetIcslip::All();
+        $assetIcs = asset::select('purchase_order_id')->where('isICS', 1)->groupBy('purchase_order_id')->get();
+        // dd($assetIcs);
 
         // $prOfficeId = $asset->first()->purchaseOrder->purchaseRequest->office->id;
         // // dd($prOfficeId);
@@ -285,17 +289,52 @@ class assetController extends Controller
     }
     public function saveNewIcs(Request $request)
     {
-        $items = $request->input('data');
+        $items = $request->all();
         // dd($items);
 
-        assetIcslip::create([
-            'asset_id' => $items[0],
-            'quantity' => $items[1],
-            'description' => $items[2],
-            'assignedTo' => $items[3],
-            'position' => $items[4],
-            'useful_life' => $items[5]
+        $newAssetIcslip = assetIcslip::create([
+            'purchase_order_id' => $items['poNum']
         ]);
+
+        // dd($newAssetIcslip);
+
+        $filteredData = [];
+
+        foreach ($items['itemQuantity'] as $key => $value) {
+            $filteredData[$key][] = $value;
+        }
+
+        foreach ($items['itemExtraDescription'] as $key => $value) {
+            $filteredData[$key][] = $value;
+        }
+
+        foreach ($items['itemInventoryNo'] as $key => $value) {
+            $filteredData[$key][] = $value;
+        }
+
+        foreach ($items['itemEstimatedUsefulLife'] as $key => $value) {
+            $filteredData[$key][] = $value;
+        }
+
+        
+
+        // dd($filteredData);
+
+        foreach ($filteredData as $key => $value) {
+            assetIcslipItem::create([
+                'asset_icslips_id' => $newAssetIcslip->id,
+                'asset_id' => $key,
+                'quantity' => $value[0],
+                'description' => $value[1],
+                'assignedTo' => $items['itemSignatoryName'],
+                'position' => $items['itemSignatoryPosition'],
+                'inventory_name_no' => $value[2],
+                'useful_life' => $value[3]
+            ]);
+
+            asset::find($key)->decrement('item_stock', $value[0]);
+
+        }
 
         // dd(print_r($items));
 
@@ -310,9 +349,6 @@ class assetController extends Controller
         // }
 
         // dd($bekkel);
-
-        asset::find($items[0])->decrement('item_stock', $items[1]);
-
 
         if ($request->isMethod('post')) {
             // return response()->json(['response' => 'This is post method', 'error' => false]);
@@ -431,9 +467,8 @@ class assetController extends Controller
     {
         // return view('assets.par.printPAR');
         // $ics = asset::find($id);
-        $IcslipDatas = assetIcslip::where('asset_id', $id)->get();
-        foreach ($IcslipDatas as $key => $IcslipData) {
-        }
+        $IcslipData = assetIcslipItem::where('asset_icslip_id', $id)->get();
+
         // dd($IcslipData);
         $options = [
             'margin-top'    => 10,
@@ -555,5 +590,30 @@ class assetController extends Controller
         $icsData = assetIcslip::where('asset_id', $input['item_ics'])->get();
 
         return response()->json(['icsData'=>$icsData]);
+    }
+
+
+    // NEW LIST OF FUNCTIONS
+
+    public function icsTransaction($id)
+    {
+        $assetIcsItems = asset::where('isICS', 1)->where('item_stock', "<>", 0)->where('purchase_order_id', $id)->get();
+        // dd($assetIcsItems);
+        if ($assetIcsItems->isEmpty()) {
+            return redirect()->route('assets.index')->with('error', 'No ICS items left in this PO!');
+        }
+        $signatoryData = $assetIcsItems->first()->purchaseOrder->purchaseRequest->office->signatory()->where('is_activated', 1)->first();
+        // dd($signatoryData);
+        
+        return view('assets.icsTransaction', compact('assetIcsItems', 'id', 'signatoryData'));
+    }
+
+    public function displayIcsTransactions($id)
+    {
+        // dd($id);
+        $assetIcsItem = assetIcslipItem::where('asset_icslip_id', $id)->get();
+        // dd($assetIcs->first()->AssetIcslipItem);
+        
+        return view('assets.ics.index', compact('assetIcsItem', 'id'));
     }
 }

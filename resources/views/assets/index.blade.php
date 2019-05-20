@@ -4,7 +4,7 @@
 <ol class="breadcrumb p-2">
   <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
   <li class="breadcrumb-item active"><a href="{{route('assets.index')}}">Assets</a></li>
-  <li class="breadcrumb-item active" aria-current="page">CLassification and Distribution</li>
+  <li class="breadcrumb-item active" aria-current="page">Classification and Distribution</li>
 </ol>
 @endsection
 
@@ -57,65 +57,30 @@
                 <thead class="thead-light">
                   <tr>
                     <th>ID</th>
-                    <th>Item Name</th>
                     <th>Office</th>
                     <th>Classification</th>
-                    <th data-priority = '5'>Action</th>
+                    <th data-priority = '3'>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-  
-                  @foreach ($asset as $key =>$record)
-                  @if ($record->isICS == 1)
+                  @foreach ($assetIcs as $item)
+                  {{--  {{$item}}  --}}
                   <tr>
-                    <td>{{$record->id}}</td>
-                    <td>{{$record->details}}</td>
-                    <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
+                    <td>{{$item->purchase_order_id}}</td>
+                    <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>ICS</td>
                     <td>
-                      @if ($record->item_stock == 0)
-                         <a href="printIcs/{{$record->id}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
-                      @endif
-                      @if ($record->isEditable == 1 && $record->item_stock != 0)
-                          <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assetDistribution"
-                        id="distributeItems">
-                              <i class="fas fa-plus"></i>
-                          </button>
-                      @else
-                      @endif
-                      @can('Asset Management')
-                        @if ($record->isRequested == 0 && $record->isAssigned == 0)
-                          <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#editRequestIcs" id="requestBtn">
-                            Request to Edit
-                          </button>
-                          @elseif ($record->isEditable == 0)
-                        <button class="btn btn-sm btn-warning" disabled>
-                            Pending
-                          </button>
-                          @elseif ($record->isRequested == 1 && $record->isEditable == 1)
-                          <button class="btn btn-sm btn-warning" disabled>
-                            Approved
-                          </button>
-                        @endif
-                      @endcan
-                      @can('Supervisor')
-                        @if ($record->isRequested == 0)
-                        @elseif ($record->isRequested == 1 && $record->isEditable == 0)
-                        <a href="/acceptEdit/{{$record->id}}" class="btn btn-sm btn-info" data-toggle="confirmation" data-content="Approved Item {{$record->id}} to Edit?">
-                            Accept to Edit
-                        </a>
-                        <a href="/cancelEdit/{{$record->id}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel {{$record->id}} to Edit?">
-                            Cancel Request
-                        </a>
-                        @else
-                        @endif
-                      @endcan
-                  </tr>
-                  @else
-                      
-                  @endif
+
+                        <a href="{{route('assets.icsTransaction', $item->purchase_order_id)}}" class="btn btn-info "><i class="fas fa-plus"></i></a>
+                      <a href="{{route('assets.displayIcsTransactions', $item->purchase_order_id)}}" class="btn btn-success "><i class="fas fa-print"></i></a></td>
+                  </tr>   
                   @endforeach
-  
+                  {{--  <tr>
+                    <td>1</td>
+                    <td>ICT</td>
+                    <td>ICS</td>
+                    <td><a href="/icsTransaction" class="btn btn-info "><i class="fas fa-plus"></i></a><a href="" class="btn btn-success "><i class="fas fa-print"></i></a></td>
+                  </tr>  --}}
                 </tbody>
               </table>
             </div>

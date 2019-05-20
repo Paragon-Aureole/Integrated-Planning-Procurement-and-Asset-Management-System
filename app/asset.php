@@ -46,9 +46,9 @@ class asset extends Model
         return $this->belongsTo(assetType::class);
     }
 
-    public function asset_ics()
+    public function assetIcslipItem()
     {
-        return $this->hasMany(assetIcslip::class);
+        return $this->hasMany(assetIcslipItem::class);
     }
 
 

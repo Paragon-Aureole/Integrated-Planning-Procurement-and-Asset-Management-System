@@ -30,7 +30,8 @@ class PrintReportController extends Controller
 
         $assetPar = assetPar::all();
         $asset = asset::where('asset_type_id', 1)->get();
-        return view('printReports.index', compact('assetPar','asset'));
+        $capturedAsset = migratedAssets::all();
+        return view('printReports.index', compact('assetPar','asset','capturedAsset'));
     }
     public function getPrintPhysicalData(Request $request)
     {
@@ -46,6 +47,15 @@ class PrintReportController extends Controller
 
         // return response()->json(['reportData'=>$reportData, 'getName'=>$getName, 'findName'=>$findName]);
         return response()->json(['findName'=>$findName]);
+    }
+
+    public function getPrintPhysicalDataCaptured(Request $request) 
+    {
+        $input = $request->all();
+        $capturedData = migratedAssets::where('receiver_name', $input['name'])->where('receiver_position', $input['position'])->get();
+        // dd($capturedData);
+        return response()->json(['capturedData'=>$capturedData]);
+
     }
 
     public function printPhysicalForm($id,$asset_type_id)
@@ -69,6 +79,25 @@ class PrintReportController extends Controller
         ];
 
         $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssets', compact('parData', 'asset_type', 'parMigrationData'))->setPaper('folio', 'landscape');
+        return $pdf->stream('Print Report of the Physical Count of Property, Plant and Equipment.pdf');
+    }
+
+    public function printPhysicalFormCaptured($id,$asset_type_id)
+    {
+        // dd('im here');
+        $asset_type = assetType::find($asset_type_id);
+        // $parData = migratedAssets::where('receiver_name', $name)->where('receiver_position', $position)->where('asset_type_id', $asset_type_id)->get();
+        // $parData = 
+        $parData = migratedAssets::all();
+        // dd($parData);
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssetsCaptured', compact('parData', 'asset_type', 'parMigrationData'))->setPaper('folio', 'landscape');
         return $pdf->stream('Print Report of the Physical Count of Property, Plant and Equipment.pdf');
     }
 

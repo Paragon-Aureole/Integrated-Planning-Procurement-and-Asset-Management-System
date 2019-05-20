@@ -40,6 +40,23 @@
                     </td>
                 </tr>
             @endforeach
+            {{-- @foreach ($assetPar as $assetParItem)
+                @foreach ($capturedAsset as $capturedAssetItem)
+                    @if (($assetParItem->assignedTo && $assetParItem->position) != ($capturedAssetItem->reeceiver_name && $capturedAssetItem->receiver_position))
+                        <tr>
+                          <td>{{$capturedAssetItem->id}}</td>
+                          <td>{{$capturedAssetItem->receiver_name}}</td>
+                          <td>{{$capturedAssetItem->receiver_position}}</td>
+                          <td>
+                            <button type="button" id="printPhysicalBtnCaptured" name="btn_assignItem"
+                            class="btn btn-info btn-xs" data-toggle="modal"
+                            data-target="#printReportsModal">View Items</button>
+                        </td>
+                        </tr>
+                    @else
+                    @endif
+                @endforeach
+            @endforeach --}}
           </tbody>
         </table>
       </div> 
@@ -101,6 +118,7 @@
                 <div class="form-group">
                     <label>Signatory Name:</label>
                     <input id="signatoryName" class="form-control" type="text" disabled>
+                    <input id="position" class="form-control" type="text" disabled>
                     <input id="signatoryId" class="form-control" type="text" hidden>
                 </div>
                 <div class="form-group">
