@@ -20,13 +20,14 @@
               <td>{{number_format($items->item_cost,2)}}</td>
               <td>{{number_format($items->item_budget,2)}}</td>
               <td>
-                @if ($pr->pr_status != 2)
-                  <a href="{{route('edit.pritm',[$pr->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                  <a href="{{route('delete.pritm',[$pr->id, $items->id])}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Delete Item"><i class="fas fa-minus"></i></a>
-                @else 
+                @if ($pr->pr_status == 1 || $pr->pr_status == 2)
                   @hasrole('Admin')
                     <a href="{{route('edit.pritm',[$pr->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                    <a href="{{route('delete.pritm',[$pr->id, $items->id])}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Delete Item"><i class="fas fa-minus"></i></a>
                   @endhasrole
+                @else 
+                  <a href="{{route('edit.pritm',[$pr->id, $items->id])}}"  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                  <a href="{{route('delete.pritm',[$pr->id, $items->id])}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Delete Item"><i class="fas fa-minus"></i></a>
                 @endif
               </td>
             </tr>

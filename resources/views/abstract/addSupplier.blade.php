@@ -124,22 +124,26 @@ $countSupplier = $querySupplier->count();
                             @foreach ($querySupplier as $action)
                             <th colspan="2" style="width:15%;">
                                 @if($allSuppliers->where('supplier_status', 1)->count() == 1)
-                                @can('full control')
-                                <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}"
-                                    name='update_supplier' data-toggle="modal" data-target="#editSupplier">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger" name='delete_supplier' data-toggle="modal"
-                                    data-target="#deleteSupplier" data-supplierid="{{$action->id}}"
-                                    data-suppliername="{{$action->supplier_name}}">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                @endcan
+                                    @if($abstract->purchaseRequest->supplier_type == 3)
+                                        @hasrole("Department")
+                                        <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}"
+                                            name='update_supplier' data-toggle="modal" data-target="#editSupplier">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        @endhasrole
+                                    @endif
+                                    @can('full control')
+                                    <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}"
+                                        name='update_supplier' data-toggle="modal" data-target="#editSupplier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" name='delete_supplier' data-toggle="modal"
+                                        data-target="#deleteSupplier" data-supplierid="{{$action->id}}"
+                                        data-suppliername="{{$action->supplier_name}}">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    @endcan
                                 @else
-                                <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}"
-                                    name='update_supplier' data-toggle="modal" data-target="#editSupplier">
-                                    <i class="fas fa-edit"></i>
-                                </button>
                                 <a @if ($abstract->purchaseRequest->supplier_type == 1)
                                     href="{{route('destruct.supplier', $action->id)}}"
                                     @endif
@@ -170,19 +174,30 @@ $countSupplier = $querySupplier->count();
                             @foreach ($querySupplier as $indexkey1 => $supplierNo)
                             <th colspan="2">Supplier {{$indexkey1 + $querySupplier->firstItem()}}</th>
                             @endforeach
-                            @for ($i = $countSupplier; $i <= 2; $i++) {{-- @if($i == 0)
-                                    <th colspan="2">Supplier {{$i+ 1}}</th> @else --}} <th colspan="2">Supplier
-                                {{$i+ $querySupplier->firstItem()}}</th>
-                                {{-- @endif --}}
+
+                            @if($countSupplier == 0)
+                                @for($i = 1; $i <= 3; $i++)
+                                <th colspan="2">
+                                    Supplier {{$i+ $querySupplier->firstItem()}}
+                                </th>
+                                @endfor
+                            @else
+                                @for ($i = $countSupplier; $i <= 2; $i++) {{-- @if($i == 0)
+                                        <th colspan="2">Supplier {{$i+ 1}}</th> @else --}} <th colspan="2">Supplier
+                                    {{$i+ $querySupplier->firstItem()}}</th>
+                                    {{-- @endif --}}
 
                                 @endfor
+                            @endif
+                            
                         </tr>
                         <tr class="text-center">
                             @foreach ($querySupplier as $supplierName)
                             <td colspan="2">{{$supplierName->supplier_name}}</td>
                             @endforeach
+
                             @for ($i = $countSupplier; $i <= 2; $i++) <td colspan="2">Supplier Name</td>
-                                @endfor
+                            @endfor
                         </tr>
                         <tr class="text-center thead-light">
                             @foreach ($querySupplier as $priceHeader)
@@ -372,18 +387,23 @@ $countSupplier = $querySupplier->count();
                             </select>
                         </div>
                     </div>
-                    @can('full control')
+                    
                     <div class="form-row">
+                        @hasrole('Admin')
                         <div class="col">
                             <label class="small">Reason</label>
                             <textarea type="text" name="s_reason" class="form-control form-control-sm"
                                 required></textarea>
                         </div>
-                    </div>
-                    @else
-                    <input type="hidden" name="reason" class="form-control form-control-sm" value="None" required>
-                    @endcan
+                        @endhasrole
+                        @hasrole('Department')
+                        <input type="hidden" name="s_reason" class="form-control form-control-sm" value="None" required>
+                        @endrole
 
+                    </div>
+                    
+
+                    
                     <div>&nbsp;</div>
                     <div class="table-responsive">
                         <table name="edit_table" class="table table-sm table-bordered">

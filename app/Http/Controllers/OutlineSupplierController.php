@@ -106,6 +106,10 @@ class OutlineSupplierController extends Controller
         $input = $request->all();
         // dd($input);
 
+
+
+        
+
         $supplier = OutlineSupplier::findorFail($supplier);
 
         $add_supplier = $supplier->update([
