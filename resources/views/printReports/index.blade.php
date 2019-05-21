@@ -13,7 +13,7 @@
  <div class="card-header pt-2 pb-2">Print Reports</div>
  <div class="card-body">
    <div class="row">
-   	<div class="col-md-6">
+   	<div class="col-md-7">
    	  <h6 class="card-title">
   		Available Existing Assets per Signatory
         </h6>
@@ -21,49 +21,80 @@
         <table id="phyisicalReportsDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-light">
             <tr>
-              <th>ID</th>
               <th>Signatory Name</th>
               <th>Position</th>
+              <th>Transaction Details</th>
+              <th>Office</th>
               <th data-priority = "4">Items</th>
             </tr>
           </thead>
           <tbody>
             @foreach ($assetPar as $assetParItem)
                 <tr>
-                    <td>{{$assetParItem->id}}</td>
                     <td>{{$assetParItem->assignedTo}}</td>
                     <td>{{$assetParItem->position}}</td>
                     <td>
-                        <button type="button" id="printPhysicalBtn" name="btn_assignItem"
-                        class="btn btn-info btn-xs" data-toggle="modal"
-                        data-target="#printReportsModal">View Items</button>
+                      @foreach ($assetParItem->assetParItem->take(2) as $itemDescription)
+                      ||{{$itemDescription->description}}||
+                      @endforeach
+                    </td>
+                    <td>{{$assetParItem->purchaseOrder->purchaseRequest->office->office_code}}</td>
+                    <td>
+                        {{--  <a href="{{route('assets.printPar', $assetParItem->id)}}" target="_blank" class="btn btn-sm btn-success">
+                          <i class="fas fa-print"></i>
+                        </a>  --}}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                              <select name="" class="input-group-text" id="asset_type_id">
+                                <option value="">Select Type to Print</option>
+                                <option value="2">Office Supplies   </option>
+                                <option value="3">Furniture and Fixtures</option>
+                                <option value="4">IT Equipmets</option>
+                              </select>
+                            </div>
+                            <button type="button" id="printPhysicalBtn" name="btn_assignItem" class="btn btn-success btn-sm" ><i class="fas fa-print"></i></button>
+                            {{--  <a href="{{route('assets.printPar', $assetParItem->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>   --}}
+                        </div>
+                        {{--  <button type="button" id="printPhysicalBtn" name="btn_assignItem" class="btn btn-info btn-xs" >View Items</button>  --}}
                     </td>
                 </tr>
             @endforeach
-            {{-- @foreach ($assetPar as $assetParItem)
-                @foreach ($capturedAsset as $capturedAssetItem)
-                    @if (($assetParItem->assignedTo && $assetParItem->position) != ($capturedAssetItem->reeceiver_name && $capturedAssetItem->receiver_position))
-                        <tr>
-                          <td>{{$capturedAssetItem->id}}</td>
-                          <td>{{$capturedAssetItem->receiver_name}}</td>
-                          <td>{{$capturedAssetItem->receiver_position}}</td>
-                          <td>
-                            <button type="button" id="printPhysicalBtnCaptured" name="btn_assignItem"
-                            class="btn btn-info btn-xs" data-toggle="modal"
-                            data-target="#printReportsModal">View Items</button>
-                        </td>
-                        </tr>
-                    @else
-                    @endif
-                @endforeach
-            @endforeach --}}
+
+            @foreach ($assetPar as $assetParItem)
+              @foreach ($capturedAsset as $capturedAssetItem)
+                @if (($assetParItem->assignedTo) == ($capturedAssetItem->receiver_name))
+
+                @elseif (($assetParItem->assignedTo) != ($capturedAssetItem->receiver_name))
+                  <tr>
+                      <td>{{$capturedAssetItem->receiver_name}}</td>
+                      <td>{{$capturedAssetItem->receiver_position}}</td>
+                      <td>{{$capturedAssetItem->receiver_position}}</td>
+                      <td>{{$capturedAssetItem->Office}}</td>
+                      <td>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <select name="" class="input-group-text" id="asset_type_id">
+                              <option value="">Select Type to Print</option>
+                              <option value="2">Office Supplies   </option>
+                              <option value="3">Furniture and Fixtures</option>
+                              <option value="4">IT Equipmets</option>
+                            </select>
+                          </div>
+                          <button type="button" id="printPhysicalBtnCaptured" name="btn_assignItem" class="btn btn-success btn-sm" ><i class="fas fa-print"></i></button>
+                          {{--  <a href="{{route('assets.printPar', $assetParItem->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>   --}}
+                      </div>
+                    </td>
+                  </tr>
+                @endif
+              @endforeach
+            @endforeach
           </tbody>
         </table>
       </div> 
     </div>
 
    	<!-- table -->
-   	<div class="col-md-6">
+   	<div class="col-md-5">
          <h6 class="card-title">Available Existing Motor Vehicle</h6>
         <hr style="height:5px; background-color:grey">
    	  <div class="table-responsive">
@@ -141,7 +172,7 @@
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-6">
-                        <select class="form-control form-control-sm float-right" id="asset_type_id">
+                        <select class="form-control form-control-sm float-right" >
                             <option value="">Select Type to Print</option>
                             <option value="2">Office Supplies   </option>
                             <option value="3">Furniture and Fixtures</option>

@@ -30,7 +30,8 @@ class PrintReportController extends Controller
 
         $assetPar = assetPar::all();
         $asset = asset::where('asset_type_id', 1)->get();
-        $capturedAsset = migratedAssets::all();
+        $capturedAsset = migratedAssets::select('receiver_name', 'receiver_position')->groupBy('receiver_name', 'receiver_position')->get();
+        // dd($capturedAsset);
         return view('printReports.index', compact('assetPar','asset','capturedAsset'));
     }
     public function getPrintPhysicalData(Request $request)

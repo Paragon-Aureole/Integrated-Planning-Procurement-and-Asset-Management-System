@@ -28,4 +28,9 @@ class migratedAssets extends Model
     'item_name',
     'status'
     ];
+
+    public function Office()
+    {
+        return $this->belongsTO(Office::class);
+    }
 }

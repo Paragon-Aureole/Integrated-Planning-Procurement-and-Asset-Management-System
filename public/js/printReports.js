@@ -5,14 +5,18 @@ $(document).ready(function () {
     });
 
     physicalReport.on('click', 'button#printPhysicalBtn', function () {
-        console.log('CLICKED');
+        
         var data = physicalReport.row($(this).parents('tr')).data();
-        getData(data);
 
-        $('#signatoryName').val(data[1]);
-        $('#signatoryId').val(data[0]);
+        var asset_type_id = $('#asset_type_id').val();
+        console.log(asset_type_id);
+        
+        if (asset_type_id == "") {
+            alert('Please Select an Asset Type to Print')
+        } else {
 
-
+            window.open('/printPhysicalForm/' + data[0] + '/' + asset_type_id, 'blank');
+        }
 
     });
 

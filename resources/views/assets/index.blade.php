@@ -70,9 +70,8 @@
                     <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>ICS</td>
                     <td>
-
-                        <a href="{{route('assets.icsTransaction', $item->purchase_order_id)}}" class="btn btn-info "><i class="fas fa-plus"></i></a>
-                      <a href="{{route('assets.displayIcsTransactions', $item->purchase_order_id)}}" class="btn btn-success "><i class="fas fa-print"></i></a></td>
+                      <a href="{{route('assets.icsTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
+                      <a href="{{route('assets.displayIcsTransactions', $item->purchase_order_id)}}" class="btn btn-success btn-sm"><i class="fas fa-print"></i></a></td>
                   </tr>   
                   @endforeach
                   {{--  <tr>

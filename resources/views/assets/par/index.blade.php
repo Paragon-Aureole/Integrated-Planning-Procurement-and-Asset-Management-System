@@ -40,20 +40,9 @@
                     <td>Details</td>
                     <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>
-                      <a href="{{route('assets.parTransaction', $item->purchase_order_id)}}" class="btn btn-info "><i class="fas fa-plus"></i></a>
+                      <a href="{{route('assets.parTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
                       {{--  <a href="/displayParTransactions/{{$item->purchase_order_id}}" class="btn btn-success "><i class="fas fa-print"></i></a></td>  --}}
                   </tr>
-                {{--  <td>1</td>
-                <td>1</td>
-                <td>Tedd Mamuyac</td>
-                <td>Laptop, Printer</td>
-                <td>ICT</td>
-                <td>
-                  <a href='/printPar/' target="_blank" class="btn btn-sm btn-success">
-                    <i class="fas fa-print"></i>
-                  </a>
-                </td>
-              </tr>  --}}
               @endforeach
                 
               </tbody>
@@ -75,8 +64,6 @@
                 </tr>
               </thead>
               <tbody>
-                
-                
                 @foreach ($distributedAssetPar as $record)
                 <tr>
                   <td>{{$record->id}}</td>
@@ -94,21 +81,6 @@
                 </td>
               </tr>
                 @endforeach
-                
-                
-                {{--  <td>1</td>
-                <td>1</td>
-                <td>Tedd Mamuyac</td>
-                <td>Laptop, Printer</td>
-                <td>ICT</td>
-                <td>
-                  <a href='/printPar/' target="_blank" class="btn btn-sm btn-success">
-                    <i class="fas fa-print"></i>
-                  </a>
-                </td>
-              </tr>  --}}
-             
-                
               </tbody>
             </table>
           </div>

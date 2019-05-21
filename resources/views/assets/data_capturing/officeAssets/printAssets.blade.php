@@ -77,7 +77,7 @@
                 <tbody>
                     <tr>
                         <td style="background-color:yellow">
-                            {{$parData->first()->assetPar->asset->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                            {{$parData->first()->assetPar->purchaseOrder->purchaseRequest->office->office_name}}</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -91,16 +91,16 @@
                     {{-- {{$parData->asset}} --}}
                     @foreach ($parData as $assetItem)
                     <tr>
-                        @if ($assetItem->assetPar->asset->asset_type_id == $asset_type->id)
-                        <td>{{$assetItem->assetPar->asset->details}}</td>
+                        @if ($assetItem->asset->asset_type_id == $asset_type->id)
+                        <td>{{$assetItem->asset->details}}</td>
                         <td>{{$assetItem->description}}</td>
                         <td>&nbsp;</td>
-                        <td>{{$assetItem->assetPar->asset->measurementUnit->unit_code}}</td>
-                        <td>{{$assetItem->assetPar->asset->amount}}</td>
-                        <td>{{$assetItem->assetPar->asset->item_quantity}}</td>
-                        <td>{{$assetItem->assetPar->asset->item_stock}}</td>
+                        <td>{{$assetItem->asset->measurementUnit->unit_code}}</td>
+                        <td>{{$assetItem->asset->amount}}</td>
+                        <td>{{$assetItem->asset->item_quantity}}</td>
+                        <td>{{$assetItem->asset->item_stock}}</td>
                         <td>&nbsp;</td>
-                        <td>{{$assetItem->assetPar->asset->created_at}}</td>
+                        <td>{{$assetItem->asset->created_at}}</td>
                         <td>Assigned To: {{$assetItem->assetPar->assignedTo}}</td>
                         <td></td>
                         @endif

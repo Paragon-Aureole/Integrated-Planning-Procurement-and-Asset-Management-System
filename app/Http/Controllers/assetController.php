@@ -271,44 +271,52 @@ class assetController extends Controller
 
         
         foreach ($items['itemQuantity'] as $key => $value) {
-            for ($i=0; $i < $value; $i++) {
-                $filteredData[$key][] = [
-                    'itemPropertyNo' => $items['itemPropertyNo'][$key],
-                    'itemDateAcquired' => $items['itemDateAcquired'][$key],
-                    'itemExtraDescription' => $items['itemExtraDescription'][$key][$i],
-                    'itemStatus' => 0,
-                    'quantity' => 1,
-                    'asset_par_id' => $newAssetPar->id
-                    // 'asset_id' => $key
-                    ];
+            if ($value != 0) {
+                for ($i=0; $i < $value; $i++) {
+                    $filteredData[$key][] = [
+                        'itemPropertyNo' => $items['itemPropertyNo'][$key],
+                        'itemDateAcquired' => $items['itemDateAcquired'][$key],
+                        'itemExtraDescription' => $items['itemExtraDescription'][$key][$i],
+                        'itemStatus' => 0,
+                        'quantity' => 1,
+                        'asset_par_id' => $newAssetPar->id
+                        // 'asset_id' => $key
+                        ];
+                }
             }
         }
         
         // dd($filteredData);
-
-        foreach ($filteredData as $key => $value) {
-            foreach ($value as $key2 => $value2) {
-
-                AssetParItem::create([
-                     'asset_par_id' => $value2['asset_par_id'],
-                     'asset_id' => $key,
-                     'description' => $value2['itemExtraDescription'],
-                     'date_acquired' => $value2['itemDateAcquired'],
-                     'itemStatus' => 0,
-                     'quantity' => 1,
-                     'property_no' => $value2['itemPropertyNo']
-                 ]);
-
-                // echo $key;
-                // print_r($value2['asset_par_id']);
-                // echo "<br>";
+        if (count($filteredData) > 0) {
+            foreach ($filteredData as $key => $value) {
+                foreach ($value as $key2 => $value2) {
+                    AssetParItem::create([
+                         'asset_par_id' => $value2['asset_par_id'],
+                         'asset_id' => $key,
+                         'description' => $value2['itemExtraDescription'],
+                         'date_acquired' => $value2['itemDateAcquired'],
+                         'itemStatus' => 0,
+                         'quantity' => 1,
+                         'property_no' => $value2['itemPropertyNo']
+                     ]);
+    
+                    // echo $key;
+                    // print_r($value2['asset_par_id']);
+                    // echo "<br>";
+                }
             }
+            
+            foreach ($items['itemQuantity'] as $key => $value) {
+                if ($value != 0) {
+                    asset::find($key)->decrement('item_stock', $value);
+                }
+            }
+        } else {
+            return redirect()->back()->with('error', 'Invalid Transaction!');
         }
+
         // die();
 
-        foreach ($items['itemQuantity'] as $key => $value) {
-            asset::find($key)->decrement('item_stock', $value);
-        }
 
         return redirect()->route('parDistribution.index')->with('success', 'PAR Distribution Complete. Proceed to Printing');
 
@@ -427,7 +435,6 @@ class assetController extends Controller
      */
     public function update(Request $request, asset $asset)
     {
-       
     }
 
     /**
@@ -548,8 +555,8 @@ class assetController extends Controller
     public function requestEdit(Request $request)
     {
         $input = $request->all();
+        // dd($input);
         $user = asset::findorFail($input['itemId']);
-        // dd($input['classificationNo']);
         
         $editRequest = asset::where('id', $input['itemId'])->update([
             'isRequested' => 1,
@@ -590,6 +597,7 @@ class assetController extends Controller
         
         $editRequest = asset::where('id', $id)->update([
             'isRequested' => 0,
+            'isEditable' => 1
         ]);
 
         return redirect()->back()->with('succes', 'Item Approved to edit');
