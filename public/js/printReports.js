@@ -8,15 +8,11 @@ $(document).ready(function () {
         
         var data = physicalReport.row($(this).parents('tr')).data();
 
-        var asset_type_id = $('#asset_type_id').val();
+        // var asset_type_id = $('#asset_type_id').val();
+        var asset_type_id = $('[name=asset_type_id]').val();
         console.log(asset_type_id);
         
-        if (asset_type_id == "") {
-            alert('Please Select an Asset Type to Print')
-        } else {
-
-            window.open('/printPhysicalForm/' + data[0] + '/' + asset_type_id, 'blank');
-        }
+            // window.open('/printPhysicalForm/' + data[0] + '/' + data[1] + '/' + asset_type_id, 'blank');
 
     });
 
@@ -109,7 +105,9 @@ $(document).ready(function () {
     physicalReport.on('click', 'button#printPhysicalBtnCaptured', function () {
         console.log('CLICKED Captured');
         var data = physicalReport.row($(this).parents('tr')).data();
-        getDataCaptured(data);
+        console.log(data);
+        
+        // getDataCaptured(data);
 
         $('#signatoryName').val(data[1]);
         $('#position').val(data[2]);

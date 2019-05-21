@@ -222,7 +222,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <input type="text" id="itemId" name="itemId">
+                <input type="text" id="itemId" name="itemId" hidden>
                 <label>Item Unit:</label>
                 <input id="itemName" class="form-control" type="text" disabled>
               </div>

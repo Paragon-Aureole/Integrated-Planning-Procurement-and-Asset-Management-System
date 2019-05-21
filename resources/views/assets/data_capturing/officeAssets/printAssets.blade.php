@@ -34,8 +34,8 @@
                     <tr>
                         <td>For Which &nbsp</td>
                         {{-- @foreach ($parData as $parDataItem) --}}
-                        <td><u>&nbsp;&nbsp;{{$parData->first()->assetPar->assignedTo}}&nbsp;&nbsp;</u>, &nbsp;</td>
-                        <td><u>&nbsp;&nbsp;{{$parData->first()->assetPar->position}}&nbsp;&nbsp;</u>, &nbsp;</td>
+                        <td><u>&nbsp;&nbsp;{{$parData->first()->assignedTo}}&nbsp;&nbsp;</u>, &nbsp;</td>
+                        <td><u>&nbsp;&nbsp;{{$parData->first()->position}}&nbsp;&nbsp;</u>, &nbsp;</td>
                         <td><u>&nbsp;&nbsp;CSF&nbsp;&nbsp;</u>, &nbsp;</td>
                         {{-- @endforeach --}}
                         <td>&nbsp is accontable having assumed such accountability on</td>
@@ -77,7 +77,7 @@
                 <tbody>
                     <tr>
                         <td style="background-color:yellow">
-                            {{$parData->first()->assetPar->purchaseOrder->purchaseRequest->office->office_name}}</td>
+                            {{$parData->first()->purchaseOrder->purchaseRequest->office->office_name}}</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -88,26 +88,39 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                     </tr>
-                    {{-- {{$parData->asset}} --}}
+                    {{$parData->first()->assetParItem->first()->asset->asset_type_id}}
                     @foreach ($parData as $assetItem)
-                    <tr>
-                        @if ($assetItem->asset->asset_type_id == $asset_type->id)
-                        <td>{{$assetItem->asset->details}}</td>
-                        <td>{{$assetItem->description}}</td>
+                    {{--  {{$assetItem}}  --}}
+                    @foreach ($assetItem->assetParItem as $item)
+                        <tr>
+                        @if ($item->asset->asset_type_id == $asset_type->id)
+                        <td>{{$item->asset->details}}</td>
+                        <td>{{$item->description}}</td>
                         <td>&nbsp;</td>
-                        <td>{{$assetItem->asset->measurementUnit->unit_code}}</td>
-                        <td>{{$assetItem->asset->amount}}</td>
-                        <td>{{$assetItem->asset->item_quantity}}</td>
-                        <td>{{$assetItem->asset->item_stock}}</td>
+                        <td>{{$item->asset->measurementUnit->unit_code}}</td>
+                        <td>{{$item->asset->amount}}</td>
+                        <td>{{$item->asset->item_quantity}}</td>
+                        <td>{{$item->asset->item_stock}}</td>
                         <td>&nbsp;</td>
-                        <td>{{$assetItem->asset->created_at}}</td>
-                        <td>Assigned To: {{$assetItem->assetPar->assignedTo}}</td>
-                        <td></td>
+                        <td>{{$assetItem->created_at}}</td>
+                        <td>
+                            @if ($item->itemStatus == 0)
+                                Active
+                            @elseif ($$item->itemStatus == 1)
+                                Pending Turnover
+                            @else
+                                Unserviceable
+                            @endif
+                        </td>
+                        {{--  <td>Assigned To: {{$item->assetPar->assignedTo}}</td>  --}}
+                        {{--  <td></td>  --}}
                         @endif
                     </tr> 
                     @endforeach
+                    
+                    @endforeach
 
-                    @foreach ($parMigrationData as $assetItem)
+                    {{--  @foreach ($parMigrationData as $assetItem)
                     <tr>
                         <td>{{$assetItem->item_name}}</td>
                         <td>{{$assetItem->description}}</td>
@@ -121,7 +134,7 @@
                         <td>Assigned To: {{$assetItem->receiver_name}}</td>
                         <td></td>
                     </tr> 
-                    @endforeach
+                    @endforeach  --}}
 
 
                 </tbody>

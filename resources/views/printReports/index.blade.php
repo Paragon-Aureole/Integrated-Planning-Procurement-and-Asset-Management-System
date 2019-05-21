@@ -40,22 +40,11 @@
                     </td>
                     <td>{{$assetParItem->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>
-                        {{--  <a href="{{route('assets.printPar', $assetParItem->id)}}" target="_blank" class="btn btn-sm btn-success">
-                          <i class="fas fa-print"></i>
-                        </a>  --}}
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                              <select name="" class="input-group-text" id="asset_type_id">
-                                <option value="">Select Type to Print</option>
-                                <option value="2">Office Supplies   </option>
-                                <option value="3">Furniture and Fixtures</option>
-                                <option value="4">IT Equipmets</option>
-                              </select>
-                            </div>
-                            <button type="button" id="printPhysicalBtn" name="btn_assignItem" class="btn btn-success btn-sm" ><i class="fas fa-print"></i></button>
-                            {{--  <a href="{{route('assets.printPar', $assetParItem->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>   --}}
-                        </div>
-                        {{--  <button type="button" id="printPhysicalBtn" name="btn_assignItem" class="btn btn-info btn-xs" >View Items</button>  --}}
+                      <div class="float-right">
+                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/2" target="_blank">Office Supplies</a>
+                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/3" target="_blank">Furniture and Fixtures</a>
+                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/4" target="_blank">IT Equipmets</a>
+                      </div>
                     </td>
                 </tr>
             @endforeach
@@ -70,19 +59,14 @@
                       <td>{{$capturedAssetItem->receiver_position}}</td>
                       <td>{{$capturedAssetItem->receiver_position}}</td>
                       <td>{{$capturedAssetItem->Office}}</td>
-                      <td>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <select name="" class="input-group-text" id="asset_type_id">
-                              <option value="">Select Type to Print</option>
-                              <option value="2">Office Supplies   </option>
-                              <option value="3">Furniture and Fixtures</option>
-                              <option value="4">IT Equipmets</option>
-                            </select>
+                      <td>    
+                          <div class="float-right">
+                            <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/2" target="_blank">Office Supplies</a>
+                            <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/3" target="_blank">Furniture and Fixtures</a>
+                            <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/4" target="_blank">IT Equipmets</a>
                           </div>
-                          <button type="button" id="printPhysicalBtnCaptured" name="btn_assignItem" class="btn btn-success btn-sm" ><i class="fas fa-print"></i></button>
                           {{--  <a href="{{route('assets.printPar', $assetParItem->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>   --}}
-                      </div>
+                      
                     </td>
                   </tr>
                 @endif

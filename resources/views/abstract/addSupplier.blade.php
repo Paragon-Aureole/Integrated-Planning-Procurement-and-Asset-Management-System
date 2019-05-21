@@ -131,6 +131,12 @@ $countSupplier = $querySupplier->count();
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         @endhasrole
+
+                                    @elseif($abstract->purchaseRequest->supplier_type == 2)
+                                        <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}"
+                                        name='update_supplier' data-toggle="modal" data-target="#editSupplier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
                                     @endif
                                     @can('full control')
                                     <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}"
@@ -144,6 +150,10 @@ $countSupplier = $querySupplier->count();
                                     </button>
                                     @endcan
                                 @else
+                                <button class="btn btn-sm btn-warning" data-supplierid="{{$action->id}}"
+                                        name='update_supplier' data-toggle="modal" data-target="#editSupplier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
                                 <a @if ($abstract->purchaseRequest->supplier_type == 1)
                                     href="{{route('destruct.supplier', $action->id)}}"
                                     @endif

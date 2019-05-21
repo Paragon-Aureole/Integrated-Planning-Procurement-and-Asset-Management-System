@@ -225,7 +225,7 @@ Route::resource('parDistribution', 'AssetParItemController');
 // PRINT OF PHYSICAL COUNT
 Route::get('/getPrintPhysicalData', 'PrintReportController@getPrintPhysicalData');
 Route::get('/getPrintPhysicalDataCaptured', 'PrintReportController@getPrintPhysicalDataCaptured');
-Route::get('/printPhysicalForm/{id}/{asset_type_id}', 'PrintReportController@printPhysicalForm');
+Route::get('/printPhysicalForm/{name}/{position}/{asset_type}', 'PrintReportController@printPhysicalForm');
 Route::get('/printPhysicalFormCaptured/{id}/{asset_type_id}', 'PrintReportController@printPhysicalFormCaptured');
 
 

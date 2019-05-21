@@ -59,14 +59,15 @@ class PrintReportController extends Controller
 
     }
 
-    public function printPhysicalForm($id,$asset_type_id)
+    public function printPhysicalForm($name,$position,$asset_type)
     {
-        $asset_type = assetType::find($asset_type_id);
-        $parData = AssetParItem::where('asset_par_id', $id)->get();
+        $asset_type = assetType::find($asset_type);
+        $parData = AssetPar::where('assignedTo', $name)->where('position', $position)->get();
+        // dd($position);
         // dd($parData->first()->assetPar);
-        $name = $parData->first()->assetPar->assignedTo;
-        $position = $parData->first()->assetPar->position;
-        $parMigrationData = migratedAssets::where('receiver_name', $name)->where('receiver_position', $position)->where('asset_type_id', $asset_type_id)->get();
+        // $name = $parData->first()->assetPar->assignedTo;
+        // $position = $parData->first()->assetPar->position;
+        $parMigrationData = migratedAssets::where('receiver_name', $name)->where('receiver_position', $position)->where('asset_type_id', $asset_type)->get();
         // dd($parMigrationData);
 
         // $parData = $parItem->assetPar->asset->where('asset_type_id', $asset_type_id)->get();
