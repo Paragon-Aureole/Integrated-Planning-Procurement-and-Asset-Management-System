@@ -120,7 +120,11 @@
 			          </div>
 			        </div>
 			        <div class="form-group text-right col-md-12">
-			          <button class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add Item</button>
+								<button class="btn btn-sm btn-primary"
+									@if ($pr->pr_status == 1 || $pr->pr_status == 2)
+										disabled
+									@endif
+								><i class="fas fa-plus"></i> Add Item</button>
 			          <a href="{{route('print.pr', $pr->id)}}" target="_blank" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Print</a>
 			        </div>
 		        </div>
