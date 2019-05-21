@@ -57,11 +57,11 @@ class AssetTurnoverController extends Controller
     public function create(Request $id)
     {
         // dd($id->all());
-        $par_id = $id->id;
-        $parData = assetPar::with('AssetParItem')->findorFail($par_id);
-        $turnoverCount = (int) assetTurnover::count() + 1;
+        // $par_id = $id->id;
+        // $parData = assetPar::with('AssetParItem')->findorFail($par_id);
+        // $turnoverCount = (int) assetTurnover::count() + 1;
         // dd($turnoverCount);
-        return view('assets.turnover.create', compact('parData', 'par_id'));
+        return view('assets.turnover.create');
     }
 
     /**
