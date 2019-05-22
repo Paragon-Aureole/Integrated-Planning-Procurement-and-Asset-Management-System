@@ -62,7 +62,7 @@
                       {{}}
                   @endphp
                   @foreach ($firstTwo as $item)
-                    {{$item->description}}
+                    •{{$item->description}}
                   @endforeach
                 </td>
                 {{--  <td>{{$record->quantity}}</td>  --}}
@@ -81,8 +81,8 @@
               @foreach ($assetIcs as $record)
                 
                 <td>{{$record->id}}</td>
-                <td>Name Here</td>
-                <td>Position Here</td>
+                <td>{{$record->AssetIcslipItem->first()->assignedTo}}</td>
+                <td>{{$record->AssetIcslipItem->first()->position}}</td>
                 <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
                 <td>
                   @php
@@ -90,7 +90,7 @@
                       {{}}
                   @endphp
                   @foreach ($firstTwo as $item)
-                   || {{$item->description}} ||
+                   •{{$item->description}}
                   @endforeach
                 <td>
                   ICS

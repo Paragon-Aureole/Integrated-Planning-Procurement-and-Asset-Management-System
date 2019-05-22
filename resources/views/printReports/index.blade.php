@@ -23,7 +23,6 @@
             <tr>
               <th>Signatory Name</th>
               <th>Position</th>
-              <th>Transaction Details</th>
               <th>Office</th>
               <th data-priority = "4">Items</th>
             </tr>
@@ -33,54 +32,32 @@
                 <tr>
                     <td>{{$assetParItem->assignedTo}}</td>
                     <td>{{$assetParItem->position}}</td>
-                    <td>
-                      @foreach ($assetParItem->assetParItem->take(2) as $itemDescription)
-                      ||{{$itemDescription->description}}||
-                      @endforeach
-                    </td>
                     <td>{{$assetParItem->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>
-                      <div class="float-right">
-                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/2" target="_blank">Office Supplies</a>
-                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/3" target="_blank">Furniture and Fixtures</a>
-                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/4" target="_blank">IT Equipmets</a>
-                      </div>
+                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/{{$assetParItem->purchaseOrder->purchaseRequest->office->id}}" target="_blank"><i class="fas fa-print"></i></a>
                     </td>
                 </tr>
             @endforeach
 
-            @foreach ($assetPar as $assetParItem)
-              @foreach ($capturedAsset as $capturedAssetItem)
-                @if (($assetParItem->assignedTo) == ($capturedAssetItem->receiver_name))
-
-                @elseif (($assetParItem->assignedTo) != ($capturedAssetItem->receiver_name))
-                  <tr>
-                      <td>{{$capturedAssetItem->receiver_name}}</td>
-                      <td>{{$capturedAssetItem->receiver_position}}</td>
-                      <td>{{$capturedAssetItem->receiver_position}}</td>
-                      <td>{{$capturedAssetItem->Office}}</td>
-                      <td>    
-                          <div class="float-right">
-                            <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/2" target="_blank">Office Supplies</a>
-                            <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/3" target="_blank">Furniture and Fixtures</a>
-                            <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/4" target="_blank">IT Equipmets</a>
-                          </div>
-                          {{--  <a href="{{route('assets.printPar', $assetParItem->id)}}" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>   --}}
-                      
-                    </td>
-                  </tr>
-                @endif
-              @endforeach
+            {{-- checking of captured assets --}}
+            @foreach ($capturedAsset as $capturedAssetItem)
+              <tr>
+                  <td>{{$capturedAssetItem->receiver_name}}</td>
+                  <td>{{$capturedAssetItem->receiver_position}}</td>
+                  <td>{{$capturedAssetItem->Office->office_code}}</td>
+                  <td>    
+                      <a class="btn btn-sm btn-success" href="/printPhysicalFormCaptured/{{$capturedAssetItem->receiver_name}}/{{$capturedAssetItem->receiver_position}}/{{$capturedAssetItem->Office->id}}" target="_blank"><i class="fas fa-print"></i></a>                   
+                  </td>
+              </tr>
             @endforeach
           </tbody>
         </table>
       </div> 
     </div>
 
-   	<!-- table -->
+    {{-- Table of vehicle --}}
    	<div class="col-md-5">
          <h6 class="card-title">Available Existing Motor Vehicle</h6>
-        <hr style="height:5px; background-color:grey">
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-light">
@@ -93,11 +70,10 @@
           </thead>
           <tbody>
           @foreach ($asset as $assetItem)
-          {{-- {{$assetItem->asset_par->first()->created_at}} --}}
             <tr>
               <td>{{$assetItem->asset_par->first()->created_at}}</td>
               <td>{{$assetItem->amount}}</td>
-              <td>{{$assetItem->purchaseOrder->purchaseRequest->office->office_code}}</td>
+              <td>{</td>
               <td>{{$assetItem->asset_type->type_name}}</td>
             </tr>
           @endforeach
@@ -116,62 +92,6 @@
  </div>
 </div>
 
-</div>
-
-<!-- The Modal -->
-<div class="modal" id="printReportsModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5>Available Assets per Signatory</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Signatory Name:</label>
-                    <input id="signatoryName" class="form-control" type="text" disabled>
-                    <input id="position" class="form-control" type="text" disabled>
-                    <input id="signatoryId" class="form-control" type="text" hidden>
-                </div>
-                <div class="form-group">
-                    <hr style="height:5px; background-color:grey;">
-
-                    <table id="modalTurnoverDatatable"
-                        class="table table-bordered table-hover table-sm display nowrap w-100">
-                        <thead class="thead-light">
-                            <th>Item Name</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <div class="col-md-12">&nbsp</div>
-                    
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="row">
-                    <div class="col-md-6">
-                        <select class="form-control form-control-sm float-right" >
-                            <option value="">Select Type to Print</option>
-                            <option value="2">Office Supplies   </option>
-                            <option value="3">Furniture and Fixtures</option>
-                            <option value="4">IT Equipmets</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <button type="button" id="SubmitPrintPhysical" name="btn_assignItem"
-                        class="btn btn-success btn-sm">Print Report of the Physical Count of Property, Plant and Equipment
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 @endsection
 

@@ -37,7 +37,11 @@
                   <tr>
                     {{--  <td>{{$item->id}}</td>  --}}
                     <td>{{$item->purchase_order_id}}</td>
-                    <td>Details</td>
+                    <td>
+                      @foreach ($item->purchaseOrder->asset->take(2) as $item)
+                          •{{$item->details}}
+                      @endforeach
+                    </td>
                     <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>
                       <a href="{{route('assets.parTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
@@ -70,7 +74,7 @@
                   <td>{{$record->assignedTo}}</td>
                   <td>
                   @foreach ($record->assetParItem->take(2) as $itemDescription)
-                  ||{{$itemDescription->description}}||
+                  •{{$itemDescription->description}}
                   @endforeach
                   </td>
                   <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
