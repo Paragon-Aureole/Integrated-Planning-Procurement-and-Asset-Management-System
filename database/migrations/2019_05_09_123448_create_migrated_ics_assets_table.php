@@ -17,6 +17,7 @@ class CreateMigratedIcsAssetsTable extends Migration
             $table->increments('id');
             $table->string('classification');
             $table->integer('asset_type_id')->unsigned()->nullable()->index();
+            $table->integer('office_id')->unsigned()->nullable()->index();
             $table->string('receiver_name');
             $table->string('receiver_position');
             $table->string('issuer_name');
@@ -27,11 +28,13 @@ class CreateMigratedIcsAssetsTable extends Migration
             $table->string('estimated_useful_life');
             $table->string('description');
             $table->string('ics_number');
+            $table->integer('amount');
             $table->timestamps();
         });
 
         Schema::table('migrated_ics_assets', function (Blueprint $table) {
             $table->foreign('asset_type_id')->references('id')->on('asset_types')->onDelete('cascade');
+            $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');
         });
     }
 

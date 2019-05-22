@@ -193,16 +193,23 @@ Route::get('/printIcsData', 'assetController@printIcsData');
 
 // assetMigrations
 // Route::post('migrateAssets/{id}', 'MigratedAssetsController@update')
+Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
+
 Route::resource('migrateAssets', 'MigratedAssetsController');
-Route::resource('migrateIcsAssets', 'MigratedIcsAssetsController');
-Route::get('migrateIcsAssets/delete/{id}', 'MigratedIcsAssetsController@destroy')->name('migrateIcsAssets.destroy');
-Route::get('migrateIcsAssets/print/{id}', 'MigratedIcsAssetsController@print')->name('migrateIcsAssets.print');
 Route::get('migrateAssets/delete/{id}', 'MigratedAssetsController@destroy')->name('migrateAssets.destroy');
 Route::get('migrateAssets/edit/{id}', 'MigratedAssetsController@edit')->name('migrateAssets.edit');
-Route::get('migrateIcsAssets/edit/{id}', 'MigratedIcsAssetsController@edit')->name('migrateIcsAssets.edit');
 Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsController@printMigratedAssets');
-Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
-Route::get('migrateAssets/print/{id}', 'MigratedAssetsController@print')->name('migrateAssets.print');
+Route::get('migratedAssets/viewCapturedItems/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@viewCapturedPar')->name('migratedAssets.view');
+Route::get('migratedAssets/destroyPar/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@destroyPar')->name('migrateAssets.destroyPar');
+Route::get('migrateAssets/print/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@print')->name('migrateAssets.print');
+
+// CAPTURED ICS ASSETS
+Route::resource('migrateIcsAssets', 'MigratedIcsAssetsController');
+Route::get('migrateIcsAssets/delete/{id}', 'MigratedIcsAssetsController@destroy')->name('migrateIcsAssets.destroy');
+Route::get('migrateIcsAssets/edit/{id}', 'MigratedIcsAssetsController@edit')->name('migrateIcsAssets.edit');
+Route::get('migratedIcsAssets/viewCapturedItems/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@viewCapturedIcs')->name('migratedIcsAssets.view');
+Route::get('migratedIcsAssets/destroyIcs/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@destroyIcs');
+Route::get('migrateIcsAssets/print/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@print')->name('migratedIcsAssets.print');
 
 // ASSET TURNOVER
 Route::resource('AssetTurnover', 'AssetTurnoverController');

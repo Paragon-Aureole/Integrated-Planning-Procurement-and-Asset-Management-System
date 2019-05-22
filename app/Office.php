@@ -55,9 +55,14 @@ class Office extends Model
         return $this->hasMany(OutlineSupplier::class, 'canvasser_office', 'id');
     }
 
-    public function capturedAsset()
+    public function migratedAssets()
     {
         return $this->hasMany(migratedAssets::class);
+    }
+
+    public function migratedIcsAssets()
+    {
+        return $this->hasMany(migratedIcsAssets::class);
     }
 
 }

@@ -50,7 +50,7 @@
             <div class="row">
                 <div class="col-md-12">&nbsp;</div>
                 <div class="container-fluid">
-                    <a href="/printIcs/{{$id}}" class="btn btn-success float-right">Print ICS</a>
+                    <a href="/printIcs/{{$id}}" target="_blank" class="btn btn-success float-right">Print ICS</a>
                 </div>
           </div> 
       </form>

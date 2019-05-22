@@ -31,6 +31,6 @@ class migratedAssets extends Model
 
     public function Office()
     {
-        return $this->belongsTO(Office::class);
+        return $this->belongsTo(Office::class, 'entity_name');
     }
 }

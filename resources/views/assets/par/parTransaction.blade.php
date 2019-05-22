@@ -81,7 +81,7 @@
               <th>Date Acquired</th>
               <th>Unit Cost</th>
               <th>Amount</th>
-              <th>Edit Request</th>
+              <th data-priority="10">Edit Request</th>
             </tr>
           </thead>
           <tbody>
@@ -143,8 +143,8 @@
                     @if ($item->isRequested == 0)
                         
                     @elseif ($item->isRequested == 1 && $item->isEditable == 0)
-                        <a href="/acceptEdit/{{$item->id}}" class="btn btn-sm btn-info" data-toggle="confirmation" data-content="Approve Item {{$item->id}} to Edit">Accept to Edit</a>
-                        <a href="/cancelEdit/{{$item->id}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel Item {{$item->id}} to Edit">Cancel Request</a>
+                        <a href="/acceptEdit/{{$item->id}}" class="btn btn-sm btn-success" data-toggle="confirmation" data-content="Approve Item {{$item->id}} to Edit" title="Accept Edit Request"><i class="fas fa-check"></i></a>
+                        <a href="/cancelEdit/{{$item->id}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Cancel Item {{$item->id}} to Edit" title="Cancel Request"><i class="fas fa-minus"></i></a>
                     @endif
                   @endcan
                 </td>

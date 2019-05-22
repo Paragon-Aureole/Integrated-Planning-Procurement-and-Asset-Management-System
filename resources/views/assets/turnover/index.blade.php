@@ -93,39 +93,41 @@
                 <div class="card">
                     <div class="card-header pt-2 pb-2">List of Chosen Turnover Items</div>
                     <div class="card-body">
+                        <form action="" method="post">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group col-md-4">
-                                    <label>Turnover Number:</label>
-                                    <input name="po_number" id="po_number" class="form-control" type="text" value="" readonly>
-                                </div>
-                                <button class="btn btn-info btn-md float-right">Save Chosen Items</button>
-                                <table id="chosenDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Item</th>
-                                            <th>Status</th>
-                                            <th>PAR Number</th>
-                                            <th>Description</th>
-                                            <th data-priority='4'>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="parTbody">
-            
-                                        {{-- @foreach ($to as $record) --}}
+                                <div class="col-md-12">
+                                    <div class="form-group col-md-4">
+                                        <label>Turnover Number:</label>
+                                        <input name="po_number" id="po_number" class="form-control" type="text" value="" readonly>
+                                    </div>
+                                    <button class="btn btn-info btn-md float-right">Save Chosen Items</button>
+                                    <table id="chosenDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+                                        <thead class="thead-light">
                                             <tr>
-                                            <td>Laptop</td>
-                                            <td><h4><span class="badge badge-info">Active</span></h4></td>
-                                            <td>PAR - 1000211</td>
-                                            <td>SN: 38303040880</td>
-                                            <td><button class="btn btn-danger btn-sm"><i class="fas fa-minus"></i></button></td>
-                                        </tr>
-                                        {{-- @endforeach --}}
-            
-                                    </tbody>
-                                </table>
+                                                <th>Item</th>
+                                                <th>Status</th>
+                                                <th>PAR Number</th>
+                                                <th>Description</th>
+                                                <th data-priority='4'>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="parTbody">
+                
+                                            {{-- @foreach ($to as $record) --}}
+                                                <tr>
+                                                <td>Laptop</td>
+                                                <td><h4><span class="badge badge-info">Active</span></h4></td>
+                                                <td>PAR - 1000211</td>
+                                                <td>SN: 38303040880</td>
+                                                <td><button class="btn btn-danger btn-sm"><i class="fas fa-minus"></i></button></td>
+                                            </tr>
+                                            {{-- @endforeach --}}
+                
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             {{-- </div> --}}

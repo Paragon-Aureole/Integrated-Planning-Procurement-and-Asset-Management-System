@@ -18,8 +18,9 @@ class MigratedAssetsController extends Controller
      */
     public function index()
     {
-        $migratedAssets = migratedAssets::all();
-        $migratedIcsAssets = migratedIcsAssets::all();
+        $migratedAssets = migratedAssets::select('par_number','entity_name', 'receiver_name', 'receiver_position')->groupBy('par_number', 'entity_name', 'receiver_name', 'receiver_position')->get();
+        // dd($migratedAssets);
+        $migratedIcsAssets = migratedIcsAssets::select('ics_number','office_id', 'receiver_name', 'receiver_position')->groupBy('ics_number', 'office_id', 'receiver_name', 'receiver_position')->get();
         $office = Office::all();
         $assetType = assetType::all();
         return view('assets.data_capturing.officeAssets.index', compact('migratedAssets', 'migratedIcsAssets', 'office', 'assetType'));
@@ -143,7 +144,7 @@ class MigratedAssetsController extends Controller
             ]);
         // };
 
-         return redirect()->route('migrateAssets.index')->with('success', 'Item Successfully Updated');
+         return redirect()->back()->with('success', 'Item Successfully Updated');
     }
 
     /**
@@ -155,20 +156,40 @@ class MigratedAssetsController extends Controller
     public function destroy($id)
     {
         $capturedPar = migratedAssets::destroy($id);
-        return redirect()->back()->with('error','A Captured PAR has been removed.');
+        return redirect()->back()->with('error','A Captured Item from PAR has been removed.');
     }
 
-    public function print($id) 
+    public function print($par_number, $office, $name, $position) 
     {
-        $parData = MigratedAssets::findorFail($id);
+        $parData = migratedAssets::where('par_number', $par_number)->where('entity_name', $office)->where('receiver_name', $name)->where('receiver_position', $position)->get();
+        // dd($parData);
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,
             'margin-bottom' => 10,
             'margin-left'   => 10,
         ];
-        // dd($IcslipData);
         $pdf = PDF::loadView('assets.data_capturing.officeAssets.printMigratedAssets', compact('parData'))->setPaper('A4', 'portrait');
         return $pdf->stream('PAR-Migrated.pdf');
+    }
+
+    // NEW FUNCTIONS
+    public function viewCapturedPar($par_number, $office, $name ,$position)
+    {
+        $data = migratedAssets::where('par_number', $par_number)->where('entity_name', $office)->where('receiver_name', $name)->where('receiver_position', $position)->get();
+        
+        return view('assets.data_capturing.officeAssets.viewCapturedPar', compact('data'));
+    }
+
+    public function destroyPar($par_number, $office, $name, $position)
+    {
+        $data = migratedAssets::where('par_number', $par_number)->where('entity_name', $office)->where('receiver_name', $name)->where('receiver_position', $position)->get();
+
+        foreach ($data as $key => $value) {
+            // dd($value->id);
+            $capturedData = MigratedAssets::destroy($value->id);
+        }
+        
+        return redirect()->back()->with('error','A Captured PAR has been removed.');
     }
 }

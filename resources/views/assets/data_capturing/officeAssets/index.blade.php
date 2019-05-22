@@ -213,6 +213,12 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
+                                                <label class="small">Total Amount:</label>
+                                                <input type="number" id="amount" name="amount_ics[]" class="form-control form-control-sm" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group col-md-12">
                                                 <label class="small">Item Unit:</label>
                                                 <input type="text" id="item_unit_ics" name="item_unit[]" class="form-control form-control-sm" required>
                                             </div>
@@ -235,7 +241,17 @@
                                                 <input type="text" id="ics_number" name="ics_number[]" class="form-control form-control-sm" required>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-2">
+                                            <div class="form-group col-md-12">
+                                                <label class="small">Department:</label>
+                                                <select id="office_id" name="office_id[]" class="form-control form-control-sm">
+                                                    @foreach ($office as $officeValue)
+                                                        <option value="{{$officeValue->id}}">{{$officeValue->office_code}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
                                             <div class="col-md-12">
                                                 <label class="small">Item Description:</label><br>
                                                 <textarea id="description_ics" name="description[]" cols="180" rows="5" class="form-control form-control-sm" required></textarea>
@@ -278,29 +294,31 @@
             <table id="parDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                 <thead class="thead-light">
                 <tr>
-                    <th>Receiver</th>
-                    <th>Position</th>
                     <th>PAR Number</th>
+                    <th>Department</th>
+                    <th>Received By</th>
+                    <th>Position</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($migratedAssets as $migratedAssetsValue)
                     <tr>
+                        <td>{{$migratedAssetsValue->par_number}}</td>
+                        <td>{{$migratedAssetsValue->Office->office_code}}</td>
                         <td>{{$migratedAssetsValue->receiver_name}}</td>
                         <td>{{$migratedAssetsValue->receiver_position}}</td>
-                        <td>{{$migratedAssetsValue->par_number}}</td>
                         <td>
-                            <a href="{{route('migrateAssets.print', $migratedAssetsValue->id)}}" target="_blank" class="btn btn-sm btn-success">
+                            <a href="/migratedAssets/viewCapturedItems/{{$migratedAssetsValue->par_number}}/{{$migratedAssetsValue->entity_name}}/{{$migratedAssetsValue->receiver_name}}/{{$migratedAssetsValue->receiver_position}}"class="btn btn-sm btn-info">
+                                <i class="fas fa-th-list"></i>
+                            </a>
+                            <a href="migrateAssets/print/{{$migratedAssetsValue->par_number}}/{{$migratedAssetsValue->entity_name}}/{{$migratedAssetsValue->receiver_name}}/{{$migratedAssetsValue->receiver_position}}" target="_blank" class="btn btn-sm btn-success">
                                 <i class="fas fa-print"></i>
                             </a>
-                            <a href="{{route('migrateAssets.edit', $migratedAssetsValue->id)}}" class="btn btn-sm btn-warning">
-                                    <i class="fas fa-edit"></i>
-                                </a>
                             @can('full control')
-                            <a id="deletePar" href="{{route('migrateAssets.destroy', $migratedAssetsValue->id)}}" class="btn btn-sm btn-danger">
-                                <i class="fas fa-minus"></i>
-                            </a>
+                                <a href="migratedAssets/destroyPar/{{$migratedAssetsValue->par_number}}/{{$migratedAssetsValue->entity_name}}/{{$migratedAssetsValue->receiver_name}}/{{$migratedAssetsValue->receiver_position}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Are you sure to delete Par #: {{$migratedAssetsValue->par_number}} of {{$migratedAssetsValue->Office->office_code}}">
+                                    <i class="fas fa-minus"></i>
+                                </a>
                             @endcan
                         </td>
                     </tr>
@@ -317,29 +335,31 @@
                     <table id="icsDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                 <thead class="thead-light">
                 <tr>
-                    <th>Receiver</th>
-                    <th>Position</th>
                     <th>ICS Number</th>
+                    <th>Department</th>
+                    <th>received By</th>
+                    <th>Position</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($migratedIcsAssets as $migratedIcsAssetsValue)
                     <tr>
+                        <td>{{$migratedIcsAssetsValue->ics_number}}</td>
+                        <td>{{$migratedIcsAssetsValue->Office->office_code}}</td>
                         <td>{{$migratedIcsAssetsValue->receiver_name}}</td>
                         <td>{{$migratedIcsAssetsValue->receiver_position}}</td>
-                        <td>{{$migratedIcsAssetsValue->ics_number}}</td>
                         <td>
-                            <a href="{{route('migrateIcsAssets.print', $migratedIcsAssetsValue->id)}}" target="_blank" class="btn btn-sm btn-success">
+                            <a href="/migratedIcsAssets/viewCapturedItems/{{$migratedIcsAssetsValue->ics_number}}/{{$migratedIcsAssetsValue->office_id}}/{{$migratedIcsAssetsValue->receiver_name}}/{{$migratedIcsAssetsValue->receiver_position}}"class="btn btn-sm btn-info">
+                                <i class="fas fa-th-list"></i>
+                            </a>
+                            <a href="migrateIcsAssets/print/{{$migratedIcsAssetsValue->ics_number}}/{{$migratedIcsAssetsValue->office_id}}/{{$migratedIcsAssetsValue->receiver_name}}/{{$migratedIcsAssetsValue->receiver_position}}" target="_blank" class="btn btn-sm btn-success">
                                 <i class="fas fa-print"></i>
                             </a>
-                            <a href="{{route('migrateIcsAssets.edit', $migratedIcsAssetsValue->id)}}" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
                             @can('full control')
-                            <a id="deleteIcs" href="{{route('migrateIcsAssets.destroy', $migratedIcsAssetsValue->id)}}" class="btn btn-sm btn-danger">
-                                <i class="fas fa-minus"></i>
-                            </a>
+                                <a href="migratedIcsAssets/destroyIcs/{{$migratedIcsAssetsValue->ics_number}}/{{$migratedIcsAssetsValue->office_id}}/{{$migratedIcsAssetsValue->receiver_name}}/{{$migratedIcsAssetsValue->receiver_position}}" class="btn btn-sm btn-danger" data-toggle="confirmation" data-content="Are you sure to delete Par #: {{$migratedIcsAssetsValue->ics_number}} of {{$migratedIcsAssetsValue->Office->office_code}}">
+                                    <i class="fas fa-minus"></i>
+                                </a>
                             @endcan
                         </td>
                     </tr>

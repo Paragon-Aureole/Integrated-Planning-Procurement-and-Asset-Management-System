@@ -57,7 +57,7 @@
                     
                     <td>{{$record->quantity}}</td>
                     <td>{{$record->asset->measurementUnit->unit_code}}</td>
-                    <td>
+                    <td width="30%">
                         <div class="text-left">{{$record->asset->details}}</div>
                         <div class="text-left">{{$record->description}}</div>
                     </td>

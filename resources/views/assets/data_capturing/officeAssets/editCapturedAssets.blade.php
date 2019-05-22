@@ -165,7 +165,7 @@
                                <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group col-md-6">
-                                            <a href="/migrateAssets" class="btn btn-info"> Cancel</a>
+                                            <a href="/migratedAssets/viewCapturedItems/{{$data->par_number}}/{{$data->entity_name}}/{{$data->receiver_name}}/{{$data->receiver_position}}" class="btn btn-info"> Back</a>
                                             <button title="Save Information Inputted" type="submit" class="btn btn-warning">Update Data</button>
                                         </div>
                                     </div>

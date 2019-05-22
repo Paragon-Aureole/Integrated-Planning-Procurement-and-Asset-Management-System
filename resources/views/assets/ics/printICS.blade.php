@@ -43,34 +43,42 @@
                         <th>Estimated Useful Life</th>
                     </tr>
                 </thead>
-                <tbody style="border:1px solid #FFF; !important">
+                <tbody>
                     @foreach ($IcslipData as $item)
                     @php
                     $amount = $item->asset->amount;
                     $item_quantity = $item->quantity;
                     @endphp
                     <tr>
-                        <td>{{$item->quantity}}</td>
-                        <td>{{$item->asset->measurementUnit->unit_code}}</td>
-                        {{--  <td>{{$unit->unit_code}}</td> --}}
-                        <td colspan="2">{{$item->asset->details}}<br>
-                            {{$item->description}}</td>
-                        {{--  <td>Sample Description</td>  --}}
-                        <td>{{$item->inventory_name_no}}</td>
-                        <td>{{$item->useful_life}}</td>
-                        {{--  <td>Sample Date Acquired</td>  --}}
+                        <td style="border-bottom: 1px solid white !important">{{$item->quantity}}</td>
+                        <td style="border-bottom: 1px solid white !important">{{$item->asset->measurementUnit->unit_code}}</td>
+                        <td width="40%" class="text-left" style="border-bottom: 1px solid white !important; border-right: 1px solid white !important">
+                            <b>{{$item->asset->details}}</b><br>{{$item->description}}
+                        </td>
+                        <td style="border-bottom: 1px solid white !important"><b>P{{number_format($item->asset->amount, 2)}}</b></td>
+                        <td style="border-bottom: 1px solid white !important">{{$item->inventory_name_no}}</td>
+                        <td style="border-bottom: 1px solid white !important">{{$item->useful_life}}</td>
                     </tr>
                     @endforeach
+
                     @for ($i = $IcslipData->count(); $i <= 25; $i++)
                         <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td colspan="2">&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td style="border-bottom: 1px solid white !important">&nbsp;</td>
+                            <td style="border-bottom: 1px solid white !important">&nbsp;</td>
+                            <td style="border-bottom: 1px solid white !important; border-right: 1px solid white !important">&nbsp;</td>
+                            <td style="border-bottom: 1px solid white !important">&nbsp;</td>
+                            <td style="border-bottom: 1px solid white !important">&nbsp;</td>
+                            <td style="border-bottom: 1px solid white !important">&nbsp;</td>
                         </tr>
                     @endfor
-                    
+                    <tr>
+                        <td style="border-bottom: 1px solid black !important">&nbsp;</td>
+                        <td style="border-bottom: 1px solid black !important">&nbsp;</td>
+                        <td style="border-bottom: 1px solid black !important; border-right: 1px solid white !important">&nbsp;</td>
+                        <td style="border-bottom: 1px solid black !important">&nbsp;</td>
+                        <td style="border-bottom: 1px solid black !important">&nbsp;</td>
+                        <td style="border-bottom: 1px solid black !important">&nbsp;</td>
+                    </tr>
                     <tr>       
                         <td colspan="3">
                             <div class="container">

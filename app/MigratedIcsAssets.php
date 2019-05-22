@@ -19,5 +19,12 @@ class MigratedIcsAssets extends Model
         'estimated_useful_life',
         'description',
         'ics_number',
+        'office_id',
+        'amount',
     ];
+
+    public function Office()
+    {
+        return $this->belongsTo(Office::class, 'office_id');
+    }
 }

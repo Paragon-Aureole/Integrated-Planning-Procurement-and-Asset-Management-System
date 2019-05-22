@@ -5,7 +5,7 @@
     <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
     <li class="breadcrumb-item active"><a href="{{route('assets.index')}}">Assets</a></li>
     <li class="breadcrumb-item active"><a href="{{route('AssetTurnover.index')}}">Turnover Assets</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Turover Item List</li>
+    <li class="breadcrumb-item active" aria-current="page">Turnover Item List</li>
 </ol>
 @endsection
 
@@ -36,7 +36,7 @@
                                     <td>123-PAR</td>
                                     <td>SN: 3-04834</td>
                                 </tr>
-                            </form>
+                        </tbody>
                     </table>
                 </div>
             </div>

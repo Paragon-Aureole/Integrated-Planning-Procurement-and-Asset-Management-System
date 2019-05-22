@@ -201,6 +201,12 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
+                                                <label class="small">Total Amount:</label>
+                                                <input type="number" id="amount" value="{{$data->amount}}" name="amount_ics" class="form-control form-control-sm" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group col-md-12">
                                                 <label class="small">Item Unit:</label>
                                                 <input type="text" value="{{$data->item_unit}}" id="item_unit_ics" name="item_unit" class="form-control form-control-sm" required>
                                             </div>
@@ -223,7 +229,17 @@
                                                 <input type="text" value="{{$data->ics_number}}" id="ics_number" name="ics_number" class="form-control form-control-sm" required>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-2">
+                                            <div class="form-group col-md-12">
+                                                <label class="small">Department:</label>
+                                                <select id="office_id" name="office_id" class="form-control form-control-sm">
+                                                    @foreach ($office as $officeValue)
+                                                        <option value="{{$officeValue->id}}">{{$officeValue->office_code}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
                                             <div class="col-md-12">
                                                 <label class="small">Item Description:</label><br>
                                                 <textarea id="description_ics" name="description" cols="180" rows="5" class="form-control form-control-sm" required>{{$data->description}}"</textarea>
@@ -239,7 +255,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group col-md-6">
-                                            <a href="/migrateAssets" class="btn btn-info"> Cancel</a>
+                                            <a href="/migratedIcsAssets/viewCapturedItems/{{$data->ics_number}}/{{$data->office_id}}/{{$data->receiver_name}}/{{$data->receiver_position}}" class="btn btn-info"> Back</a>
                                             <button title="Save Information Inputted" type="submit" class="btn btn-warning">Update Data</button>
                                         </div>
                                     </div>

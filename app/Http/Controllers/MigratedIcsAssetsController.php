@@ -56,6 +56,8 @@ class MigratedIcsAssetsController extends Controller
                 'estimated_useful_life' => $input['estimated_useful_life'][$i],
                 'description' => $input['description'][$i],
                 'ics_number' => $input['ics_number'][$i],
+                'office_id' => $input['office_id'][$i],
+                'amount' => $input['amount_ics'][$i],
             ];
             
             // dd($data);
@@ -124,10 +126,12 @@ class MigratedIcsAssetsController extends Controller
             'estimated_useful_life' => $input['estimated_useful_life'],
             'ics_number' => $input['ics_number'],
             'description' => $input['description'],
+            'office_id' => $input['office_id'],
+            'amount' => $input['amount_ics'],
         ]);
     // };
 
-     return redirect()->route('migrateAssets.index')->with('success', 'Item Successfully Updated');
+     return redirect()->back()->with('success', 'Item Successfully Updated');
     }
 
     /**
@@ -139,12 +143,14 @@ class MigratedIcsAssetsController extends Controller
     public function destroy($id)
     {
         $capturedIcs = MigratedIcsAssets::destroy($id);
-        return redirect()->back()->with('error','A Captured ICS has been removed.');
+        return redirect()->back()->with('error','A Captured item from ICS has been removed.');
     }
 
-    public function print($id)
+    public function print($ics_number, $office, $name ,$position)
     {
-        $IcsData = MigratedIcsAssets::findorFail($id);
+        $IcsData = migratedIcsAssets::where('ics_number', $ics_number)->where('office_id', $office)->where('receiver_name', $name)->where('receiver_position', $position)->get();
+        // dd($IcsData);
+
         $options = [
             'margin-top'    => 10,
             'margin-right'  => 10,
@@ -154,5 +160,25 @@ class MigratedIcsAssetsController extends Controller
         // dd($IcslipData);
         $pdf = PDF::loadView('assets.data_capturing.officeAssets.printIcsAssets', compact('IcsData'))->setPaper('A4', 'portrait');
         return $pdf->stream('ICS-Migrated.pdf');
+    }
+
+    // NEW
+    public function viewCapturedIcs($ics_number, $office, $name ,$position)
+    {
+        $data = migratedIcsAssets::where('ics_number', $ics_number)->where('office_id', $office)->where('receiver_name', $name)->where('receiver_position', $position)->get();
+        // dd($data);
+
+        return view('assets.data_capturing.officeAssets.viewCapturedIcs', compact('data'));
+    }
+
+    public function destroyIcs($ics_number, $office, $name, $position)
+    {
+        $data = migratedIcsAssets::where('ics_number', $ics_number)->where('office_id', $office)->where('receiver_name', $name)->where('receiver_position', $position)->get();
+
+        foreach ($data as $key => $value) {
+            $capturedIcs = MigratedIcsAssets::destroy($value->id);
+        }
+
+        return redirect()->back()->with('error','A Captured ICS has been removed.');
     }
 }
