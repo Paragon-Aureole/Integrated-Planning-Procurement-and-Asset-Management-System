@@ -44,6 +44,9 @@ class assetController extends Controller
         // $assetPar = assetPar::All();
         $asset = asset::All();
         $assetIcs = asset::select('purchase_order_id')->where('isICS', 1)->groupBy('purchase_order_id')->get();
+
+        // dd($assetIcs->first()->assetIcslip->id);
+        // $assetIcs = assetIcslip::All();
         // dd($assetIcs);
 
         // $prOfficeId = $asset->first()->purchaseOrder->purchaseRequest->office->id;
@@ -486,6 +489,8 @@ class assetController extends Controller
         // return view('assets.par.printPAR');
         // $ics = asset::find($id);
         $IcslipData = assetIcslipItem::where('asset_icslip_id', $id)->get();
+        // $IcslipData = assetIcslip::findorFail($id);
+        // dd($IcslipData);
 
         // dd($IcslipData);
         $options = [
@@ -644,7 +649,7 @@ class assetController extends Controller
         $assetParItems = asset::where('isPAR', 1)->where('item_stock', "<>", 0)->where('purchase_order_id', $id)->get();
         // dd($assetParItems);
         if ($assetParItems->isEmpty()) {
-            return redirect()->route('assets.index')->with('error', 'No PAR items left in this PO!');
+            return redirect()->route('parDistribution.index')->with('error', 'No PAR items left in this PO!');
         }
 
         // dd($signatoryData);

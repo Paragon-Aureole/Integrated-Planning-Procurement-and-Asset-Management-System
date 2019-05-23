@@ -44,6 +44,9 @@
                     </td>
                     <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>
+                      @if (count($item->purchaseOrder->assetPar) > 0)
+                      {{--  Bekkel  --}}
+                      @endif
                       <a href="{{route('assets.parTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
                       {{--  <a href="/displayParTransactions/{{$item->purchase_order_id}}" class="btn btn-success "><i class="fas fa-print"></i></a></td>  --}}
                   </tr>

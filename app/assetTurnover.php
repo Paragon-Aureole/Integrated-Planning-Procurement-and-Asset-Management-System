@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class assetTurnover extends Model
 {
     protected $fillable = [
-        'asset_par_id',
-        'isApproved'
+        // 'asset_par_id',
+        'isApproved',
+        'isReturn'
     ];
 
     public function assetTurnoverItem()
@@ -16,9 +17,9 @@ class assetTurnover extends Model
         return $this->hasMany(assetTurnoverItem::class);
     }
 
-    public function assetPar()
-    {
-        return $this->belongsTo(assetPar::class);
-    }
+    // public function assetPar()
+    // {
+    //     return $this->belongsTo(assetPar::class);
+    // }
 
 }

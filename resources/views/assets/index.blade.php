@@ -56,7 +56,7 @@
               <table id="classifiedDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
                 <thead class="thead-light">
                   <tr>
-                    <th>ID</th>
+                    <th>PO ID</th>
                     <th>Office</th>
                     <th>Classification</th>
                     <th data-priority = '3'>Action</th>
@@ -64,14 +64,19 @@
                 </thead>
                 <tbody>
                   @foreach ($assetIcs as $item)
-                  {{--  {{$item}}  --}}
+                  {{--  {{$item->purchaseOrder->assetIcslip}}  --}}
                   <tr>
                     <td>{{$item->purchase_order_id}}</td>
                     <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>ICS</td>
                     <td>
+                      
+                      @if (count($item->purchaseOrder->assetIcslip) > 0)
+                      <a href="{{route('assets.displayIcsTransactions', $item->purchaseOrder->assetIcslip->id)}}" class="btn btn-success btn-sm"><i class="fas fa-print"></i></a></td>
+                      @else
                       <a href="{{route('assets.icsTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
-                      <a href="{{route('assets.displayIcsTransactions', $item->purchase_order_id)}}" class="btn btn-success btn-sm"><i class="fas fa-print"></i></a></td>
+                      @endif
+                      
                   </tr>   
                   @endforeach
                   {{--  <tr>

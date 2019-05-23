@@ -23,12 +23,19 @@ class PrintReportController extends Controller
      */
     public function index()
     {
-        $assetPar = assetPar::select('assignedTo', 'position', 'purchase_order_id')->groupBy('assignedTo', 'position', 'purchase_order_id')->get();
+        $assetPar = assetPar::select('assignedTo', 'position')->groupBy('assignedTo', 'position')->get();
+        // dd($assetPars);
         $asset = asset::where('asset_type_id', 1)->get();
+        // dd($asset);
 
-        foreach ($assetPar as $key => $value) {
-            $capturedAsset = migratedAssets::where('receiver_name','!=', $value->assignedTo)->where('receiver_position', '!=', $value->position)->get();
+        if ($assetPar->isEmpty()) {
+            $capturedAsset = migratedAssets::select('receiver_name', 'receiver_position', 'entity_name')->groupBy('receiver_name', 'receiver_position', 'entity_name')->get();
+        } else {
+            foreach ($assetPar as $key => $value) {
+                $capturedAsset = migratedAssets::where('receiver_name', '!=', $value->assignedTo)->where('receiver_position', '!=', $value->position)->get();
+            }
         }
+        
 
         // dd($captured);
 
@@ -60,10 +67,10 @@ class PrintReportController extends Controller
 
     }
 
-    public function printPhysicalForm($name,$position,$department)
+    public function printPhysicalForm($name,$position)
     {
         $parData = AssetPar::where('assignedTo', $name)->where('position', $position)->get();
-        $parMigrationData = migratedAssets::where('receiver_name', $name)->where('receiver_position', $position)->where('entity_name', $department)->get();
+        $parMigrationData = migratedAssets::where('receiver_name', $name)->where('receiver_position', $position)->get();
 
         $options = [
             'margin-top'    => 10,

@@ -218,7 +218,10 @@ Route::get('getCurrentTurnoverId', 'AssetTurnoverController@getCurrentTurnoverId
 Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
 Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems');
 Route::get('getParTurnoverItems', 'AssetTurnoverController@getParTurnoverItems');
-Route::post('/ApproveParTurnover', 'AssetTurnoverController@ApproveParTurnover');
+Route::get('ApproveParTurnover/{id}/{type}', 'AssetTurnoverController@ApproveParTurnover');
+// Route::get('createNewTurnover', 'AssetTurnoverController@createNewTurnover')->name('AssetTurnover.createNewTurnover');
+Route::get('ViewTurnedover', 'AssetTurnoverController@ViewTurnedover');
+
 
 //activity log
 Route::resource('logs', 'ActivityLogController');
@@ -232,7 +235,7 @@ Route::resource('parDistribution', 'AssetParItemController');
 // PRINT OF PHYSICAL COUNT
 Route::get('/getPrintPhysicalData', 'PrintReportController@getPrintPhysicalData');
 Route::get('/getPrintPhysicalDataCaptured', 'PrintReportController@getPrintPhysicalDataCaptured');
-Route::get('/printPhysicalForm/{name}/{position}/{department}', 'PrintReportController@printPhysicalForm');
+Route::get('/printPhysicalForm/{name}/{position}', 'PrintReportController@printPhysicalForm');
 Route::get('/printPhysicalFormCaptured/{name}/{position}/{department}', 'PrintReportController@printPhysicalFormCaptured');
 
 

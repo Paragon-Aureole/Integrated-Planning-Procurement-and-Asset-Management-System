@@ -61,9 +61,9 @@ class CreateAssetIcslipItemsTable extends Migration
             $table->foreign('asset_type_id')->references('id')->on('asset_types')->onDelete('cascade');
         });
 
-        Schema::table('asset_turnovers', function (Blueprint $table) {
-            $table->foreign('asset_par_id')->references('id')->on('asset_pars')->onDelete('cascade');
-        });
+        // Schema::table('asset_turnovers', function (Blueprint $table) {
+        //     $table->foreign('asset_par_id')->references('id')->on('asset_pars')->onDelete('cascade');
+        // });
 
         Schema::table('asset_turnover_items', function (Blueprint $table) {
             $table->foreign('asset_turnover_id')->references('id')->on('asset_turnovers')->onDelete('cascade');

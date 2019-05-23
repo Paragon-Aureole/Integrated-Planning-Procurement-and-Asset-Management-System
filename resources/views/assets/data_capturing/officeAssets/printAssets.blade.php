@@ -23,7 +23,7 @@
 </head>
 
 <body>
-    @if ($parData->first()->purchaseOrder->purchaseRequest->office->id == $department)
+    @if ($parData->first()->purchaseOrder->purchaseRequest->office->id)
         <div class="container-fluid">
             <div class="row text-center header">
                 <div class="col-xs-12">REPORT OF THE PHYSICAL COUNT OF PROPERTY, PLANT AND EQUIPMENT</div>

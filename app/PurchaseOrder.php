@@ -43,6 +43,11 @@ class PurchaseOrder extends Model
         return $this->hasMany(assetPar::class);
     }
 
+    public function assetIcslip()
+    {
+        return $this->hasOne(assetIcslip::class);
+    }
+
     public function disbursementVoucher()
     {
         return $this->hasOne(PurchaseOrder::class);

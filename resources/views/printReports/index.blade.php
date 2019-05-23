@@ -23,7 +23,6 @@
             <tr>
               <th>Signatory Name</th>
               <th>Position</th>
-              <th>Office</th>
               <th data-priority = "4">Items</th>
             </tr>
           </thead>
@@ -32,9 +31,8 @@
                 <tr>
                     <td>{{$assetParItem->assignedTo}}</td>
                     <td>{{$assetParItem->position}}</td>
-                    <td>{{$assetParItem->purchaseOrder->purchaseRequest->office->office_code}}</td>
                     <td>
-                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}/{{$assetParItem->purchaseOrder->purchaseRequest->office->id}}" target="_blank"><i class="fas fa-print"></i></a>
+                        <a class="btn btn-sm btn-success" href="/printPhysicalForm/{{$assetParItem->assignedTo}}/{{$assetParItem->position}}" target="_blank"><i class="fas fa-print"></i></a>
                     </td>
                 </tr>
             @endforeach
@@ -44,7 +42,6 @@
               <tr>
                   <td>{{$capturedAssetItem->receiver_name}}</td>
                   <td>{{$capturedAssetItem->receiver_position}}</td>
-                  <td>{{$capturedAssetItem->Office->office_code}}</td>
                   <td>    
                       <a class="btn btn-sm btn-success" href="/printPhysicalFormCaptured/{{$capturedAssetItem->receiver_name}}/{{$capturedAssetItem->receiver_position}}/{{$capturedAssetItem->Office->id}}" target="_blank"><i class="fas fa-print"></i></a>                   
                   </td>
@@ -64,16 +61,14 @@
             <tr>
               <th>Acquisition Date</th>
               <th>Acquisition Cost</th>
-              <th>Office </th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
           @foreach ($asset as $assetItem)
             <tr>
-              <td>{{$assetItem->asset_par->first()->created_at}}</td>
+              <td>{{$assetItem->purchaseOrder->created_at}}</td>
               <td>{{$assetItem->amount}}</td>
-              <td>{</td>
               <td>{{$assetItem->asset_type->type_name}}</td>
             </tr>
           @endforeach

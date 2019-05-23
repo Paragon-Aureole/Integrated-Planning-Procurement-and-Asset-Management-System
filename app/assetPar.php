@@ -22,10 +22,10 @@ class assetPar extends Model
         return $this->hasMany(AssetParItem::class);
     }
 
-    public function AssetTurnover()
-    {
-        return $this->hasMany(AssetTurnover::class);
-    }
+    // public function AssetTurnover()
+    // {
+    //     return $this->hasMany(AssetTurnover::class);
+    // }
 
     public function purchaseOrder()
     {

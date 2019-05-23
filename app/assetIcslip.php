@@ -26,6 +26,11 @@ class assetIcslip extends Model
         return $this->belongsTo(PurchaseOrder::class);
     }
 
+    public function assetIcslip()
+    {
+        return $this->belongsTo(assetIcslip::class);
+    }
+
     public function AssetIcslipItem()
     {
         return $this->hasMany(AssetIcslipItem::class);

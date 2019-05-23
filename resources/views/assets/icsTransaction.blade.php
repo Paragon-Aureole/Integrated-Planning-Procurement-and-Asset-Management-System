@@ -68,9 +68,9 @@
                     </td>
                     <td>{{$item->measurementUnit->unit_code}}</td>
                     <td>{{$item->details}}</td>
-                    <td><textarea name="itemExtraDescription[{{$item->id}}]" cols="30" rows="1"></textarea></td>
-                    <td><input type="text" name="itemInventoryNo[{{$item->id}}]"></td>
-                    <td><input type="text" name="itemEstimatedUsefulLife[{{$item->id}}]"></td>         
+                    <td><textarea name="itemExtraDescription[{{$item->id}}]" cols="30" rows="1" required></textarea></td>
+                    <td><input type="text" name="itemInventoryNo[{{$item->id}}]" required></td>
+                    <td><input type="text" name="itemEstimatedUsefulLife[{{$item->id}}]" required></td>         
                 @endif
                 <td> 
                   @can('Asset Management')
