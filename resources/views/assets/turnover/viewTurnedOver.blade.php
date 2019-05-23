@@ -56,7 +56,9 @@
                                     </td>
                                     <td>
                                         @if ($record->isApproved == 0)
+                                        @can('Asset Management', 'Supervisor')
                                         <a href="ApproveParTurnover/{{$record->id}}/{{$record->isReturn}}" class="btn btn-success btn-sm">Approve Turnover  <i class="fas fa-check" title="Approved Turnover Request"></i></a>
+                                        @endcan
                                         @endif
                                         <a href="{{route('AssetTurnover.show', $record->id)}}" class="btn btn-info btn-sm"><i class="fas fa-th-list" title="View Items"></i></a>
                                         @if ($record->isReturn == 0)

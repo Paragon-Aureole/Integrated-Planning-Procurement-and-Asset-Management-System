@@ -48,7 +48,7 @@ class AssetTurnoverController extends Controller
             })->get();
             // dd($approvalAssets);
 
-            $office = Office::find($user->office_id);
+            $office = Office::where('id', $user->office_id)->get();
         }
         $turnoverCount = (int) assetTurnover::count() + 1;
 

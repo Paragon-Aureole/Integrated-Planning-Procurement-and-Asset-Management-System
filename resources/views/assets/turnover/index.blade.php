@@ -27,8 +27,8 @@
                             <select name="departmentSelect" id="departmentSelect" class="form-control form-control-sm"
                                 @hasrole('Department') readonly @endhasrole>
                                 @foreach ($office as $item)
-                                <option data-value="{{$item->office_code}}" value="{{$item->office_id}}"
-                                    @hasrole('Department') selected @endhasrole>{{$item->office_name}}</option>
+                                <option data-value="{{$item->office_code}}" value="{{$item->office_id}}">
+                                    {{$item->office_name}}</option>
                                 @endforeach
                             </select>
 
