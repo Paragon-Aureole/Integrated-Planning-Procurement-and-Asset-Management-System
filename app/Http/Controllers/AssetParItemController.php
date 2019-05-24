@@ -17,6 +17,7 @@ class AssetParItemController extends Controller
     public function index()
     {
         $assetPar = asset::select('purchase_order_id')->where('isPAR', 1)->groupBy('purchase_order_id')->get();
+        // dd($assetPar->first());
         $distributedAssetPar = assetPar::all();
         // dd($assetPar);
 

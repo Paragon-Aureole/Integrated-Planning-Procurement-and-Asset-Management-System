@@ -58,6 +58,7 @@
                   <tr>
                     <th>PO ID</th>
                     <th>Office</th>
+                    <th>Details</th>
                     <th>Classification</th>
                     <th data-priority = '3'>Action</th>
                   </tr>
@@ -65,9 +66,13 @@
                 <tbody>
                   @foreach ($assetIcs as $item)
                   {{--  {{$item->purchaseOrder->assetIcslip}}  --}}
+                  {{--  {{$item->purchaseOrder->assetIcslip}}  --}}
                   <tr>
                     <td>{{$item->purchase_order_id}}</td>
                     <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
+                      <td>@foreach ($item->purchaseOrder->asset->where('isICS', 1)->take(2) as $item)
+                            •{{$item->details}}
+                        @endforeach</td>
                     <td>ICS</td>
                     <td>
                       
