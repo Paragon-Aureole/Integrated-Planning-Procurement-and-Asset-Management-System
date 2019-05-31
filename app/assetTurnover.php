@@ -8,8 +8,7 @@ class assetTurnover extends Model
 {
     protected $fillable = [
         // 'asset_par_id',
-        'isApproved',
-        'isReturn'
+        'isApproved'
     ];
 
     public function assetTurnoverItem()

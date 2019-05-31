@@ -51,5 +51,4 @@ class asset extends Model
         return $this->hasMany(assetIcslipItem::class);
     }
 
-
 }

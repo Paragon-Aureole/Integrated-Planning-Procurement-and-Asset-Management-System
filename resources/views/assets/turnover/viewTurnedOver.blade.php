@@ -23,7 +23,6 @@
                                 <tr>
                                     <th>Turnover #</th>
                                     <th>Status</th>
-                                    <th>Type</th>
                                     <th>Details</th>
                                     <th data-priority='3'>Actions</th>
                                 </tr>
@@ -41,13 +40,6 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($record->isReturn == 1)
-                                            Return
-                                        @else
-                                            Unserviceable
-                                        @endif
-                                    </td>
-                                    <td>
                                             {{--  {{$record->assetTurnoverItem->take(2)}}  --}}
                                         @foreach ($record->assetTurnoverItem->take(2) as $item)
                                         ||{{$item->assetParItem->asset->details}}||
@@ -57,7 +49,7 @@
                                     <td>
                                         @if ($record->isApproved == 0)
                                         @can('Asset Management', 'Supervisor')
-                                        <a href="ApproveParTurnover/{{$record->id}}/{{$record->isReturn}}" class="btn btn-success btn-sm">Approve Turnover  <i class="fas fa-check" title="Approved Turnover Request"></i></a>
+                                        <a href="ApproveParTurnover/{{$record->id}}" class="btn btn-success btn-sm">Approve Turnover  <i class="fas fa-check" title="Approved Turnover Request"></i></a>
                                         @endcan
                                         @endif
                                         <a href="{{route('AssetTurnover.show', $record->id)}}" class="btn btn-info btn-sm"><i class="fas fa-th-list" title="View Items"></i></a>

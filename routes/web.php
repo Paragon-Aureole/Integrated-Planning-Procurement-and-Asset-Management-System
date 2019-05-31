@@ -164,19 +164,12 @@ Route::resource('ir', 'InspectionReportController');
 //assets
 Route::get('/getVoucherNo', 'assetController@getVoucherNo')->name('assets.getVoucherNo');
 Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.saveVoucherNo');
-Route::get('/assetClassification', 'assetController@assetClassification')->name('assets.assetClassification');
 
 Route::get('/asset/distributed', 'assetController@viewAll')->name('assets.distributed');
 
 Route::resource('assets', 'assetController');
 Route::get('getClassificationModalData', 'assetController@getClassificationModalData');
-Route::get('getAssetData', 'assetController@getAssetData');
-Route::get('/getPARNo', 'assetController@getPARCount');
-Route::get('/getICSNo', 'assetController@getICSCount');
-Route::get('getClassifiedItemQtyNo/{id}', 'assetController@getClassifiedItemQtyNo');
-Route::post('/saveNewPar/{id}', 'assetController@saveNewPar')->name('assets.saveNewPar');
 Route::post('/saveNewIcs', 'assetController@saveNewIcs')->name('assets.saveNewIcs');
-Route::post('/setAssetIsAssigned', 'assetController@setAssetIsAssigned');
 Route::get('/requestEdit', 'assetController@requestEdit')->name('asset.requestEdit');
 Route::get('/acceptEdit/{id}', 'assetController@acceptEdit');
 Route::get('/cancelEdit/{id}', 'assetController@cancelEdit');
@@ -218,7 +211,7 @@ Route::get('getCurrentTurnoverId', 'AssetTurnoverController@getCurrentTurnoverId
 Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
 Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems');
 Route::get('getParTurnoverItems', 'AssetTurnoverController@getParTurnoverItems');
-Route::get('ApproveParTurnover/{id}/{type}', 'AssetTurnoverController@ApproveParTurnover');
+Route::get('ApproveParTurnover/{id}', 'AssetTurnoverController@ApproveParTurnover');
 // Route::get('createNewTurnover', 'AssetTurnoverController@createNewTurnover')->name('AssetTurnover.createNewTurnover');
 Route::get('ViewTurnedover', 'AssetTurnoverController@ViewTurnedover');
 
@@ -230,7 +223,9 @@ Route::resource('logs', 'ActivityLogController');
 Route::resource('printReports', 'PrintReportController');
 
 // PAR DISTRIBUTION
-Route::resource('parDistribution', 'AssetParItemController');
+Route::resource('parDistribution', 'AssetParController');
+Route::get('/parTransaction/{id}', 'AssetParController@parTransaction')->name('AssetParController.parTransaction');
+Route::get('/displayParTransactions/{id}', 'AssetParController@displayParTransactions')->name('AssetParController.displayParTransactions');
 
 // PRINT OF PHYSICAL COUNT
 Route::get('/getPrintPhysicalData', 'PrintReportController@getPrintPhysicalData');
@@ -241,7 +236,5 @@ Route::get('/printPhysicalFormCaptured/{name}/{position}/{department}', 'PrintRe
 
 
 // NEW LIST OF WEB
-Route::get('/parTransaction/{id}', 'assetController@parTransaction')->name('assets.parTransaction');
-Route::get('/displayParTransactions/{id}', 'assetController@displayParTransactions')->name('assets.displayParTransactions');
 Route::get('/icsTransaction/{id}', 'assetController@icsTransaction')->name('assets.icsTransaction');
 Route::get('/displayIcsTransactions/{id}', 'assetController@displayIcsTransactions')->name('assets.displayIcsTransactions');

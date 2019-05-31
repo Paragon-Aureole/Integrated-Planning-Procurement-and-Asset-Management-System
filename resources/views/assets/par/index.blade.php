@@ -21,7 +21,7 @@
               <h6 class="card-title">
                   Available Assets for Distribution (PAR) 
               </h6>
-            <table id="prDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+            <table id="availableDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
               <thead class="thead-light">
                 <tr>
                   {{--  <th>ID</th>  --}}
@@ -47,7 +47,7 @@
                       @if (count($item->purchaseOrder->assetPar) > 0)
                       {{--  Bekkel  --}}
                       @endif
-                      <a href="{{route('assets.parTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
+                      <a href="{{route('AssetParController.parTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
                       {{--  <a href="/displayParTransactions/{{$item->purchase_order_id}}" class="btn btn-success "><i class="fas fa-print"></i></a></td>  --}}
                   </tr>
               @endforeach
@@ -59,7 +59,7 @@
               <h6 class="card-title">
                   Distributed Assets (PAR)
               </h6>
-            <table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
+            <table id="distributedDatatable" class="table table-bordered table-hover table-sm display nowrap w-100">
               <thead class="thead-light">
                 <tr>
                   {{--  <th>ID</th>  --}}
@@ -258,6 +258,23 @@
 @endsection
 
 @section('script')
+<script>
+$(document).ready(function(){
+      $('#availableDatatable').DataTable({
+                responsive: true,
+                "lengthMenu": [
+                    [5, 10, 25, 50, -1],
+                    [5, 10, 25, 50, "All"]
+                ],
+            });
 
-<script src="{{asset('js/asset_parIndex.js')}}"></script>
+            $('#distributedDatatable').DataTable({
+                      responsive: true,
+                      "lengthMenu": [
+                          [5, 10, 25, 50, -1],
+                          [5, 10, 25, 50, "All"]
+                      ],
+                  });
+          });
+</script>
 @endsection

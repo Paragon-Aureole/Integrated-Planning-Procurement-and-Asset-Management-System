@@ -64,15 +64,13 @@
                             @foreach ($to as $record)
                             {{--  {{$record->AssetParItem}} --}}
                             @foreach ($record->AssetParItem as $item)
-
-
-                            <tr>
+                            @if ($item->itemStatus == 0)
+                               <tr>
                                 <td><input type="text" class="border-0" name="item_id[{{$item->id}}]"
                                         value={{$item->id}} readonly></td>
                                 <td>{{$item->asset->details}}</td>
                                 <td>{{$item->asset->purchaseOrder->purchaseRequest->office->office_code}}</td>
                                 <td>{{$item->assetPar->assignedTo}}</td>
-                                @if ($item->itemStatus == 0)
                                 <td>
                                     Active
                                 </td>
@@ -80,31 +78,11 @@
                                 <td>{{$item->description}}</td>
                                 <td><button id="turnoverAddItem" class="btn btn-info btn-sm"><i
                                             class="fas fa-plus"></i></button></td>
-                                @elseif($item->itemStatus == 1)
-                                <td>
-                                    Pending Turnover
-                                </td>
-                                <td>PAR: {{$item->asset_par_id}}</td>
-                                <td>{{$item->description}}</td>
-                                <td></td>
-                                @elseif($item->itemStatus == 4)
-                                <td>
-                                    Returned
-                                </td>
-                                <td>PAR: {{$item->asset_par_id}}</td>
-                                <td>{{$item->description}}</td>
-                                <td><button id="turnoverAddItem" class="btn btn-info btn-sm"><i
-                                            class="fas fa-plus"></i></button></td>
-                                @else
-                                <td>
-                                    Unserviceable
-                                </td>
-                                <td>PAR: {{$item->asset_par_id}}</td>
-                                <td>{{$item->description}}</td>
-                                <td></td>
-                                @endif
+                            </tr> 
+                            @endif
 
-                            </tr>
+
+                            
                             {{--  <tr>
                                 <td>Laptop</td>
                                 <td><h5><span class="badge badge-info">Active</span></h5></td>
@@ -151,13 +129,13 @@
                                 <input name="turnover_number" id="turnover_number" class="form-control" type="text"
                                     value="{{$turnoverCount}}" readonly>
                             </div>
-                            <div class="col-md-3">
+                            {{--  <div class="col-md-3">
                                 <label>Turnover Type:</label>
                                 <select name="forReturn" id="forReturn" class="form-control form-control-sm" required>
                                     <option value="1">Return</option>
                                     <option value="0">Unserviceable</option>
                                 </select>
-                            </div>
+                            </div>  --}}
                         </div>
                         {{--  <a href="AssetTurnover/create" class="btn btn-success btn-md float-right">Save Chosen Items</a>  --}}
                         <button class="btn btn-success btn-md float-right" id="createNewTurnover"

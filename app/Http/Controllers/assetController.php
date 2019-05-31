@@ -32,37 +32,12 @@ class assetController extends Controller
      */
     public function index()
     {
-        // $assetData = asset::where('id', 4)->get();
-        // dd($assetData->first()->purchaseOrder->purchaseRequest->office->id);
-
-        // $assetIcsItems = asset::where('isICS', 1)->where('item_stock', "<>", 0)->where('purchase_order_id', 1)->get();
-        // dd($assetIcsItems);
         
-        // dd($icsSignatory);
-        
-        // $asset = purchaseRequest::where('created_inspection', 1)->get();
-        // $assetPar = assetPar::All();
         $asset = asset::All();
-        $assetIcs = asset::select('purchase_order_id')->where('isICS', 1)->groupBy('purchase_order_id')->get();
+        // $assetIcs = asset::select('purchase_order_id')->where('isICS', 1)->groupBy('purchase_order_id')->get();
+        $assetIcs = asset::select('purchase_order_id')->distinct()->where('isICS', 1)->where('item_stock', '<>', 0)->get();
 
-        // dd($assetIcs->first()->assetIcslip->id);
-        // $assetIcs = assetIcslip::All();
-        // dd($assetIcs);
-
-        // $prOfficeId = $asset->first()->purchaseOrder->purchaseRequest->office->id;
-        // // dd($prOfficeId);
-        // $icsSignatory = App\Signatory::where(['office_id' => 1, 'is_activated' => 1])->first();
-        // dd($asset);
-        // $pr = PurchaseRequest::findorFail(1);
-        // $pr_code = explode("-", $pr->pr_code);
-        
-        // $ppmp= Ppmp::where('office_id', $pr->office_id)->where('ppmp_year', $pr_code[2])->first();
-        // $ppmp_item = $ppmp->ppmpItem->all();
-
-        // dd($ppmp_item);
-        // dd($data);
         return view('assets.index', compact('asset', 'assetIcs'));
-        // return $dummyData;
     }
 
     /**
@@ -96,6 +71,7 @@ class assetController extends Controller
         return view('assets.viewDistributed', compact('asset', 'assetPar', 'assetIcs'));
     }
 
+    //important vvv
     public function getClassificationModalData(Request $request)
     {
         $input = $request->all();
@@ -108,70 +84,7 @@ class assetController extends Controller
 
         return response()->json(['ClassificationModalContent'=>$ClassificationModalContent]);
     }
-
-    public function getAssetData(Request $request)
-    {
-        $input = $request->all();
-
-        $assetData = asset::where('id', $input['asset_id'])->get();
-        $office_id = $assetData->first()->purchaseOrder->purchaseRequest->office->id;
-        $icsSignatory = App\Signatory::where(['office_id' => $office_id, 'is_activated' => 1])->first();
-        $icsSignatoryName = $icsSignatory->signatory_name;
-        $icsSignatoryPosition = $icsSignatory->signatory_position;
-
-        return response()->json(['assetData' => $assetData, 'signatoryName' => $icsSignatoryName, 'signatoryPosition' => $icsSignatoryPosition]);
-    }
-
-    public function getPARCount()
-    {
-        $assetParCount = assetPar::get()->count();
-        return ($assetParCount);
-    }
-
-    public function getICSCount()
-    {
-        $assetIcsCount = assetIcslip::get()->count();
-        return ($assetIcsCount);
-    }
-
-    public function getClassifiedItemQtyNo($id)
-    {
-        // dd($id);
-        $assetClassifiedItemQtyNo = asset::select('item_stock')->where('id', $id)->get();
-        return ($assetClassifiedItemQtyNo->first()->item_stock);
-    }
-
-    public function setAssetIsAssigned(Request $request)
-    {
-        asset::whereId($request->asset_id)->update([
-                'isAssigned' => 1
-            ]);
-
-        return response()->json(['response' => 'Assigning Successful. You may now print.', 'error' => false]);
-    }
-    // public function getVoucherNo(Request $request)
-    // {
-    //     $poID = $request->get('searchPO');
-    //     // return($poID);
-    //     return view('assets.getVoucherNo', compact('poID'));
-    // }
-
-    // public function saveVoucherNo(Request $request)
-    // {
-    //     $purchase_order_no = $request->get('purchase_order_no');
-    //     $voucherNo = $request->get('voucherNo');
-
-    //     DisbursementVoucher::create([
-    //             'purchase_order_id' => $purchase_order_no,
-    //             'disbursementNo' => $voucherNo
-    //         ]);
-        
-    //     return redirect()->route('assets.assetClassification', compact('purchase_order_no'))->with('success', 'PO Disbursement Number has been Registered.');
-
-        
-    //     // dd($purchase_order_no, $voucherNo);
-    // }
-
+    //important ^^^
 
     /**
      * Show the form for creating a new resource.
@@ -180,19 +93,6 @@ class assetController extends Controller
      */
     public function create()
     {
-    }
-
-    public function assetClassification(Request $id)
-    {
-        //  dd($id->All());
-
-        // $data = asset::findorFail($id->purchase_order_id);
-        $assetData = asset::where('purchase_order_id', $id->purchase_order_id)->get();
-        $assetTypeData = assetType::All();
-        // dd($assetData);
-    
-        return view('assets.assetClassification', compact('assetData', 'assetTypeData'));
-        // return view('assets.create');
     }
 
     /**
@@ -257,79 +157,6 @@ class assetController extends Controller
         return redirect()->back()->with('success', 'PO Items have been Registered, Go to Distribute Asset Module to Distribute Items');
     }
 
-    public function saveNewPar(Request $request)
-    {
-        $items = $request->all();
-        // dd($items);
-
-        $newAssetPar = assetPar::create([
-            'purchase_order_id' => $items['po_number'],
-            'assignedTo' => $items['signatory'],
-            'position' => $items['position']
-        ]);
-
-        // dd($newAssetPar);
-
-        $filteredData = [];
-
-        
-        foreach ($items['itemQuantity'] as $key => $value) {
-            if ($value != 0) {
-                for ($i=0; $i < $value; $i++) {
-                    $filteredData[$key][] = [
-                        'itemPropertyNo' => $items['itemPropertyNo'][$key],
-                        'itemDateAcquired' => $items['itemDateAcquired'][$key],
-                        'itemExtraDescription' => $items['itemExtraDescription'][$key][$i],
-                        'itemStatus' => 0,
-                        'quantity' => 1,
-                        'asset_par_id' => $newAssetPar->id
-                        // 'asset_id' => $key
-                        ];
-                }
-            }
-        }
-        
-        // dd($filteredData);
-        if (count($filteredData) > 0) {
-            foreach ($filteredData as $key => $value) {
-                foreach ($value as $key2 => $value2) {
-                    AssetParItem::create([
-                         'asset_par_id' => $value2['asset_par_id'],
-                         'asset_id' => $key,
-                         'description' => $value2['itemExtraDescription'],
-                         'date_acquired' => $value2['itemDateAcquired'],
-                         'itemStatus' => 0,
-                         'quantity' => 1,
-                         'property_no' => $value2['itemPropertyNo']
-                     ]);
-    
-                    // echo $key;
-                    // print_r($value2['asset_par_id']);
-                    // echo "<br>";
-                }
-            }
-            
-            foreach ($items['itemQuantity'] as $key => $value) {
-                if ($value != 0) {
-                    asset::find($key)->decrement('item_stock', $value);
-                }
-            }
-        } else {
-            return redirect()->back()->with('error', 'Invalid Transaction!');
-        }
-
-        // die();
-
-
-        return redirect()->route('parDistribution.index')->with('success', 'PAR Distribution Complete. Proceed to Printing');
-
-        // if ($request->isMethod('post')) {
-        //     // return response()->json(['response' => 'This is post method', 'error' => false]);
-        //     return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
-        // } else {
-        //     return response()->json(['response' => 'failure']);
-        // }
-    }
     public function saveNewIcs(Request $request)
     {
         $items = $request->all();
@@ -377,27 +204,6 @@ class assetController extends Controller
 
             asset::find($key)->decrement('item_stock', $value[0]);
         }
-
-        // dd(print_r($items));
-
-        // $bekkel = [];
-        // for ($i=0; $i < count($items[2]); $i++) {
-        //     // $bekkel[] = ['id' => $items[0], 'description' => $items[2][$i]];
-            
-        //     AssetIcslipItem::create([
-        //             'asset_icslip_id' => $items[6],
-        //             'description' => $items[2][$i]
-        //         ]);
-        // }
-
-        // dd($bekkel);
-
-        // if ($request->isMethod('post')) {
-        //     // return response()->json(['response' => 'This is post method', 'error' => false]);
-        //     return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
-        // } else {
-        //     return response()->json(['response' => 'failure']);
-        // }
 
         return redirect()->route('assets.index')->with('success', 'ICS Assigned. Proceed to Printing');
     }
@@ -641,19 +447,4 @@ class assetController extends Controller
         return view('assets.ics.index', compact('assetIcsItem', 'id'));
     }
 
-    public function parTransaction($id)
-    {
-        // dd('wew');
-        $parCount = (int) assetPar::count() + 1;
-        // dd($parCount);
-        $assetParItems = asset::where('isPAR', 1)->where('item_stock', "<>", 0)->where('purchase_order_id', $id)->get();
-        // dd($assetParItems);
-        if ($assetParItems->isEmpty()) {
-            return redirect()->route('parDistribution.index')->with('error', 'No PAR items left in this PO!');
-        }
-
-        // dd($signatoryData);
-        
-        return view('assets.par.parTransaction', compact('assetParItems', 'id', 'parCount'));
-    }
 }

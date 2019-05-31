@@ -48,7 +48,7 @@ $(document).ready(function () {
             chosenDatatable.row.add(newRowData).draw();
             itemDataTable.row($(this).parents('tr')).remove().draw();
             
-        });
+        });``
         
         chosenDatatable.on('click', 'tr button#turnoverRemoveItem', function () {
             console.log('You know I want you~☻');

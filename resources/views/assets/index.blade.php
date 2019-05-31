@@ -66,7 +66,6 @@
                 <tbody>
                   @foreach ($assetIcs as $item)
                   {{--  {{$item->purchaseOrder->assetIcslip}}  --}}
-                  {{--  {{$item->purchaseOrder->assetIcslip}}  --}}
                   <tr>
                     <td>{{$item->purchase_order_id}}</td>
                     <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>

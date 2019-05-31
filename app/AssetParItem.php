@@ -9,7 +9,7 @@ class AssetParItem extends Model
     protected $fillable = [
         'asset_id',
         'asset_par_id',
-        'asset_turnover_id',
+        // 'asset_turnover_id',
         'quantity',
         'description',
         'property_no',

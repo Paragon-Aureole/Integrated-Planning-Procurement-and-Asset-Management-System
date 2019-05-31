@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\asset;
 use App\assetPar;
+use App\AssetParItem;
 
 use Illuminate\Http\Request;
 
@@ -17,20 +18,17 @@ class AssetParController extends Controller
     public function index(Request $id)
     {
 
-        // $assetParData = assetPar::all();
-        
-        // dd($assetParRemainingQuantity);
+        $assetPar = asset::select('purchase_order_id')->distinct()->where('isPAR', 1)->where('item_stock', '<>', 0)->get();
+        // dd($assetPar);
+        $distributedAssetPar = assetPar::all();
+        // dd($assetPar);
 
-        // $assetParData = assetPar::select('asset_id')->groupBy('asset_id')->get();
-        // $assetParData = assetPar::where('asset_id', 3)->sum('quantity');
-        // $parData = asset::where('purchase_order_id', $id->id)->where('isPAR', 1)->where('isAssigned', 0)->get();
-        // $purchase_order_id = $id->id;
+        // $asset = asset::where('isPAR', 1)->where('isAssigned', 0)->get();
+        // $assetPar = assetPar::All();
+        // dd($asset);
+        // return view('assets.par.index', compact('asset', 'assetPar'));
+        return view('assets.par.index', compact('assetPar', 'distributedAssetPar'));
 
-        // dd($parData[0]->item_quantity);
-
-        // return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id', 'assetTypes'));
-        // return view('assets.par.index', compact('parData', 'assetParData', 'purchase_order_id'));
-        return view('assets.par.index', compact('assetPar'));
     }
 
     /**
@@ -39,26 +37,11 @@ class AssetParController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getPARCount()
-    {
-        $assetParCount = assetPar::get()->count();
-        return ($assetParCount);
-    }
-
     // public function getPARData()
     // {
     //     $assetParData = assetPar::All();
     //     return ($assetParData);
     // }
-
-    public function setIsAssigned(Request $request)
-    {
-        asset::whereId($request->asset_id)->update([
-                'isAssigned' => 1
-            ]);
-
-        return response()->json(['response' => 'Assigning Successful. You may now print.', 'error' => false]);
-    }
     
     public function create()
     {
@@ -74,26 +57,76 @@ class AssetParController extends Controller
 
     public function store(Request $request)
     {
-        $items = $request->input('data');
+        $items = $request->all();
         // dd($items);
 
-        assetPar::create([
-            'asset_id' => $items[0],
-            'quantity' => $items[1],
-            'description' => $items[2],
-            'assignedTo' => $items[3],
-            'position' => $items[4]
+        $newAssetPar = assetPar::create([
+            'purchase_order_id' => $items['po_number'],
+            'assignedTo' => $items['signatory'],
+            'position' => $items['position']
         ]);
 
-        asset::find($items[0])->decrement('item_stock', $items[1]);
+        // dd($newAssetPar);
 
+        $filteredData = [];
 
-        if ($request->isMethod('post')) {
-            // return response()->json(['response' => 'This is post method', 'error' => false]);
-            return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
-        } else {
-            return response()->json(['response' => 'failure']);
+        
+        foreach ($items['itemQuantity'] as $key => $value) {
+            if ($value != 0) {
+                for ($i=0; $i < $value; $i++) {
+                    $filteredData[$key][] = [
+                        'itemPropertyNo' => $items['itemPropertyNo'][$key][$i],
+                        'itemDateAcquired' => $items['itemDateAcquired'][$key],
+                        'itemExtraDescription' => $items['itemExtraDescription'][$key][$i],
+                        'itemStatus' => 0,
+                        'quantity' => 1,
+                        'asset_par_id' => $newAssetPar->id
+                        // 'asset_id' => $key
+                        ];
+                }
+            }
         }
+        
+        // dd($filteredData);
+        if (count($filteredData) > 0) {
+            foreach ($filteredData as $key => $value) {
+                foreach ($value as $key2 => $value2) {
+                    AssetParItem::create([
+                         'asset_par_id' => $value2['asset_par_id'],
+                         'asset_id' => $key,
+                         'description' => $value2['itemExtraDescription'],
+                         'date_acquired' => $value2['itemDateAcquired'],
+                         'itemStatus' => 0,
+                         'quantity' => 1,
+                         'property_no' => $value2['itemPropertyNo']
+                     ]);
+    
+                    // echo $key;
+                    // print_r($value2['asset_par_id']);
+                    // echo "<br>";
+                }
+            }
+            
+            foreach ($items['itemQuantity'] as $key => $value) {
+                if ($value != 0) {
+                    asset::find($key)->decrement('item_stock', $value);
+                }
+            }
+        } else {
+            return redirect()->back()->with('error', 'Invalid Transaction!');
+        }
+
+        // die();
+
+
+        return redirect()->route('parDistribution.index')->with('success', 'PAR Distribution Complete. Proceed to Printing');
+
+        // if ($request->isMethod('post')) {
+        //     // return response()->json(['response' => 'This is post method', 'error' => false]);
+        //     return response()->json(['response' => 'Save Success', 'error' => false, 'data' => $items]);
+        // } else {
+        //     return response()->json(['response' => 'failure']);
+        // }
     }
 
     /**
@@ -151,7 +184,7 @@ class AssetParController extends Controller
         $assetParItems = asset::where('isPAR', 1)->where('item_stock', "<>", 0)->where('purchase_order_id', $id)->get();
         // dd($assetParItems);
         if ($assetParItems->isEmpty()) {
-            return redirect()->route('assets.index')->with('error', 'No PAR items left in this PO!');
+            return redirect()->route('parDistribution.index')->with('error', 'No PAR items left in this PO!');
         }
 
         // dd($signatoryData);
@@ -159,12 +192,5 @@ class AssetParController extends Controller
         return view('assets.par.parTransaction', compact('assetParItems', 'id', 'parCount'));
     }
 
-    public function displayParTransactions($id)
-    {
-        // dd($id);
-        // $assetIcsItem = assetIcslipItem::where('asset_icslip_id', $id)->get();
-        // // dd($assetIcs->first()->AssetIcslipItem);
-        
-        // return view('assets.ics.index', compact('assetIcsItem', 'id'));
-    }
+    
 }

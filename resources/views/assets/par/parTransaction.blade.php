@@ -15,7 +15,7 @@
     <div class="card">
         <div class="card-header pt-2 pb-2">Property Acknowledgement Receipt</div>
         <div class="card-body">
-            <form action="{{route('assets.saveNewPar', $id)}}" method="post" class="needs-validation">
+            <form action="{{route('parDistribution.store', $id)}}" method="post" class="needs-validation">
                 {{csrf_field()}}
             <div class="row">
                 <div class="col-md-12">
@@ -105,8 +105,8 @@
                     <td>{{$item->measurementUnit->unit_code}}</td>
                     <td>{{$item->details}}</td>
                     <td id="extraDescription{{$item->id}}"></td>
-                    {{--  <td id="extraDescription{{$item->id}}"><textarea name="itemExtraDescription[{{$item->id}}][0]" cols="30" rows="1"></textarea></td>  --}}
-                    <td><input type="text" disabled id="itemPropertyNo{{$item->id}}" name="itemPropertyNo[{{$item->id}}]"></td>
+                     {{-- <td id="extraDescription{{$item->id}}"><textarea name="itemExtraDescription[{{$item->id}}][0]" cols="30" rows="1"></textarea></td>  --}}
+                    <td id="itemPropertyNo{{$item->id}}"></td>
                     <td><input type="date" disabled id="itemDateAcquired{{$item->id}}" name="itemDateAcquired[{{$item->id}}]"></td>
                     <td><input type="text" disabled id="itemUnitCost{{$item->id}}" name="itemUnitCost[{{$item->id}}]" value="{{$unitCost}}"></td>
                     <td name="finalCost{{$item->id}}"></td>
@@ -123,8 +123,9 @@
                     <td>{{$item->measurementUnit->unit_code}}</td>
                     <td>{{$item->details}}</td>
                     <td id="extraDescription{{$item->id}}"></td>
+                    <td id="itemPropertyNo{{$item->id}}"><input type="text" disabled id="itemPropertyNo{{$item->id}}" name="itemPropertyNo[{{$item->id}}]"></td>
                     {{--  <td id="extraDescription{{$item->id}}"><textarea name="itemExtraDescription[{{$item->id}}][0]" cols="30" rows="1"></textarea></td>  --}}
-                    <td><input type="text" disabled id="itemPropertyNo{{$item->id}}" name="itemPropertyNo[{{$item->id}}]"></td>
+                    {{-- <td><input type="text" disabled id="itemPropertyNo{{$item->id}}" name="itemPropertyNo[{{$item->id}}]"></td> --}}
                     <td><input type="date" disabled id="itemDateAcquired{{$item->id}}" name="itemDateAcquired[{{$item->id}}]"></td>
                     <td><input type="text" disabled id="itemUnitCost{{$item->id}}" name="itemUnitCost[{{$item->id}}]" value="{{$unitCost}}"></td>
                     <td name="finalCost{{$item->id}}"></td>
@@ -271,12 +272,14 @@
             console.log(param);
 
             $('#extraDescription'+param).empty();
+            $('#itemPropertyNo'+param).empty();
 
             if (itemQuantity != 0)
             {
                 for (let index = 0; index < itemQuantity; index++) {
                 $('#extraDescription'+param).append('<textarea name="itemExtraDescription['+param+']['+index+']" cols="30" rows="1"></textarea><br>');
                 $('#itemPropertyNo'+param).removeAttr('disabled');
+                $('#itemPropertyNo'+param).append('<input type="text" name="itemPropertyNo['+param+']['+index+']"><br>');
                 $('#itemDateAcquired'+param).removeAttr('disabled');
                 $('#itemPropertyNo'+param).attr('required', true);
                 $('#itemDateAcquired'+param).attr('required', true);
