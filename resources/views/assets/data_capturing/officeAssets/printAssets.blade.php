@@ -94,13 +94,16 @@
                         </tr>
                         @foreach ($parData as $assetItem)
                             @foreach ($assetItem->assetParItem as $item)
+                                @php
+                                    $value = $item->asset->amount / $item->asset->item_quantity;
+                                @endphp
                                 <tr class="text-center">
                                     @if ($item->asset->asset_type_id == 2)
                                         <td class="text-left" width="10%">{{$item->asset->details}}</td>
                                         <td class="text-left" width="20%">{{$item->description}}</td>
-                                        <td>&nbsp;</td>
+                                        <td>{{$item->property_no}}</td>
                                         <td>{{$item->asset->measurementUnit->unit_description}}</td>
-                                        <td class="text-right">P{{number_format($item->asset->amount, 2)}}</td>
+                                        <td class="text-right">P{{number_format($value, 2)}}</td>
                                         <td>{{$item->quantity}}</td>
                                         <td>{{$item->quantity}}</td>
                                         <td>&nbsp;</td>
@@ -203,13 +206,16 @@
                         </tr>
                         @foreach ($parData as $assetItem)
                             @foreach ($assetItem->assetParItem as $item)
+                                @php
+                                    $value = $item->asset->amount / $item->asset->item_quantity;
+                                @endphp
                                 <tr class="text-center">
                                     @if ($item->asset->asset_type_id == 3)
                                         <td class="text-left" width="10%">{{$item->asset->details}}</td>
                                         <td class="text-left" width="20%">{{$item->description}}</td>
-                                        <td>&nbsp;</td>
+                                        <td>{{$item->property_no}}</td>
                                         <td>{{$item->asset->measurementUnit->unit_description}}</td>
-                                        <td class="text-right">P{{number_format($item->asset->amount, 2)}}</td>
+                                        <td class="text-right">P{{number_format($value, 2)}}</td>
                                         <td>{{$item->quantity}}</td>
                                         <td>{{$item->quantity}}</td>
                                         <td>&nbsp;</td>
@@ -312,13 +318,16 @@
                         </tr>
                         @foreach ($parData as $assetItem)
                             @foreach ($assetItem->assetParItem as $item)
+                                @php
+                                    $value = $item->asset->amount / $item->asset->item_quantity;
+                                @endphp
                                 <tr class="text-center">
                                     @if ($item->asset->asset_type_id == 4)
                                         <td class="text-left" width="10%">{{$item->asset->details}}</td>
                                         <td class="text-left" width="20%">{{$item->description}}</td>
-                                        <td>&nbsp;</td>
+                                        <td>{{$item->property_no}}</td>
                                         <td>{{$item->asset->measurementUnit->unit_description}}</td>
-                                        <td class="text-right">P{{number_format($item->asset->amount, 2)}}</td>
+                                        <td class="text-right">P{{number_format($value, 2)}}</td>
                                         <td>{{$item->quantity}}</td>
                                         <td>{{$item->quantity}}</td>
                                         <td>&nbsp;</td>

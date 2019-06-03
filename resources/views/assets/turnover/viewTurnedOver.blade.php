@@ -42,18 +42,18 @@
                                     <td>
                                             {{--  {{$record->assetTurnoverItem->take(2)}}  --}}
                                         @foreach ($record->assetTurnoverItem->take(2) as $item)
-                                        ||{{$item->assetParItem->asset->details}}||
+                                        •{{$item->assetParItem->asset->details}}
                                         @endforeach
                                         
                                     </td>
                                     <td>
                                         @if ($record->isApproved == 0)
                                         @can('Asset Management', 'Supervisor')
-                                        <a href="ApproveParTurnover/{{$record->id}}" class="btn btn-success btn-sm">Approve Turnover  <i class="fas fa-check" title="Approved Turnover Request"></i></a>
+                                        <a href="ApproveParTurnover/{{$record->id}}" class="btn btn-success btn-sm"><i class="fas fa-check" title="Approved Turnover Request"></i> Completed</a>
                                         @endcan
                                         @endif
                                         <a href="{{route('AssetTurnover.show', $record->id)}}" class="btn btn-info btn-sm"><i class="fas fa-th-list" title="View Items"></i></a>
-                                        @if ($record->isReturn == 0)
+                                        @if ($record->isApproved == 0)
                                             <a href="/printTurnover/{{$record->id}}" class="btn btn-success btn-sm" target="_blank"><i class="fas fa-print" title="Print Turnover Request"></i></a>
                                         @else
                                             

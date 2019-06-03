@@ -28,10 +28,14 @@
                     <form action="" method="post">
                         {{csrf_field()}}
                         <div class="form-group col-md-6">
-                            <a href="/AssetTurnover" title="Capture New Data" id="cloneData" class="btn btn-info">Back</a>  
+                            <a href="/ViewTurnedover" title="Capture New Data" id="cloneData" class="btn btn-info">Back</a>  
                             {{--  {{$assetTurnoverData->first()->assetTurnover}}  --}}
                             {{--  @if ($assetTurnoverData->first()->assetTurnover->isReturn == 0)  --}}
-                                <a href="/printTurnover/{{$turnover_id}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i>Print Turnover</a>
+                                @if ($assetTurnoverData->first()->assetTurnover->isApproved == 0)
+                                    <a href="/printTurnover/{{$turnover_id}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i>Print Turnover</a>
+                                @else
+                                    
+                                @endif
                             {{--  @endif  --}}
                             {{--  <button title="Save Information Inputted" type="submit" class="btn btn-success">/button>  --}}
                         </div>
