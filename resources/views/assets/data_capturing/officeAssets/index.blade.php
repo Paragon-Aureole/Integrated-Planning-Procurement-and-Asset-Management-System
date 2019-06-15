@@ -92,12 +92,6 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
-                                                <label class="small">Item Quantity:</label>
-                                                <input type="number" id="item_quantity" name="item_quantity[]" class="form-control form-control-sm" required>
-                                            </div> 
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <div class="form-group col-md-12">
                                                 <label class="small">Item Unit:</label>
                                                 <input type="text" id="item_unit" name="item_unit[]" class="form-control form-control-sm" required>
                                             </div> 
@@ -116,6 +110,12 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
+                                                <label class="small">Item Quantity:</label>
+                                                <input type="number" id="item_quantity" name="item_quantity[]" class="form-control form-control-sm" required>
+                                            </div> 
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group col-md-12">
                                                 <label class="small">Unit Cost:</label>
                                                 <input type="number" id="unit_cost" name="unit_cost[]" class="form-control form-control-sm" required>
                                             </div> 
@@ -123,7 +123,7 @@
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
                                                 <label class="small">Amount:</label>
-                                                <input type="number" id="amount" name="amount[]" class="form-control form-control-sm" required>
+                                                <input type="number" id="amount" name="amount[]" class="form-control form-control-sm" required placeholder="0">
                                             </div> 
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                                             <select name="status[]" id="status" class="form-control form-control-sm" required>
                                                 {{-- <option value="0">-Select Asset Type-</option> --}}
                                                 <option value="Active">Active</option>
-                                                <option value="Unserviceable">Unserviceable</option>
+                                                <option value="Unserviceable">Inactive</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-6">
@@ -298,7 +298,7 @@
                     <th>Department</th>
                     <th>Received By</th>
                     <th>Position</th>
-                    <th>Action</th>
+                    <th data-priority="4">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -339,7 +339,7 @@
                     <th>Department</th>
                     <th>received By</th>
                     <th>Position</th>
-                    <th>Action</th>
+                    <th data-priority="4">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -597,7 +597,18 @@
         
     });
 
-
+    $('#item_quantity').on('keyup', function () {
+        var totalAmount = $('#unit_cost').val() * $('#item_quantity').val();
+        
+        $('#amount').empty();
+        $('#amount').val(totalAmount);
+    })
+    $('#unit_cost').on('keyup', function () {
+        var totalAmount = $('#unit_cost').val() * $('#item_quantity').val();
+        
+        $('#amount').empty();
+        $('#amount').val(totalAmount);
+    })
     
 
   });

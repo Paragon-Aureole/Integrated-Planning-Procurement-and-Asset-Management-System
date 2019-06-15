@@ -21,7 +21,7 @@
             <div class="col-xs-12"><strong>CITY OF GOVERNMENT OF SAN FERENANDO, LA UNION</strong></div>
             <div class="col-xs-12">&nbsp;</div>
             <div class="col-xs-12"><strong>UPDATED INVENTORY/ACCOUNTING OF ALL EXISTING MOTOR VEHICLES</strong></div>
-            <div class="col-xs-12">As of date here</div>
+            <div class="col-xs-12">As of {{date("Y-m-d")}}</div>
             <div class="col-xs-12">&nbsp;</div>
         </div>
         <div class="row text-center">
@@ -37,39 +37,54 @@
                         <th>Acquisition Cost</th>
                         <th>Office</th>
                         <th>Accountable Officer</th>
-                        <th>Status/Condition/Worthiness (Good/Fair/Repairable/Unserviceable)</th>
+                        <th>Status/Condition/Worthiness</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($assetData as $record)
-                    {{$record->amount / $record->item_quantity}}
                         @foreach ($record->purchaseOrder->assetPar as $item)
-                        {{--  {{$item->assetParItem}}  --}}
+                            @php
+                                $cost = ($record->amount / $record->item_quantity) * $item->assetParItem->first()->quantity;
+                            @endphp
                             <tr>
-                                <td>{{$item->created_at}}</td>
+                                <td></td>
+                                <td>{{$record->purchaseOrder->purchaseRequest->prItem->first()->ppmpItem->first()->item_description}}</td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td>{{$item->created_at}}</td>
-                                <td>{{($record->amount / $record->item_quantity) * $item->assetParItem->first()->quantity}}</td>
-                                <td>"ICT Office"</td>
-                                <td></td>
-                                <td>"Active"</td>
+                                <td>{{$item->assetParItem->first()->date_acquired}}</td>
+                                <td>P{{number_format($cost, 2)}}</td>
+                                <td>{{$record->purchaseOrder->purchaseRequest->office->office_code}}</td>
+                                <td>{{$item->assignedTo}}</td>
+                                <td>
+                                    @if ($item->assetParItem->first()->itemStatus == 0)
+                                        Active
+                                    @else
+                                        Inactive
+                                    @endif
+                                </td>
                         @endforeach
                             </tr>
                     @endforeach
-                    
-                    {{-- <tr>
-                        <td>Sample No.</td>
-                        <td>Sample Type of Vehicle</td>
-                        <td>Sample Make</td>
-                        <td>sample Plate No.</td>
-                        <td>Sample Acquisition Date</td>
-                        <td>Sample Acquisition Cost</td>
-                        <td>Sample Office</td>
-                        <td>Sample Accoutable Office</td>
-                        <td>Sample Status/Condition/Worthiness (Good/Fair/Repairable/Unserviceable)</td>
-                    </tr> --}}
+
+                    @foreach ($capturedData as $item)
+                        <tr>
+                            <td></td>
+                            <td>{{$item->item_name}}</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{$item->date_acquired}}</td>
+                            <td>P{{number_format($item->unit_cost, 2)}}</td>
+                            <td>{{$item->Office->office_code}}</td>
+                            <td>{{$item->receiver_name}}</td>
+                            <td>
+                                @if ($item->status == 'Active')
+                                    Active
+                                @elseif ($item->status == 'Unserviceable')
+                                    Inactive 
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

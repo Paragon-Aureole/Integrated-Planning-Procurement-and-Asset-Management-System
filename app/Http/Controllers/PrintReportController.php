@@ -26,6 +26,7 @@ class PrintReportController extends Controller
         $assetPar = assetPar::select('assignedTo', 'position')->groupBy('assignedTo', 'position')->get();
         // dd($assetPars);
         $asset = asset::where('asset_type_id', 1)->get();
+        $vehicle = migratedAssets::where('asset_type_id', 1)->get();
         // dd($asset);
 
         if ($assetPar->isEmpty()) {
@@ -39,7 +40,7 @@ class PrintReportController extends Controller
 
         // dd($captured);
 
-        return view('printReports.index', compact('assetPar','asset','capturedAsset'));
+        return view('printReports.index', compact('assetPar','asset','capturedAsset', 'vehicle'));
     }
     
     public function getPrintPhysicalData(Request $request)
@@ -98,6 +99,23 @@ class PrintReportController extends Controller
 
         $pdf = PDF::loadView('assets.data_capturing.officeAssets.printAssetsCaptured', compact('capturedData'))->setPaper('folio', 'landscape');
         return $pdf->stream('Print Report of the Physical Count of Property, Plant and Equipment.pdf');
+    }
+
+    public function printVehicle()
+    {
+        $assetData = asset::where('asset_type_id', 1)->get();
+        $capturedData = migratedAssets::where('asset_type_id', 1)->get();
+        // dd($assetData);
+        // return view('assets.par.printPAR');
+        $options = [
+            'margin-top'    => 10,
+            'margin-right'  => 10,
+            'margin-bottom' => 10,
+            'margin-left'   => 10,
+        ];
+
+        $pdf = PDF::loadView('assets.data_capturing.vehicle.printvehicle', compact('assetData', 'capturedData'))->setPaper('Folio', 'landscape');
+        return $pdf->stream('VEHICLE.pdf');
     }
 
     /**

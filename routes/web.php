@@ -178,7 +178,7 @@ Route::get('/cancelEdit/{id}', 'assetController@cancelEdit');
 Route::get('/printPar/{id}', 'assetController@printPar')->name('assets.printPar');
 Route::get('/printIcs/{id}', 'assetController@printIcs')->name('assets.printIcs');
 Route::get('/printTurnover/{id}', 'assetController@printTurnover')->name('asset.printTurnover');
-Route::get('/printVehicle', 'assetController@printVehicle');
+Route::get('/printVehicle', 'PrintReportController@printVehicle');
 Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
 Route::get('/printIcsData', 'assetController@printIcsData');
 

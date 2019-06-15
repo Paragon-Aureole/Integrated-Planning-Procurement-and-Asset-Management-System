@@ -54,7 +54,7 @@
 
     {{-- Table of vehicle --}}
    	<div class="col-md-5">
-         <h6 class="card-title">Available Existing Motor Vehicle</h6>
+         <h6 class="card-title">Available Existing Vehicles</h6>
    	  <div class="table-responsive">
    	  	<table id="datatable" class="table table-bordered table-hover table-sm display nowrap w-100">
           <thead class="thead-light">
@@ -67,9 +67,28 @@
           <tbody>
           @foreach ($asset as $assetItem)
             <tr>
-              <td>{{$assetItem->purchaseOrder->created_at}}</td>
-              <td>{{$assetItem->amount}}</td>
-              <td>{{$assetItem->asset_type->type_name}}</td>
+              <td>{{$assetItem->purchaseOrder->assetPar->first()->assetParItem->first()->date_acquired}}</td>
+              <td>P{{number_format($assetItem->amount, 2)}}</td>
+              <td>
+                @if ($assetItem->purchaseOrder->assetPar->first()->assetParItem->first()->itemStatus == 0)
+                    Active
+                @else
+                    Inactive
+                @endif
+              </td>
+            </tr>
+          @endforeach
+          @foreach ($vehicle as $item)
+            <tr>
+              <td>{{$item->date_acquired}}</td>
+              <td>P{{number_format($item->amount, 2)}}</td>
+              <td>
+                @if ($item->status == 'Active')
+                    Active
+                @elseif ($item->status == 'Unserviceable')
+                    Inactive 
+                @endif
+              </td>
             </tr>
           @endforeach
           </tbody>

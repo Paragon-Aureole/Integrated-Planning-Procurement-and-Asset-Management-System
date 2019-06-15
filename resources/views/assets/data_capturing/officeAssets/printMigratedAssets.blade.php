@@ -21,6 +21,10 @@
 
 <body>
     <div class="container-fluid">
+        <div class="row text-right header">
+            <div class="col-xs-12"><i>Appendix 71</i></div>
+            <div class="col-xs-12">&nbsp;</div>
+        </div>
         <div class="row text-center header">
             <div class="col-xs-12">PROPERTY ACKNOWLEDGEMENT RECEIPT</div>
             <div class="col-xs-12">&nbsp;</div>

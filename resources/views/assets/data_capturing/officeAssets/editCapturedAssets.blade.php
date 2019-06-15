@@ -93,12 +93,6 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <div class="form-group col-md-12">
-                                                <label class="small">Item Quantity:</label>
-                                                <input type="number" id="item_quantity" name="item_quantity" class="form-control form-control-sm" value="{{$data->item_quantity}}" required>
-                                            </div> 
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <div class="form-group col-md-12">
                                                 <label class="small">Item Unit:</label>
                                                 <input type="text" id="item_unit" name="item_unit" class="form-control form-control-sm" value="{{$data->item_unit}}" required>
                                             </div> 
@@ -113,6 +107,12 @@
                                             <div class="form-group col-md-12">
                                                 <label class="small">Date Acquired:</label>
                                                 <input type="date" id="date_acquired" name="date_acquired" class="form-control form-control-sm" value="{{$data->date_acquired}}" required>
+                                            </div> 
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group col-md-12">
+                                                <label class="small">Item Quantity:</label>
+                                                <input type="number" id="item_quantity" name="item_quantity" class="form-control form-control-sm" value="{{$data->item_quantity}}" required>
                                             </div> 
                                         </div>
                                         <div class="col-sm-2">
@@ -145,8 +145,8 @@
                                             <label for="status" class="small">Status:</label>
                                             <select name="status" id="status" class="form-control form-control-sm" required>
                                                 {{-- <option value="0">-Select Asset Type-</option> --}}
-                                                <option value="Active" @if ($data->asset_type_id == 'Active')Selected @endif>Active</option>
-                                                <option value="Unserviceable" @if ($data->asset_type_id == 'Unserviceable')Selected @endif>Unserviceable</option>
+                                                <option value="Active" @if ($data->status == 'Active')Selected @endif>Active</option>
+                                                <option value="Unserviceable" @if ($data->status == 'Unserviceable')Selected @endif>Inactive</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-6">
@@ -489,7 +489,18 @@
         
     });
 
-
+    $('#item_quantity').on('keyup', function () {
+        var totalAmount = $('#unit_cost').val() * $('#item_quantity').val();
+        
+        $('#amount').empty();
+        $('#amount').val(totalAmount);
+    })
+    $('#unit_cost').on('keyup', function () {
+        var totalAmount = $('#unit_cost').val() * $('#item_quantity').val();
+        
+        $('#amount').empty();
+        $('#amount').val(totalAmount);
+    })
 
     
 

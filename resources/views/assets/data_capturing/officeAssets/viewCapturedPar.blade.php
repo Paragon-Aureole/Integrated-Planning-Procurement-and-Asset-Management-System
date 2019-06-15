@@ -38,7 +38,7 @@
                                         @if ($item->status == 'Active')
                                             <h4><span class="badge badge-info">{{$item->status}}</span></h4>
                                         @elseif ($item->status == 'Unserviceable')
-                                            <h4><span class="badge badge-danger">{{$item->status}}</span></h4> 
+                                            <h4><span class="badge badge-danger">Inactive</span></h4> 
                                         @endif
                                     </td>
                                     <td>{{$item->receiver_name}}</td>
