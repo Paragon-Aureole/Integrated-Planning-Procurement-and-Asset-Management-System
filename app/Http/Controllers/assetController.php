@@ -35,7 +35,14 @@ class assetController extends Controller
         
         $asset = asset::All();
         // $assetIcs = asset::select('purchase_order_id')->where('isICS', 1)->groupBy('purchase_order_id')->get();
-        $assetIcs = asset::select('purchase_order_id')->distinct()->where('isICS', 1)->where('item_stock', '<>', 0)->get();
+        // $assetIcs = asset::select('purchase_order_id')->distinct()->where('isICS', 1)->where('item_stock', '<>', 0)->get();
+        
+        $assetIcs = PurchaseOrder::whereHas('asset', function ($query) {
+                    // $query->where('office_id', Auth::user()->office_id);
+                    $query->where('isICS', 1);
+            })->get();
+
+        // dd($assetIcs);
 
         return view('assets.index', compact('asset', 'assetIcs'));
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\asset;
 use App\assetPar;
 use App\AssetParItem;
+use App\PurchaseOrder;
 
 use Illuminate\Http\Request;
 
@@ -18,7 +19,12 @@ class AssetParController extends Controller
     public function index(Request $id)
     {
 
-        $assetPar = asset::select('purchase_order_id')->distinct()->where('isPAR', 1)->where('item_stock', '<>', 0)->get();
+        // $assetPar = asset::select('purchase_order_id')->distinct()->where('isPAR', 1)->where('item_stock', '<>', 0)->get();
+        // $assetPar = PurchaseOrder::with('asset')->get();
+        $assetPar = PurchaseOrder::whereHas('asset', function ($query) {
+                    // $query->where('office_id', Auth::user()->office_id);
+                    $query->where('isPAR', 1)->where('item_stock', '<>', 0);
+            })->get();
         // dd($assetPar);
         $distributedAssetPar = assetPar::all();
         // dd($assetPar);

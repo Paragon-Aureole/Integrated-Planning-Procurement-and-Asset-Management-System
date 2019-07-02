@@ -65,21 +65,28 @@
                 </thead>
                 <tbody>
                   @foreach ($assetIcs as $item)
+                  {{$item}}
+                  {{count($item->assetIcslip)}}
+
                   {{--  {{$item->purchaseOrder->assetIcslip}}  --}}
                   <tr>
-                    <td>{{$item->purchase_order_id}}</td>
-                    <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
-                      <td>@foreach ($item->purchaseOrder->asset->where('isICS', 1)->take(2) as $item)
-                            •{{$item->details}}
-                        @endforeach</td>
-                    <td>ICS</td>
-                    <td>
-                      
-                      @if (count($item->purchaseOrder->assetIcslip) > 0)
-                      <a href="{{route('assets.displayIcsTransactions', $item->purchaseOrder->assetIcslip->id)}}" class="btn btn-success btn-sm"><i class="fas fa-print"></i></a></td>
-                      @else
+                    <td>{{$item->id}}</td>
+                    <td>{{$item->purchaseRequest->office->office_code}}</td>
+                    <td>@foreach ($item->asset->take(2) as $item)
+                      •{{$item->details}}
+                      @endforeach</td>
+                      <td>ICS</td>
+                      <td>
+                        
+                        @if (count($item->assetIcslip) == 1)
+                        {{count($item->assetIcslip)}}
+                        <a href="{{route('assets.displayIcsTransactions', $item->purchaseOrder->assetIcslip->id)}}" class="btn btn-success btn-sm"><i class="fas fa-print"></i></a>
+                        @elseif (count($item->assetIcslip) == 0)
+                        {{count($item->assetIcslip)}}
                       <a href="{{route('assets.icsTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
                       @endif
+
+                    </td>
                       
                   </tr>   
                   @endforeach

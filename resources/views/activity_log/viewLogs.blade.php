@@ -124,7 +124,7 @@ $(document).ready(function () {
     $("button[name='view_log']").click(function(){
         var log_id = $(this).attr('data-id');
         // console.log(log_id);
-        $.get("http://ipams.test/logs/"+log_id).done(function( data ){
+        $.get('/logs/' + log_id).done(function( data ){
             console.log(data);
 
             $("[name='log_date']").val(data[0]);

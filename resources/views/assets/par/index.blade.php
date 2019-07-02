@@ -36,18 +36,15 @@
                   {{--  {{$item}}  --}}
                   <tr>
                     {{--  <td>{{$item->id}}</td>  --}}
-                    <td>{{$item->purchase_order_id}}</td>
+                    <td>{{$item->id}}</td>
                     <td>
-                      @foreach ($item->purchaseOrder->asset->take(2) as $item)
-                          •{{$item->details}}
+                      @foreach ($item->asset->take(2) as $item2)
+                          •{{$item2->details}}
                       @endforeach
                     </td>
-                    <td>{{$item->purchaseOrder->purchaseRequest->office->office_code}}</td>
+                    <td>{{$item->purchaseRequest->office->office_code}}</td>
                     <td>
-                      @if (count($item->purchaseOrder->assetPar) > 0)
-                      {{--  Bekkel  --}}
-                      @endif
-                      <a href="{{route('AssetParController.parTransaction', $item->purchase_order_id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
+                      <a href="{{route('AssetParController.parTransaction', $item->id)}}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i></a>
                       {{--  <a href="/displayParTransactions/{{$item->purchase_order_id}}" class="btn btn-success "><i class="fas fa-print"></i></a></td>  --}}
                   </tr>
               @endforeach

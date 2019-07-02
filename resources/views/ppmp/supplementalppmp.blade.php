@@ -154,7 +154,7 @@
       var office = $(this).attr('data-useroffice');
       $("#userId").val(user_id);
       $("#userDept").val(office);
-      $("form[name='deactivation_reason']").attr('action', 'http://ipams.test/register/delete/' + user_id);
+      $("form[name='deactivation_reason']").attr('action', '/register/delete/' + user_id);
     });
 
 

@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
 		 $("#itemDesc").on('input', function(e){
             
@@ -25,7 +30,7 @@ $(document).ready(function() {
 
             if(idddd) {
                 $.ajax({
-                    url: 'http://ipams.test/pr/item/get/'+idddd,
+                    url: '/pr/item/get/'+idddd,
                     type:"GET",
                     dataType:"json",
                    

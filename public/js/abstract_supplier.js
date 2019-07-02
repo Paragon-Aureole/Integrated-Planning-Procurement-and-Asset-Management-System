@@ -6,7 +6,7 @@ $(document).ready(function () {
     var supplier_id = $(this).attr('data-supplierid');
     console.log(supplier_id);
     
-        $.get("http://ipams.test/supplier/"+supplier_id+"/edit", function(data, status){
+        $.get("/supplier/"+supplier_id+"/edit", function(data, status){
 
             console.log(supplier_id);
             $( "input[name='supplier_name2']" ).val(data[0]['supplier_name']);
@@ -23,7 +23,7 @@ $(document).ready(function () {
                 
             });
 
-        $( "form[name='s_update']" ).attr("action", "http://ipams.test/supplier/"+supplier_id+"");
+        $( "form[name='s_update']" ).attr("action", "/supplier/"+supplier_id+"");
     });
 
     $("button[name='delete_supplier']").click(function() {
@@ -32,6 +32,6 @@ $(document).ready(function () {
         // console.log(user_id);
         $("[name='sId']").val(supplier_id);
         $("[name='sName']").val(supplier_name);
-        $("form[name='deactivation_reason']").attr('action', 'http://ipams.test/supplier/delete/'+supplier_id);
+        $("form[name='deactivation_reason']").attr('action', '/supplier/delete/'+supplier_id);
     });
 });

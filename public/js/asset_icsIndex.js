@@ -134,7 +134,7 @@
             data: formData
           },
           type: 'POST',
-          url: 'http://ipams.test/DistributeAssetsICS',
+          url: '/DistributeAssetsICS',
           success: function (data) {
             console.log(data);
 
@@ -175,7 +175,7 @@
             asset_id: id
           },
           type: 'POST',
-          url: 'http://ipams.test/setIsAssignedPAR',
+          url: '/setIsAssignedPAR',
           success: function (data) {
             console.log(data);
             window.location.reload();
