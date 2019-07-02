@@ -168,7 +168,7 @@ return [
          * Package Service Providers...
          */
         Barryvdh\Snappy\ServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -231,7 +231,7 @@ return [
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
 
-        'DOM' => Barryvdh\DomPDF\Facade::class,
+        
 
 
 
