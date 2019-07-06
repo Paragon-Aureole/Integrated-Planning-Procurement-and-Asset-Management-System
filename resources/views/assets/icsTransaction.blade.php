@@ -16,21 +16,34 @@
      <form action="{{route('assets.saveNewIcs')}}" method="post">
          {{csrf_field()}}
 
-     
-     PO Number:<input type="text" name="poNum" value="{{$id}}"></input>
    <div class="row">
    	<div class="col-md-12">
    	  <h6 class="card-title">
   		Available ICS Items
-        </h6>
+      </h6>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                <span class="input-group-text">PO Number</span>
+                </div>
+                <input type="text" name="poNum" readonly value="{{$id}}" class="form-control">
+              </div>
+          </div>
+        </div>
+        <div class="col-md-12">&nbsp;</div>
         <div class="row">
             <div class="col-md-6">
-                <label class="text-center">Signatory Name:</label>
-                <input type="text" class="container-fluid" name="itemSignatoryName" readonly value="{{$signatoryData->signatory_name}}">
+                <div class="form-group">
+                    <label class="text-center">Signatory Name:</label>
+                    <input type="text" class="form-control" name="itemSignatoryName" readonly value="{{$signatoryData->signatory_name}}">
+                </div>
             </div>
             <div class="col-md-6">
+                <div class="form-group">
                     <label class="text-center">Position:</label>
-                <input type="text" class="container-fluid" name="itemSignatoryPosition" readonly value="{{$signatoryData->signatory_position}}">
+                    <input type="text" class="form-control" name="itemSignatoryPosition" readonly value="{{$signatoryData->signatory_position}}">
+                </div>
             </div>
         </div>
         <div class="col-md-12">&nbsp;</div>
@@ -64,13 +77,27 @@
                     <td><input type="text" value="disabled" name="itemEstimatedUsefulLife[{{$item->id}}]" readonly></td>
                 @else
                     <td>
-                      <input type="text" readonly name="itemQuantity[{{$item->id}}]" value="{{$item->item_stock}}">
+                      <div class="form-group">
+                          <input type="text" class="form-control" readonly name="itemQuantity[{{$item->id}}]" value="{{$item->item_stock}}">
+                      </div>
                     </td>
                     <td>{{$item->measurementUnit->unit_code}}</td>
                     <td>{{$item->details}}</td>
-                    <td><textarea name="itemExtraDescription[{{$item->id}}]" cols="30" rows="1" required></textarea></td>
-                    <td><input type="text" name="itemInventoryNo[{{$item->id}}]" required></td>
-                    <td><input type="text" name="itemEstimatedUsefulLife[{{$item->id}}]" required></td>         
+                    <td>
+                      <div class="form-group">
+                          <textarea class="form-control" name="itemExtraDescription[{{$item->id}}]" cols="30" rows="1" required></textarea>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                          <input type="text" class="form-control" name="itemInventoryNo[{{$item->id}}]" required>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                          <input type="text" class="form-control" name="itemEstimatedUsefulLife[{{$item->id}}]" required>
+                      </div>
+                    </td>         
                 @endif
                 <td> 
                   @can('Asset Management')

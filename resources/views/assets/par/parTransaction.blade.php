@@ -113,21 +113,35 @@
                 @else
                     <td>{{$item->id}}</td>
                     <td>
-                        <select id="itemQty{{$item->id}}" name="itemQuantity[{{$item->id}}]" onchange="calculateFinalCost({{$item->id}})">
-                            @for ($i = 0; $i <= $item->item_stock; $i++)
-                                <option value={{$i}}>{{$i}}</option>
-                            @endfor
-                        </select>
+                        <div class="form-group">
+                            <select class="form-control" id="itemQty{{$item->id}}" name="itemQuantity[{{$item->id}}]" onchange="calculateFinalCost({{$item->id}})">
+                                @for ($i = 0; $i <= $item->item_stock; $i++)
+                                    <option value={{$i}}>{{$i}}</option>
+                                @endfor
+                            </select>
+                        </div>
                     </td>
                     
                     <td>{{$item->measurementUnit->unit_code}}</td>
                     <td>{{$item->details}}</td>
                     <td id="extraDescription{{$item->id}}"></td>
-                    <td id="itemPropertyNo{{$item->id}}"><input type="text" disabled id="itemPropertyNo{{$item->id}}" name="itemPropertyNo[{{$item->id}}]"></td>
+                    <td id="itemPropertyNo{{$item->id}}">
+                        <div class="form-group">
+                            <input type="text" class="form-control" disabled id="itemPropertyNo{{$item->id}}" name="itemPropertyNo[{{$item->id}}]">
+                        </div>
+                    </td>
                     {{--  <td id="extraDescription{{$item->id}}"><textarea name="itemExtraDescription[{{$item->id}}][0]" cols="30" rows="1"></textarea></td>  --}}
                     {{-- <td><input type="text" disabled id="itemPropertyNo{{$item->id}}" name="itemPropertyNo[{{$item->id}}]"></td> --}}
-                    <td><input type="date" disabled id="itemDateAcquired{{$item->id}}" name="itemDateAcquired[{{$item->id}}]"></td>
-                    <td><input type="text" disabled id="itemUnitCost{{$item->id}}" name="itemUnitCost[{{$item->id}}]" value="{{$unitCost}}"></td>
+                    <td>
+                        <div class="form-group">
+                            <input type="date" class="form-control" disabled id="itemDateAcquired{{$item->id}}" name="itemDateAcquired[{{$item->id}}]">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" disabled id="itemUnitCost{{$item->id}}" name="itemUnitCost[{{$item->id}}]" value="{{$unitCost}}">
+                        </div>
+                    </td>
                     <td name="finalCost{{$item->id}}"></td>
                 @endif
                 <td> 
@@ -277,9 +291,9 @@
             if (itemQuantity != 0)
             {
                 for (let index = 0; index < itemQuantity; index++) {
-                $('#extraDescription'+param).append('<textarea name="itemExtraDescription['+param+']['+index+']" cols="30" rows="1"></textarea><br>');
+                $('#extraDescription'+param).append('<div class="form-group"><textarea class="form-control" name="itemExtraDescription['+param+']['+index+']" cols="30" rows="1"></textarea></div>');
                 $('#itemPropertyNo'+param).removeAttr('disabled');
-                $('#itemPropertyNo'+param).append('<input type="text" name="itemPropertyNo['+param+']['+index+']"><br>');
+                $('#itemPropertyNo'+param).append('<div class="form-group"><input class="form-control" type="text" name="itemPropertyNo['+param+']['+index+']"></div>');
                 $('#itemDateAcquired'+param).removeAttr('disabled');
                 $('#itemPropertyNo'+param).attr('required', true);
                 $('#itemDateAcquired'+param).attr('required', true);
