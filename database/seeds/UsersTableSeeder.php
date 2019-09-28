@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
                     'username' => "user1",
                     'password' => bcrypt('users1'),
                     'office_id' => '1' ,
-                    'wholename' => "Depaertment User",
+                    'wholename' => "Department User",
                     'contact_number' => "139",
                 ]
             )->assignRole('Department');

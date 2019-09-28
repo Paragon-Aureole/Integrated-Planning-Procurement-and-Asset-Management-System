@@ -137,104 +137,103 @@ Route::get('rfq/print/{id}', 'RequestForQuotationController@printRFQ')->name('rf
 Route::get('rfq/cancel/{id}', 'RequestForQuotationController@cancelRfq')->name('rfq.cancel');
 Route::resource('rfq', 'RequestForQuotationController');
 
-// abstract
-Route::get('abstract/print/{id}', 'OutlineOfQuotationController@printOutline')->name('abstract.print');
-Route::resource('abstract', 'OutlineOfQuotationController');
-//abstractsupplier
-Route::get('supplier/delete/{supplier}', 'OutlineSupplierController@deleteSupplier');
-Route::get('supplier/destroy/{supplier}', 'OutlineSupplierController@destroySupplier')->name('destruct.supplier');
-Route::resource('supplier', 'OutlineSupplierController');
+// // abstract
+// Route::get('abstract/print/{id}', 'OutlineOfQuotationController@printOutline')->name('abstract.print');
+// Route::resource('abstract', 'OutlineOfQuotationController');
+// //abstractsupplier
+// Route::get('supplier/delete/{supplier}', 'OutlineSupplierController@deleteSupplier');
+// Route::get('supplier/destroy/{supplier}', 'OutlineSupplierController@destroySupplier')->name('destruct.supplier');
+// Route::resource('supplier', 'OutlineSupplierController');
 
-// PurchaseOrder
-Route::post('po/store', 'PurchaseOrderController@store')->name('po.store');
-Route::get('/getModalData', 'PurchaseOrderController@getModalData');
-Route::get('po/print/{id}', 'PurchaseOrderController@printPO')->name('po.print');
+// // PurchaseOrder
+// Route::post('po/store', 'PurchaseOrderController@store')->name('po.store');
+// Route::get('/getModalData', 'PurchaseOrderController@getModalData');
+// Route::get('po/print/{id}', 'PurchaseOrderController@printPO')->name('po.print');
 
-Route::resource('po', 'PurchaseOrderController');
-
-
-// InspectionReport
-Route::post('ir/store', 'InspectionReportController@store')->name('ir.store');
-Route::get('ir/print/{id}', 'InspectionReportController@printAIR')->name('ir.print');
-Route::get('/getModalPoData', 'InspectionReportController@getModalPoData');
-Route::resource('ir', 'InspectionReportController');
+// Route::resource('po', 'PurchaseOrderController');
 
 
-
-//assets
-Route::get('/getVoucherNo', 'assetController@getVoucherNo')->name('assets.getVoucherNo');
-Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.saveVoucherNo');
-
-Route::get('/asset/distributed', 'assetController@viewAll')->name('assets.distributed');
-
-Route::resource('assets', 'assetController');
-Route::get('getClassificationModalData', 'assetController@getClassificationModalData');
-Route::post('/saveNewIcs', 'assetController@saveNewIcs')->name('assets.saveNewIcs');
-Route::get('/requestEdit', 'assetController@requestEdit')->name('asset.requestEdit');
-Route::get('/acceptEdit/{id}', 'assetController@acceptEdit');
-Route::get('/cancelEdit/{id}', 'assetController@cancelEdit');
-
-//asset printing
-Route::get('/printPar/{id}', 'assetController@printPar')->name('assets.printPar');
-Route::get('/printIcs/{id}', 'assetController@printIcs')->name('assets.printIcs');
-Route::get('/printTurnover/{id}', 'assetController@printTurnover')->name('asset.printTurnover');
-Route::get('/printVehicle', 'PrintReportController@printVehicle');
-Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
-Route::get('/printIcsData', 'assetController@printIcsData');
+// // InspectionReport
+// Route::post('ir/store', 'InspectionReportController@store')->name('ir.store');
+// Route::get('ir/print/{id}', 'InspectionReportController@printAIR')->name('ir.print');
+// Route::get('/getModalPoData', 'InspectionReportController@getModalPoData');
+// Route::resource('ir', 'InspectionReportController');
 
 
 
-// assetMigrations
-// Route::post('migrateAssets/{id}', 'MigratedAssetsController@update')
-Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
+// //assets
+// Route::get('/getVoucherNo', 'assetController@getVoucherNo')->name('assets.getVoucherNo');
+// Route::get('/saveVoucherNo', 'assetController@saveVoucherNo')->name('assets.saveVoucherNo');
 
-Route::resource('migrateAssets', 'MigratedAssetsController');
-Route::get('migrateAssets/delete/{id}', 'MigratedAssetsController@destroy')->name('migrateAssets.destroy');
-Route::get('migrateAssets/edit/{id}', 'MigratedAssetsController@edit')->name('migrateAssets.edit');
-Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsController@printMigratedAssets');
-Route::get('migratedAssets/viewCapturedItems/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@viewCapturedPar')->name('migratedAssets.view');
-Route::get('migratedAssets/destroyPar/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@destroyPar')->name('migrateAssets.destroyPar');
-Route::get('migrateAssets/print/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@print')->name('migrateAssets.print');
+// Route::get('/asset/distributed', 'assetController@viewAll')->name('assets.distributed');
 
-// CAPTURED ICS ASSETS
-Route::resource('migrateIcsAssets', 'MigratedIcsAssetsController');
-Route::get('migrateIcsAssets/delete/{id}', 'MigratedIcsAssetsController@destroy')->name('migrateIcsAssets.destroy');
-Route::get('migrateIcsAssets/edit/{id}', 'MigratedIcsAssetsController@edit')->name('migrateIcsAssets.edit');
-Route::get('migratedIcsAssets/viewCapturedItems/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@viewCapturedIcs')->name('migratedIcsAssets.view');
-Route::get('migratedIcsAssets/destroyIcs/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@destroyIcs');
-Route::get('migrateIcsAssets/print/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@print')->name('migratedIcsAssets.print');
+// Route::resource('assets', 'assetController');
+// Route::get('getClassificationModalData', 'assetController@getClassificationModalData');
+// Route::post('/saveNewIcs', 'assetController@saveNewIcs')->name('assets.saveNewIcs');
+// Route::get('/requestEdit', 'assetController@requestEdit')->name('asset.requestEdit');
+// Route::get('/acceptEdit/{id}', 'assetController@acceptEdit');
+// Route::get('/cancelEdit/{id}', 'assetController@cancelEdit');
 
-// ASSET TURNOVER
-Route::resource('AssetTurnover', 'AssetTurnoverController');
-Route::get('parSearchTurnover', 'AssetTurnoverController@parSearchTurnover');
-Route::get('getCurrentTurnoverId', 'AssetTurnoverController@getCurrentTurnoverId');
-Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
-Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems');
-Route::get('getParTurnoverItems', 'AssetTurnoverController@getParTurnoverItems');
-Route::get('ApproveParTurnover/{id}', 'AssetTurnoverController@ApproveParTurnover');
-// Route::get('createNewTurnover', 'AssetTurnoverController@createNewTurnover')->name('AssetTurnover.createNewTurnover');
-Route::get('ViewTurnedover', 'AssetTurnoverController@ViewTurnedover');
+// //asset printing
+// Route::get('/printPar/{id}', 'assetController@printPar')->name('assets.printPar');
+// Route::get('/printIcs/{id}', 'assetController@printIcs')->name('assets.printIcs');
+// Route::get('/printTurnover/{id}', 'assetController@printTurnover')->name('asset.printTurnover');
+// Route::get('/printVehicle', 'PrintReportController@printVehicle');
+// Route::get('/printOfficeAssets', 'assetController@printOfficeAssets');
+// Route::get('/printIcsData', 'assetController@printIcsData');
 
+
+
+// // assetMigrations
+// // Route::post('migrateAssets/{id}', 'MigratedAssetsController@update')
+// Route::get('printMigratedVehicles/{office_id}/{asset_type_id}', 'MigratedVehiclesController@printMigratedVehicles');
+
+// Route::resource('migrateAssets', 'MigratedAssetsController');
+// Route::get('migrateAssets/delete/{id}', 'MigratedAssetsController@destroy')->name('migrateAssets.destroy');
+// Route::get('migrateAssets/edit/{id}', 'MigratedAssetsController@edit')->name('migrateAssets.edit');
+// Route::get('printMigratedAssets/{office_id}/{asset_type_id}', 'MigratedAssetsController@printMigratedAssets');
+// Route::get('migratedAssets/viewCapturedItems/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@viewCapturedPar')->name('migratedAssets.view');
+// Route::get('migratedAssets/destroyPar/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@destroyPar')->name('migrateAssets.destroyPar');
+// Route::get('migrateAssets/print/{par_number}/{office}/{name}/{position}', 'MigratedAssetsController@print')->name('migrateAssets.print');
+
+// // CAPTURED ICS ASSETS
+// Route::resource('migrateIcsAssets', 'MigratedIcsAssetsController');
+// Route::get('migrateIcsAssets/delete/{id}', 'MigratedIcsAssetsController@destroy')->name('migrateIcsAssets.destroy');
+// Route::get('migrateIcsAssets/edit/{id}', 'MigratedIcsAssetsController@edit')->name('migrateIcsAssets.edit');
+// Route::get('migratedIcsAssets/viewCapturedItems/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@viewCapturedIcs')->name('migratedIcsAssets.view');
+// Route::get('migratedIcsAssets/destroyIcs/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@destroyIcs');
+// Route::get('migrateIcsAssets/print/{ics_number}/{office}/{name}/{position}', 'MigratedIcsAssetsController@print')->name('migratedIcsAssets.print');
+
+// // ASSET TURNOVER
+// Route::resource('AssetTurnover', 'AssetTurnoverController');
+// Route::get('parSearchTurnover', 'AssetTurnoverController@parSearchTurnover');
+// Route::get('getCurrentTurnoverId', 'AssetTurnoverController@getCurrentTurnoverId');
+// Route::get('nameSearchTurnover', 'AssetTurnoverController@nameSearchTurnover');
+// Route::get('getParAssignedItems', 'AssetTurnoverController@getParAssignedItems');
+// Route::get('getParTurnoverItems', 'AssetTurnoverController@getParTurnoverItems');
+// Route::get('ApproveParTurnover/{id}', 'AssetTurnoverController@ApproveParTurnover');
+// // Route::get('createNewTurnover', 'AssetTurnoverController@createNewTurnover')->name('AssetTurnover.createNewTurnover');
+// Route::get('ViewTurnedover', 'AssetTurnoverController@ViewTurnedover');
+
+// // printReport
+// Route::resource('printReports', 'PrintReportController');
+
+// // PAR DISTRIBUTION
+// Route::resource('parDistribution', 'AssetParController');
+// Route::get('/parTransaction/{id}', 'AssetParController@parTransaction')->name('AssetParController.parTransaction');
+// Route::get('/displayParTransactions/{id}', 'AssetParController@displayParTransactions')->name('AssetParController.displayParTransactions');
+
+// // PRINT OF PHYSICAL COUNT
+// Route::get('/getPrintPhysicalData', 'PrintReportController@getPrintPhysicalData');
+// Route::get('/getPrintPhysicalDataCaptured', 'PrintReportController@getPrintPhysicalDataCaptured');
+// Route::get('/printPhysicalForm/{name}/{position}', 'PrintReportController@printPhysicalForm');
+// Route::get('/printPhysicalFormCaptured/{name}/{position}/{department}', 'PrintReportController@printPhysicalFormCaptured');
+
+
+
+// // NEW LIST OF WEB
+// Route::get('/icsTransaction/{id}', 'assetController@icsTransaction')->name('assets.icsTransaction');
+// Route::get('/displayIcsTransactions/{id}', 'assetController@displayIcsTransactions')->name('assets.displayIcsTransactions');
 
 //activity log
 Route::resource('logs', 'ActivityLogController');
-
-// printReport
-Route::resource('printReports', 'PrintReportController');
-
-// PAR DISTRIBUTION
-Route::resource('parDistribution', 'AssetParController');
-Route::get('/parTransaction/{id}', 'AssetParController@parTransaction')->name('AssetParController.parTransaction');
-Route::get('/displayParTransactions/{id}', 'AssetParController@displayParTransactions')->name('AssetParController.displayParTransactions');
-
-// PRINT OF PHYSICAL COUNT
-Route::get('/getPrintPhysicalData', 'PrintReportController@getPrintPhysicalData');
-Route::get('/getPrintPhysicalDataCaptured', 'PrintReportController@getPrintPhysicalDataCaptured');
-Route::get('/printPhysicalForm/{name}/{position}', 'PrintReportController@printPhysicalForm');
-Route::get('/printPhysicalFormCaptured/{name}/{position}/{department}', 'PrintReportController@printPhysicalFormCaptured');
-
-
-
-// NEW LIST OF WEB
-Route::get('/icsTransaction/{id}', 'assetController@icsTransaction')->name('assets.icsTransaction');
-Route::get('/displayIcsTransactions/{id}', 'assetController@displayIcsTransactions')->name('assets.displayIcsTransactions');
